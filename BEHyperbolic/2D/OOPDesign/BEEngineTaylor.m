@@ -83,48 +83,48 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         if( this.order > 6 )
             error( 'Max derivative order is 6th!' ); 
         end
-        [ augDhDomainOnly ] = this.GetDhAugDomainOnly( t );
-        [ augDtDomainOnly ] = this.GetDtAugDomainOnly( t );
+        %[ augDhDomainOnly ] = this.GetDhAugDomainOnly( t );
+        %[ augDtDomainOnly ] = this.GetDtAugDomainOnly( t );
         %[ augPowDomainOnly ] = this.GetPowAugDomainOnly( t );
         d2vz = this.vdah; d3vz = this.vdah; d4vz = this.vdah; d5vz = this.vdah; d6vz = this.vdah;
 
         %================== 2nd
         nonlinTerm = (this.alpha*this.beta*vz.*vz +...
                      (this.beta-1)*vz);
-        d2vz = this.GetCurrentDer( nonlinTerm, vz, augDhDomainOnly(:,:,1), augDtDomainOnly(:,:,1), t );
+        d2vz = this.GetCurrentDer( nonlinTerm, vz, t );%, augDhDomainOnly(:,:,1), augDtDomainOnly(:,:,1) );
         if( this.order == 2) return; end
  
         %==================  3rd   
         nonlinTerm =(2*this.alpha*this.beta*dvz.*vz +...
                     (this.beta-1)*dvz);
-        d3vz = this.GetCurrentDer( nonlinTerm, dvz, augDhDomainOnly(:,:,2), augDtDomainOnly(:,:,2), t );
+        d3vz = this.GetCurrentDer( nonlinTerm, dvz, t);%, augDhDomainOnly(:,:,2), augDtDomainOnly(:,:,2) );
         if( this.order == 3) return; end
 
         %==================  4th  
         nonlinTerm =( 2*this.alpha*this.beta*(dvz.*dvz + vz.*d2vz) +...
                     (this.beta-1)*d2vz );
-        d4vz = this.GetCurrentDer( nonlinTerm, d2vz, augDhDomainOnly(:,:,3), augDtDomainOnly(:,:,3), t );
+        d4vz = this.GetCurrentDer( nonlinTerm, d2vz, t);%, augDhDomainOnly(:,:,3), augDtDomainOnly(:,:,3) );
         if( this.order == 4) return; end
 
         %==================  5th
         nonlinTerm =( 2*this.alpha*this.beta*(3*dvz.*d2vz + vz.*d3vz) +...
                     (this.beta-1)*d3vz );
-        d5vz = this.GetCurrentDer( nonlinTerm, d3vz, augDhDomainOnly(:,:,4), augDtDomainOnly(:,:,4), t );
+        d5vz = this.GetCurrentDer( nonlinTerm, d3vz, t);%, augDhDomainOnly(:,:,4), augDtDomainOnly(:,:,4) );
         if( this.order == 5)  d6vz = vdah; return; end
         
         %==================  6th
         nonlinTerm =( 2*this.alpha*this.beta*(3*d2vz.*d2vz + 4*dvz.*d3vz + vz.*d4vz) +...
                     (this.beta-1)*d4vz );
-        d6vz = this.GetCurrentDer( nonlinTerm, d4vz, augDhDomainOnly(:,:,5), augDtDomainOnly(:,:,5), t );
+        d6vz = this.GetCurrentDer( nonlinTerm, d4vz, t );% augDhDomainOnly(:,:,5), augDtDomainOnly(:,:,5) );
     
     end
     
     function [dnvz] = GetCurrentDer( this,...
                                      nonlinTerm,...
                                      highestDer,...
+                                     t, ...
                                      dntDhAugDomainOnly,...
-                                     dntdttAugDomainOnly,...
-                                     t )
+                                     dntdttAugDomainOnly )
         if( this.order > 4 )
             error( 'Not yet implemented for order = 6 (or 8) !' );
         end
@@ -133,8 +133,14 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         VV = this.vdah;
         fd2ndDer = this.GetFd2ndDer();
         mid = ( this.order/2 + 1 );
-        deltab = this.eigenFinDiffMat'* domainUtilsP2.DeltaH( nonlinTerm, fd2ndDer ) + ( this.beta - 1 ) * dntDhAugDomainOnly;    
-        deltab = ( deltab + dntdttAugDomainOnly );%/this.beta;
+        
+        if( nargin == 4 )
+            deltab = this.eigenFinDiffMat'* domainUtilsP2.DeltaH( nonlinTerm, fd2ndDer );    
+        else
+            deltab = this.eigenFinDiffMat'* domainUtilsP2.DeltaH( nonlinTerm, fd2ndDer ) + ( this.beta - 1 ) * dntDhAugDomainOnly;    
+            deltab = ( deltab ); %+ dntdttAugDomainOnly
+        end
+        %deltab = deltab;%/this.beta;
         for j=1:this.sx
             diag = [ -fd2ndDer(1:mid-1) this.IminusDHdiag(j) -fd2ndDer(mid+1:end) ];
             %diag = [(1/12) (-16/12) this.IminusDHdiag(j) (-16/12) 1/12];
@@ -145,8 +151,11 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
                 VV(j,:) = BEUtilities.PentSolv( this.IminusDHdiag(j), diag, deltab(j,:));
             end
         end
-        
-        deltav = ( domainUtilsP2.DeltaH( highestDer, fd2ndDer ) + dntDhAugDomainOnly );%/this.beta;
+        if( nargin == 4 )
+            deltav = ( domainUtilsP2.DeltaH( highestDer, fd2ndDer ) );%/this.beta; 
+        else
+            deltav = ( domainUtilsP2.DeltaH( highestDer, fd2ndDer ) + dntDhAugDomainOnly );%/this.beta;
+        end
         dnvz = ( this.eigenFinDiffMat*VV + deltav/this.h^2 );
     end
        
