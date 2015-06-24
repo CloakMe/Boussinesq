@@ -1,7 +1,6 @@
 classdef WaveFactory
     methods
         function this = WaveFactory( workspaceName, bndPtsRem )
-            workspaceName = strcat( 'D:\workspace\Matlab\Boussinesq\BEEliptic\Boussinesq2D\SavedWorkspaces\', workspaceName, '.mat');
             load( workspaceName, '-mat');
             
             this.x = x;
