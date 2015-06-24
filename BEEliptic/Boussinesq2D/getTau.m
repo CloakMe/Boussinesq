@@ -1,0 +1,9 @@
+function [tau] = getTau(h,x_end,y_end)
+    %gamma2 = 8/h^2*cos(pi*h/(2*x_end))^2
+    delitel = 4/h^2*(sin(pi*(x_end-h)/(4*x_end))^2 +...
+                     sin(pi*(y_end-h)/(4*y_end))^2 +...
+                     sin(pi*h/(4*x_end))^2 +...
+                     sin(pi*h/(4*y_end))^2);
+    tau = 2/delitel;
+    %tau = floor(10^9*tau)/10^9;
+end

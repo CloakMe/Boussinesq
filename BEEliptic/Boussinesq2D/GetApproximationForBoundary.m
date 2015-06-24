@@ -1,0 +1,24 @@
+function [boundaryU] = GetApproximationForBoundary(x,y,h,c)
+
+   [X,Y]=AugDomain(x,y,h);
+   c12 = 1-c^2;
+   boundaryU=(c12*X.^2-Y.^2)./(c12*X.^2+Y.^2).^2;  
+   %boundaryU=(c12^2* X.^4 - 6*c12 * X.^2 .* Y.^2 + Y.^4)./(c12*X.^2+Y.^2).^4;  
+end
+%extending the domain by adding four points top and bottom 
+function [X,Y]=AugDomain(x,y,h)
+    
+    x2 = [x x(end)+h x(end)+2*h x(end)+3*h x(end)+4*h];
+    y2 = [y y(end)+h y(end)+2*h y(end)+3*h y(end)+4*h];
+   
+    sxn = length(x2);
+    syn = length(y2);
+    ox1 = ones(1,syn);
+    X = x2'*ox1;
+   if(sxn~=syn)
+        oy1 = ones(1,sxn);
+        Y = (y2'*oy1)';
+    else
+        Y = (y2'*ox1)';
+   end
+end
