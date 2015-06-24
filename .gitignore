@@ -3,8 +3,8 @@ vu*.mat
 vz*.mat
 
 #Matlab start files for hyperbolic and elliptic equations:
-test_ch_v8.mat
-BEEliptHyperbConnector.m
+test_ch_v8*
+BEEliptHyperbConnector*
 
 #Matlab
 *.asv
