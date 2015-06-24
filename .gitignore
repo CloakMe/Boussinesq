@@ -1,3 +1,14 @@
+#Matlab hyperbolic solutin files:
+vu*.mat
+vz*.mat
+
+#Matlab start files for hyperbolic and elliptic equations:
+test_ch_v8.mat
+BEEliptHyperbConnector.m
+
+#Matlab
+*.asv
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
