@@ -1,7 +1,7 @@
 mag = 120;
 mag2=mag;
 
-figure(6)
+figure(20)
 clear('F')
 camva('manual');
 for k = 1:sx
