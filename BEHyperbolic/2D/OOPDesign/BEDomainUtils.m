@@ -75,6 +75,22 @@ classdef (ConstructOnLoad) BEDomainUtils
         end
     end
     
+    function [ zeroMatrix ] = XDer(      this,...
+                                         M,...
+                                         finiteDiff ) 
+
+        augZeroPointsX = zeros( size( this.topX ) );
+        zeroMatrix = this.XDerivative( M, augZeroPointsX, augZeroPointsX, finiteDiff );
+    end
+    
+    function [ zeroMatrix ] = YDer(      this,...
+                                         M,...
+                                         finiteDiff ) 
+
+        augZeroPointsY = zeros( size( this.leftY ) );
+        zeroMatrix = this.YDerivative( M, augZeroPointsY, augZeroPointsY, finiteDiff );
+    end
+    
     function [ zeroMatrix ] = YDerivative( this, M, augLeftPoints, augRightPoints, finiteDiff ) 
         if( size( finiteDiff, 1 ) > 1 )
             error( 'Finite Difference expected as a row vector but received column vector!' );
