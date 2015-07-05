@@ -126,12 +126,13 @@ classdef WaveFactory
         this.alpha = al;
         this.order = order;
         if(vc==1)
-            this.u_t0 = pola2cart_v5(X,Y,c,this.beta1);
+            this.u_t0 = pola2cart_v5( this.x, this.y, gama1, gama2 );
             if(c==0)
                 this.dudt_t0 = 0*this.u_t0;
             else
                 tic
-                this.dudt_t0 =dudt2d_mat3_vc_v2(X,Y,c,this.beta1);
+                domainUtils = BEDomainUtils( this.x, this.y, this.order );
+                this.dudt_t0 = sqrt( -domainUtils.DeltaH( this.u_t0 ) );
                 toc
             end
         else
