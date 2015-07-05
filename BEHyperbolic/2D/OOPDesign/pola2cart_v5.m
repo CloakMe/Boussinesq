@@ -62,6 +62,15 @@ lenX = length(x);
        mesh(x(zeroX:end),y(zeroY:end),TF(zeroX:end,zeroY:end)')
        figure(2)
        mesh(x,y,Qd')
+       figure(3)
+       mesh(x,y,Qd_yy')
+       
+       figure(4)
+       mesh(x,y,.5^2*delta_Qd')
+       
+       figure(5)
+       mesh(x,y,(.5^2*delta_Qd./Qd_yy)')
+       
        %}
 end
 
