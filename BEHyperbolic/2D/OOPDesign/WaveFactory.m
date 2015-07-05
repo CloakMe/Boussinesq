@@ -125,28 +125,17 @@ classdef WaveFactory
         this.beta2 = beta2;
         this.alpha = al;
         this.order = order;
-        if(vc==1)
-            this.u_t0 = pola2cart_v5( this.x, this.y, gama1, gama2 );
-            if(c==0)
-                this.dudt_t0 = 0*this.u_t0;
-            else
-                tic
-                domainUtils = BEDomainUtils( this.x, this.y, this.order );
-                this.dudt_t0 = sqrt( -domainUtils.DeltaH( this.u_t0 ) );
-                toc
-            end
+        
+        this.u_t0 = pola2cart_v5( this.x, this.y, gama1, gama2 );
+        if(c==0)
+            this.dudt_t0 = 0*this.u_t0;
         else
-            if(vc==0)
-            this.u_t0 = u_ex2d_mat_v2(X,Y,this.c,this.beta1);
-                if(c==0)
-                    this.dudt_t0 = 0*u_t0;
-                else
-                    tic
-                    this.dudt_t0 =dudt2d_mat3_v2(X,Y,c,this.beta1);
-                    toc
-                end
-            end
+            tic
+            domainUtils = BEDomainUtils( this.x, this.y, this.order );
+            this.dudt_t0 = sqrt( -domainUtils.DeltaH( this.u_t0 ) );
+            toc
         end
+            
         if(mod(x(end),h) == 0 && mod(y(end),h) == 0)
             [yo,indx] =min(abs(x));
             [yo,indy] =min(abs(y));
