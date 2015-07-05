@@ -1,0 +1,9 @@
+function du = be1030(r,u)
+%u_rr = -u_r/r + gamma1*u - gamma2*u^2
+al = 1;
+du = zeros(2,1);    % a column vector
+du(1) = u(2);
+%dy(2) = 1000*(1 - y(1)^2)*y(2) - y(1);
+gamma1 =  1;
+gamma2 = -al/(1-c^2);
+du(2) = -u(2)/r + gamma1*u(1) +  gamma2*u(1)^2;

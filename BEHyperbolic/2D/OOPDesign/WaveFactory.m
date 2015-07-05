@@ -1,12 +1,16 @@
 classdef WaveFactory
   methods
-    function this = WaveFactory( workspaceName, bndPtsRem )
+    function this = WaveFactory( workspaceName, bndPtsRem, nat_42 )
         if( nargin == 2 )
             this = this.WaveFactory1( workspaceName, bndPtsRem );
         end
         if( nargin == 1 )
             this = this.WaveFactory2( workspaceName );
         end
+        if( nargin == 3 )
+            this = this.WaveFactory3( workspaceName );
+        end
+        
     end
     
     function this = WaveFactory1( this, workspaceName, bndPtsRem )
@@ -43,6 +47,7 @@ classdef WaveFactory
         this.dudt_t0 = this.dudt_t0( bndPtsRem+1:end-bndPtsRem, bndPtsRem+1:end-bndPtsRem );
         this.u_t0 = this.u_t0( bndPtsRem+1:end-bndPtsRem, bndPtsRem+1:end-bndPtsRem );
     end
+    
     function this = WaveFactory2( this, bestFitIc )
         this.mu = 0;
         this.theta = 1;
@@ -102,6 +107,67 @@ classdef WaveFactory
             end
         end
     end
+    
+    function this = WaveFactory3( this, nat42Ic )
+        this.mu = 0;
+        this.theta = 1;
+        run( nat42Ic );
+        this.compBox = compBox;
+        this.x = x;
+        this.y = y;
+        this.y_st = y_st;
+        this.y_end = y_end;
+        this.x_end = x_end;
+        this.x_st = x_st;
+        this.h = h;
+        this.c = c;
+        this.beta1 = beta1;
+        this.beta2 = beta2;
+        this.alpha = al;
+        this.order = order;
+        if(vc==1)
+            this.u_t0 = pola2cart_v5(X,Y,c,this.beta1);
+            if(c==0)
+                this.dudt_t0 = 0*this.u_t0;
+            else
+                tic
+                this.dudt_t0 =dudt2d_mat3_vc_v2(X,Y,c,this.beta1);
+                toc
+            end
+        else
+            if(vc==0)
+            this.u_t0 = u_ex2d_mat_v2(X,Y,this.c,this.beta1);
+                if(c==0)
+                    this.dudt_t0 = 0*u_t0;
+                else
+                    tic
+                    this.dudt_t0 =dudt2d_mat3_v2(X,Y,c,this.beta1);
+                    toc
+                end
+            end
+        end
+        if(mod(x(end),h) == 0 && mod(y(end),h) == 0)
+            [yo,indx] =min(abs(x));
+            [yo,indy] =min(abs(y));
+            this.dudt_t0(indx,indy)
+            this.dudt_t0(indx,indy) = 0.000;
+        end
+        IS_dudt_NaN = max(max(isnan(this.dudt_t0)))
+        IS_u_NaN = max(max(isnan(this.u_t0)))
+        for k = 1:sx
+            if( -10^(-11)<x(k) )
+                %this.ZeroX = k;
+                break;
+            end
+        end
+        for k = 1:sy
+            if( -10^(-11)<y(k))
+                this.zeroY = k;
+                break;
+            end
+        end
+    end
+    
   end
     
     properties ( SetAccess = private, GetAccess = public )
