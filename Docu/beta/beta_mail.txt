@@ -1,0 +1,14 @@
+Zdravey, Krassimire,
+Za tazi smyana na promenlivite az sashto se usetih.
+No nay-napred probvay slednoto- z hiperbol. zadacha da rabotish s osnovnite
+koordinati i s uravnenieto s koefizientite beta1, beta2,..
+Samo nachalnite danni shte zadavash  varhu mrezata ot elipt. zadacha.
+Tay-kato smyatash s koefizient \sigma=0, pak shte imash samo iterazii po nelineyniy chlen.
+Energiyata v tozi sluchay zavisi yavno ot \beta1 - ima ya vav formula
+(11) v statiyata, koyato ti prashtam sega. Samo vav formula
+(11) shte vzemesh aproksimaziyata na nelineynostta ot statiyata mi v AIP2010.
+predpolagam, che taka shte se smetne i energiyata pri sravnitelno malko promeni v tvoyata programa..
+
+Opitay taka.
+A pri beta1=1 energiyata se zapazva kakto tryabva - ot kartinkite se vizda.
+Ako ima neshto neyasno, pishi.
