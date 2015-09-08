@@ -1,4 +1,5 @@
 clear;
+addpath('../ODE_Solvers');
 
 S_0 = 760;
 I_0 = 4;
@@ -24,7 +25,9 @@ ResultPlot( 9, T, a * Y(:,2), '-k', 'Recovered Numerical Derivative' )
 derDeathAnalytical = DerRemoveAnalitical( T, S_0, S_0 + I_0 + R_0 );
 ResultPlot( 10, T, derDeathAnalytical, '-c', 'Recovered Analytical Derivative' )
 
-difff = abs( a * Y(:,2) - derDeathAnalytical' );
-ResultPlot( 11, T, difff, '-c', 'Difference' )
+difff = abs( a * Y(:,2) - derDeathAnalytical' )./(a * Y(:,2));
+ResultPlot( 11, T, difff*100, '-c', 'Difference' )
+ylabel( '%' ); 
+
 
 

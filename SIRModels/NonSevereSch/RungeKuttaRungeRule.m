@@ -1,5 +1,5 @@
 clear;
-
+addpath('../ODE_Solvers');
 S_0 = 760;
 I_0 = 4;
 R_0 = 0;
@@ -10,15 +10,15 @@ IC = [ S_0, I_0, R_0 ];
 ic = GenerateDerivativesNonSevere( 4, IC );
 
 Tend = 180;
-t1 = 0.08;
+t1 = 0.04;
 T1 = 0:t1:Tend;
 Y1 = ode4(@SIRModelNonSevere,T1,IC);
 
-t2 = 0.04;
+t2 = 0.02;
 T2 = 0:t2:Tend;
 Y2 = ode4(@SIRModelNonSevere,T2,IC);
 
-t3 = 0.02;
+t3 = 0.01;
 T3 = 0:t3:Tend;
 Y3 = ode4(@SIRModelNonSevere,T3,IC);
 
@@ -44,13 +44,13 @@ conv_L2 = log( abs( norm0402_L2 / norm0201_L2 ) ) / log(2);
 fprintf( 'conv_L2 = %.8e \n', conv_L2 );
 
 derDeath1 = a*Y1(:,2);
-ResultPlot( 12, T1, derDeath1, '-k', 'Death Derivative' )
+ResultPlot( 12, T1, derDeath1, '-k', 'Num Recovered Derivative' )
 
 derDeath2 = a*Y2(:,2);
-ResultPlot( 13, T2, derDeath2, '-k', 'Death Derivative' )
+ResultPlot( 13, T2, derDeath2, '-k', 'Num Recovered Derivative' )
 
 derDeath3 = a*Y3(:,2);
-ResultPlot( 14, T3, derDeath3, '-k', 'Death Derivative' )
+ResultPlot( 14, T3, derDeath3, '-k', 'Num Recovered Derivative' )
 
 
 

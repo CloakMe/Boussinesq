@@ -10,13 +10,13 @@ order = 4;
 ic = GenerateDerivativesNonSevere( order, IC );
 
 Tend = 180;
-t1 = 0.08;
+t1 = 0.04;
 [ T1, Y1, Sol1 ] = SIRModelTaylorNonSevere( t1, Tend, ic, order );
 
-t2 = 0.04;
+t2 = 0.02;
 [ T2, Y2, Sol2 ] = SIRModelTaylorNonSevere( t2, Tend, ic, order );
 
-t3 = 0.02;
+t3 = 0.01;
 [ T3, Y3, Sol3 ] = SIRModelTaylorNonSevere( t3, Tend, ic, order );
 
 %T3 = 0:t3:Tend;
