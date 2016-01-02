@@ -1,0 +1,21 @@
+
+[2] N. Kolkovska, Two Families of Finite Difference Schemes for Multidimensional Boussinesq Paradigm Equation, AIP Conf. Proc. 1301, 395 (2010) http://dx.doi.org/10.1063/1.3526638
+[3] M. Christou, C. I. Christov, FourierGalerkin method for 2D solitons of
+Boussinesq equation, Mathematics and Computers in Simulation 74 (2007)
+8292.
+[3] M. Christou, C. I. Christov, FourierGalerkin method for 2D solitons of
+Boussinesq equation, Mathematics and Computers in Simulation 74 (2007)
+8292.
+[4] M. Christou, C. I. Christov, Galerkin Spectral Method for the 2D Solitary Waves of Boussinesq Paradigm Equation, CP 1186 (2009) 217 { 225.
+[5] C. I. Cristov, Conservative dierence scheme for Boussinesq model of surface
+waves, Proc. ICFDS Oxford (1996) 343{349.
+[6] C. I. Christov, An energy-consistent dispersive shallow-water model, Wave
+Motion, 34, (2001) 161 { 174
+[7] C. I. Christov, J. Choudhury, Perturbation solution for the 2D Boussinesq
+equation, Mech. Res. Commun., 38 (2011) 274 { 281.
+[8] C. I. Christov, Numerical implementation of the asymptotic boundary conditions
+for steadily propagating 2D solitons of Boussinesq
+
+Choudhury, J., Christov, C.I., 2005. 2D solitary waves of Boussinesq equation.
+In: ISIS International Symposium on Interdisciplinary Science, Natchitoches,
+October 6–
