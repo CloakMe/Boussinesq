@@ -44,7 +44,7 @@ The aim of this paper is to evaluate stationary  propagating  wave solutions
 
 \end{abstract}
 \begin{keyword}
-two dimensional Boussinesq  equation \sep traveling wave solutions  \sep high order finite difference schemes \sep asymptotic boundary conditions
+two dimensional Boussinesq  equation \sep traveling wave solutions (TWS) \sep high order finite difference schemes \sep asymptotic boundary conditions
  \end{keyword}
 \end{frontmatter}
 
@@ -57,43 +57,29 @@ In this paper we  consider the two dimensional Boussinesq  Equation (BE)
 \\ \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)   \quad\text{for} \, (x,y) \in \RR^2,
 \\  &u(x,y) \rightarrow 0,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{for}  \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11}
 \end{align}
-where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are real constants, and $\Delta$ is the Laplace operator. The BE arises in several physical applications:  propagation of long waves in shallow water, vibrations in a   nonlinear string,  etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}.
+where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are real constants, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non-linear long waves. It is oftern used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics and, etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}.
 
-Our interest is to seek for traveling wave solutions to \rf{eq1} in direction $y$  with phase velocity $c$,  i.e. solutions of type  $u(x,y,t)=U(x,y-ct)$. 
+The goal of the article is to investigate the initial condition IC of the hyperbolic BPE \rf{eq1}, \rf{eq11}, i.e. to seek for TWS $u(x,y,t)=U(x,y-ct)$ to \rf{eq1} in $y$ direction with velocity $c$. It is useful to have flexible and robust IC in order to test various scenarios with two or more traveling waves colliding with each other. To gain domain flexibility $\Omega = [X_1, X_2]$x$[Y_1, Y_2]$ one needs easy "access" to many ICs with varying $X_1$, $X_2$, $Y_1$, $Y_2$ and speed $c$. Furthermore the traveling wave in the hyperbolic equation is very fragile, i.e. the wave easily blows up or falls apart with time. The relationship between the dispersion and nonlinearity is very sensitive for the BPE and the balance is easily destroyed. Thus the better the IC, the longer distance the wave travels. Furthermore it is well known fact that in the one dimensional case the wave blows up for small wave speeds $c$ where the wave has less energy [?]. Similar results were also proven for two dimensional case [?] and it is a fact that traveling waves with speeds $c$ near 0.9 behave much smoother and travel great distances. To generate the IC one solves the elliptic BPE. The waves $U$ satisfy the nonlinear fourth order elliptic equation
 
-The waves $U$ satisfy the nonlinear fourth order  elliptic problem
 \begin{equation}\label{eq2}
 c^2 (E-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 \end{equation}
-where $E$ is the identity operator. 
-
-
+where $E$ is the identity operator. It is emphasized here that elliptic solutions and combinations of those are used in the hyperbolic problem, e.g. wave collision. There are at least two moving peaks when a combination is used. The numerical grid $\Omega_h$ could be chosen with more points near the peak and less points near the boundary, i.e. use non-uniform grid. But as long as the numerical simulation for the hyperbolic equation requires more than one wave which travels at larger distances (much larger than the discretization step) the straightforward and easiest approach is to use uniform grid with equal step size $h_x$ = $h_y$ = $h$. In order to increase the precision, the numerical method here uses local approximation of forth and sixth order $O(h^4)$ and $O(h^6)$. The high order finite difference schemes (FDS) allow to evaluate the numerical solution with high accuracy on relatively coarse grid.
 
 Recall that in the one dimensional case the BE possesses well known solitary wave solutions of 'sech' type, see \cite{Ch1996}. 
-The  traveling wave solutions to \rf{eq1} in the two dimensional case  were  computed in \cite{chd-chr, chr-chr-07,chr-chr,Ch2011,Ch2012}. 
+The  TWS to \rf{eq1} in the two dimensional case  were  computed in \cite{chd-chr, chr-chr-07,chr-chr,Ch2011,Ch2012}. 
 The elliptic problem \rf{eq2} is solved by a Galerkin spectral method in \cite{chr-chr-07,chr-chr}.
 In \cite{Ch2012} a second order  finite difference scheme is used, while in \cite{Ch2011} 
  the perturbation series method with respect to the small parameter $c$ is applied.  Moreover in  \cite{Ch2011} 
 the resulting numerical  solution is approximated by best-fit  formulae.  These exact expressions  are used further as initial data in numerical simulations of the unsteady  BE \rf{eq1}-\rf{eq11}, see  \cite{cher,dani}.
-Thus the accurate evaluation of the solutions to \rf{eq2} is fundamental for the construction of initial data of the unsteady BE. 
+Thus the accurate evaluation of the solutions to \rf{eq2} is fundamental for the construction of initial data of the unsteady BE where the focus is on wave speeds $c > 0.7$. 
 
-
-The aim of this paper is to evaluate  precisely  the stationary solutions to \rf{eq2} by  using high accuracy numerical technique. Our intention is also  to compare  the numerical results, established in this paper, with the numerical results and best-fit formulae given in \cite{Ch2011,Ch2012}.  
-Then we plan to apply the resulting numerical solution as initial data for solving  the  BE \rf{eq1} -- \rf{eq11}
-in a forthcoming paper.
-
-In this article, the basic construction  for solving \rf{eq2}  is
-very similar to the one presented in \cite{Ch2012}. 
-First we rewrite equations \rf{eq2} as a system of two nonlinear second order elliptic equations. Then we use the simple iteration method to solve the system numerically. Our contribution consists of 
- applying  high order finite difference schemes- with  local approximation order of $O(h^4)$, $O(h^6)$-  and  solving   the nonlinear equations  with  high precision: at the end of the iteration procedure the residual \rf{residual} of the discrete equation, approximating \rf{eq3}, is of order $10^{-5}$ or $10^{-6}$ and the distance between two consecutive iterations is of order $10^{-7}$. The application of high order finite difference schemes (FDS) allows one to evaluate the numerical solution  with high accuracy on relatively coarse grids. 
- We also develop a new condition for the values of the solution on the computational boundaries, which is based on the  of the solution's asymptotics  for large distances from the origin. 
-
- We did several numerical  tests to validate the method and to demonstrate its high accuracy. First we study   
-the convergence of the  numerical schemes by solving the numerical problem on different grids. We demonstrate that  the convergence rate  is almost the same as the order of approximation of the scheme (see  Table~\ref{tab:a}). Then we present results for verification of the new boundary condition on the computational boundaries. 
+The solution construction to \rf{eq2} described here follows the steps presented in \cite{Ch2012},
+but new modifications are introduced to meet the higher requirements described above. A new boundary condition is used, together with uniform grid and local approximation order of $O(h^4)$ and $O(h^6)$. The application of high order finite difference schemes (FDS) allows on to evaluate the numerical solution with high accuracy on relatively coarse grids. At the end of each iteration procedure the residual (17) of the discrete equation, approximating (4) is of order $10^5$, $10^6$ and the distance between two consecutive iterations is of order $10^7$ which is much smaller then the discretization step size $h$.
  
-In the last section we examine the    solution shape and the dependence of the solution on the input  parameters - the velocity $c$ and the relative dispersion $\beta =\beta_1  / \beta_2$. We show that these  qualitative properties of the numerical solution are very similar to those given for the  numerical solution in \cite{Ch2011,Ch2012} . 
+In the last section we examine the solution shape and the dependence of the solution on the input  parameters - the velocity $c$ and the relative dispersion $\beta =\beta_1  / \beta_2$. We show that these  qualitative properties of the numerical solution are very similar to those given for the  numerical solution in \cite{Ch2011,Ch2012} . 
 We compare our results with the best-fit  (approximating the numerical solution)  formulae stated in \cite{Ch2011}.   
-The analysis   shows that  these formulae do not satisfy the equations in the neighborhood of the origin in the classical sense because their fourth order derivatives have singularities at the origin.  The  difference (measured in the maximal norm and in $L_2$ norms)  between our numerical solution and the corresponding best-fit formulae is also high, especially  for large velocities $c$. 
+The analysis  shows that  these formulae do not satisfy the equations in the neighborhood of the origin in the classical sense because their fourth order derivatives have singularities at the origin.  The  difference (measured in the maximal norm and in $L_2$ norms)  between our numerical solution and the corresponding best-fit formulae is also high, especially  for large velocities $c$. 
 
 The paper is organized as follows. In Section~2 we formulate the  problem. The numerical method is given in Section~3 and validated in Section~4.  Various numerical  experiments and a comparison with  results in \cite{Ch2011,Ch2012} are reported in Section~5.
 
