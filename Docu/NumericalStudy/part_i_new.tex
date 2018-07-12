@@ -57,29 +57,55 @@ In this paper we  consider the two dimensional Boussinesq  Equation (BE)
 \\ \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)   \quad\text{for} \, (x,y) \in \RR^2,
 \\  &u(x,y) \rightarrow 0,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{for}  \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11}
 \end{align}
-where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are real constants, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non-linear long waves. It is oftern used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics and, etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}.
+where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non-linear long waves. It is oftern used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics and, etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}.
 
-The goal of the article is to investigate the initial condition IC of the hyperbolic BPE \rf{eq1}, \rf{eq11}, i.e. to seek for TWS $u(x,y,t)=U(x,y-ct)$ to \rf{eq1} in $y$ direction with velocity $c$. It is useful to have flexible and robust IC in order to test various scenarios with two or more traveling waves colliding with each other. To gain domain flexibility $\Omega = [X_1, X_2]$x$[Y_1, Y_2]$ one needs easy "access" to many ICs with varying $X_1$, $X_2$, $Y_1$, $Y_2$ and speed $c$. Furthermore the traveling wave in the hyperbolic equation is very fragile, i.e. the wave easily blows up or falls apart with time. The relationship between the dispersion and nonlinearity is very sensitive for the BPE and the balance is easily destroyed. Thus the better the IC, the longer distance the wave travels. Furthermore it is well known fact that in the one dimensional case the wave blows up for small wave speeds $c$ where the wave has less energy [?]. Similar results were also proven for two dimensional case [?] and it is a fact that traveling waves with speeds $c$ near 0.9 behave much smoother and travel great distances. To generate the IC one solves the elliptic BPE. The waves $U$ satisfy the nonlinear fourth order elliptic equation
+The goal of the article is to to seek for solutions to (\ref{eq1}) of the type $u(x,y,t)=U(x,y-ct)$, which 
+are stationary solitary waves (SSW) traveling  in $y$ direction with velocity $c$. In a forthcoming paper the SSW will be applied as initial condition (IC) of the hyperbolic BE \rf{eq1}, \rf{eq11}. Thus it is useful to have accurate, flexible 
+and robust IC in order to test various scenarios with two or more traveling waves colliding with each other.
+
+The SSWs to \rf{eq1} are computed by a Galerkin spectral method in \cite{chr-chr-07,chr-chr}.
+In \cite{Ch2012} a second order  finite difference scheme is used, while in \cite{Ch2011} 
+the perturbation series method with respect to the small parameter $c$ is applied.  Moreover in \cite{Ch2011} 
+the resulting numerical solution is approximated by best-fit formulae. These exact expressions are used further as initial conditions in 
+numerical simulations of the unsteady BE \rf{eq1}-\rf{eq11}, see  \cite{cher,dani}. It is shown in these papers, 
+that for velocities $c<0.3$ the resulting SSW disperse in the form of ring wave expanding to infinity or blow up after some period in time. 
+Thus the traveling wave solutions of the hyperbolic equation  \rf{eq1} are very fragile, i.e. the wave easily blow up or fall apart with time. 
+The relationship between the dispersion and nonlinearity in \rf{eq1} is very sensitive  and the balance between them is easily destroyed.
+Moreover it is well known  that in the one dimensional case the solitary waves are unstable  
+for small wave speeds $c$ while they are stable in form for  velocities $c$ close to $1$. 
+
+
+Having in mind these  observations, we focus in this paper on the more accurate evaluation of SSW $U$ to \rf{eq1}, especially for  velocities $c > 0.7$, since it is fundamental for the construction of initial data of the unsteady BE \rf{eq1}. 
+
+Note that the stationary solitary waves $U(x,y-ct)=u(x,y,t)$
+ satisfy the following nonlinear fourth order elliptic equation
 
 \begin{equation}\label{eq2}
 c^2 (E-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 \end{equation}
-where $E$ is the identity operator. It is emphasized here that elliptic solutions and combinations of those are used in the hyperbolic problem, e.g. wave collision. There are at least two moving peaks when a combination is used. The numerical grid $\Omega_h$ could be chosen with more points near the peak and less points near the boundary, i.e. use non-uniform grid. But as long as the numerical simulation for the hyperbolic equation requires more than one wave which travels at larger distances (much larger than the discretization step) the straightforward and easiest approach is to use uniform grid with equal step size $h_x$ = $h_y$ = $h$. In order to increase the precision, the numerical method here uses local approximation of forth and sixth order $O(h^4)$ and $O(h^6)$. The high order finite difference schemes (FDS) allow to evaluate the numerical solution with high accuracy on relatively coarse grid.
+where $E$ is the identity operator. 
 
-Recall that in the one dimensional case the BE possesses well known solitary wave solutions of 'sech' type, see \cite{Ch1996}. 
-The  TWS to \rf{eq1} in the two dimensional case  were  computed in \cite{chd-chr, chr-chr-07,chr-chr,Ch2011,Ch2012}. 
-The elliptic problem \rf{eq2} is solved by a Galerkin spectral method in \cite{chr-chr-07,chr-chr}.
-In \cite{Ch2012} a second order  finite difference scheme is used, while in \cite{Ch2011} 
- the perturbation series method with respect to the small parameter $c$ is applied.  Moreover in  \cite{Ch2011} 
-the resulting numerical  solution is approximated by best-fit  formulae.  These exact expressions  are used further as initial data in numerical simulations of the unsteady  BE \rf{eq1}-\rf{eq11}, see  \cite{cher,dani}.
-Thus the accurate evaluation of the solutions to \rf{eq2} is fundamental for the construction of initial data of the unsteady BE where the focus is on wave speeds $c > 0.7$. 
+The evaluation of the solution to \rf{eq2} described here follows the steps presented in \cite{Ch2012},
+but new modifications are introduced to meet the higher requirements reported above.
 
-The solution construction to \rf{eq2} described here follows the steps presented in \cite{Ch2012},
-but new modifications are introduced to meet the higher requirements described above. A new boundary condition is used, together with uniform grid and local approximation order of $O(h^4)$ and $O(h^6)$. The application of high order finite difference schemes (FDS) allows on to evaluate the numerical solution with high accuracy on relatively coarse grids. At the end of each iteration procedure the residual (17) of the discrete equation, approximating (4) is of order $10^5$, $10^6$ and the distance between two consecutive iterations is of order $10^7$ which is much smaller then the discretization step size $h$.
+First, for the numerical solution of \rf{eq2} we choose to apply an uniform grid with equal step size $h_x$ = $h_y$ = $h$ in the computational domain $\Omega_h$ instead of an nonuniform grid. The reason for this is that  
+%
+%because of the following circumstances. 
+ the computed solutions to \rf{eq2} will be used as initial conditions in the hyperbolic problem \rf{eq1} and these solutions will travel in time, thus we have to have more mesh points not only close to the peak of the waves, but everywhere in   the  computational domain. 
+
+In order to increase the precision of the numerical method, we apply finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order, i.e. we  approximate second order spatial derivatives with high order finite differences. These  FDS allow one to evaluate the numerical solution with high accuracy on relatively coarse grid. 
+
+A new boundary condition on the computational boundary is also used, together with uniform grid and local approximation order of $O(h^4)$ and $O(h^6)$. The numerical solution of the fourth order elliptic problem \rf{eq2} is replaced with an iterative procedure, which involves solution  of an appropriate  parabolic type problem at every iteration step. %until this solution converges. 
+%It is emphasized here that elliptic solutions and combinations of those are used in the hyperbolic problem, e.g. wave collision. There are at least two moving peaks when a combination is used. The numerical grid $\Omega_h$ could be chosen with more points near the peak and less points near the boundary, i.e. use non-uniform grid. But as long as the numerical simulation for the hyperbolic equation requires more than one wave which travels at larger distances (much larger than the discretization step) the straightforward and easiest approach is to use uniform grid with equal step size $h_x$ = $h_y$ = $h$. In order to increase the precision, the numerical method here uses local approximation of forth and sixth order $O(h^4)$ and $O(h^6)$. The high order finite difference schemes (FDS) allow to evaluate the numerical solution with high accuracy on relatively coarse grid.
+%Recall that in the one dimensional case the BE possesses well known solitary wave solutions of 'sech' type, see \cite{Ch1996}. 
+%The  TWS to \rf{eq1} in the two dimensional case  were  computed in \cite{chd-chr, chr-chr-07,chr-chr,Ch2011,Ch2012}. 
+%Thus the accurate evaluation of the solutions to \rf{eq2} is fundamental for the construction of initial data of the unsteady BE where the focus is on wave speeds $c > 0.7$. 
+ %A new boundary condition is used, together with uniform grid and local approximation order of $O(h^4)$ and $O(h^6)$. The application of high order finite difference schemes (FDS) allows on to evaluate the numerical solution with high accuracy on relatively coarse grids. 
+At the end of each iteration procedure the residual (17) of the discrete equation, approximating (4) is of order $10^{-5}$, $10^{-6}$ and the distance between two consecutive iterations of the solution is of order $10^{-7}$, which is much smaller than the discretization step size $h$.
  
-In the last section we examine the solution shape and the dependence of the solution on the input  parameters - the velocity $c$ and the relative dispersion $\beta =\beta_1  / \beta_2$. We show that these  qualitative properties of the numerical solution are very similar to those given for the  numerical solution in \cite{Ch2011,Ch2012} . 
-We compare our results with the best-fit  (approximating the numerical solution)  formulae stated in \cite{Ch2011}.   
-The analysis  shows that  these formulae do not satisfy the equations in the neighborhood of the origin in the classical sense because their fourth order derivatives have singularities at the origin.  The  difference (measured in the maximal norm and in $L_2$ norms)  between our numerical solution and the corresponding best-fit formulae is also high, especially  for large velocities $c$. 
+In the last section we examine the solution shape and the dependence of the solution on the input  parameters - the velocity $c$ and the relative dispersion $\beta =\beta_1  / \beta_2$. We show that these  qualitative properties of the numerical solution are very similar to those given for the  numerical solution in \cite{Ch2011,Ch2012}. 
+We compare our results with the best-fit  (approximating the numerical solution)  formulas stated in \cite{Ch2011}.   
+The analysis  shows that  these best-fit formulas do not satisfy the equations in the neighborhood of the origin in the classical sense because their fourth order derivatives have singularities at the origin.  The  difference (measured in the maximal norm and in $L_2$ norms)  between our numerical solution and the corresponding best-fit formulae is also high, especially  for large velocities $c$. 
 
 The paper is organized as follows. In Section~2 we formulate the  problem. The numerical method is given in Section~3 and validated in Section~4.  Various numerical  experiments and a comparison with  results in \cite{Ch2011,Ch2012} are reported in Section~5.
 
