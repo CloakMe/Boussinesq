@@ -152,7 +152,7 @@ Thus the solution to the steady coupled elliptic system \rf{eq45} is replaced by
 
 \section{Numerical Method}
 
-We  turn  to the numerical approximation of the   system \rf{eq5} discussed in the previous section. The backbone of the  algorithm is  described in \cite{Ch2012}. The following  improvements have been made in this article:   more accurate finite difference schemes of fourth and sixth order of approximation are applied and new type of  conditions on the external computational boundary are developed.
+We  turn  to the numerical approximation of the   system \rf{eq5} discussed in the previous section. The backbone of the  algorithm is  described in \cite{Ch2012}. The following  improvements and modifications have been made in this article: use of uniform grid with more accurate finite difference schemes of fourth and sixth order of approximation and new type of conditions on the external computational boundary [??].
 
 \subsection{Finite difference schemes}
 First we replace the unbounded domain by a sufficiently large computational domain $\Omega$. Due to the obvious symmetry of the problem, we can look for the solution only in the first quadrant $\Omega = [0,L_x] \times[0,L_y]$. Then a uniform grid $\Omega_h$ is defined in the following way
@@ -189,93 +189,53 @@ The Euler explicit rule is applied for approximation of  time derivatives. The n
 \end{equation}
 This method for solving equations 
 \rf{eq45} can be considered also as ``the simple iteration method'' for solving linear and nonlinear equations (see \cite{sam}).
+Last but not least, in order to start the procedure we need initial values for functions $\widehat{v},\widehat{w}$. These initial values are taken from the formulae in \cite{Ch2011}.
 
-
-\begin{rmk}\label{R1}
-It is possible to use varying time step $\tau$ to optimize and speed up the algorithm. When the time step becomes too big the solution starts to diverge and becomes jagged. Fortunately these signs appear first in the residual i.e. it
+\subsection{Time Step Control}
+It is possible to use varying time step $\tau$ to optimize and speed up the algorithm. When the time step becomes too big the solution starts to diverge and becomes jagged. Fortunately these signs appear first in the residual $R$ i.e. it
 starts to grow and jag simultaneously while the solution is still fine. 
 Arbitrary cross-sections of the residual look like a discrete function
 which alternates positive with negative values on the grid.
-This is a clear sign that the time step has to be decreased, otherwise we can increase it.
-\end{rmk}
- In order to start the procedure we need initial values for functions $\widehat{v},\widehat{w}$. These initial values are taken from the  formulae in \cite{Ch2011}.
+This is a clear sign that the time step has to be lowered, otherwise it is increased. Changing the artificial time is done automatically at each iteration by a factor $f_{\tau}\tau =: \tau_{new}$, where $f_{\tau} \in (0.72, 1.015)$. 
+
+
  
-\subsection{Asymptotic conditions on the  boundaries $x=L_x$ and $y=L_y$}
-
-The behavior of the solutions $v$ and $w$  as $r =\sqrt{x^2 +y^2} \rightarrow \infty$ is studied in details in \cite{Ch2011,Ch2012}. From the numerical results  given there it follows that   $v$ and $w$ have $O( r^{-2})$ asymptotic decay at infinity. We suppose that the  second order derivatives of $v$ and $w$  are of order $O(r^{-4})$  whereas  fourth order derivatives and the nonlinear term in equation \rf{eq3}   are of order $O(r^{-6})$.
-These assumptions 
-help us to evaluate the solution  on the outer computational boundary $B= \{(L_x,y):0\le y\le L_y\} \cup \{(x,L_y):0\le x\le L_x\} $. 
-
-Consider equation \rf{eq3} for  sufficiently large $r$. 
- We insert the asymptotic values of all terms  in \rf{eq3} and  neglect the higher order in $r$ terms  (of order $O(r^{-6})$). In this way we obtain the  following  problem  valid for large $r$ 
-\begin{subequations}\label{asympt}
-\begin{align}
-c^2 v_{yy} &= \Delta v, \label{one}
-\\
-v(x,y),  \Delta v(x,y) &\rightarrow 0~ \mbox{as}~ \sqrt{x^2 + y^2} \rightarrow \infty. \label{two}
-\end{align}
-\end{subequations}
-The  function that resolves   equations \rf{one} and \rf{two} is
-\begin{equation}\label{sol}
-\begin{split}
-v (x,y)=
- \mu ( (1-c^2)x^2+y^2 )^{-q/2}
-\cos(q \: \arccos(\frac{\sqrt{1-c^2} x }{ \sqrt {(1-c^2)x^2 + y^2} }))
-\end{split}
-\end{equation}
-with  some positive real numbers $\mu$ and $q$. 
-Using the asymptotic decay of the solution and its symmetry with respect to coordinate axes,   we obtain  $q=2$ and simplify  \rf{sol}  to
-\begin{equation}\label{bFunV}
-\bar{v}(x,y) = \mu \frac{( (1-c^2)x^2-y^2 )}{((1-c^2)x^2 + y^2)^2 }.
-\end{equation}
-
-Similar considerations for the function $w$ and equation \rf{eq4} lead to an expression that substitutes $w$, valid for  large $r$ 
-\begin{equation}\label{bFunW}
-\bar{w}(x,y) =\tilde {\mu} (1-c^2) \frac{( (1-c^2)x^2-y^2 )}{((1-c^2)x^2 + y^2)^2 },
-\end{equation}
-with a new unknown parameter $\tilde {\mu}$. 
-
-In order to resolve the boundary functions \rf{bFunV} and \rf{bFunW} completely one needs $\mu$ and $\tilde {\mu}$ parameters.
-We obtain them iteratively, at each time level of \rf{eq55}, by the following minimization procedure. For  given solutions  $v^k_{i,j}$ and $ w^k_{i,j}$ at time level $t^k$ 
-we choose $\mu$ and $\tilde {\mu}$ as minimizers of 
-\begin{equation}\label{mu}
-\begin{split}
-\mu = \underset{\mu>0 }{\operatorname{min} } \| \bar{v}(x_i,y_j) - \widehat{v}^k_{i,j} \|_{L_2,\widehat{\Omega}},
-\;\;
-\tilde {\mu} = \underset{\mu>0 }{\operatorname{min} } \| \bar{w}(x_i,y_j) -\widehat{w}^k_{i,j} \|_{L_2,\widehat{\Omega}}.
-\end{split}
-\end{equation}
-Tests and simulations showed that $ \widehat{\Omega} $ should not solely consist of boundary points but should also include some inner points of $\Omega_h$ near boundary $B$.
-Each minimization problem produces a simple linear equation, which depends on the type of norm used in \rf{mu}. 
-
-Validation of this part of the numerical algorithm is given in Subsection~4.2. 
-
 \subsection{Stop Criteria}
 
 Usually  the calculations of  $\widehat{v}^{k+1} $ by equations \rf{eq55} are  terminated if
 \begin{equation*}
 \max_{i,j} |\widehat{v}^{k+1}_{i,j}-\widehat{v}^{k}_{i,j}| < \epsilon \max_{i,j} |\widehat{v}^{k}_{i,j}| ,
 \end{equation*}
-where $\epsilon $ is a prescribed accuracy. 
-Our numerical computations show that 
-$$
-\max_{i,j} |\widehat{v}^{k+1}_{i,j}-\widehat{v}^{k}_{i,j}| < \max_{i,j} | R_{i,j}^k |,
-$$
-where $R^k_{i,j}$ is the residual of the discrete approximation to \rf{eq3} at the mesh point $(x_i,y_j,t^k)$:
-\begin{equation}\label{residual}
-R_{i,j}^k := 
-c^2\beta (\widehat{v}^k_{i,j})_{\widehat{yy},p} + \Delta_{h,p}(-\beta \widehat{v}^k_{i,j} - c^2\beta (\widehat{v}^k_{i,j})_{\widehat{yy},p} + \Delta_{h,p} \widehat{v}^k_{i,j} 
-+ \alpha \beta \theta (\widehat{v}^k_{i,j})^2  ).
+where $\epsilon $ is a prescribed accuracy.  But the solution decays with $\sim1/{r}^{2}$ at infinity $r \rightarrow \infty$, $r = \sqrt{{x}^{2} + {y}^{2}}$. Thus for large $x$ and $y$, the following expressions 
+\begin{equation}\label{asy}
+x^{2}U(x,0,t) \sim c_{x} \quad \textrm{and} \quad   y^{2}U(0,y,t) \sim c_{y}
 \end{equation}
-Therefore we
-apply the more restrictive criteria
+have asymptotics of constant functions  $c_{x}$ and $c_{y}$ respectively. There exist start points $x_{s}$ and $y_{s}$ for which the asymptotic conditions
+are valid inside the intervals $[x_{s}, x_{end}]$ and $[y_{s}, y_{end}]$. Furthermore, (\ref{asy}) are also valid on intervals $[x_{m}, x_{end}]$ and $[y_{m}, y_{end}]$, where $x_{m}$ and $y_{m}$ are the midpoints i.e.
+$x_{m} = (x_{s} + x_{end})/2$ and $y_{m} = (y_{s} + y_{end})/2$. A polynomial first order fit is done at each $k^{th}$ successful iteration $k \in N$ for $x_{i}U(x_{i},0,k\tau)$, $x_{i} \in [x_{m}, x_{end}]$ and $y_{i}U(0,y_{i},k\tau)$, $y_{i} \in [y_{m}, y_{end}]$ . If the fits
 \begin{equation}\label{stopCrit}
-\max_{i,j} | R_{i,j}^k | < \epsilon \max_{i,j} |\widehat{v}^{k}_{i,j}|
+|c_{x}^{k\tau} - c_{x}^{(k+1)\tau}| < \epsilon \quad \textrm{and} \quad |c_{y}^{k\tau} - c_{y}^{(k+1)\tau}| < \epsilon
 \end{equation}
-as  the  stop criteria of the procedure \rf{eq55}.  
-In the implementation of the method  parameter $\epsilon$ is chosen to be $10^{-5}$ or $ 10^{-6}$.
+cease to change significantly in time the the solution has converged.
+%Our numerical computations show that 
+%$$
+%\max_{i,j} |\widehat{v}^{k+1}_{i,j}-\widehat{v}^{k}_{i,j}| < \max_{i,j} | R_{i,j}^k |,
+%$$
+%where $R^k_{i,j}$ is the residual of the discrete approximation to \rf{eq3} at the mesh point $(x_i,y_j,t^k)$:
+%\begin{equation}\label{residual}
+%R_{i,j}^k := 
+%c^2\beta (\widehat{v}^k_{i,j})_{\widehat{yy},p} + \Delta_{h,p}(-\beta \widehat{v}^k_{i,j} - c^2\beta (\widehat{v}^k_{i,j})_{\widehat{yy},p} + \Delta_{h,p} \widehat{v}^k_{i,j} 
+%+ \alpha \beta \theta (\widehat{v}^k_{i,j})^2  ).
+%\end{equation}
+%Therefore we
+%apply the more restrictive criteria
+%\begin{equation}\label{stopCrit}
+%\max_{i,j} | R_{i,j}^k | < \epsilon \max_{i,j} |\widehat{v}^{k}_{i,j}|
+%\end{equation}
+%as  the  stop criteria of the procedure \rf{eq55}.  
+%In the implementation of the method  parameter $\epsilon$ is chosen to be $10^{-5}$ or $ 10^{-6}$.
 
-\subsection{Basic algorithmic steps}
+\subsection{Basic Algorithm Steps}
 The following are the most important mile-stones during the implementation of the algorithm.
 \\
 1) Resolve proper initial condition $(v^0, w^0)$ on the grid $\Omega_h$.  Set parameters $\epsilon$ and $\tau$.
@@ -284,17 +244,17 @@ The following are the most important mile-stones during the implementation of th
 \par
 2.1) Find current $\theta_k$ from the discrete approximation of \rf{eqtheta};
 \par
-2.2) Find current  parameters $\mu$ and $ \tilde{\mu}$ by minimizing expressions \rf{mu};
+2.2) Evaluate the solution on the computational boundary;
 \par
 2.3) Evaluate $\Delta_{h,p}  \widehat{v}^k$ and $\Delta_{h,p}  \widehat{w}^k$;
 \par
 2.4) Calculate $(\widehat{v}^{k+1}, \widehat{w}^{k+1})$  on the  time level $t^{k+1}$ by the Euler explicit scheme   \rf{eq55};
 \par
-2.5) Calculate the residual $R^{k+1}_{i,j}$ from  \rf{residual} and check the stop condition \rf{stopCrit}.
+2.5) Calculate the residual $R^{k+1}_{i,j}$ from and check the stop condition \rf{stopCrit}.
 \par
-2.6) Reduce or repeat the time step size $\tau$  (see Remark~\ref{R1}). Set $t^{k+1}=t^{k}+\tau$.
- 
-3) Continue steps 2.1) -2.6) with the next time level $t^{k+1}$ till condition \rf{stopCrit} is satisfied.
+2.6) Control the time step size $\tau$. Set $t^{k+1}=t^{k}+\tau$.
+\\
+3) Continue steps 2.1) -2.6) with the next time level $t^{k+1}$ till condition (\ref{stopCrit}) is satisfied.
 
 \section{Validation}\label{validation}
 
