@@ -96,7 +96,7 @@ First, for the numerical solution of \rf{eq2} we choose to apply an uniform grid
 
 In order to increase the precision of the numerical method, we apply finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order, i.e. we  approximate second order spatial derivatives with high order finite differences. These  FDS allow one to evaluate the numerical solution with high accuracy on relatively coarse grid. 
 
-A new boundary condition on the computational boundary is also used, together with uniform grid and local approximation order of $O(h^4)$ and $O(h^6)$. The numerical solution of the fourth order elliptic problem \rf{eq2} is replaced with an iterative procedure, which involves solution  of an appropriate  parabolic type problem at every iteration step. %until this solution converges. 
+A new boundary condition on the computational boundary is also used \cite{bnd}, together with uniform grid and local approximation order of $O(h^4)$ and $O(h^6)$. The numerical solution of the fourth order elliptic problem \rf{eq2} is replaced with an iterative procedure, which involves solution  of an appropriate  parabolic type problem at every iteration step. %until this solution converges. 
 %It is emphasized here that elliptic solutions and combinations of those are used in the hyperbolic problem, e.g. wave collision. There are at least two moving peaks when a combination is used. The numerical grid $\Omega_h$ could be chosen with more points near the peak and less points near the boundary, i.e. use non-uniform grid. But as long as the numerical simulation for the hyperbolic equation requires more than one wave which travels at larger distances (much larger than the discretization step) the straightforward and easiest approach is to use uniform grid with equal step size $h_x$ = $h_y$ = $h$. In order to increase the precision, the numerical method here uses local approximation of forth and sixth order $O(h^4)$ and $O(h^6)$. The high order finite difference schemes (FDS) allow to evaluate the numerical solution with high accuracy on relatively coarse grid.
 %Recall that in the one dimensional case the BE possesses well known solitary wave solutions of 'sech' type, see \cite{Ch1996}. 
 %The  TWS to \rf{eq1} in the two dimensional case  were  computed in \cite{chd-chr, chr-chr-07,chr-chr,Ch2011,Ch2012}. 
@@ -153,7 +153,7 @@ Thus the solution to the steady coupled elliptic system \rf{eq45} is replaced by
 
 \section{Numerical Method}
 
-We  turn  to the numerical approximation of the   system \rf{eq5} discussed in the previous section. The backbone of the  algorithm is  described in \cite{Ch2012}. The following  improvements and modifications have been made in this article: use of uniform grid with more accurate finite difference schemes of fourth and sixth order of approximation and new type of conditions on the external computational boundary [??].
+We  turn  to the numerical approximation of the   system \rf{eq5} discussed in the previous section. The backbone of the  algorithm is  described in \cite{Ch2012}. The following  improvements and modifications have been made in this article: use of uniform grid with more accurate finite difference schemes of fourth and sixth order of approximation and new type of conditions on the external computational boundary \cite{bnd}.
 
 \subsection{Finite difference schemes}
 First we replace the unbounded domain by a sufficiently large computational domain $\Omega$. Due to the obvious symmetry of the problem, we can look for the solution only in the first quadrant $\Omega = [0,L_x] \times[0,L_y]$. Then a uniform grid $\Omega_h$ is defined in the following way
@@ -199,7 +199,29 @@ Arbitrary cross-sections of the residual look like a discrete function
 which alternates positive with negative values on the grid.
 This is a clear sign that the time step has to be lowered, otherwise it is increased. Changing the artificial time is done automatically at each iteration by a factor $f_{\tau}\tau =: \tau_{new}$, where $f_{\tau} \in (0.72, 1.015)$. 
 
+ 
+\subsection{Asymptotic conditions on the  boundaries $x=L_x$ and $y=L_y$}
 
+The behavior of the solutions $v$ and $w$  as $r =\sqrt{x^2 +y^2} \rightarrow \infty$ is studied in details in \cite{bnd,Ch2011,Ch2012}. The following formulas  
+\begin{equation}\label{bFunV}
+\bar{v}(x,y) = \mu \frac{( (1-c^2)x^2-y^2 )}{((1-c^2)x^2 + y^2)^2 }
+\end{equation}
+and
+\begin{equation}\label{bFunW}
+\bar{w}(x,y) =\tilde {\mu} (1-c^2) \frac{( (1-c^2)x^2-y^2 )}{((1-c^2)x^2 + y^2)^2 }
+\end{equation}
+in  \cite{bnd} are found to describe very well the unknown functions $v$ and $w$ on the computational boundary $\dO$. 
+
+In order to resolve the boundary functions \rf{bFunV} and \rf{bFunW} completely one needs $\mu$ and $\tilde {\mu}$ parameters.
+We obtain them iteratively, at each time level of \rf{eq55}, by the following minimization procedure. For  given solutions  $v^k_{i,j}$ and $ w^k_{i,j}$ at time level $t^k$ 
+we choose $\mu$ and $\tilde {\mu}$ as minimizers of 
+\begin{equation}\label{mu}
+\begin{split}
+\mu = \underset{\mu>0 }{\operatorname{min} } \| \bar{v}(x_i,y_j) - \widehat{v}^k_{i,j} \|_{L_2,\widehat{\Omega}},
+\;\;
+\tilde {\mu} = \underset{\mu>0 }{\operatorname{min} } \| \bar{w}(x_i,y_j) -\widehat{w}^k_{i,j} \|_{L_2,\widehat{\Omega}}.
+\end{split}
+\end{equation}
  
 \subsection{Stop Criteria}
 
@@ -223,11 +245,14 @@ There exist start points $x_{s}$ and $y_{s}$ for which the asymptotic conditions
 are valid inside the intervals $[x_{s}, x_{end}]$ and $[y_{s}, y_{end}]$. Furthermore, (\ref{asy}) are also valid on intervals $[x_{m}, x_{end}]$ and $[y_{m}, y_{end}]$, where $x_{m}$ and $y_{m}$ are the midpoints i.e.
 $x_{m} = (x_{s} + x_{end})/2$ and $y_{m} = (y_{s} + y_{end})/2$. 
 
-A polynomial zero order fit is done at each $k^{th}$ successful iteration $k \in N$ for $x_{i}U(x_{i},0,k\tau)$, $x_{i} \in [x_{m}, x_{end}]$ and $y_{i}U(0,y_{i},k\tau)$, $y_{i} \in [y_{m}, y_{end}]$ . If the fits $c_{x}$ and $c_{y}$
+
+At each $k^{th}$ successful iteration $k \in N$, the two expressions in \rf{asy} are approximated by constant functions (zero order polynomial) $c_{x}(x_{i}) = c_{x}$ and $c_{y}(y_{i}) = c_{y}$ with $x_{i} \in [x_{m}, x_{end}]$ and $y_{i} \in [y_{m}, y_{end}]$ respectively.
+
+In between each $k$ iterations, the approximations are evaluated and compared with each other i.e., if the linear fits $c_{x}$ and $c_{y}$
 \begin{equation}\label{stopCrit}
-|c_{x}^{k\tau} - c_{x}^{(k+1)\tau}| < \epsilon \quad \textrm{and} \quad |c_{y}^{k\tau} - c_{y}^{(k+1)\tau}| < \epsilon
+|c_{x}^{n} - c_{x}^{(n-k)}| < \epsilon \quad \textrm{and} \quad |c_{y}^{n} - c_{y}^{(n-k)}| < \epsilon
 \end{equation}
-cease to change significantly in time then the solution has converged.
+cease to change significantly between $k$ iterations then the solution has converged. Here $n$ is the current iteration number.
 %Our numerical computations show that 
 %$$
 %\max_{i,j} |\widehat{v}^{k+1}_{i,j}-\widehat{v}^{k}_{i,j}| < \max_{i,j} | R_{i,j}^k |,
@@ -673,6 +698,10 @@ Mathematics and Computers in Simulation 74 (2007) 82–92.
 \bibitem{chr-chr}
 M.~Christou, C.~I.~Christov, Galerkin Spectral Method for the 2D Solitary
 Waves of Boussinesq Paradigm Equation, CP 1186 (2009) 217 -- 225.
+
+\bibitem{bnd}
+K.~Angelow, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, 
+Journal of Theoretical and Applied Mechanics (2018).
 
 \bibitem{Ch1996}
 C.~I.~Cristov, Conservative difference scheme for Boussinesq model of
