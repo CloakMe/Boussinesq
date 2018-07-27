@@ -102,7 +102,7 @@ A new boundary condition on the computational boundary is also used \cite{bnd}, 
 %The  TWS to \rf{eq1} in the two dimensional case  were  computed in \cite{chd-chr, chr-chr-07,chr-chr,Ch2011,Ch2012}. 
 %Thus the accurate evaluation of the solutions to \rf{eq2} is fundamental for the construction of initial data of the unsteady BE where the focus is on wave speeds $c > 0.7$. 
  %A new boundary condition is used, together with uniform grid and local approximation order of $O(h^4)$ and $O(h^6)$. The application of high order finite difference schemes (FDS) allows on to evaluate the numerical solution with high accuracy on relatively coarse grids. 
-At the end of each iteration procedure the residual (17) of the discrete equation, approximating (4) is of order $10^{-5}$, $10^{-6}$ and the distance between two consecutive iterations of the solution is of order $10^{-7}$, which is much smaller than the discretization step size $h$.
+At the end of each iteration procedure the residual \rf{residual}  of the discrete equation, approximating (4) is of order $10^{-5}$, $10^{-6}$ and the distance between two consecutive iterations of the solution is of order $10^{-7}$, which is much smaller than the discretization step size $h$.
  
 In the last section we examine the solution shape and the dependence of the solution on the input  parameters - the velocity $c$ and the relative dispersion $\beta =\beta_1  / \beta_2$. We show that these  qualitative properties of the numerical solution are very similar to those given for the  numerical solution in \cite{Ch2011,Ch2012}. 
 We compare our results with the best-fit  (approximating the numerical solution)  formulas stated in \cite{Ch2011}.   
@@ -193,12 +193,16 @@ This method for solving equations
 Last but not least, in order to start the procedure we need initial values for functions $\widehat{v},\widehat{w}$. These initial values are taken from the formulae in \cite{Ch2011}.
 
 \subsection{Time Step Control}
-It is possible to use varying time step $\tau$ to optimize and speed up the algorithm. When the time step becomes too big the solution starts to diverge and becomes jagged. Fortunately these signs appear first in the residual $R$ i.e. it
-starts to grow and jag simultaneously while the solution is still fine. 
-Arbitrary cross-sections of the residual look like a discrete function
-which alternates positive with negative values on the grid.
+It is possible to use varying time step $\tau$ to optimize and speed up the algorithm. When the time step becomes too big the solution starts to diverge and becomes jagged. Fortunately these signs appear first in the residual $R$,  i.e. it starts to grow and jag simultaneously while the solution is still fine. 
+When this happens, an arbitrary cross-section of it looks like a discrete function which alternates positive with negative values on the grid.
 This is a clear sign that the time step has to be lowered, otherwise it is increased. Changing the artificial time is done automatically at each iteration by a factor $f_{\tau}\tau =: \tau_{new}$, where $f_{\tau} \in (0.72, 1.015)$. 
 
+The residual $R^k_{i,j}$ of the discrete approximation to \rf{eq3} at the mesh point $(x_i,y_j,t^k)$ is defined as:
+\begin{equation}\label{residual}
+R_{i,j}^k := 
+c^2\beta (\widehat{v}^k_{i,j})_{\widehat{yy},p} + \Delta_{h,p}(-\beta \widehat{v}^k_{i,j} - c^2\beta (\widehat{v}^k_{i,j})_{\widehat{yy},p} + \Delta_{h,p} \widehat{v}^k_{i,j} 
++ \alpha \beta \theta (\widehat{v}^k_{i,j})^2  ).
+\end{equation}
  
 \subsection{Asymptotic conditions on the  boundaries $x=L_x$ and $y=L_y$}
 
@@ -297,7 +301,7 @@ The following are the most important mile-stones during the implementation of th
 In this section we give several numerical results concerning the verification of  the presented numerical method. 
  We use FDS with different approximation errors and several sets  of  parameters $c$, $\alpha$, $\beta$,  which are shown on each table. 
 
- \subsection{Validation of the convergence of the numerical solution}\label{val-conv}
+
 \begin{center}
 \begin{table}[ht]
 \centering
@@ -349,88 +353,6 @@ by Runge method as $(\log E_1 -\log E_2)/\log 2$.  Here  $v_{[h]}$, $v_{ {[h/2]}
 Table~\ref{tab:a} contains the errors in $L_2$ and $L_{\infty}$ norms and the corresponding numerical rate of convergence for the numerical solutions obtained by FDS with second, fourth and sixth order of approximation and   velocities  $c=0.1$  or $c=0.45$.
 We observe that the experimental rate of convergence approximates well the approximation error of the difference schemes- the FDS are of  almost the same order of convergence as the order of approximation. An additional observation  is that  for  the same step size $h$ the schemes with higher order of approximation ($O(h^4)$, $O(h^6)$) lead to a more precise solution than the scheme with $O(h^2)$ approximation error. 
 
-
-\subsection{Validation of the new boundary conditions}
-
-Two tests are made to verify the new  conditions on the computational boundary $B$. The first one checks important parameters of  the numerical procedure from Subsection~3.2. In Table~\ref{tab:b}  the following quantities are presented at the end of the iteration procedure \rf{eq55}  for several computational domains $L_x=L_y=20, 40, 80, 160$ : the values of the solution $v$ at the point $(0,N_y)$; parameters $\mu$,  $\tilde{\mu}$ and the norms $\|v-\bar{v}\|_{2,\hat{\Omega}}$, 
-$\|w-\bar{w}\|_{2,\hat{\Omega}}$, included in the minimization procedure \rf{mu}.  The initial problem is solved with  parameters  $\alpha = 1$, $\beta = 3$, $c = 0.45$, $\epsilon = 1.0e-05$, $h = 0.5$.
- \begin{center}
-\begin{table}[ht]
-\centering
-		\begin{tabular}{||c|c|cc|cc||}
-			\hline
-			\hline
-$L_x=L_y$&$v_{0,N_y}$& $\mu$&$\tilde{\mu}$&$\|v-\bar{v}\|_{2,\hat{\Omega}}$&$\|w-\bar{w}\|_{2,\hat{\Omega}}$ \\
-	\hline		
-              20&-2.23e-04 &1.9355e-01&1.9353e-01&~4.17e-05&~9.75e-05 \\
-              40&-5.65e-05 &1.9370e-01&1.9369e-01&~4.42e-06&~1.03e-05 \\
-              80&-1.41e-05 &1.9378e-01&1.9378e-01&~7.56e-07&~1.79e-06 \\
-            160&-3.53e-06 &1.9381e-01&1.9381e-01&~7.44e-10&~1.40e-09 \\
-   \hline
-	\hline
-		\end{tabular}
-		\caption{Characteristic parameters of the minimization procedure \rf{mu} for different computational domains}
-\label{tab:b}
-\end{table}
-\end{center}
-The results in Table~\ref{tab:b} demonstrate that  parameters $\mu$ and $\tilde{\mu}$  converge as the domain becomes larger. The values of  $v$ (shown in the second column in  Table~\ref{tab:b}) decay with a rate of $1/r^2$. 
-
-\begin{figure}[ht]
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedleft
-		\includegraphics[width=\linewidth]{cross-sections/crossSectionLogX=0.eps}
-	\end{minipage}	
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedright
-		 \includegraphics[width=\linewidth]{cross-sections/crossSectionLogY=0.eps}
-	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedleft
-		\includegraphics[width=\linewidth]{cross-sections/crossSectionX=0.eps}
-	\end{minipage}	
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedright
-		 \includegraphics[width=\linewidth]{cross-sections/crossSectionY=0.eps}
-	\end{minipage}
-	\caption{The effect of the mesh size. Upper panels: the function. Lower panels: the function scaled by $r^2$.}
-	\label{crossSections}
-\end{figure}
-
-The second test reveals the asymptotics of the numerical solution presented in log-log plots. 
- Pictures in Figure~\ref{crossSections} demonstrate important aspects of solution's cross sections on four different grids. The size of the computational domain $[0,50]\times [0,50]$ is kept constant and only the step $h$ changes,
-$h = 0.1, 0.2, 0.4, 0.8$. We set the following parameters:  $\alpha = 1$, $\beta = 3$, $c = 0.45$, $\epsilon = 1.0e-05$.
-
- The first two horizontal pictures in Figure~\ref{crossSections} present logarithmic scaled plots of the absolute value of the numerical solution $v$. One can see the 
- decay $1/r^2$ at infinity guided by the black line. The next two horizontal pictures show the numerical solution scaled by a factor $r^2$. Thus these graphs display $v r^2$ along the vertical $z$ axis. One can observe that the scaled profile of the solution approximates a constant for large values of $r$. 
-These plots are in  agreement with the new boundary function $\bar{v}$ found in \rf{bFunV} and with the asymptotics  of the solution. 
- Further using equation \rf{bFunV} for $x=0$ or for  $y=0$ one has for sufficiently large $r$ 
-\begin{equation*}
-\bar{v}(0,y) = -\frac {\mu} {y^2}, \ \ \  \bar{v}(x,0) =\frac {\mu} {(1-c^2)x^2},  
-\end{equation*}
-which explains the connection between the two constants displayed on the left part of Figure~\ref{crossSections} and the right part of right Figure~\ref{crossSections} legends.
-All graphs in Figure~\ref{crossSections} show that the solution settles down as the step size $h$ decreases, which is a visual sign of the solution's convergence.
-
-\section{Results}\label{results}
-\begin{figure}[htbp]
-	\begin{minipage}[b]{0.5\linewidth}
-		 \centering
-		\includegraphics[width=\linewidth]{residual/residual_bt5c03.eps}
-		\centerline{$\beta = 5$, $c = 0.3$}
-	\end{minipage}	
-	\begin{minipage}[b]{0.5\linewidth}
-		\centering
-		 \includegraphics[width=\linewidth]{residual/residual_bt1c09.eps}
-	\centerline{$\beta = 1$, $c = 0.9$ }
-	\end{minipage}
-		\caption{Residual at the last step of iteration process \rf{eq55} }
-		\label{resid}
-\end{figure}
-In this section we apply the presented  numerical method  to study the characteristic properties of the obtained numerical solution.  Many parametric dependencies of the numerical solution,  discovered in \cite{Ch2011,Ch2012}, such as dependence of the solution's shape on the velocity $c$ and on the relative dispersion parameter $\beta$, are confirmed here once again.
- We   also compare  the best-fit  formulae,  built up in \cite{Ch2011}, with the numerical solution  developed here. Such comparison is still missing in the literature.
-Recall that the best-fit formulae   are used as initial data for our algorithm. 
-
-\subsection{Solution residual}
-
 \begin{figure}[ht]
 	\begin{minipage}[b]{0.5\linewidth}
 		\raggedleft
@@ -453,6 +375,31 @@ Recall that the best-fit formulae   are used as initial data for our algorithm.
 	\caption{2D and 3D profiles of the numerical solution}
 	\label{fig:solutions}
 \end{figure}
+
+
+\section{Results}\label{results}
+
+In this section we apply the presented  numerical method  to study the characteristic properties of the obtained numerical solution.  Many parametric dependencies of the numerical solution,  discovered in \cite{Ch2011,Ch2012}, such as dependence of the solution's shape on the velocity $c$ and on the relative dispersion parameter $\beta$, are confirmed here once again.
+ We   also compare  the best-fit  formulae,  built up in \cite{Ch2011}, with the numerical solution  developed here. Such comparison is still missing in the literature.
+Recall that the best-fit formulae   are used as initial data for our algorithm. 
+
+\subsection{Solution residual}
+
+\begin{figure}[htbp]
+	\begin{minipage}[b]{0.5\linewidth}
+		 \centering
+		\includegraphics[width=\linewidth]{residual/residual_bt5c03.eps}
+		\centerline{$\beta = 5$, $c = 0.3$}
+	\end{minipage}	
+	\begin{minipage}[b]{0.5\linewidth}
+		\centering
+		 \includegraphics[width=\linewidth]{residual/residual_bt1c09.eps}
+	\centerline{$\beta = 1$, $c = 0.9$ }
+	\end{minipage}
+		\caption{Residual at the last step of iteration process \rf{eq55} }
+		\label{resid}
+\end{figure}
+
 On the left picture in Figure~\ref{resid} we present  the residual \rf{residual}, saved on the last time level of the numerical scheme \rf{eq55},  for $\beta = 5$ and $c = 0.3$, while the residual, evaluated for problem with $\beta = 1$, $c = 0.9$, is demonstrated on the right part of Figure~\ref{resid}. Here  $\epsilon =10e-6$ and the FDS is of 6th order of approximation. In these cases the difference between the last two iterations is $3.7749e-007$ for the first data set and $1.2726e-007$ for the second data set. These results show that the  equation \rf{eq3} is satisfied numerically with high accuracy. 
 Note that similar results about the residual for the numerical scheme in \cite{Ch2012} are not reported there. Concerning the best-fit formulae from \cite{Ch2011} -- it is obvious to conclude from these formulae that the third, fourth and so on  derivatives of the best-fit solution are unbounded in the neighborhood of the point $(0,0)$. Thus  
 the residual, which includes fourth order derivatives of the solution, could not be considered and evaluated in the classical sense. Therefore the equation \rf{eq3} is not satisfied in the neighborhood of the origin by the best-fit formulae  from \cite{Ch2011}!
@@ -493,7 +440,7 @@ the residual, which includes fourth order derivatives of the solution, could not
 
 We have mentioned already that the best-fit formulae from \cite{Ch2011} have singularities near the origin. 
 Now we demonstrate  that the discrete fourth order derivatives of the numerical solution converge numerically as the step size $h$ goes to zero.
-We apply the Runge test, evaluating the discrete fourth order derivative $v_{\widehat{xxxx}}$ of the solution on three nested meshes with step sizes $h$, $h/2$, $h/4$ (see Subsection~\rf{val-conv}).  The results are demonstrated on the next Table~\ref{tab:fourth-der}.  
+We apply the Runge test, evaluating the discrete fourth order derivative $v_{\widehat{xxxx}}$ of the solution on three nested meshes with step sizes $h$, $h/2$, $h/4$ (see Section~\rf{validation}).  The results are demonstrated on the next Table~\ref{tab:fourth-der}.  
 We conclude that the discrete  derivative $v_{\widehat{xxxx}}$ is bounded and converges numerically for $h\rightarrow 0$. The tests for the other fourth order derivatives are similar to the derivative $v_{xxxx}$ and we do not present them here.
 
 \subsection{Solution shape}
@@ -519,41 +466,19 @@ We conclude that the discrete  derivative $v_{\widehat{xxxx}}$ is bounded and co
 	\label{profilesSpeedVarying}
 \end{figure}
 
-\begin{figure}[ht]
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedleft
-		\includegraphics[width=\linewidth]{cross-sections/c=05beta=1__3x=0.eps}
-	\end{minipage}	
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedright
-		 \includegraphics[width=\linewidth]{cross-sections/c=05beta=1__3y=0.eps}
-	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedleft
-		\includegraphics[width=\linewidth]{cross-sections/c=05beta=1__3Logx=0.eps}
-	\end{minipage}	
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedright
-		 \includegraphics[width=\linewidth]{cross-sections/c=05beta=1__3Logy=0.eps}
-	\end{minipage}
-	\caption{Cross-sections of the numerical solution for $c=0.5$ and different $\beta$}
-	\label{profilesBetaVarying}
-\end{figure}
+
 
 First, two aspects of the solution for different combinations of  $c$ and $\beta$   are plotted  on Figure~\ref{fig:solutions}. Both numerical solutions are computed on the  domain $\Omega = [0, 25]\times [0, 25]$ with $h = 0.1$ and then extended symmetrically to $ [-25, 25]\times [-25, 25]$. 
 Only the essential part of the wave (near the center) is shown on these pictures. Top figures are level plots showing the waves from above and the bottom figures are 
-three dimensional showing the structure of the wave in space. Very similar examples are presented on Figures~\ref{profilesSpeedVarying} and~\ref{profilesBetaVarying}, where $\Omega = [-50, 50]\times [-50, 50] $ and $h = 0.2$.
+three dimensional showing the structure of the wave in space. 
 
 
 We perform a detailed study   of the numerical solution's shape with respect to main parameters -- the relative dispersion $\beta=\beta_1 / \beta_2$ and the velocity $c$.
- Figures~\ref{profilesSpeedVarying} and~\ref{profilesBetaVarying} show different aspects of the solution at $x=0$ and $y=0$ cross-sections. The parameter $\alpha$  is fixed as one ($\alpha = 1$) but  parameters $\beta $ and $c$ vary. We apply  the computational procedure with  $L_x = L_y = 50$, $h = 0.2$, $\epsilon = 1.0e-06$. 
+ Figure~\ref{profilesSpeedVarying} shows different aspects of the solution at $x=0$ and $y=0$ cross-sections. The parameter $\alpha$  is fixed as one ($\alpha = 1$) but  parameters $\beta $ and $c$ vary. We apply  the computational procedure with  $L_x = L_y = 50$, $h = 0.2$, $\epsilon = 1.0e-06$. 
 On Figure~\ref{profilesSpeedVarying}, parameter $\beta=1$ is held constant and the wave dependence on the phase velocity  $c$ for $c=0.1, 0.3, 0.5, 0.7, 0.9$ is demonstrated.  Linear plots of the solution are presented on the upper row while  log-log plots of the absolute value of the solution are shown on the lower part.  These types of plots help us to establish the size of the computational box. 
 
 One can observe that as the phase velocity $c$ increases the wave's support  along $x$ direction increases too, but the maximum of the wave decreases. The linear part of the solution on the log-log plots is under the governance of the boundary function.
-Figure~\ref{profilesBetaVarying} presents the wave dependence on the dispersion parameter  $\beta=1, 2, 3$ with fixed
-  phase velocity $c=0.5$. 
- One can see that the maximum of the wave slightly decreases as $\beta$ increases. The wave also becomes sharper along $x$ and $y$ directions.
-The numerical results demonstrated on Figure~\ref{profilesSpeedVarying} and Figure~\ref{profilesBetaVarying} show very similar qualitative properties of the numerical solution obtained in  \cite{Ch2012} and by the numerical scheme in this paper.
+
 
 
 \subsection{Comparison with best-fit formulae from \cite{Ch2011}} 
@@ -614,69 +539,6 @@ $\beta$&c&$\|v^*-v \|_{\infty }$&$\|v^*-v \|_{2 }$& &$\beta$& c&$\|v^*-v \|_{\in
 \end{table}
 \end{center}
 
-Figures~\ref{fig:c09beta1} and~\ref{fig:c05beta3} demonstrate  the sign of the  best-fit formulae $v^*$ and the  numerical solution $v$ obtained by the presented method.  The parameters of the problem are $\alpha = 1$, $\epsilon = 1.0e-06$, $h = 0.2$ and the  Laplacian is evaluated through 6th order finite differences. The colour bar is defined in the range $[-10.0e{-5},10.0e{-5}]$. Every value near the upper boundary and above  the interval is coloured in dark red and every value near the lower boundary and below - in dark blue.
-
-One might notice that the solution has a very peculiar shape. There exist two curves which divide
-the solution to 3 sub-domains: north and south domains, which are negative, and a middle, which is positive.
-It is obvious that far away from the zero point the  solution $v(x,y)=v(r,\psi)$ obtained by this method always satisfies:
-\begin{equation*}
-\begin{split}
-   & v(r,\psi)|_{\dO}
-	 \left\{
-	  \begin{array}{l l}
-	    > 0 &  {\text{if}}\; \psi \in (-\phi , \phi  ) \cup (\pi-\phi ,\pi+ \phi ), \\ 
-	    < 0 &  \text{if $\psi \in (\phi, \pi-\phi) \cup (\pi+\phi , -\phi ) $},  
-	  \end{array} \right. \phi = \arccos( (2-c^2)^{-0.5})
-\end{split}
-\end{equation*}
-
-and the   best-fit formula \cite{Ch2011} 
-always satisfies:
-\begin{equation*}
-\begin{split}
-   & v(r,\psi)|_{\dO}
-	 \left\{
-	  \begin{array}{l l}
-	    > 0 &  \; {\text{if}}\; \psi \in (-\pi/4 , \pi/4  ) \cup (3\pi/4 ,5\pi/4   ), \\ 
-	    < 0 &   \; \text{if $\psi \in (\pi/4, 3\pi/4) \cup (5\pi/4 , -\pi/4 ) $}.  
-	  \end{array} \right.
-\end{split}
-\end{equation*}
-
-\begin{figure}[htbp]
-	\begin{minipage}[b]{0.45\linewidth}
-		\raggedleft
-		\includegraphics[width=\linewidth]{positiveNegativeDomains/IC_bnd50_c090_bt1.eps}
-		\centerline{Solution  by formulae \cite{Ch2011}}
-	\end{minipage}
-	\begin{minipage}[b]{0.45\linewidth}
-		 \raggedright
-		\includegraphics[width=\linewidth]{positiveNegativeDomains/SOL_bnd50_c090_bt1.eps}
-		\centerline{Solution  by this method}
-	\end{minipage}
-	\caption{Sign of the solutions, $c=0.9$, $\beta = 1$}
-	\label{fig:c09beta1}
-\end{figure}
-
-\begin{figure}[htbp]
-	\begin{minipage}[b]{0.45\linewidth}
-		\raggedleft
-		\includegraphics[width=\linewidth]{positiveNegativeDomains/IC_bnd50_c050_bt3.eps}
-		\centerline{Solution  by formulae \cite{Ch2011}}
-	\end{minipage}
-	\begin{minipage}[b]{0.45\linewidth}
-		 \raggedright
-		\includegraphics[width=\linewidth]{positiveNegativeDomains/SOL_bnd50_c050_bt3.eps}
-		\centerline{Solution  by this method}
-	\end{minipage}
-	\caption{Sign of the solutions, $c=0.5$, $\beta = 3$}
-	\label{fig:c05beta3}
-\end{figure}
-
-Notice that for smaller velocities $c \in [0, 0.57]$  the relation $\phi \in [\pi/4-\pi/30, \pi/4+\pi/30]$ holds for $\phi$. Recall the restriction $c \in min(1,1/\sqrt{\beta})$ made in the beginning of the paper. 
-Thus larger $\beta$'s have impact on the velocity interval which reflects on the angle $\phi$ and thus on the positive/negative domain coverage. E.g. on Figure~\ref{fig:c05beta3} with $\beta = 3$, for the solution we have that $\phi \approx \pi/4$. 
-But for $\beta = 1$ and $c=0.9$ (see Figure~\ref{fig:c09beta1}) there is a big difference between positive/negative parts of the solution obtained here and in \cite{Ch2011}! 
-It is obvious that our solution $v$ and the best-fit  formulae $v^*$ from \cite{Ch2011} differ when compared to this characteristic - for some cases significantly, for others - slightly.
 
 \section{Conclusion}
 Fourth and sixth order finite difference schemes are applied for numerical evaluation of the travelling wave solutions to the Boussinesq equation in this paper. New conditions on the computational boundaries are devised. The high accuracy of the method applied is demonstrated on several experiments. The numerical solution obtained here performs similarly to the numerical solutions given in \cite{Ch2011,Ch2012} with respect to solution shape and the dependence on the velocity $c$ and relative dispersion $\beta$. 
