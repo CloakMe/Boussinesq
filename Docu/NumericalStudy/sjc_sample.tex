@@ -1,53 +1,168 @@
-\documentclass[preprint]{elsarticle}
-
+\documentclass[leqno,11pt]{book}
+\usepackage{amsfonts,amssymb,amsmath,longtable,array,bbm,url}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english]{babel}
 \usepackage{amssymb}
-\usepackage{amsmath, amsthm}
-\usepackage{amstext, amsfonts}
 \usepackage{graphicx}
 \usepackage{epstopdf}
 \usepackage{wrapfig}
 
+\newenvironment{proof}{{P\,r\,o\,o\,f. }}{~~~{$\Box$}}
+%\usepackage{serd_inf}
+%\usepackage{fancyhea}
+\usepackage{enumerate}
+\usepackage[dvips]{epsfig}
+
 \newcommand{\rf}[1]{(\ref{#1})}
 \newcommand{\RR}{\mathbb{R}}
-\newtheorem{thm}{Theorem}
-\newtheorem{lm}{Lemma}
-\newtheorem{cor}{Corollary}
-%\newdefinition{rmk}{Remark}
 
+\newtheorem{definition}{Definition}
+\newtheorem{construction}{Construction}
+\newtheorem{example}{Example}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+
+\def\p{\phantom{0}}
+\everymath{\displaystyle}
+\allowdisplaybreaks
+
+\def\theequation{\arabic{equation}}
+
+\def\hlst{\setlength{\topsep}{4pt}\setlength{\partopsep}{4pt}%
+\setlength{\parsep}{4pt}\setlength{\itemsep}{\parskip}}
+%\begin{list}{{$\bullet$}}{\hlst}
+
+%\setlength{\textfloatsep}{3pt}
+%\setlength{\floatsep}{3pt}
+%\setlength{\intextsep}{3pt}
+\newcommand{\eeth}{\rm}
 \newcommand{\dO}{\partial\Omega_{h}}
+%%%%%
+\textwidth 13.5cm
+\textheight 18.5cm
+\topmargin 0in
+\parindent 0.5in
+%\headsep 0in
+\oddsidemargin 0.5in
+\evensidemargin 0.5in
 
-\def\ra#1{\renewcommand{\arraystretch}{#1}}
-\def\ds{\displaystyle}
-\def\bar#1{{\overline{#1}}}
-\begin{document}
+\makeatletter
+\def\ps@serdica{%
+    \let\@oddfoot\@empty\let\@evenfoot\@empty
+    \def\@evenhead{\thepage\hfil{\sl \leftmark} \hfil}%
+    \def\@oddhead{\hfil{\sl \rightmark}\hfil\thepage}%
 
-\begin{frontmatter}
+    }
+\makeatother
 
-\title{Numerical Study of Traveling Wave Solutions to 2D Boussinesq  Equation}
+\pagestyle{serdica}
 
-
-\author{K. Angelow\corref{cor1}}
-
-\author{N. Kolkovska}
-\cortext[cor1]
+\newcommand\kwams[2]
 {
-Institute of Mathematics and Informatics, Bulgarian Academy of Sciences, Acad. G.~Bonchev Bl.8, 1113 Sofia, Bulgaria
+\def\thefootnote{}
+\footnote{{\it$\rm{}$}
+#1
+
+{}~~{\it Key words:} #2
+}
 }
 
-\address{Institute of Mathematics and Informatics, Bulgarian Academy of Sciences, Acad. G.~Bonchev Bl.8, 1113 Sofia, Bulgaria}
+\def\abstractname{} %{\sc Abstract.}} % <----------
+\def\abstract{\if@twocolumn
+\section*{\abstractname}
+\else \small
+%\begin{center}
+%{\abstractname} %\vspace{-.5em}\vspace{0pt}}
+%\end{center}
+%\noindent
+\quotation  \noindent
+\fi}
+\def\endabstract{\if@twocolumn\else\endquotation\fi}
 
-\begin{abstract}
+\def\bibname{\rm R\,E\,F\,E\,R\,E\,N\,C\,E\,S} % <----------
+\def\thebibliography#1{\addvspace{3em}\noindent
+\hfil \bibname \hfill \list
+ {[\arabic{enumi}]}{\settowidth\labelwidth{[#1]}\leftmargin\labelwidth
+ \advance\leftmargin\labelsep
+ \usecounter{enumi}}
+ \def\newblock{\hskip .11em plus .33em minus .07em}
+ \sloppy\clubpenalty4000\widowpenalty4000
+ \sfcode`\.=1000\relax}
+\let\endthebibliography=\endlist
+
+\newcommand{\head}[8]
+{ % 1-page, 2-title, 3-author, 4-short title,
+  % 5-author, 6-vol, 7-year, 8-number
+\thispagestyle{empty}
+
+\noindent {\footnotesize{\rm Serdica} J. Computing {\bf #6} (#7),
+No #8, #1} \hfill
+%\begin{minipage}{42mm}
+\setlength{\unitlength}{1mm}
+\begin{picture}(46,14.13)
+%%%\put(0,2.5){\special{em:graph serd-inf.bmp}} %3
+%\put(54.6,1.9){\special{em:graph serd1o.pcx}}
+\end{picture}
+%\end{minipage}
+
+\vspace*{2cm}
+
+\markboth{#5}{#4} \vspace*{2cm}
+\begin{center}
+{\large\bf #2}  %%%\uppercase{#2}}
+
+\bigskip
+
+{\large #3}
+
+\end{center}
+
+\bigskip
+
+\bigskip
+}
+
+\newcommand{\sect}[1]{\bigskip \par {\large\bf #1}}
+
+%%%%%
+
+
+\begin{document}
+\setcounter{page}{3}
+
+%\baselineskip=0.95\normalbaselineskip
+\kwams{}
+{two dimensional Boussinesq equation, traveling wave solutions (TWS), high order finite difference schemes, asymptotic boundary conditions}
+\def\thefootnote{*}
+
+\head{3--4} {
+Numerical Study of Traveling Wave Solutions to 2D Boussinesq  Equation
+}
+{K. Angelow, N. Kolkovska}
+{
+}
+{K. Angelow, N. Kolkovska} {8}{2018}{2}
+
+{\centering
+\small \sl
+
+}
+
+\bigskip
+
+\begin{abstract}\noindent{\sc Abstract.}
 The aim of this paper is to evaluate stationary  propagating  wave solutions  
  to the two dimensional Boussinesq  equation. To solve the resulting nonlinear fourth order elliptic  problem we use a  combination of high order finite difference schemes, an iterative procedure  and  new asymptotic boundary conditions.   A number of numerical results are obtained for the validation of the method and for dependence of the wave's shape on the velocity $c$ and dispersion parameters. We give also a comparison with  the numerical results and best-fit formulae given in \cite{Ch2011,Ch2012}.
-
 \end{abstract}
-\begin{keyword}
-two dimensional Boussinesq  equation \sep traveling wave solutions (TWS) \sep high order finite difference schemes \sep asymptotic boundary conditions
- \end{keyword}
-\end{frontmatter}
+\footnotetext{This work was supported by the Institute of Mathematics and Informatics, Bulgarian Academy of Sciences.}
 
+\bigskip
+\setcounter{footnote}{0}
+\def\thefootnote{\arabic{footnote}}
 
-\section{Introduction}\label{introduction}
+\sect{1.~Introduction.}\label{introduction}
 
 In this paper we  consider the two dimensional Boussinesq  Equation (BE)
 \begin{align}
@@ -57,7 +172,7 @@ In this paper we  consider the two dimensional Boussinesq  Equation (BE)
 \end{align}
 where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non-linear long waves. It is oftern used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics and, etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}.
 
-The goal of the article is to to seek for solutions to (\ref{eq1}) of the type $u(x,y,t)=U(x,y-ct)$, which 
+The goal of the article is to seek for solutions to (\ref{eq1}) of the type $u(x,y,t)=U(x,y-ct)$, which 
 are stationary solitary waves (SSW) traveling  in $y$ direction with velocity $c$. In a forthcoming paper the SSW will be applied as initial condition (IC) of the hyperbolic BE \rf{eq1}, \rf{eq11}. Thus it is useful to have accurate, flexible 
 and robust IC in order to test various scenarios with two or more traveling waves colliding with each other.
 
@@ -71,7 +186,6 @@ Thus the traveling wave solutions of the hyperbolic equation  \rf{eq1} are very 
 The relationship between the dispersion and nonlinearity in \rf{eq1} is very sensitive  and the balance between them is easily destroyed.
 Moreover it is well known  that in the one dimensional case the solitary waves are unstable  
 for small wave speeds $c$ while they are stable in form for  velocities $c$ close to $1$. 
-
 
 Having in mind these  observations, we focus in this paper on the more accurate evaluation of SSW $U$ to \rf{eq1}, especially for  velocities $c > 0.7$, since it is fundamental for the construction of initial data of the unsteady BE \rf{eq1}. 
 
@@ -99,16 +213,17 @@ A new boundary condition on the computational boundary is also used \cite{bnd}, 
 %The  TWS to \rf{eq1} in the two dimensional case  were  computed in \cite{chd-chr, chr-chr-07,chr-chr,Ch2011,Ch2012}. 
 %Thus the accurate evaluation of the solutions to \rf{eq2} is fundamental for the construction of initial data of the unsteady BE where the focus is on wave speeds $c > 0.7$. 
  %A new boundary condition is used, together with uniform grid and local approximation order of $O(h^4)$ and $O(h^6)$. The application of high order finite difference schemes (FDS) allows on to evaluate the numerical solution with high accuracy on relatively coarse grids. 
-At the end of each iteration procedure the residual \rf{residual}  of the discrete equation, approximating (4) is of order $10^{-5}$, $10^{-6}$ and the distance between two consecutive iterations of the solution is of order $10^{-7}$, which is much smaller than the discretization step size $h$.
+At the end of each iteration procedure the residual defined in \rf{residual}  of the discrete equation, approximating (4) is of order $10^{-5}$, $10^{-6}$ and the distance between two consecutive iterations of the solution is of order $10^{-7}$, which is much smaller than the discretization step size $h$.
  
-In the last section we examine the solution shape and the dependence of the solution on the input  parameters - the velocity $c$ and the relative dispersion $\beta =\beta_1  / \beta_2$. We show that these  qualitative properties of the numerical solution are very similar to those given for the  numerical solution in \cite{Ch2011,Ch2012}. 
-We compare our results with the best-fit  (approximating the numerical solution)  formulas stated in \cite{Ch2011}.   
+In the last section we examine the solution shape and the dependence of the solution on the input  parameters - the velocity $c$ and the relative dispersion $\beta =\beta_1  / \beta_2$. It is shown that these qualitative properties of the numerical solution are very similar to those given for the  numerical solution in \cite{Ch2011,Ch2012}. 
+The results here are compared with the best-fit formulas given in \cite{Ch2011}, which approximate the numerical solution in \cite{Ch2011,Ch2012}. 
 The analysis  shows that  these best-fit formulas do not satisfy the equations in the neighborhood of the origin in the classical sense because their fourth order derivatives have singularities at the origin.  The  difference (measured in the maximal norm and in $L_2$ norms)  between our numerical solution and the corresponding best-fit formulae is also high, especially  for large velocities $c$. 
 
 The paper is organized as follows. In Section~2 we formulate the  problem. The numerical method is given in Section~3 and validated in Section~4.  Various numerical  experiments and a comparison with  results in \cite{Ch2011,Ch2012} are reported in Section~5.
 
-\section{General Formulation}
+\bigskip
 
+\sect{2.~General Formulation.}
 By the change of variables $x=\sqrt\beta_1 { \overline x}$, $y=\sqrt\beta_1 { \overline y}$, $U(x,y)= v({ \overline x},{ \overline y} )$ 
  equation \rf{eq2} is rewritten in the form 
  \begin{equation}\label{eq3}
@@ -148,11 +263,9 @@ In order to evaluate numerically the solution to \rf{eq45} we introduce artifici
 \end{align}
 Thus the solution to the steady coupled elliptic system \rf{eq45} is replaced by   solving the  pertinent transient equations \rf{eq5} until their solutions $\widehat{v}$ and $\widehat{w}$ cease to change significantly in time. 
 
-\section{Numerical Method}
+\bigskip
 
-We  turn  to the numerical approximation of the   system \rf{eq5} discussed in the previous section. The backbone of the  algorithm is  described in \cite{Ch2012}. The following  improvements and modifications have been made in this article: use of uniform grid with more accurate finite difference schemes of fourth and sixth order of approximation and new type of conditions on the external computational boundary \cite{bnd}.
-
-\subsection{Finite difference schemes}
+\sect{3.~Numerical Method.}
 First we replace the unbounded domain by a sufficiently large computational domain $\Omega$. Due to the obvious symmetry of the problem, we can look for the solution only in the first quadrant $\Omega = [0,L_x] \times[0,L_y]$. Then a uniform grid $\Omega_h$ is defined in the following way
 $$
 \Omega_h = \{(x_i,y_j): x_i = ih, y_j = jh, i = 0,\cdots ,N_x, j = 0,\cdots , N_y \},
@@ -189,7 +302,7 @@ This method for solving equations
 \rf{eq45} can be considered also as ``the simple iteration method'' for solving linear and nonlinear equations (see \cite{sam}).
 Last but not least, in order to start the procedure we need initial values for functions $\widehat{v},\widehat{w}$. These initial values are taken from the formulae in \cite{Ch2011}.
 
-\subsection{Time Step Control}
+\subsection{3.1~Time Step Control.}
 It is possible to use varying time step $\tau$ to optimize and speed up the algorithm. When the time step becomes too big the solution starts to diverge and becomes jagged. Fortunately these signs appear first in the residual $R$,  i.e. it starts to grow and jag simultaneously while the solution is still fine. 
 When this happens, an arbitrary cross-section of it looks like a discrete function which alternates positive with negative values on the grid.
 This is a clear sign that the time step has to be lowered, otherwise it is increased. Changing the artificial time is done automatically at each iteration by a factor $f_{\tau}\tau =: \tau_{new}$, where $f_{\tau} \in (0.72, 1.015)$. 
@@ -201,7 +314,7 @@ c^2\beta (\widehat{v}^k_{i,j})_{\widehat{yy},p} + \Delta_{h,p}(-\beta \widehat{v
 + \alpha \beta \theta (\widehat{v}^k_{i,j})^2  ).
 \end{equation}
  
-\subsection{Asymptotic conditions on the  boundaries $x=L_x$ and $y=L_y$}
+\subsection{3.2~Asymptotic conditions on the  boundaries $x=L_x$ and $y=L_y$.}
 
 The behavior of the solutions $v$ and $w$  as $r =\sqrt{x^2 +y^2} \rightarrow \infty$ is studied in details in \cite{bnd,Ch2011,Ch2012}. The following formulas  
 \begin{equation}\label{bFunV}
@@ -211,7 +324,7 @@ and
 \begin{equation}\label{bFunW}
 \bar{w}(x,y) =\tilde {\mu} (1-c^2) \frac{( (1-c^2)x^2-y^2 )}{((1-c^2)x^2 + y^2)^2 }
 \end{equation}
-in  \cite{bnd} are found to describe very well the unknown functions $v$ and $w$ on the computational boundary $\dO$. 
+given in \cite{bnd} are found to describe very well the unknown functions $v$ and $w$ on the computational boundary $\dO$. 
 
 In order to resolve the boundary functions \rf{bFunV} and \rf{bFunW} completely one needs $\mu$ and $\tilde {\mu}$ parameters.
 We obtain them iteratively, at each time level of \rf{eq55}, by the following minimization procedure. For  given solutions  $v^k_{i,j}$ and $ w^k_{i,j}$ at time level $t^k$ 
@@ -224,13 +337,13 @@ we choose $\mu$ and $\tilde {\mu}$ as minimizers of
 \end{split}
 \end{equation}
  
-\subsection{Stop Criteria}
+\subsection{3.3~Stop Criteria.}
 
 Usually  the calculations of  $\widehat{v}^{k+1} $ by equations \rf{eq55} are  terminated if
 \begin{equation*}
 \max_{i,j} |\widehat{v}^{k+1}_{i,j}-\widehat{v}^{k}_{i,j}| < \epsilon \max_{i,j} |\widehat{v}^{k}_{i,j}| ,
 \end{equation*}
-where $\epsilon $ is a prescribed accuracy.  But the solution decays with $\sim1/{r}^{2}$ at infinity $r \rightarrow \infty$, $r = \sqrt{{x}^{2} + {y}^{2}}$. Thus for large $x$ and $y$, the following expressions 
+where $\epsilon $ is a prescribed accuracy.  But the solution decays as $\sim1/{r}^{2}$ for $r \rightarrow \infty$, $r = \sqrt{{x}^{2} + {y}^{2}}$. Thus for large $x$ and $y$, the following expressions 
 \begin{equation}\label{asy}
 x^{2}U(x,0,t) \sim c_{x} \quad \textrm{and} \quad   y^{2}U(0,y,t) \sim c_{y}
 \end{equation}
@@ -253,7 +366,7 @@ In between each $k$ iterations, the approximations are evaluated and compared wi
 \begin{equation}\label{stopCrit}
 |c_{x}^{n} - c_{x}^{(n-k)}| < \epsilon \quad \textrm{and} \quad |c_{y}^{n} - c_{y}^{(n-k)}| < \epsilon
 \end{equation}
-cease to change significantly between $k$ iterations then the solution has converged. Here $n$ is the current iteration number.
+cease to change significantly between $k$ iterations then the solution has converged. Here the superscript $n$ is the current iteration number and $c_{x}^{n}$ means the value of $c_{x}$ at the n-th iteration.
 %Our numerical computations show that 
 %$$
 %\max_{i,j} |\widehat{v}^{k+1}_{i,j}-\widehat{v}^{k}_{i,j}| < \max_{i,j} | R_{i,j}^k |,
@@ -272,7 +385,7 @@ cease to change significantly between $k$ iterations then the solution has conve
 %as  the  stop criteria of the procedure \rf{eq55}.  
 %In the implementation of the method  parameter $\epsilon$ is chosen to be $10^{-5}$ or $ 10^{-6}$.
 
-\subsection{Basic Algorithm Steps}
+\subsection{3.4~Basic Algorithm Steps.}
 The following are the most important mile-stones during the implementation of the algorithm.
 \\
 1) Resolve proper initial condition $(v^0, w^0)$ on the grid $\Omega_h$.  Set parameters $\epsilon$ and $\tau$.
@@ -293,7 +406,9 @@ The following are the most important mile-stones during the implementation of th
 \\
 3) Continue steps 2.1) -2.6) with the next time level $t^{k+1}$ till condition (\ref{stopCrit}) is satisfied.
 
-\section{Validation}\label{validation}
+\bigskip
+
+\sect{4.~Validation.}\label{validation}
 
 In this section we give several numerical results concerning the verification of  the presented numerical method. 
  We use FDS with different approximation errors and several sets  of  parameters $c$, $\alpha$, $\beta$,  which are shown on each table. 
@@ -336,7 +451,7 @@ In this section we give several numerical results concerning the verification of
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Convergence test for  FDS with different approximation errors. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+		\caption{Convergence test for  FDS with different approximation errors ($O(h^{2})$, $O(h^{4})$ and $O(h^{6})$). Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
 
 \label{tab:a}
 \end{table}
@@ -414,18 +529,19 @@ We observe that the experimental rate of convergence approximates well the appro
 		\includegraphics[width=\linewidth]{solution/SOL3D_bnd25_c050_bt3.eps}
 		\centerline{$c = 0.5$, $\beta = 3$}
 	\end{minipage}
-	\caption{2D and 3D profiles of the numerical solution}
+	\caption{2D and 3D profiles of the numerical solution $u$ to \rf{eqtheta} and \rf{eq5}}
 	\label{fig:solutions}
 \end{figure}
 
+\bigskip
 
-\section{Results}\label{results}
+\sect{5.~Results.}\label{results}
 
 In this section we apply the presented  numerical method  to study the characteristic properties of the obtained numerical solution.  Many parametric dependencies of the numerical solution,  discovered in \cite{Ch2011,Ch2012}, such as dependence of the solution's shape on the velocity $c$ and on the relative dispersion parameter $\beta$, are confirmed here once again.
  We   also compare  the best-fit  formulae,  built up in \cite{Ch2011}, with the numerical solution  developed here. Such comparison is still missing in the literature.
 Recall that the best-fit formulae   are used as initial data for our algorithm. 
 
-\subsection{Solution residual}
+\subsection{5.1~Solution residual.}
 
 \begin{figure}[htbp]
 	\begin{minipage}[b]{0.5\linewidth}
@@ -478,14 +594,14 @@ the residual, which includes fourth order derivatives of the solution, could not
 \end{table}
 \end{center}
 
-\subsection{Solution derivatives}
+\subsection{5.2~Solution derivatives.}
 
 We have mentioned already that the best-fit formulae from \cite{Ch2011} have singularities near the origin. 
 Now we demonstrate  that the discrete fourth order derivatives of the numerical solution converge numerically as the step size $h$ goes to zero.
-We apply the Runge test, evaluating the discrete fourth order derivative $v_{\widehat{xxxx}}$ of the solution on three nested meshes with step sizes $h$, $h/2$, $h/4$ (see Section~\rf{validation}).  The results are demonstrated on the next Table~\ref{tab:fourth-der}.  
+We apply the Runge test, evaluating the discrete fourth order derivative $v_{\widehat{xxxx}}$ of the solution on three nested meshes with step sizes $h$, $h/2$, $h/4$ (see Section~\rf{validation}).  The results are demonstrated on Table~\ref{tab:fourth-der}.  
 We conclude that the discrete  derivative $v_{\widehat{xxxx}}$ is bounded and converges numerically for $h\rightarrow 0$. The tests for the other fourth order derivatives are similar to the derivative $v_{xxxx}$ and we do not present them here.
 
-\subsection{Solution shape}
+\subsection{5.3~Solution shape.}
 
 \begin{figure}[ht]
 	\begin{minipage}[b]{0.5\linewidth}
@@ -508,11 +624,43 @@ We conclude that the discrete  derivative $v_{\widehat{xxxx}}$ is bounded and co
 	\label{profilesSpeedVarying}
 \end{figure}
 
-
+\begin{figure}[htbp]
+	\begin{minipage}[b]{0.48\linewidth}
+		\raggedleft
+		\includegraphics[width=\linewidth]{differences/difference_c=03_beta=1.eps}
+	\end{minipage}
+	\begin{minipage}[b]{0.48\linewidth}
+		 \raggedright
+		\includegraphics[width=\linewidth]{differences/difference_c=01_beta=1.eps}
+	\end{minipage}
+	\begin{minipage}[b]{0.48\linewidth}
+		\raggedleft
+		 \includegraphics[width=\linewidth]{differences/difference_c=03_beta=3.eps}
+	\end{minipage}
+	\begin{minipage}[b]{0.48\linewidth}
+		\raggedright
+		 \includegraphics[width=\linewidth]{differences/difference_c=05_beta=1.eps}
+	\end{minipage}
+	\begin{minipage}[b]{0.48\linewidth}
+		\raggedleft
+		 \includegraphics[width=\linewidth]{differences/difference_c=03_beta=5.eps}
+		\centerline{$c=0.3$}
+		\centerline{$\beta = 1,3,5$ (top to bottom) }
+	\end{minipage}
+	\begin{minipage}[b]{0.48\linewidth}
+		\raggedright
+		 \includegraphics[width=\linewidth]{differences/difference_c=09_beta=1.eps}
+		\centerline{$\beta = 1$}
+		\centerline{$c = 0.1, 0.5, 0.9$ (top to bottom)}
+	\end{minipage}
+	\caption{Difference between the numerical solution $v$ and best fit  formulae $v^*$ from \cite{Ch2011} }
+	\label{fig:difference}
+\end{figure}
 
 First, two aspects of the solution for different combinations of  $c$ and $\beta$   are plotted  on Figure~\ref{fig:solutions}. Both numerical solutions are computed on the  domain $\Omega = [0, 25]\times [0, 25]$ with $h = 0.1$ and then extended symmetrically to $ [-25, 25]\times [-25, 25]$. 
 Only the essential part of the wave (near the center) is shown on these pictures. Top figures are level plots showing the waves from above and the bottom figures are 
 three dimensional showing the structure of the wave in space. 
+
 
 
 We perform a detailed study   of the numerical solution's shape with respect to main parameters -- the relative dispersion $\beta=\beta_1 / \beta_2$ and the velocity $c$.
@@ -521,46 +669,10 @@ On Figure~\ref{profilesSpeedVarying}, parameter $\beta=1$ is held constant and t
 
 One can observe that as the phase velocity $c$ increases the wave's support  along $x$ direction increases too, but the maximum of the wave decreases. The linear part of the solution on the log-log plots is under the governance of the boundary function.
 
+\bigskip
 
 
-\subsection{Comparison with best-fit formulae from \cite{Ch2011}} 
-
-
-\begin{figure}[htbp]
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedleft
-		\includegraphics[width=\linewidth]{differences/difference_c=03_beta=1.eps}
-	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
-		 \raggedright
-		\includegraphics[width=\linewidth]{differences/difference_c=01_beta=1.eps}
-	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedleft
-		 \includegraphics[width=\linewidth]{differences/difference_c=03_beta=3.eps}
-	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedright
-		 \includegraphics[width=\linewidth]{differences/difference_c=05_beta=1.eps}
-	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedleft
-		 \includegraphics[width=\linewidth]{differences/difference_c=03_beta=5.eps}
-		\centerline{$c=0.3$}
-		\centerline{$\beta = 1,3,5$ (top to bottom) }
-	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedright
-		 \includegraphics[width=\linewidth]{differences/difference_c=09_beta=1.eps}
-		\centerline{$\beta = 1$}
-		\centerline{$c = 0.1, 0.5, 0.9$ (top to bottom)}
-	\end{minipage}
-	\caption{Difference between the numerical solution $v$ and best fit  formulae $v^*$}
-	\label{fig:difference}
-\end{figure}
-Figure~\ref{fig:difference} and Table~\ref{tab:first-der-t} demonstrate the  absolute value of the difference between  the solution $v^*$ by formulae \cite{Ch2011}  and the final solution of our procedure.
-
-On the left side of Figure~\ref{fig:difference} the phase velocity $c = 0.3$ is fixed  and $\beta$ changes. On the right side  the dispersion parameter $\beta=1$ is kept constant while $c$ changes. The experiments are done on a $[-50,  50] \times [-50,50]$  domain  but only the results near the zero point are plotted. For each of the examples shown on Figure~\ref{fig:difference} more detailed estimate (using numbers) is given in Table~\ref{tab:first-der-t}. The difference is measured in the maximal and $L_2$ norms. One observes that for larger wave velocities $c$ and dispersion parameters $\beta$ the distinction becomes more pronounced. For example, for $\beta =1$ and $c=0.9$ the difference between the numerical solution obtained in this paper and the formulae  $v^*$ from \cite{Ch2011} becomes $\approx 0.8$ !
+\sect{6.~Comparison with best-fit formulae from \cite{Ch2011}.}
 
 \begin{center}
 \begin{table}[ht]
@@ -581,14 +693,24 @@ $\beta$&c&$\|v^*-v \|_{\infty }$&$\|v^*-v \|_{2 }$& &$\beta$& c&$\|v^*-v \|_{\in
 \end{table}
 \end{center}
 
+Figure~\ref{fig:difference} and Table~\ref{tab:first-der-t} demonstrate the  absolute value of the difference between  the solution $v^*$ by formulae \cite{Ch2011}  and the final solution of our procedure.
 
-\section{Conclusion}
-Fourth and sixth order finite difference schemes are applied for numerical evaluation of the travelling wave solutions to the Boussinesq equation in this paper. New conditions on the computational boundaries are devised. The high accuracy of the method applied is demonstrated on several experiments. The numerical solution obtained here performs similarly to the numerical solutions given in \cite{Ch2011,Ch2012} with respect to solution shape and the dependence on the velocity $c$ and relative dispersion $\beta$. 
+On the left side of Figure~\ref{fig:difference} the phase velocity $c = 0.3$ is fixed  and $\beta$ changes. On the right side  the dispersion parameter $\beta=1$ is kept constant while $c$ changes. The experiments are done on a $[-50,  50] \times [-50,50]$  domain  but only the results near the zero point are plotted. For each of the examples shown on Figure~\ref{fig:difference} more detailed estimate (using numbers) is given in Table~\ref{tab:first-der-t}. The difference is measured in the maximal and $L_2$ norms. One observes that for larger wave velocities $c$ and dispersion parameters $\beta$ the distinction becomes more pronounced. For example, for $\beta =1$ and $c=0.9$ the difference between the numerical solution obtained in this paper and the formulae  $v^*$ from \cite{Ch2011} becomes $\approx 0.8$ !
+
+
+\bigskip
+
+\sect{7.~Conclusions.}
+Fourth and sixth order finite difference schemes are applied for numerical evaluation of the stationary travelling wave solutions to the Boussinesq equation in this paper. The high accuracy of the method applied is demonstrated on several experiments. The numerical solution obtained here performs similarly to the numerical solutions given in \cite{Ch2011,Ch2012} with respect to solution shape and the dependence on the velocity $c$ and relative dispersion $\beta$. 
 The best-fit approximation formulae from  \cite{Ch2011} fail to satisfy the initial equation in the classical sense in the neighborhood of the origin. 
-In the future, we will exploit the obtained numerical traveling wave solutions as initial data to the corresponding Boussinesq equation in order to seek two dimensional solitary wave solutions to \rf{eq1}.
+In the future, we will exploit the obtained stationary traveling wave solutions as initial data to the corresponding Boussinesq equation in order to seek two dimensional solitary wave solutions to \rf{eq1}.
 
+\bigskip
+
+
+\frenchspacing
+\def\bibname{\rm R\,E\,F\,E\,R\,E\,N\,C\,E\,S}
 \begin{thebibliography}{30}
-
 \bibitem{chd-chr}
 J.~Choudhury, C.~Christov, 2D  Solitary waves of  Boussinesq equation, CP75, (2005) 85–90.
 
@@ -605,7 +727,7 @@ Waves of Boussinesq Paradigm Equation, CP 1186 (2009) 217 -- 225.
 
 \bibitem{bnd}
 K.~Angelow, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, 
-Journal of Theoretical and Applied Mechanics (2018).
+Submitted for publication.
 
 \bibitem{Ch1996}
 C.~I.~Cristov, Conservative difference scheme for Boussinesq model of
@@ -635,50 +757,29 @@ Math. Comput., 51(1988),  699 -- 706.
 \bibitem{sam}
 A.~Samarskii, The theory of difference schemes, M. Dekker,  2001.
 
-
 \end{thebibliography}
 
+\bigskip
+\noindent\sl
+\begin{tabular}[b]{l}
+Krassimir Angelow\\
+Institute of Mathematics and Informatics\\
+Bulgarian Academy of Sciences, Acad.\\
+G.~Bonchev Bl.8, 1113, Sofia,
+Bulgaria\\
+e-mail: \texttt{angelow@math.bas.bg}\\
+\\
+Natalia Kolkovska\\
+Institute of Mathematics and Informatics\\
+Bulgarian Academy of Sciences, Acad.\\
+G.~Bonchev Bl.8, 1113, Sofia,
+Bulgaria\\
+e-mail: \texttt{n.kolkovska@gmail.com}
+\end{tabular}
+\hfill
+\begin{tabular}[b]{l}
+Received ...\\
+Final Accepted ...
+\end{tabular}
 
 \end{document}
------------------------------------------------------------------------------------------------------------------------------------
-
-
-\bibitem{Ch2011}
-A.~Chertock, C.~I.~Christov and A.~Kurganov,  Central-upwind schemes for
-the Boussinesq paradigm equation, {\it Computational
-Sci., \& High performance Computing IV, NNFM}, 113, 267--281 (2011).
-
-  
-
-\bibitem{Ch2009}
-M.~Christou and C.~I.~ Christov, Galerkin spectral method for the 2D
-solitary waves of Boussinesq paradigm equation,  \emph{AIP}
-\textbf{1186}, 217 --224 (2009).
-
-\bibitem{ChriTodoChri_AMiTaNS11}
- C.~I.~Christov, M.~D.~Todorov, M.~A.~Christou, Perturbation solution
-for the 2D shallow-water waves, \emph{AIP Proceedings} 1404, 49-56,
-(2011)
-
-\bibitem{Chri2001_Vaj} C.~I.~Christov, In: \emph{Differential Equations
-and Nonlinear Mechanics}, K. Vajravelu, ed., 63--77 (2001).
-
-
-\bibitem{Ch1994}
-C~I.~Christov and M.~Velarde, Inelastic interaction of Boussinesq
-solutions, \emph{Intern. J Bifurcation Chaos}
-\textbf{4}, 1095 -- 1112 (1994).
-
-
- \bibitem{nk-aip}
- N.~Kolkovska, M.~Dimova,
-A New Conservative Finite Different Scheme for  Boussinesq Paradigm
-Equation, CEJM (2011) DOI: 10.2478/s11533-012-0011-0
-
-
-\bibitem{kutev}
-Kutev N.,  Kolkovska N., Dimova M.,  Christov  C.I., Theoretical and
-numerical aspects for global existence and
-blow up for the solutions to Boussinesq paradigm equation,
-AIP Conf. Proc. 1404 (2011) 68--76
-
