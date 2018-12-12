@@ -5,7 +5,15 @@
 
 
 \documentclass[12pt]{article}
+%{article}
+\usepackage{amssymb}
 \usepackage{amsmath, amsthm}
+\usepackage{amstext, amsfonts}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{wrapfig}
+
+\newcommand{\dO}{\partial\Omega_{h}}
 
 \textwidth 12cm \textheight 18cm
 
@@ -44,35 +52,49 @@
 
 \begin{document} %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{TITLE OF THE PAPER}
+\title{New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation}
 
-\author{First Author $^1$ , Second Author $^2$\\[6pt]
-$^1$ First Author's Full Postal Address\\ The address must be written in English\\
-Town - Postal Code, COUNTRY\\
-e-mail: First Author's e-mail address\\[6pt]
-$^2$ Second Author's Address\\ The address must be written in English\\
-Town - Postal Code, COUNTRY \\ e-mail: Second Author's e-mail
-address}
+\author{K. Angelow $^1$ \\[6pt]
+$^1$ angelow@math.bas.bg\\ 
+Institute of Mathematics and Informatics\\
+Bulgarian Academy of Sciences, Acad. G.~Bonchev Bl.8\\
+Sofia - 1113, Bulgaria\\
+e-mail: angelow@math.bas.bg\\[6pt] }
 
 \maketitle
 
 \begin{abstract}
 
-Text of the abstract. Text of the abstract. Text of the
-abstract.............................................................
-...................................
+In this paper the stationary propagating wave solution to the two dimensional Boussinesq equation is examined, which is a solution to a nonlinear fourth order elliptic equation.  We propose and apply a new boundary condition (BC) on the computational boundary. The numerical algorithm for computation of stationary propagating waves is based on high order accurate finite difference schemes. The performed numerical tests confirm the validity of the new BC. A comparison with the known in the literature formulas is also given. 
 
 \medskip
 
-{\bf Math. Subject Classification:} ...
+%{\bf Math. Subject Classification:} ...
 
-{\bf Key Words and Phrases:} ...
+{\bf Key Words and Phrases:} stationary wave, Boussinesq equation, boundary, soliton, uniform grid, false transient method
 
 \end{abstract}
 
 %%%%%%%% Section 1 %%%%%%%%%%%%%%%%%%%%
-\section{First Section of the Paper}
+\section{Introduction}
+In this paper we consider stationary solutions (solutions of type  $u(x,y,t)=U(x,y - ct)$) to the two dimensional Boussinesq Paradigm Equation (BE) 
 
+\begin{align}
+&u_{tt} - \Delta u -\beta_1  \Delta u_{tt} +\beta_2 \Delta ^2 u + \Delta f(u)=0 \quad \text{for} (x,y) \in R^{+} ,\label{eq1}
+\\ \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)   \quad\text{for} \, (x,y) \in R^2,
+\\  &u(x,y) \rightarrow 0,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{for}  \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11}
+\end{align}
+where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. A derivation of the BE from the original Boussinesq system with discussion on the different mechanical properties could be found e.g. in \cite{ref1}. 
+The one-dimensional (1D) BE is famous with its approximation for long waves propagating in shallow water \cite{ref2, ref3}. Furthermore, 1D BE admits localized wave solutions (called ‘solitons’), 
+\begin{align}
+&u_{tt} - u_{xx} -\beta_1  u_{xxtt} +\beta_2 u_{xxxx} + f_{xx}(u) =0, \label{eq2}
+\end{align}
+which maintain shape and emerge unchanged from collisions with other traveling waves, appear to be a very suitable model for particles \cite{ref4, ref5}.
+We try to find a stationary, traveling in y direction with phase velocity c, wave solution to the 2D BE, i.e. a solution to \ref{eq1, eq11} of type $u(x,y,t)=U(x,y - ct)$. The waves U satisfy the nonlinear fourth order elliptic equation:
+\begin{equation}\label{eq2}
+c^2 (E-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
+\end{equation}
+where $E$ is the identity operator. 
 Text ... (see \cite{gasrah}, \cite{rosbl}, \cite{Moak})...
 
 
@@ -107,6 +129,38 @@ Text ...
 %% example for paper in journal
 \bibitem{Moak} D.S. Moak,
 The $q$-analogue of the Laguerre polynomials, {\it J. Math. Anal. Appl.}, {\bf 81} (1981), 20-47.
+
+\bibitem{ref1} C. I. Christov, An energy-consistent dispersive shallow-water model,  {\it Wave Motion }, 34, (2001) 161 - 174
+\bibitem{ref2} Boussinesq, J. (1871). “Theorie de l’intumescence liquide, applelee onde solitaire ou de translation, se propageant dans un canal rectangulaire”,  {\it Comptes Rendus de l’Academie des Sciences } 72: 755-759
+
+\bibitem{ref3} Boussinesq, J. (1872). “Theorie des ondes et des remous qui se propagent le long d’un canal rectangulaire horizontal, en communiquant au liquide contenu dans ce canal des vitesses sensiblement pareilles de la surface au fond”, {\it Journal de Mathematiques Pures et Aplliquees}, Deuxieme Serie 17: 55-108
+
+\bibitem{ref4} I. Christov, C.I.Christov, Physical dynamics of quasi-particles in nonlinear wave equations, arxiv.org/pdf/nlin/0612005
+
+\bibitem{ref5} J. K. Perring, T. H. R. Skyrme, A model unified field equation, {\it Nuclear Physics},  31 (1962) p. 550-555 
+
+\bibitem{ref6}  C. I. Christov, Numerical implementation of the asymptotic boundary conditions for steadily propagating 2D solitons of Boussinesq type equations, {\it Mathematics and Computers in simulation}, 82 (2012), p. 1079-1092
+
+\bibitem{ref7}  J. Choudhury, C. Christov, 2D Solitary waves of Boussinesq equation, AIP Conference Proceedings (2005), Volume 755, Issue 1, p. 85 - 90
+
+\bibitem{ref8}  M. Christou, C. I. Christov, Fourier Galerkin method for 2D solitons of Boussinesq equation,  {\it Mathematics and Computers in Simulation} 74 (2007) p. 82 - 92
+
+\bibitem{ref9}   M. Christou, C. I. Christov, Galerkin Spectral Method for the 2D Solitary Waves of Boussinesq Paradigm Equation, AIP Conference Proceedings (2009), Volume 1186, Issue 1, p. 217 - 225
+
+\bibitem{ref10} C. I. Christov, J. Choudhury, Perturbation solution for the 2D Boussinesq equation,{\it Mech. Res. Commun. }, 38 (2011) p. 274 - 281
+
+\bibitem{ref11} B. Engquist and A. Majda, Absorbing boundary conditions for the numerical simulation of waves, {\it Math. Comp.}, 31 (1977), p. 629–651.
+
+\bibitem{ref12}  C. I. Goldstein, A finite element method for solving Helmholtz type equations in waveguides and other unbounded domains, {\it Math. Comp.}, 39 (1982), p. 309–324.
+
+\bibitem{ref13}  H.Han, W. Bao, Error estimates for the finite element approximation of problems in unbounded domains,  {\it SIAM J. NUMER. ANAL.} 37, No. 4, p. 1101–1119
+
+\bibitem{ref14} N. Kolkovska, Two Families of Finite Difference Schemes for Multidimensional Boussinesq Paradigm Equation, AIP Conference Proceedings (2010), Volume 1301, p. 395 http://dx.doi.org/10.1063/1.3526638
+
+\bibitem{ref15} N. Kolkovska, K. Angelow, Numerical Computation of the Critical Energy Constant for Two-dimensional Boussinesq Equations,  AIP Conference Proceedings, Volume 1684, 080007-1–080007-6; doi: 10.1063/1.4934318
+
+\bibitem{ref16} P.Northrop, P.A.Ramachandran, W.Schiesser, V. R.Subramanian, A robust false transient method of lines for elliptic partial differential equations, Chemical Engineering Science 90 (2013) 32–39
+
 
 %% example for paper in Proc. or Collected Works
 \bibitem{rosbl} M. Rosenblum,
