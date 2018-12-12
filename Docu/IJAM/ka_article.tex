@@ -1,0 +1,120 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% SAMPLE_IJAM file
+%%% For LaTeX users:
+
+
+\documentclass[12pt]{article}
+\usepackage{amsmath, amsthm}
+
+\textwidth 12cm \textheight 18cm
+
+%%% Theorem Like Envirouments
+
+\newtheoremstyle{theorem}%name
+{10pt} % space above
+{10pt} % space below
+{\sl} % bofy font
+{\parindent} % ident - empty=no indent, \parindent= paragraph indent
+{\bf} % thm head font
+{. } % punctuation after thm head
+{ } % space after thm head: `` ``=normal \newline=linebreak
+{} % thm head specification
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newtheoremstyle{defi}%name
+{10pt} % space above
+{10pt} % space below
+{\rm} % bofy font
+{\parindent} % ident - empty=no indent, \parindent= paragraph indent
+{\bf} % thm head font
+{. } % punctuation after thm head
+{ } % space after thm head: `` ``=normal \newline=linebreak
+{} % thm head specification
+\theoremstyle{defi}
+\newtheorem{definition}[theorem]{Definition}
+
+\def\proofname{\indent {\sl Proof.}}
+
+%%%% Author's Definitions start here
+% ..............
+%%%% End of Author's Definitions
+
+\begin{document} %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{TITLE OF THE PAPER}
+
+\author{First Author $^1$ , Second Author $^2$\\[6pt]
+$^1$ First Author's Full Postal Address\\ The address must be written in English\\
+Town - Postal Code, COUNTRY\\
+e-mail: First Author's e-mail address\\[6pt]
+$^2$ Second Author's Address\\ The address must be written in English\\
+Town - Postal Code, COUNTRY \\ e-mail: Second Author's e-mail
+address}
+
+\maketitle
+
+\begin{abstract}
+
+Text of the abstract. Text of the abstract. Text of the
+abstract.............................................................
+...................................
+
+\medskip
+
+{\bf Math. Subject Classification:} ...
+
+{\bf Key Words and Phrases:} ...
+
+\end{abstract}
+
+%%%%%%%% Section 1 %%%%%%%%%%%%%%%%%%%%
+\section{First Section of the Paper}
+
+Text ... (see \cite{gasrah}, \cite{rosbl}, \cite{Moak})...
+
+
+\begin{definition}
+Text of Definition 1.
+\end{definition}
+
+\begin{theorem}
+Text of Theorem 1.
+\end{theorem}
+
+\begin{proof}
+The proof of the theorem.
+\end{proof}
+
+\begin{corollary}
+Text of Corollary 2.
+\end{corollary}
+
+%%%%%%%% Section 2 %%%%%%%%%%%%%%%%%%%%
+\section{Second Section of the Paper}
+
+Text ...
+
+%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%
+\begin{thebibliography}{99}
+
+%% example for a book
+\bibitem{gasrah} G. Gasper, M. Rahman,
+{\it Basic Hypergeometric Series}, Cambridge University Press, Cambridge (1990).
+
+%% example for paper in journal
+\bibitem{Moak} D.S. Moak,
+The $q$-analogue of the Laguerre polynomials, {\it J. Math. Anal. Appl.}, {\bf 81} (1981), 20-47.
+
+%% example for paper in Proc. or Collected Works
+\bibitem{rosbl} M. Rosenblum,
+Generalized Hermite polynomials and the Bose-like oscillator
+calculus, In: {\it Operator Theory: Advances and Applications},
+Birkh\"auser, Basel (1994), 369-396.
+
+\end{thebibliography}
+
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%55
