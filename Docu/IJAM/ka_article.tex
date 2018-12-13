@@ -91,10 +91,19 @@ The one-dimensional (1D) BE is famous with its approximation for long waves prop
 \end{align}
 which maintain shape and emerge unchanged from collisions with other traveling waves, appear to be a very suitable model for particles \cite{ref4, ref5}.
 We try to find a stationary, traveling in y direction with phase velocity c, wave solution to the 2D BE, i.e. a solution to \ref{eq1, eq11} of type $u(x,y,t)=U(x,y - ct)$. The waves U satisfy the nonlinear fourth order elliptic equation:
-\begin{equation}\label{eq2}
-c^2 (E-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
+\begin{equation}
+c^2 (E-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U), \label{eq3}
 \end{equation}
-where $E$ is the identity operator. 
+where $E$ is the identity operator. If the condition  $c<min(1/\sqrt{\beta}, 1), \beta = \beta_1/\beta_2$,   holds, then \ref{eq3} is an elliptic equation of fourth order and the linear second order derivatives in \ref{eq3} form a second order elliptic equation. In this paper we consider velocities $c$ which fulfill this inequality.
+ The aim of this paper is to evaluate numerically the stationary soliton solution U to \ref{eq1}, i.e. the solution to \ref{eq3}. In the future, it is planned to investigate this solution as a candidate for a two dimensional ‘soliton-like’ solution of the nonstationary problem \ref{eq1} (to study the evolution in time of the shape of this solution and the collision of two solutions).
+Different solution techniques have been applied through the investigation of the elliptic problem \ref{eq3}. The “False Transient Method” and the “Galerkin Spectral Method” are used in \cite{ref6,ref9} ; the “Fourier Galerkin Method” is implemented in \cite{ref8,ref9} and the “The Perturbation Solution” - in \cite{ref10}.
+We emphasize that both problems, Eq. \ref{eq1} and Eq. \ref{eq3}, are posed on unbounded domain – the plane $R^2$. Thus we have to limit the domain of computation numerically so that the numerical solution will approximate the exact solution for the unbounded domain and, moreover, to keep the overall computational cost reasonable.
+So we have to state an artificial boundary $Ω$ and artificial boundary conditions (BC), known in the literature as ‘absorbing’ boundary conditions (BC) or ‘nonreflecting’ BC (see \cite{ref11} for a wave equation, \cite{ref12} for a Helmholtz type equation, \cite{ref13} for elliptic second order equation, etc.). 
+\\
+The problem for posing artificial BC for BE is studied in \cite{ref6}, where first the following asymptotic of U is found
+\begin{equation}
+U(r) \sim  C_u/r^2, \text{for} >> 1\label{eq4}
+\end{equation}
 Text ... (see \cite{gasrah}, \cite{rosbl}, \cite{Moak})...
 
 
