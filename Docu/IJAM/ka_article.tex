@@ -104,7 +104,73 @@ The problem for posing artificial BC for BE is studied in \cite{ref6}, where fir
 \begin{equation}
 U(r) \sim  C_u/r^2, \text{for} >> 1\label{eq4}
 \end{equation}
-Text ... (see \cite{gasrah}, \cite{rosbl}, \cite{Moak})...
+In this paper a new and more sophisticated artificial BC for stationary BE \ref{eq3}
+
+\begin{equation}
+U(r) =  \mu \frac{(1-c^2)x^2 - y^2}{(1-c^2)x^2 + y^2}|_{\dO}  \label{eq5}
+\end{equation}
+is proposed. The information about the known outer solution- the solution, valid for sufficiently large r, $ r=\sqrt{x^2 + y^2}\rightarrow \infty$  , is used. This condition has an analytical form, which directly depends on the velocity c. Furthermore, high order finite difference schemes are used for numerical evaluation of the solution to problem \ref{eq3}. The new BC \ref{eq5} and the numerical method are validated by performing a series of experiments, as mesh refinement and computations on different space domains. A comparison of the obtained here results with the similar results from  \cite{ref10} is also discussed. 
+
+%%%%%%%% Section 2 %%%%%%%%%%%%%%%%%%%%
+\section{Derivation of the new asymptotic boundary conditions }
+
+Problem \ref{eq3} can be rewritten as a system of two elliptic equations of second order in different ways. We expect that the derivative   in x direction will be smaller than the derivative   in y direction because the solution moves along the y-axis. Therefore the equality   is substituted in \ref{eq3} and after introducing an auxiliary function W, we obtain an equivalent to \ref{eq3} system of two elliptic equations:
+\begin{equation}\label{eq6}
+(1-c^2) U + ( c^2\beta_1 -  \beta_2) \Delta U  - f (U) = W, 
+\end{equation}
+\begin{equation}\label{eq7}
+ \Delta W =  - c^2  (E- \beta_1\Delta) U_{xx}. 
+\end{equation}
+
+We have to complete the system \ref{eq6},\ref{eq7} with appropriate boundary conditions for functions U and W. In \cite{ref6} the behavior of the solution U(r) for  $ r=\sqrt{x^2 + y^2}\rightarrow \infty$ is studied in details. From the mathematical analysis and numerical results provided there it follows that U(r) and W(r) have  $O(r^{-2})$ asymptotic decay at infinity. 
+The main goal of this paper is to derive new implementation of these asymptotic conditions and to use them on the boundary of a truncated computational domain $\Omega_h$.
+	We would like to go further by estimating which terms in the equations \ref{eq3},  define the asymptotic behavior and then validate our proposition by numerical tests. At first, suppose that for sufficiently large r the second order derivatives $\Delta U , c^2U_{xx} , c^2U_{yy}$  of U are of order  $O(r^{-4}$, whereas the fourth order derivatives and the nonlinear term, i.e.  $\Delta^2 U , c^2\Delta U_{xx} , c^2\Delta U_{yy}, \Delta f(U)$    in equation \ref{eq3} are of order $O(r^{-6})$.  
+Now consider equation \ref{eq3} for sufficiently large values of r. We insert the asymptotic values of all terms in \ref{eq3} and neglect the higher order terms of order $O(r^{-6})$ inside the r-expansion. Thus for large values of r the following formulas are valid:
+\begin{equation}
+ \Delta \bar{U}(x,y) =   c^2   \bar{U}(x,y) , \quad  \bar{U}(x,y) \sim \frac{1}{x^2 + y^2} \quad \text{for} \quad x^2 + y^2 \rightarrow \infty  . \label{eq8}
+\end{equation}
+
+
+We apply the following change of variables
+\begin{equation}
+\bar{x} = \sqrt{1-c^2}x , \quad  \bar{y} = y, \quad \bar{v}( \bar{x}, \bar{y}) := \bar{U} (x, y)\label{eqVC}
+\end{equation}
+and transform \ref{eq8} into the Laplace equation for the new function $\bar{v}$
+\begin{equation} \label{eqLap}
+\bar{v} = 0, \quad \bar{v}( \bar{x}, \bar{y}) \sim \frac{1}{\bar{r}}, \quad |\bar{r}|=\sqrt{\bar{x}^2 + \bar{y}^2} \rightarrow \infty.
+\end{equation}
+In polar coordinates the Laplace equation \ref{eqLap} is rewritten as:
+\begin{equation} \label{eqLapPol}
+\frac{\partial^2}{\partial \bar{r}^2} \bar{v}(\bar{r}, \theta) + \frac{1}{\bar{r}} \frac{\partial}{\partial \bar{r}}\bar{v}(\bar{r}, \theta) +  \frac{1}{\bar{r}^2} \frac{\partial^2}{\partial \theta^2} \bar{v}(\bar{r}, \theta) = 0
+\end{equation}
+
+After the separation of variables $\bar{v}(\bar{r}, \theta) = H(\bar{r})G(\theta)$  we get the following general form of functions G and H 
+
+\begin{align}
+&H(\bar{r}) = \sum^{\infty}_{n=2} (\mu_{1,n} \frac{1}{ \bar{r}^n} + \mu_{2,n} \bar{r}^n ),
+\\ \nonumber &G(\theta) = \sum^{\infty}_{n=2} (\mu_{3,n}sin(n \theta ) + \mu_{4,n}cos(n \theta)). \label{eq9}
+\end{align}
+We fix the parameters $\mu_{2,i}, i \geq 2$  to zero because of the asymptotic limitation that $H(\bar{r}) \sim \frac{1}{\bar{r}^2} $  for $|\bar{r}| \rightarrow \infty $.
+For simplicity we take into account the main term in the expansion of $H(\bar{r})$ and set $\mu_{1,i}, i \geq 3$  to zero. Analogously we set $\mu_{3,i}, i \geq 3$ and $\mu_{4,i}, i \geq 3$
+to zero.  Further artificial simplification is made by setting $\mu_{3,2} = 0$. In this way the following representation of the main asymptotic term $\bar{v}$ is obtained:
+
+\begin{equation}
+\bar{v}(\bar{r} \theta) = \mu \frac{cos(2 \theta)}{ \bar{r}^2 } = 
+ \mu \frac{cos(\theta) ^ 2 - sin(\theta)^2}{ \bar{r}^2 } = 
+ \mu \frac{\bar{x}  ^ 2 - \bar{y}  ^ 2}{( \bar{x}  ^ 2 + \bar{y}  ^ 2)^2 } , \label{eq10}
+\end{equation}
+
+where $\mu = \mu_1 \mu_4$. In the old (x, y) coordinate system, \ref{eq10}  reads as:
+
+\begin{equation}
+\bar{v}(\bar{r} \theta) = \mu \frac{cos(2 \theta)}{ \bar{r}^2 } = 
+ \mu \frac{cos(\theta) ^ 2 - sin(\theta)^2}{ \bar{r}^2 } = 
+ \mu \frac{\bar{x}  ^ 2 - \bar{y}  ^ 2}{( \bar{x}  ^ 2 + \bar{y}  ^ 2)^2 } , \label{eq10}
+\end{equation}
+
+\begin{equation}
+U(x,y) = \mu \frac{(1-c^2)x^2 - y^2}{ ( (1-c^2)x^2 - y^2 )^2 }. \label{eq11}
+\end{equation}
 
 
 \begin{definition}
@@ -126,7 +192,7 @@ Text of Corollary 2.
 %%%%%%%% Section 2 %%%%%%%%%%%%%%%%%%%%
 \section{Second Section of the Paper}
 
-Text ...
+Text ... (see \cite{gasrah}, \cite{rosbl}, \cite{Moak})...
 
 %%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%
 \begin{thebibliography}{99}
