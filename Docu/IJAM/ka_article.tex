@@ -65,7 +65,7 @@ e-mail: angelow@math.bas.bg\\[6pt] }
 
 \begin{abstract}
 
-In this paper the stationary propagating wave solution to the two dimensional Boussinesq equation is examined, which is a solution to a nonlinear fourth order elliptic equation.  We propose and apply a new boundary condition (BC) on the computational boundary. The numerical algorithm for computation of stationary propagating waves is based on high order accurate finite difference schemes. The performed numerical tests confirm the validity of the new BC. A comparison with the known in the literature formulas is also given. 
+The paper considers stationary propagating wave solutions to the two dimensional Boussinesq equation, which is a nonlinear fourth order elliptic equation. We propose and apply a new boundary condition (BC) on the computational boundary. The numerical algorithm for computation of stationary propagating waves is based on high order accurate finite difference schemes. The performed numerical tests confirm the validity of the new BC. A comparison with the known in the literature formulas is also given. 
 
 \medskip
 
@@ -94,15 +94,15 @@ The one-dimensional (1D) BE is famous with its approximation for long waves prop
 &u_{tt} - u_{xx} -\beta_1  u_{xxtt} +\beta_2 u_{xxxx} + f_{xx}(u) =0, \label{eq2}
 \end{align}
 which maintain shape and emerge unchanged from collisions with other traveling waves, appear to be a very suitable model for particles \cite{ref4, ref5}.
-We try to find a stationary, traveling in y direction with phase velocity c, wave solution to the 2D BE, i.e. a solution to \ref{eq1}, \ref{eq1B} of type $u(x,y,t)=U(x,y - ct)$. The waves U satisfy the nonlinear fourth order elliptic equation:
+Let us find a stationary, traveling in y direction with phase velocity c, wave solution to the 2D BE, i.e. a solution to \ref{eq1}, \ref{eq1B} of type $u(x,y,t)=U(x,y - ct)$. The waves U satisfy the nonlinear fourth order elliptic equation:
 \begin{equation}
 c^2 (E-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U), \label{eq3}
 \end{equation}
-where $E$ is the identity operator. If the condition  $c<min(1/\sqrt{\beta}, 1)$, $\beta = \beta_1/\beta_2$,   holds, then \ref{eq3} is an elliptic equation of fourth order and the linear second order derivatives in \ref{eq3} form a second order elliptic equation. In this paper we consider velocities $c$ which fulfill this inequality.
- The aim of this paper is to evaluate numerically the stationary soliton solution U to \ref{eq1}, i.e. the solution to \ref{eq3}. In the future, it is planned to investigate this solution as a candidate for a two dimensional ‘soliton-like’ solution of the nonstationary problem \ref{eq1} (to study the evolution in time of the shape of this solution and the collision of two solutions).
-Different solution techniques have been applied through the investigation of the elliptic problem \ref{eq3}. The “False Transient Method” and the “Galerkin Spectral Method” are used in \cite{ref6,ref9} ; the “Fourier Galerkin Method” is implemented in \cite{ref8,ref9} and the “The Perturbation Solution” - in \cite{ref10}.
-We emphasize that both problems, Eq. \ref{eq1} and Eq. \ref{eq3}, are posed on unbounded domain – the plane $R^2$. Thus we have to limit the domain of computation numerically so that the numerical solution will approximate the exact solution for the unbounded domain and, moreover, to keep the overall computational cost reasonable.
-So we have to state an artificial boundary $Ω$ and artificial boundary conditions (BC), known in the literature as ‘absorbing’ boundary conditions (BC) or ‘nonreflecting’ BC (see \cite{ref11} for a wave equation, \cite{ref12} for a Helmholtz type equation, \cite{ref13} for elliptic second order equation, etc.). 
+where $E$ is the identity operator. If the condition  $c<min(1/\sqrt{\beta}, 1)$, $\beta = \beta_1/\beta_2$,   holds, then \ref{eq3} is an elliptic equation of fourth order and the linear second order derivatives in \ref{eq3} form a second order elliptic equation. Here only velocities $c$ which fulfill this inequality are considered.
+ The main goal is to evaluate numerically the stationary soliton waves U to \ref{eq1}, which are solutions to \ref{eq3}. In the future, it is planned to investigate such waves as potential 2D  ‘soliton-like’ candidates for the nonstationary equation \ref{eq1}. This includes but is not limited to evolution in time of the resultant shape and collision of two surges.
+Different techniques have been applied through the investigation of the elliptic problem \ref{eq3}. The “False Transient Method” and the “Galerkin Spectral Method” are used in \cite{ref6,ref9} ; the “Fourier Galerkin Method” is implemented in \cite{ref8,ref9} and the “The Perturbation Solution” - in \cite{ref10}.
+We emphasize that both problems, Eq. \ref{eq1} and Eq. \ref{eq3}, are posed on unbounded domain – the plane $R^2$. Thus we have to numerically limit the computational domain so that the results could approximate the exact solution for the unbounded domain and, moreover, to keep the overall computational cost reasonable.
+Thus an artificial boundary $Ω$ and artificial boundary conditions (BC) are stated, known in the literature as ‘absorbing’ BC or ‘nonreflecting’ BC (see \cite{ref11} for a wave equation, \cite{ref12} for a Helmholtz type equation, \cite{ref13} for elliptic second order equation, etc.). 
 \\
 The problem for posing artificial BC for BE is studied in \cite{ref6}, where first the following asymptotic of U is found
 \begin{equation}
@@ -113,12 +113,12 @@ In this paper a new and more sophisticated artificial BC for stationary BE \ref{
 \begin{equation}
 U(r) =  \mu \frac{(1-c^2)x^2 - y^2}{(1-c^2)x^2 + y^2}|_{\dO}  \label{eq5}
 \end{equation}
-is proposed. The information about the known outer solution- the solution, valid for sufficiently large r, $ r=\sqrt{x^2 + y^2}\rightarrow \infty$  , is used. This condition has an analytical form, which directly depends on the velocity c. Furthermore, high order finite difference schemes are used for numerical evaluation of the solution to problem \ref{eq3}. The new BC \ref{eq5} and the numerical method are validated by performing a series of experiments, as mesh refinement and computations on different space domains. A comparison of the obtained here results with the similar results from  \cite{ref10} is also discussed. 
+is proposed. The information about the known outer solution- the one, valid for sufficiently large r, $ r=\sqrt{x^2 + y^2}\rightarrow \infty$  , is used. This condition has an analytical form, which directly depends on x,y and the velocity c. Furthermore, high order finite difference schemes are used for numerical evaluation of the solution to problem \ref{eq3}. The new BC \ref{eq5} and the numerical method are validated by performing a series of experiments, as mesh refinement and computations on different space domains. A comparison of the obtained here results with the similar results from  \cite{ref10} is also discussed. 
 
 %%%%%%%% Section 2 %%%%%%%%%%%%%%%%%%%%
 \section{Derivation of the new asymptotic boundary conditions }
 
-Problem \ref{eq3} can be rewritten as a system of two elliptic equations of second order in different ways. We expect that the derivative   in x direction will be smaller than the derivative   in y direction because the solution moves along the y-axis. Therefore the equality   is substituted in \ref{eq3} and after introducing an auxiliary function W, we obtain an equivalent to \ref{eq3} system of two elliptic equations:
+Problem \ref{eq3} can be rewritten as a system of two elliptic equations of second order in different ways. We expect that the derivative  $U_{xx}$ in x direction will be smaller than the derivative $U_{yy}$  in y direction because the solution moves along the y-axis. Therefore the equality $U_{yy} = \Delta U - U_{xx}$  is substituted in \ref{eq3} and after introducing an auxiliary function W, we obtain an equivalent to \ref{eq3} system of two elliptic equations:
 
 \begin{equation}\label{eq6}
 \begin{split}
@@ -128,8 +128,8 @@ Problem \ref{eq3} can be rewritten as a system of two elliptic equations of seco
 \end{equation}
 
 We have to complete the system \ref{eq6} with appropriate boundary conditions for functions U and W. In \cite{ref6} the behavior of the solution U(r) for  $ r=\sqrt{x^2 + y^2}\rightarrow \infty$ is studied in details. From the mathematical analysis and numerical results provided there it follows that U(r) and W(r) have  $O(r^{-2})$ asymptotic decay at infinity. 
-The main goal of this paper is to derive new implementation of these asymptotic conditions and to use them on the boundary of a truncated computational domain $\Omega_h$.
-	We would like to go further by estimating which terms in the equations \ref{eq3},  define the asymptotic behavior and then validate our proposition by numerical tests. At first, suppose that for sufficiently large r the second order derivatives $\Delta U , c^2U_{xx} , c^2U_{yy}$  of U are of order  $O(r^{-4})$, whereas the fourth order derivatives and the nonlinear term, i.e.  $\Delta^2 U , c^2\Delta U_{xx} , c^2\Delta U_{yy}, \Delta f(U)$    in equation \ref{eq3} are of order $O(r^{-6})$.  
+The main goal of the paper is to derive new implementation of these asymptotic conditions and to use them on the boundary of a truncated computational domain $\Omega_h$.
+	Let us go further and estimate which terms in the equations \ref{eq3},  define the asymptotic behavior and then validate our proposition by numerical tests. At first, suppose that for sufficiently large r the second order derivatives $\Delta U , c^2U_{xx} , c^2U_{yy}$  of U are of order  $O(r^{-4})$, whereas the fourth order derivatives and the nonlinear term, i.e.  $\Delta^2 U , c^2\Delta U_{xx} , c^2\Delta U_{yy}, \Delta f(U)$    in equation \ref{eq3} are of order $O(r^{-6})$.  
 Now consider equation \ref{eq3} for sufficiently large values of r. We insert the asymptotic values of all terms in \ref{eq3} and neglect the higher order terms of order $O(r^{-6})$ inside the r-expansion. Thus for large values of r the following formulas are valid:
 \begin{equation}
  \Delta \bar{U}(x,y) =   c^2   \bar{U}(x,y) , \quad  \bar{U}(x,y) \sim \frac{1}{x^2 + y^2} \quad \text{for} \quad x^2 + y^2 \rightarrow \infty  . \label{eq8}
@@ -146,38 +146,164 @@ and transform \ref{eq8} into the Laplace equation for the new function $\bar{v}$
 \end{equation}
 In polar coordinates the Laplace equation \ref{eqLap} is rewritten as:
 \begin{equation} \label{eqLapPol}
-\frac{\partial^2}{\partial \bar{r}^2} \bar{v}(\bar{r}, \theta) + \frac{1}{\bar{r}} \frac{\partial}{\partial \bar{r}}\bar{v}(\bar{r}, \theta) +  \frac{1}{\bar{r}^2} \frac{\partial^2}{\partial \theta^2} \bar{v}(\bar{r}, \theta) = 0
+\frac{\partial^2}{\partial \bar{r}^2} \bar{v}(\bar{r}, \psi) + \frac{1}{\bar{r}} \frac{\partial}{\partial \bar{r}}\bar{v}(\bar{r}, \psi) +  \frac{1}{\bar{r}^2} \frac{\partial^2}{\partial \psi^2} \bar{v}(\bar{r}, \psi) = 0
 \end{equation}
 
-After the separation of variables $\bar{v}(\bar{r}, \theta) = H(\bar{r})G(\theta)$  we get the following general form of functions G and H 
+After the separation of variables $\bar{v}(\bar{r}, \psi) = H(\bar{r})G(\psi)$  we get the following general form of functions G and H 
 
 \begin{align}
-&H(\bar{r}) = \sum^{\infty}_{n=2} (\mu_{1,n} \frac{1}{ \bar{r}^n} + \mu_{2,n} \bar{r}^n ),
-\\ \nonumber &G(\theta) = \sum^{\infty}_{n=2} (\mu_{3,n}sin(n \theta ) + \mu_{4,n}cos(n \theta)). \label{eq9}
+&H(\bar{r}) = \sum^{\infty}_{n=0} (\mu_{1,n} \frac{1}{ \bar{r}^n} + \mu_{2,n} \bar{r}^n ),
+\\ \nonumber &G(\psi) = \sum^{\infty}_{n=0} (\mu_{3,n}sin(n \psi ) + \mu_{4,n}cos(n \psi)). \label{eq9}
 \end{align}
-We fix the parameters $\mu_{2,i}, i \geq 2$  to zero because of the asymptotic limitation that $H(\bar{r}) \sim \frac{1}{\bar{r}^2} $  for $|\bar{r}| \rightarrow \infty $.
-For simplicity we take into account the main term in the expansion of $H(\bar{r})$ and set $\mu_{1,i}, i \geq 3$  to zero. Analogously we set $\mu_{3,i}, i \geq 3$ and $\mu_{4,i}, i \geq 3$
-to zero.  Further artificial simplification is made by setting $\mu_{3,2} = 0$. In this way the following representation of the main asymptotic term $\bar{v}$ is obtained:
+
+By following the asymptotic limitation that $H(\bar{r}) \sim \frac{1}{\bar{r}^2} $  for $|\bar{r}| \rightarrow \infty $ all parameters $\mu_{1,i}, i \neq 2$  are set to zero. Similarly for the right term, all $\mu_{2,i},  i \geq 0$ are set to zero and thus $H(\bar{r}) =$ $\mu_{1,2} \frac{1}{ \bar{r}^2 }$.
+Analogical artificial simplification is made for the second function G. It is known that the x and y axis on the plane are lines of symmetry for the soliton solution. In order to fit this periodical behaviour, all parameters $\mu_{3,i},\mu_{4,i}  i \neq 2$  are set to zero. For simplicity the sinus term is also neglected and thus $H(\psi) = $ $\mu_{4,2} cos(2 \psi)$. In this way the following representation of the main asymptotic term $\bar{v}$ is obtained:
 
 \begin{equation}
-\bar{v}(\bar{r} \theta) = \mu \frac{cos(2 \theta)}{ \bar{r}^2 } = 
- \mu \frac{cos(\theta) ^ 2 - sin(\theta)^2}{ \bar{r}^2 } = 
- \mu \frac{\bar{x}  ^ 2 - \bar{y}  ^ 2}{( \bar{x}  ^ 2 + \bar{y}  ^ 2)^2 } , \label{eq10}
+\bar{v}(\bar{r} \psi) = \mu_u \frac{cos(2 \psi)}{ \bar{r}^2 } = 
+ \mu_u \frac{cos(\psi) ^ 2 - sin(\psi)^2}{ \bar{r}^2 } = 
+ \mu_u \frac{\bar{x}  ^ 2 - \bar{y}  ^ 2}{( \bar{x}  ^ 2 + \bar{y}  ^ 2)^2 } , \label{eq10}
 \end{equation}
 
-where $\mu = \mu_{1,2} \mu_{4,2}$. In the old (x, y) coordinate system, \ref{eq10}  reads as:
+where $\mu_u = \mu_{1,2} \mu_{4,2}$. In the old (x, y) coordinate system, \ref{eq10}  reads as:
 
 \begin{equation}
-U(x,y) = \mu \frac{(1-c^2)x^2 - y^2}{ ( (1-c^2)x^2 + y^2 )^2 }. \label{eq12}
+U(x,y) = \mu_u \frac{(1-c^2)x^2 - y^2}{ ( (1-c^2)x^2 + y^2 )^2 }. \label{eq12}
 \end{equation}
 
 We treat the second function W from \ref{eq6}  in a similar way and obtain similar  asymptotical representation
 
 \begin{equation}
-W(x,y) = \hat{\mu} \frac{(1-c^2)x^2 - y^2}{ ( (1-c^2)x^2 + y^2 )^2 }. \label{eq13}
+W(x,y) = \mu_w \frac{(1-c^2)x^2 - y^2}{ ( (1-c^2)x^2 + y^2 )^2 }. \label{eq13}
 \end{equation}
 
 
+The proposed formulas \ref{eq12} and \ref{eq13} are used as candidates for a BC and series of numerical tests are done to prove their validity. 
+It is expected that with the enlargment of the domain, the solution near boundary converges better, and the $\mu_u$ and $\mu_w$ parameters settle down (Test 1). It is also expected that the solution shows clear $\frac{1}{r^2}$ asymptotic which settles down when decreasing the spacial step size (Test 2).
+
+The unknown constants $\mu_u$ and $\mu_w$ included in \ref{eq12} and \ref{eq13} respectively are calculated in each iteration by the least squares fitting method using points near the boundary and on the boundary itself.
+ Note that  the analytical representation of the new BC \ref{eq12} and \ref{eq13} depends only on the speed of the wave c, x and y.
+
+%%%%%%%% Section3 %%%%%%%%%%%%%%%%%%%%
+\section{Numerical method for the elliptic system}
+
+\subsection{Formulation}
+
+
+By the change of variables
+
+\begin{equation}\label{eqVCN}
+\begin{split}
+&x=\sqrt{\beta_1} { \tilde{x} }, y=\sqrt{\beta_1} { \tilde{ y} },\\
+&U(x,y)= \tilde U({ \tilde{x} },{ \tilde{y} } ), \frac{\beta_1}{\beta_2} W(x,y)=  \tilde W({ \tilde{x} },{ \tilde{y} } )
+\end{split}
+\end{equation}
+ the system \ref{eq6} is transformed into new elliptic system:
+
+\begin{equation}\label{eq31}
+\begin{split}
+&(\beta-\tilde c ^2) \tilde U  -(1- \tilde c^2) \Delta \tilde U - \beta f( \tilde U ) = \tilde W, \\
+&\Delta \tilde W =  - \tilde c^2 (E- \Delta) \tilde U_{\tilde x \tilde x}. 
+\end{split}
+\end{equation}
+
+with $\beta = \beta_1 / \beta_2$ and $ \tilde c = \sqrt {\beta} c$.
+
+We  seek  non-trivial solutions to \ref{eq31}. To avoid the trivial solution we proceed as in \cite{ref6}: the value of the solution $\tilde U$ at the point $(0,0)$,  $\tilde U(0,0)=\theta $ is fixed and new  functions are introduced: $\widehat{U}=\tilde U /{\theta} $ and $\widehat{W}=\tilde W /{\theta} $. Thus  
+$ \widehat{U}(0,0)=1$ and 
+
+\begin{equation}\label{eq32}
+\begin{split}
+& (\beta-\tilde c^2) \widehat{U}  -(1-\tilde c^2) \Delta \widehat{U} - \alpha \beta \theta \widehat{U}^2 = \widehat{W}, \\
+&\Delta \widehat{W} = - \tilde c^2 (E- \Delta) \widehat{U}_{\tilde x \tilde x}.
+\end{split}
+\end{equation}
+
+The value of $\theta $ is found from the  equation 
+\begin{equation}\label{eqtheta}
+\theta = \frac{ (1-\tilde c^2 \Delta \widehat{U} - (\beta-\tilde c^2) \widehat{U} +\widehat{W}}{\alpha \beta} |_{\tilde x=0,\tilde y=0} .
+\end{equation}
+
+In order to evaluate numerically the solution to \ref{eq32} artificial time is introduced, false time derivatives are added and one gets
+
+\begin{equation}\label{eq33}
+\begin{split}
+&\frac {\partial \widehat{U}}{\partial t} + (\beta-\tilde c^2) \widehat{U} - (1-\tilde c^2 ) \Delta \widehat{U} - \alpha \beta \theta \widehat{U}^2 = \widehat{W}, \\
+&\frac {\partial \widehat{W}}{\partial t} + \Delta \widehat{W} = - \tilde c^2 (E- \Delta) \widehat{U}_{\tilde x \tilde x}. 
+\end{split}
+\end{equation}
+
+Thus the solution to the steady coupled elliptic system \ref{eq32} is replaced by solving the pertinent transient equations \ref{eq33} until their solutions $\widehat{U}$ and $\widehat{W}$ cease to change significantly in time. 
+
+
+
+\subsection{Discretization}
+
+The uniform and non-uniform grid define two different investigation approaches. The meshing, that has been predominantly used in most cited papers for the numerical analysis of BE, is the non-uniform one, see e.g. \cite{ref6}. It has big time advantage of generating a fast solution for the system \ref{eq33}, but also creates a major problem when moving the solution of \ref{eq33} in the hyperbolic equation \ref{eq1}. The ultimate goal is to develop an algorithm which investigates collision of two waves with arbitrary phase speeds c. Shifting the traveling waves in the hyperbolic equation on a larger distance, and further colliding two 'soliton-like' solutions requires a uniform grid. Therefore we decide to apply a uniform grid to solve the equation \ref{eq3} (\ref{eq33} respectively).
+
+The unbounded domain is replaced by a sufficiently large computational domain $\Omega$. Due to the obvious symmetry of the problem, we can look for the solution only in the first quadrant $\Omega = [0,L_x] \times[0,L_y]$. Then a uniform grid $\Omega_h$ is defined in the following way
+$$
+\Omega_h = \{(x_i,y_j): x_i = ih, y_j = jh, i = 0,\cdots ,N_x, j = 0,\cdots , N_y \},
+$$
+where the discretization step $h$ satisfies
+$ h = L_x/N_x = L_y/N_y$. 
+
+The value of the function $U$ at mesh point $x_i,y_j,t_k$ is denoted by $U_{i,j}^k$.
+
+\par
+The spatial derivatives in \ref{eq33} are defined by using centered finite differences  
+and extending the stencil:
+\begin{equation}\label{fd}
+U_{{\tilde x \tilde x},p}(\tilde x) :=  \frac{1}{h^2} \sum\limits_{i=-p/2}^{p/2} d_i U(\tilde x+ih),
+\end{equation}
+
+Here $p$ is equal to 2, 4 or 6.  The weights $d_i$ taken from  \cite{ref17} are  
+ $ 1,-2,1$ for $p=2$, 
+$-\frac{1}{12}, \frac{4}{3}, -\frac{5}{2}, \frac{4}{3}, -\frac{1}{12}$ - for $p=4$
+ and 
+$\frac{1}{90}, -\frac{3}{20}, \frac{3}{2},$ $ -\frac{49}{18}, \frac{3}{2}, -\frac{3}{20}, \frac{1}{90}$ - for $p=6$. The approximation error of  formulae \ref{fd} is $O(h^p)$. Replacing the Laplace operator in \ref{eq33} by the discrete Laplacian 
+
+$$ \Delta_{h,p} U_{i,j} := (U_{i,j})_{{\tilde x \tilde x},p} + (U_{i,j})_{{\tilde y \tilde y},p}$$ 
+
+we obtain finite difference schemes with high order of approximation $O(h^4)$ for $p=4$ and  $O(h^6)$ for $p=6 $.  The application of FDS with high order of approximation leads to a high rate of convergence of the method for   sufficiently smooth solutions. In this way more accurate solutions can be produced on a coarse grid.
+
+Symmetry conditions are used to impose the values of the discrete Laplacian at mesh points close to ${(0,y)}$, and $(x,0)$. 
+Near  the computational boundaries $(x,y):x=L_x$ and $(x,y):y=L_y$ we do not change the stencil. The discrete Laplacian
+is defined  there by using the values of the discrete solution given in \ref{eqBCVC} at points outside the computational domain.
+
+
+
+\subsection{Numerical Method}
+
+
+The transformation \ref{eqVCN} modifies the BC \ref{eq12} and \ref{eq13} as it follows:
+
+\begin{equation}\label{eqBCVC}
+\begin{split}
+&U_B(\tilde{x} , \tilde y) = \mu_u B( \tilde x, \tilde y) \\
+&W_B(\tilde{x} , \tilde y) = \mu_w B( \tilde x, \tilde y) \\
+&B(\tilde{x} , \tilde y) = \frac{ (1 - \tilde c^2/ \beta) \tilde x^2 - \tilde y^2}{( (1 - \tilde c^2/ \beta) \tilde x^2 + \tilde y^2)^2}. 
+\end{split}
+\end{equation}
+
+In order to resolve the boundary functions in \ref{eqBCVC} completely one needs the values of $\mu_u$  and $\mu_w$. These are obtained iteratively, at each time level of the algorithm for solving parabolic problem, by the minimization procedure described here. 
+	For a given numerical solution $\widehat U ^k$  at the time level  $t_k$ we choose $\mu_u$  as minimizer of the problem
+
+$$\mu_u = \min_{ \mu_u > 0 } || U_B( \tilde x_i, \tilde y_j) - \widehat U ^k_{i,j} ||_{L_2,\Omega_B}$$
+
+where  $( \tilde x_i, \tilde y_j) \in \Omega_B$. The set $\Omega_B$ includes not only the boundary nodes on $\dO$ but also inner nodes lying close (e.g. at distance $2h, 4h, 6h, ... << N_x h $) to the boundary. The minimization problem above produces a simple linear equation with respect to $\mu_u$.
+
+The Euler explicit rule is applied for approximation of  time derivatives. The nonlinear terms in \ref{eq33} are computed on time level $t^k$. Thus, the numerical solutions at time level $t^{k+1}$ are evaluated directly by the values of the numerical solution at time level $t^k$:  
+ \begin{equation}\label{eq34}
+ \begin{split}
+   &\frac {\widehat{U}_{i,j}^{k+1}-\widehat{U}_{i,j}^{k}}{\tau}- (1-\tilde c^2 ) \Delta_{h,p} \widehat{U} _{i,j}^{k}+  (\beta-\tilde c^2 ) \widehat{U}_{i,j}^{k} - \alpha \beta \theta (\widehat{U}_{i,j}^{k})^2 = \widehat{W}_{i,j}^{k}, \\
+  &\frac  {\widehat{W}_{i,j}^{k+1} -\widehat{W}_{i,j}^{k}} {\tau} - \Delta_{h,p} \widehat{W}_{i,j}^{k} =  \tilde c^2 (E- \Delta_{h,p})       
+    \widehat{U}_{i,j,{\tilde x \tilde x,p}}^{k}. 
+\end{split}
+\end{equation}
+This method for solving equations 
+\ref{eq33} can be considered also as "the simple iteration method'' for solving linear and nonlinear equations.
+Last but not least, in order to start the procedure we need initial values for functions $\widehat{U},\widehat{W}$. These initial values are taken from the formulae in \cite{ref10}.
 
 \begin{definition}
 Text of Definition 1.
@@ -242,6 +368,9 @@ The $q$-analogue of the Laguerre polynomials, {\it J. Math. Anal. Appl.}, {\bf 8
 
 \bibitem{ref16} P.Northrop, P.A.Ramachandran, W.Schiesser, V. R.Subramanian, A robust false transient method of lines for elliptic partial differential equations, Chemical Engineering Science 90 (2013) 32–39
 
+\bibitem{ref17}
+B.~Fornberg, Generation of Finite Difference Formulas on Arbitrarily Spaced Grids, 
+{\it  Math. Comput.} , 51(1988),  699 -- 706.
 
 %% example for paper in Proc. or Collected Works
 \bibitem{rosbl} M. Rosenblum,
