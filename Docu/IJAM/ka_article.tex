@@ -312,17 +312,18 @@ where  $( \tilde x_i, \tilde y_j) \in \Omega_B$. The set $\Omega_B$ includes not
 %%%%%%%% Section 4 %%%%%%%%%%%%%%%%%%%%
 \section{Validation tests}
 
-Two tests are made to verify the new condition on the computational boundary where the finite difference schemes are fourth order of approximation and the following constants are fixed: $\alpha = 1, \beta = 3$  and  $ \tilde c = 0.45$.
+Two tests are made to verify the new condition on the computational boundary where the finite difference schemes are fourth order of approximation and the following constants are fixed:
+ $\alpha = 1, \beta = 3$  and  $ \tilde c = 0.45$.
 
 \subsection{Test 1.}
 
-It reviews the behavior of $\mu_u$  defined in the previous section. In Table 1 the following quantities are presented at the end of the iteration procedure for several computational domains $\tilde \Omega_h = [-L_{\tilde x}, L_{\tilde x}] x  [-L_{\tilde y}, L_{\tilde y}]$:
+It reviews the behavior of $\mu_u$  defined in  \eqref{eq10}. In Table 1, for computational domains  $\tilde \Omega_h = [-L_{\tilde x}, L_{\tilde x}] x  [-L_{\tilde y}, L_{\tilde y}]$
+with $ L_{\tilde x} = L_{\tilde y}$ = $20, 40, 80, 160$, and fixed domain discretiization step $h = 0.5$, the following quantities are presented at the end of the iteration procedure:
 
 \begin{description}
-  \item[$\bullet$ ] $ L_{\tilde x} = L_{\tilde y}$ = 20; 40; 80; 160,
   \item[$\bullet$]values of the numerical solution $\widehat{U}_{i,j}$  at point: $\tilde {x}_i = 0$, $ \tilde {y}_j =   L_{\tilde y}$, 
-  \item[$\bullet$ ]estimate for $\mu_u$ , 
-\item[$\bullet$ ] the $L_2$  norm of the error obtained in the minimization procedure  \eqref{eqMin}. 
+  \item[$\bullet$ ] values of $\mu_u$ , 
+\item[$\bullet$ ] the $L_2$  norm of the error obtained in the minimization procedure \eqref{eqMin}. 
 \end{description}
 
 \begin{center}
@@ -350,16 +351,17 @@ It reviews the behavior of $\mu_u$  defined in the previous section. In Table 1 
 \end{table}
 \end{center}
 
-
-The initial problem is solved with domain discretization step $h = 0.5$. The results from Table 1 demonstrate that $\mu_u$  column converge as the domain becomes larger. Further the values of $\widehat{U}_{i,j}$   in the second column decay with a rate of $\frac{1}{\tilde r^2}$  The results obtained for  $\mu_w$  have the same convergent property, and are excluded for the sake of simplicity and compactness.
+The results in Table 1 demonstrate that the values of $\mu_u$, shown in the third column, converge as the domain becomes larger. Further, the values of $\widehat{U}_{i,j}$ given  in the second column decay with a rate of $\frac{1}{\tilde r^2}$
+The results obtained for  $\mu_w$  exhibit the same convergence, and are excluded for the sake of simplicity and compactness.
 
 \subsection{Test 2.}
-The second test reveals the asymptotic of the numerical solution presented in log-log plots. Pictures in Figure 1 demonstrate important aspects of solution's cross sections on four different grids. The size of the computational domain $\tilde \Omega_h$   is kept constant and only the domain discretization step changes, h = 0.1; 0.2; 0.4; 0.8. 
-The first two horizontal pictures in Figure 1 present logarithmic scaled plots of the absolute value of the numerical solution $\widehat{U}$  . One can see the decay $\frac{1}{\tilde r^2}$  at infinity guided by the black line. The next two horizontal pictures show the numerical solution scaled by a factor $\tilde r^2$  . Thus these graphs display  $\tilde r^2\widehat{U}$  along the vertical z axis. One can observe that the scaled profile of the solution approximates a constant for large values of $ \tilde r$  These plots are in agreement with the new boundary function B found in \eqref{eqBCVC} and with the asymptotic of the solution. Further using formulae \eqref{eqBCVC}  for x = 0 or for y = 0 one has for sufficiently large $ \tilde r $
+The second test reveals the asymptotic of the numerical solution presented in log-log plots. Pictures in Figure 1 demonstrate important aspects of solution's cross sections on four different grids. The size of the computational domain is kept constant  $\tilde \Omega_h = [-50, 50]\times[-50, 50]$ and only the domain discretization step changes, $h = 0.1, 0.2, 0.4, 0.8$. 
+\\
+The first two horizontal pictures in Figure 1 present logarithmic scaled plots of the absolute value of the numerical solution $\widehat{U}$  . One can see the decay $\frac{1}{\tilde r^2}$  at infinity guided by the black line. The next two horizontal pictures show the numerical solution scaled by a factor $\tilde r^2$  . Thus, these graphs display  $\tilde r^2\widehat{U}$  along the vertical z axis. One can observe that the scaled profile of the solution approximates a constant for large values of $ \tilde r$.  These plots are in agreement with the new boundary function $B(\tilde{x} , \tilde y)$ found in \eqref{eqBCVC} and with the asymptotic of the solution. Further using formulae \eqref{eqBCVC}  for $x = 0$ or for $y = 0$ one has for sufficiently large $ \tilde r $
 $$
-\widehat{U}(0,\tilde y) = - \frac{\mu_u}{\tilde y^2}, \widehat{U}(\tilde x,0) = \frac{\mu_u}{(1 - \tilde c^2/\beta )\tilde x^2},
+\widehat{U}(0,\tilde y) = - \frac{\mu_u}{\tilde y^2}, \widehat{U}(\tilde x,0) = \frac{\mu_u}{(1 - \tilde c^2/\beta )\tilde x^2}.
 $$
-which explains the connection between the two constants (black line) displayed on botton pictures in Figure 1.
+The last equation explains the connection between the two constants (black line) displayed on botton pictures in Figure 1.
 
 \begin{figure}[htbp]
         \centering
@@ -368,28 +370,30 @@ which explains the connection between the two constants (black line) displayed o
 	\label{fig1}
 \end{figure}
 
-Further on Figure 2 one could see the shape of the solution for different parameters $\tilde c$ and $\beta$:
- 
+%%%%%%%% Section 5 %%%%%%%%%%%%%%%%%%%%
+\section{Results and Discussion}
+
+On Figure 2, one could see the shape of the solution U to the elliptic problem  \eqref{eq31} (equivalent to problem \eqref{eq3} in the reverse coordinate system \eqref{eqVCN}  ) for two combination of parameters $c$ and $\beta$:
+$c = 0.9, \beta = 1$ and $c = 0.5, \beta = 3$.
+
 \begin{figure}[htbp]
         \centering
               \includegraphics[width=0.98\linewidth]{figure2.eps}   
         \caption{Figure 2. 2D and 3D solitonic shapes in a localized domain  $[-10, 10] x [-10, 10]$.}
-	\label{fig1}
+	\label{fig2}
 \end{figure}
 
 %%%%%%%% Section 4 %%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
+	In this paper we evaluate the stationary propagating in direction $y$ with speed $c$ solutions to 2D BE. An iteration method is used to compute the solution of the corresponding fourth order nonlinear  elliptic equation. A high order of approximation finite difference scheme is applied for the discretization of spatial derivatives.
+\\
+A new BC is proposed on the boundary of the computational domain. Later the BC is verified by computation of different grids, speeds $c$ and dispersion parameters $\beta$. Near the origin the form of the computed here stationary waves is similar to the presented in \cite{ref10} form of 'best-fit' stationary solutions, but near the computational boundary both solutions are quite different.
+\\
+The obtained analytical formulas \eqref{eqBCVC} of the solution near the boundary give great advantage for the numerical computation of the solutions to stationary BE \eqref{eq3} and \eqref{eq31} respectively. Instead of choosing bigger domain to represent the zero noundary conditions at infinity one could use \eqref{eqBCVC}.
+\\
 	That the scope of \cite{ref6} and \cite{ref10} focuses on small phase speeds c and non-uniform grid. The function \eqref{eqBCVC} has small impact on the solution forms obtained in those articles and therefore the observations and results discussed here do not contradict to the outcome obtained in \cite{ref6} and \cite{ref10}. Nevertheless the hyperbolic problem \eqref{eq1} with larger phase speed c and also the investigation of the energy functionals ??(nqkoq ot tvoite posledni statii) shifts the priorities into a more detailed investigation of the elliptic Boussinesq equations. Our future goal is to show numerically that equation (1.1) governs the overtaking of wave solutions in 2D as shown in the 1D case [8]. In order to achieve that we have cleared out the problems that appear on the computational boundary of the domain.  The obtained analytical formulas (2.6), (2.8) and (3.3) give great advantage for the numerical computation of the stationary Boussinesq soliton for equations (1.2) and  (3.2) respectively. Instead of choosing a bigger domain to represent the zero boundary conditions at infinity one could use either (2.8) or (3.3).
-
-Other results obtained here which concern convergence of the iterative method, shape of the solution, comparison of the numerical solution from the iterative algorithm [9] with the best-fit formula [12] will be discussed in another article.
-
-
-
-
-
-
-
-
+\\
+Results concerning convergence of the iterative method, shape of the solution, comparison of the numerical solution with the 'best-fit' formulae from \cite{ref10}  will be discussed in another article.
 
 \begin{definition}
 Text of Definition 1.
