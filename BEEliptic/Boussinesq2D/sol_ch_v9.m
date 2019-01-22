@@ -1,5 +1,5 @@
 function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,c1,c2,solutionNorms,tauVector, angl]=...
-    sol_ch_v8(U,x,y,prmtrs,bt1,bt2,al,c,theta,zeroX,zeroY,derivative,P)
+    sol_ch_v9(U,x,y,prmtrs,bt1,bt2,al,c,theta,zeroX,zeroY,derivative,P)
 
 sw = 0;  
 if (nargin == 13) 
@@ -102,6 +102,9 @@ end
            [residualInfNorm(subCounter)]=thetaVector(iterCounter)*max(max(abs(crrntResidual(1:end-8,1:end-8))));
            angl(subCounter) =  Deviation(residualInfNorm,subCounter);
            minResidual = min(minResidual,residualInfNorm(subCounter));
+           if(minResidual > .001)
+               flag = 0;
+           end
            if(mod(iterCounter,500) ==0)
                fprintf('%d \n',iterCounter);
                fprintf('||R||_Inf = %.4e \n', residualInfNorm(subCounter));

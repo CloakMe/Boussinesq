@@ -10,6 +10,7 @@ end
    tau = prmtrs.tau;
    h=prmtrs.h;
    eps = prmtrs.eps;
+   print eps
    checkBnd = prmtrs.checkBoundary;
    tauMax = 10*tau;
    tauIncreasedIteration = 60;
@@ -33,7 +34,7 @@ end
    
    % approxBoundaryF is over the augmented domain 
    % where four points were added top and bottom
-   approxBoundaryF = GetApproximationForBoundary(x(zeroX:end),y(zeroY:end),h,c);
+   approxBoundaryF = GetApproximationForBoundary(x(zeroX:end),y(zeroY:end),h,bt,c);
    
    outerTopBoundaryF=approxBoundaryF(1:end-4,end-3:end); 
    outerRigthBoundaryF=approxBoundaryF(end-3:end,1:end-4); 
@@ -86,7 +87,7 @@ end
             XDerivativeEvenFunctions(P-bt*c^2*(deltaU - U),zeroMatrix,xDerBnd,derivative.second));  
         
         Uup = U + tau*( Pup - (al*bt*thetaVector(iterCounter) )*Usquare +...
-            ((1 - bt*c^2))* deltaU -  (bt*(1 - c^2))*U );
+            ((1 - bt*c^2))* deltaU - (bt*(1 - c^2))*U );
         
         if(mod(iterCounter,6000) ==0)
 
@@ -103,10 +104,13 @@ end
            [residualInfNorm(subCounter)]=thetaVector(iterCounter)*max(max(abs(crrntResidual(1:end-8,1:end-8))));
            angl(subCounter) =  Deviation(residualInfNorm,subCounter);
            minResidual = min(minResidual,residualInfNorm(subCounter));
+           if(minResidual > eps*1000)
+               flag = 0;
+           end
            if(mod(iterCounter,500) ==0)
                fprintf('%d \n',iterCounter);
                fprintf('||R||_Inf = %.4e \n', residualInfNorm(subCounter));
-               fprintf('|ax - axNew| = %.15e \n|ay - ayNew| = %.15e\n', abs( ax-axNew ), abs( ay-ayNew ) );
+               fprintf('|ax - axNew| = %.15e \n|ay - ayNew| = %.15e\n eps = %.15e\n', abs( ax-axNew ), abs( ay-ayNew ), eps );
                
                if(prmtrs.plotResidual)
                    PlotResidual(x(zeroX:end),y(zeroY:end),crrntResidual*thetaVector(iterCounter));

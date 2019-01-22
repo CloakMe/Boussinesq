@@ -20,6 +20,6 @@ function [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,c1,c2,zeroX,zero
     IC = IC/th;
    
     [bigU,bigUTimeDerivative,P,U,theta,c1,c2,solutionNorms,tauVector,angl] =...
-        sol_ch_v9(IC,x,y,prmtrs,bt1,bt2,al,c,th,zeroX,zeroY,derivative);
+        sol_ch_v8(IC,x,y,prmtrs,bt1,bt2,al,c,th,zeroX,zeroY,derivative);
         
 end
