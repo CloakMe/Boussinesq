@@ -91,7 +91,7 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
     %axis([x_st2 x_end2 y_st2 y_end2 -0.5 1]);
     axis([x_st x_end y_st y_end -0.1 .1]);
     colorbar;
-    caxis([-0.1 .1]);
+    caxis([-0.00000001 .00000001]);
     view(0,90);
 
     fig_ss12=figure(12);
@@ -103,6 +103,6 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
     %axis([x_st2 x_end2 y_st2 y_end2 -0.5 1]);
     axis([x_st x_end y_st y_end -0.1 .1]);
     colorbar;
-    caxis([-0.1 .1]);
+    caxis([-0.00000001 .00000001]);
     view(0,90);
 end

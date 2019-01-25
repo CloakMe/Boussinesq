@@ -1,8 +1,16 @@
-function [ flag, ax, ay ] = StopCriteria(x, y, h, zeroX, zeroY, U, axOld, ayOld, eps)
+function [ stopFlag, Px, Py ] = StopCriteria(x, y, zeroX, zeroY, U, axOld, ayOld, minResidual, eps)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
     %eps = 1.000e-010;
+    
+    if(minResidual > eps)
+       stopFlag = 0;
+       Px = [axOld 0];
+       Py = [ayOld 0];
+       return;
+    end
+           
     midX = floor(length(x(zeroX:end))/2);
     midY = floor(length(y(zeroY:end))/2);
     
@@ -12,14 +20,11 @@ function [ flag, ax, ay ] = StopCriteria(x, y, h, zeroX, zeroY, U, axOld, ayOld,
     Py = polyfit(newY, (newY.^2).*U(1,midY:end), 1);
 
     Px = polyfit(newX', (newX'.^2).*U(midX:end,1), 1);
-
-    ax = Px(1);
-    ay = Py(1);
-    
-    if(abs(ax - axOld) < eps && abs(ay - ayOld) < eps)
-        flag = 1;
+   
+    if( abs(Px(1) - axOld) < eps && abs(Py(1) - ayOld) < eps )
+        stopFlag = 1;
     else
-        flag = 0;
+        stopFlag = 0;
     end
     
 end

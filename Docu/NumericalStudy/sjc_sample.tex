@@ -154,7 +154,7 @@ Numerical Study of Traveling Wave Solutions to 2D Boussinesq  Equation
 
 \begin{abstract}\noindent{\sc Abstract.}
 The aim of this paper is to evaluate stationary  propagating  wave solutions  
- to the two dimensional Boussinesq  equation. To solve the resulting nonlinear fourth order elliptic  problem we use a  combination of high order finite difference schemes, an iterative procedure  and  new asymptotic boundary conditions.   A number of numerical results are obtained for the validation of the method and for dependence of the wave's shape on the velocity $c$ and dispersion parameters. We give also a comparison with  the numerical results and best-fit formulae given in \cite{Ch2011,Ch2012}.
+ to the two dimensional Boussinesq equation. To solve the resulting nonlinear fourth order elliptic  problem we use a  combination of high order finite difference schemes, an iterative procedure  and  new asymptotic boundary conditions.   A number of numerical results are obtained for the validation of the method and for dependence of the wave's shape on the velocity $c$ and dispersion parameters. We give also a comparison with  the numerical results and best-fit formulae given in \cite{Ch2011,Ch2012}.
 \end{abstract}
 \footnotetext{This work was supported by the Institute of Mathematics and Informatics, Bulgarian Academy of Sciences.}
 
@@ -237,22 +237,22 @@ If the condition $c^2 < \min (1/ \beta,1)$ holds then  \rf{eq3} is an elliptic e
 
 Problem \rf{eq3} can be rewritten  as a  system of two elliptic equations of second order in different ways. We expect that  the derivatives $v_{xx}$ in $x $ direction  will be smaller than the derivative $v_{yy}$ in $y$ direction (since the solution travels in $y$ direction). Therefore the equality $v_{yy} = \Delta v- v_{xx}$ is substituted in \rf{eq3} and, after  introducing an auxiliary  function $w$, we obtain the equivalent to \rf{eq3} system
 \begin{equation}\label{eq4}
-- (1-c^2 \beta) \Delta v + \beta (1-c^2) v + \alpha \beta v^2 = w, 
+- (1-\beta c^2) \Delta v + \beta (1-c^2) v - \alpha \beta v^2 = w, 
 \end{equation}
 \begin{equation}\label{eq44}
- - \Delta w =  c^2 \beta (E- \Delta) v_{xx}. 
+ - \Delta w = c^2 \beta (E- \Delta) v_{xx}. 
 \end{equation}
 We  seek  non-trivial solutions to \rf{eq4}-\rf{eq44}. To avoid the trivial solution we proceed as in \cite{Ch2012}: we fix the value of the solution $v$ at the point $(0,0)$,    $v(0,0)=\theta $ and introduce  new  functions: $\widehat{v}=v/{\theta} $ and $\widehat{w}=w/{\theta} $. Thus  
 $ \widehat{v}(0,0)=1$ and 
 \begin{equation}\label{eq45}
 \begin{split}
- - (1-c^2 \beta) \Delta \widehat{v} + \beta (1-c^2) \widehat{v} + \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
+ - (1 - \beta c^2) \Delta \widehat{v} + \beta (1-c^2) \widehat{v} - \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
  - \Delta \widehat{w} =  c^2 \beta (E- \Delta) \widehat{v}_{xx}.\;\;\;\; \;\;\;\;  \;\;\;\;  \;\;\;\; 
 \end{split}
 \end{equation}
 The value of $\theta $ is found from the  equation 
 \begin{equation}\label{eqtheta}
-\theta = \frac{ (1-c^2 \beta) \Delta \widehat{v} - \beta (1-c^2) \widehat{v} +\widehat{w}}{\alpha \beta} |_{x=0,y=0} .
+\theta = \frac{ (1-c^2 \beta) \Delta \widehat{v} - \beta (1-c^2) \widehat{v} +\widehat{w}}{\alpha \beta \widehat{v}^2 } |_{x=0,y=0} .
 \end{equation}
 In order to evaluate numerically the solution to \rf{eq45} we introduce artificial time, add false  time derivatives and  get
 \begin{align}\label{eq5}
@@ -653,7 +653,7 @@ We conclude that the discrete  derivative $v_{\widehat{xxxx}}$ is bounded and co
 		\centerline{$\beta = 1$}
 		\centerline{$c = 0.1, 0.5, 0.9$ (top to bottom)}
 	\end{minipage}
-	\caption{Difference between the numerical solution $v$ and best fit  formulae $v^*$ from \cite{Ch2011} }
+	\caption{Difference between the numerical solution $v$ and best fit formulae $v^*$ from \cite{Ch2011} }
 	\label{fig:difference}
 \end{figure}
 

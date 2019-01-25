@@ -1,17 +1,17 @@
 clear;clc;
 %return
 tic
-x_st = -20.0;    y_st = -20.0;
-x_end = 20.0;    y_end = 20.0;
+x_st = -30.0;    y_st = -30.0;
+x_end = 30.0;    y_end = 30.0;
 x_st2 = -30.0;   y_st2 = -30.0;
 x_end2 = 30.0;   y_end2 = 30.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
 
-UseExtendedDomain=1;
+UseExtendedDomain=0;
 
-h = 0.2; 
+h = 0.05;
 x=x_st:h:x_end; 
 y=y_st:h:y_end; 
 %tau = 0.00114425*8;% getTau(h,x_end,y_end)/20;
@@ -25,7 +25,7 @@ sy = (length(y)+1)/2
    c = 0.45; 
    iterMax = 9000000;
    %eps = 1/max(y_end^6,((1-c^2)*x_end^2)^3);
-   eps = 1.0e-09;
+   eps = 1.0e-010;
    ICSwitch=0;
    % IC_switch = 0 ->christov sech formula
    % IC_switch = 1 ->nat42 formula
@@ -38,8 +38,8 @@ sy = (length(y)+1)/2
    prmtrs = struct('h',{h},'tau',{tau},'iterMax',{iterMax},'eps',{eps},'ICSwitch',{ICSwitch},...
        'plotResidual',{plotResidual},'plotBoundary',{plotBoundary},'plotAssympt',{plotAssympt},'checkBoundary',{checkBoundary});
    
-   firstDerivative = GetFiniteDifferenceCoeff([-2,-1,0,1,2],1)'/h;
-   secondDerivative = GetFiniteDifferenceCoeff([-2,-1,0,1,2],2)'/h^2;
+   firstDerivative = GetFiniteDifferenceCoeff([-1,0,1],1)'/h;
+   secondDerivative = GetFiniteDifferenceCoeff([-1,0,1],2)'/h^2;
    derivative = struct('first',{firstDerivative},'second',{secondDerivative});
    
   [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,c1,c2,zeroX,zeroY,tauVector,angl]=...
@@ -57,11 +57,11 @@ sy = (length(y)+1)/2
   end
   toc
   save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
-      '_h0' num2str(h*1000) '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
+      '_h0' num2str(h*100) '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
 
 PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
 PrintResults(solutionNorms,c1,c2);
-PlotAssymptVsSolu( x, y, h, zeroX, zeroY, bigU, c1*theta(end), c/sqrt(bt) );
+PlotAssymptVsSolu( x, y, h, zeroX, zeroY, bigU, c1*theta(end), c);
 return;
 % Continue from lasth iteration:
 lastTheta=theta(end); lastU=U; lastP = P;  last_tau = tauVector(end); 
@@ -71,7 +71,7 @@ lastTheta=theta(end); lastU=U; lastP = P;  last_tau = tauVector(end);
 save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
       '_h0' num2str(h*100) '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
 return;
-DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDerivative,newBigIC,U,compBox,secondDerivative);
+DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDerivative,bigIC,U,compBox,secondDerivative);
 
 PlotAssymptVsSolu( x, y, h, zeroX, zeroY, bigU, c1*theta(end), c/sqrt(bt) );
 PlotAssymptotics(x,y,h,zeroX,zeroY,bigU);

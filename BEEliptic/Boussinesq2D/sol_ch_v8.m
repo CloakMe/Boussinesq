@@ -10,17 +10,18 @@ end
    tau = prmtrs.tau;
    h=prmtrs.h;
    eps = prmtrs.eps;
-   print eps
    checkBnd = prmtrs.checkBoundary;
    tauMax = 10*tau;
    tauIncreasedIteration = 60;
    tauDecreasedIteration = 1;
    iterMax = prmtrs.iterMax;
    bt = bt1/bt2;
+   autoStop = 0;
+   afterCounter = 5000;
    
    sx = length(x);
    sy = length(y);
-   stopSwitch=0;
+   manualStop=0;
    boundaryHit = 0;
    sw_div = 0;
 
@@ -34,7 +35,7 @@ end
    
    % approxBoundaryF is over the augmented domain 
    % where four points were added top and bottom
-   approxBoundaryF = GetApproximationForBoundary(x(zeroX:end),y(zeroY:end),h,bt,c);
+   approxBoundaryF = GetApproximationForBoundary(x(zeroX:end),y(zeroY:end),h,c);
    
    outerTopBoundaryF=approxBoundaryF(1:end-4,end-3:end); 
    outerRigthBoundaryF=approxBoundaryF(end-3:end,1:end-4); 
@@ -51,13 +52,13 @@ end
     c1 = FindBoundaryConstants(U,0*U,innerBoundaryUF,innerBoundaryPF,step);
     deltaU = DeltaEvenFunctions(U,zeroMatrix,c1*outerRigthBoundaryF,c1*outerTopBoundaryF,derivative.second);
     if(sw == 0)
-        P = bt*(1-c^2)* U - (1 - bt*c^2)*deltaU + theta*al*bt*U.^2;
+        P = bt*(1-c^2)*U - (1-bt*c^2)*deltaU + theta*al*bt*U.^2;
     end
      
      iterCounter=1;
      subCounter=1;
      Usquare = U .^2;
-     thetaVector(iterCounter) = (P(1,1) -  bt*(1-c^2)*U(1,1) + (1 - bt*c^2) * deltaU(1,1) )/(al*bt*Usquare(1,1));
+     thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*deltaU(1,1) )/(al*bt*Usquare(1,1));
      residualInfNorm(1) =  GetResidualInfNorm(al,bt,c,thetaVector,0,iterCounter,U,Usquare,...
          deltaU,zeroMatrix,c1*outerRigthBoundaryF,c1*outerTopBoundaryF,derivative.second);
      
@@ -76,12 +77,12 @@ end
         %c1 = 0; c2 = 0;
         deltaU = DeltaEvenFunctions(U,zeroMatrix,c1*outerRigthBoundaryF,c1*outerTopBoundaryF,derivative.second); %<--- TIME CONSummable
         Usquare = U .^2;
-        thetaVector(iterCounter) = (P(1,1) -  bt*(1-c^2)*U(1,1) + (1 - bt*c^2) * deltaU(1,1) )/(al*bt*Usquare(1,1));
+        thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*deltaU(1,1) )/(al*bt*Usquare(1,1));
          % TIME CONSumable       |
          %                      \|/
          %                       '
         yDerBnd = c2*bt*(1-c^2)*outerTopBoundaryF;
-        xDerBnd = bt*(c^2*c1 + c2*(1-c^2))*outerRigthBoundaryF;
+        xDerBnd = (c1*bt*c^2 + c2*bt*(1-c^2))*outerRigthBoundaryF;
         
         Pup = P + (tau)*(YDerivativeEvenFunctions(P,zeroMatrix,yDerBnd,derivative.second) +...
             XDerivativeEvenFunctions(P-bt*c^2*(deltaU - U),zeroMatrix,xDerBnd,derivative.second));  
@@ -89,29 +90,24 @@ end
         Uup = U + tau*( Pup - (al*bt*thetaVector(iterCounter) )*Usquare +...
             ((1 - bt*c^2))* deltaU - (bt*(1 - c^2))*U );
         
-        if(mod(iterCounter,6000) ==0)
-
-        end
         UvsUupInfNorm(iterCounter) = max(max(abs(U-Uup)));
         
-        if(mod(iterCounter,10) ==0)
+        if(mod(iterCounter,10) ==0)        
            
-           [flag, axNew, ayNew] = StopCriteria(x, y, h, zeroX, zeroY, U, ax, ay, eps);
            crrntResidual = Get2DResidual(al,bt,c,thetaVector,c1,iterCounter,U,Usquare,deltaU,...
                zeroMatrix,outerRigthBoundaryF,outerTopBoundaryF,derivative.second);
            
            subCounter=subCounter+1;
            [residualInfNorm(subCounter)]=thetaVector(iterCounter)*max(max(abs(crrntResidual(1:end-8,1:end-8))));
-           angl(subCounter) =  Deviation(residualInfNorm,subCounter);
            minResidual = min(minResidual,residualInfNorm(subCounter));
-           if(minResidual > eps*1000)
-               flag = 0;
-           end
+
+           [flag, Px, Py] = StopCriteria(x, y, zeroX, zeroY, U, ax, ay, minResidual, eps);
+           
            if(mod(iterCounter,500) ==0)
                fprintf('%d \n',iterCounter);
                fprintf('||R||_Inf = %.4e \n', residualInfNorm(subCounter));
-               fprintf('|ax - axNew| = %.15e \n|ay - ayNew| = %.15e\n eps = %.15e\n', abs( ax-axNew ), abs( ay-ayNew ), eps );
-               
+               fprintf('|ax - axNew| = %.15e \n|ay - ayNew| = %.15e\n eps = %.15e\n', abs( ax-Px(1) ), abs( ay-Py(1) ), eps );
+                
                if(prmtrs.plotResidual)
                    PlotResidual(x(zeroX:end),y(zeroY:end),crrntResidual*thetaVector(iterCounter));
                end
@@ -119,25 +115,32 @@ end
                    PlotBoundary(x,y,zeroX, U, outerTopBoundaryF,c1);
                end
                if(prmtrs.plotAssympt)
-                   PlotAssymptotics(x,y,h,zeroX,zeroY,U);
+                   PlotAssymptVsSolu( x(zeroX:end), y(zeroY:end), h, 1, 1, U, c1, c);
                end
                
-               stopSwitch = Stop(fig9,stopSwitch);
+               manualStop = Stop(fig9,manualStop);
            end
-           ax = axNew;
-           ay = ayNew;
+           ax = Px(1);
+           ay = Py(1);
            boundaryHit = IsBoundaryHit(checkBnd,crrntResidual*thetaVector(iterCounter),...
                residualInfNorm,subCounter,derivative.second);
            sw_div = IsAlgoDiverging(subCounter,residualInfNorm); 
+           
+           angl(subCounter) =  Deviation(residualInfNorm,subCounter);
         end
            
-        tauVector(iterCounter) = tau;
-        
+        tauVector(iterCounter) = tau;        
         [tau, tauMax, tauIncreasedIteration, tauDecreasedIteration] =...
         DefineCurrentTau(subCounter, iterCounter, iterMax, tau,  tauMax, tauIncreasedIteration,...
-            tauDecreasedIteration, residualInfNorm,UvsUupInfNorm, minResidual, angl , stopSwitch,crrntResidual);
-    
-        if(sw_div ==1 || stopSwitch ==2 || boundaryHit ==1 || iterCounter ==iterMax || flag ==1)
+            tauDecreasedIteration, residualInfNorm,UvsUupInfNorm, minResidual, angl , manualStop, flag, crrntResidual);
+        
+        if( flag == 1 )
+           afterCounter = afterCounter - 1; 
+        end
+        if(afterCounter <= 0)
+            autoStop = 1;
+        end
+        if(sw_div ==1 || manualStop ==2 || boundaryHit ==1 || iterCounter ==iterMax || autoStop ==1)
             break;
         end
     end

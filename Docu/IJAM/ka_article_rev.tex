@@ -90,7 +90,7 @@ The paper considers stationary propagating wave solutions to a two dimensional B
 			\hline 	
       $U$        &   $x, y, r$                           & analytical solution for the elliptic equation \eqref{eq3} \\
 			\hline 	
-      $\bar v$        &  $\bar x, \bar y, \bar r$  & analytical solution for the Laplace equation \eqref{eqLap} ( Section 2 only)  \\
+      $\bar v$        &  $\bar x, \bar y, \bar r$  & analytical solution for the Laplace equation \eqref{eqLap} ( Section 3 only)  \\
 			\hline 	
      $\tilde U, \tilde W$ & $ \tilde x, \tilde y, \tilde r$  &  analytical solution for the elliptic system \eqref{eq31} after variable change \eqref{eqVCN} \\
 			\hline 	
@@ -158,7 +158,7 @@ Problem \eqref{eq3} can be rewritten as a system of two elliptic equations of se
 \begin{equation}\label{eq6}
 \begin{split}
 &(1-c^2) U + ( c^2\beta_1 -  \beta_2) \Delta U  - f (U) = W, \\
-&\Delta W =  -c^2  (E- \beta_1 \Delta) U_{xx}.
+& -\Delta W = c^2  (E- \beta_1 \Delta) U_{xx}.
 \end{split}
 \end{equation}
 
@@ -228,7 +228,7 @@ Thus, the system \eqref{eq6} is transformed into new elliptic system:
 \begin{equation}\label{eq31}
 \begin{split}
 &(\beta-\tilde c ^2) \tilde U  -(1- \tilde c^2) \Delta \tilde U - \beta f( \tilde U ) = \tilde W, \\
-&\Delta \tilde W =  - \tilde c^2 (E- \Delta) \tilde U_{\tilde x \tilde x},
+&-\Delta \tilde W = \tilde c^2 (E- \Delta) \tilde U_{\tilde x \tilde x},
 \end{split}
 \end{equation}
 with $\beta = \beta_1 / \beta_2$ and $ \tilde c = \sqrt {\beta} c$.
@@ -238,20 +238,20 @@ $ \widehat{U}(0,0)=1$ and from \eqref{eq31} we get
 \begin{equation}\label{eq32}
 \begin{split}
 & (\beta-\tilde c^2) \widehat{U}  -(1-\tilde c^2) \Delta \widehat{U} - \alpha \beta \theta \widehat{U}^2 = \widehat{W}, \\
-&\Delta \widehat{W} = - \tilde c^2 (E- \Delta) \widehat{U}_{\tilde x \tilde x}.
+&-\Delta \widehat{W} = \tilde c^2 (E- \Delta) \widehat{U}_{\tilde x \tilde x}.
 \end{split}
 \end{equation}
 
 The value of $\theta $ is found from the  equation
 \begin{equation}\label{eqtheta}
-\theta = \frac{ (1-\tilde c^2 )\Delta \widehat{U} - (\beta-\tilde c^2) \widehat{U} +\widehat{W}}{\alpha \beta} |_{\tilde x=0,\tilde y=0} .
+\theta = \frac{ (1-\tilde c^2 )\Delta \widehat{U} - (\beta-\tilde c^2) \widehat{U} +\widehat{W}}{\alpha \beta  \widehat{U}^2 } |_{\tilde x=0,\tilde y=0} .
 \end{equation}
 
 In order to evaluate numerically the solution to \eqref{eq32} artificial time is introduced, false time derivatives are added and one gets
 \begin{equation}\label{eq33}
 \begin{split}
 &\frac {\partial \widehat{U}}{\partial t} + (\beta-\tilde c^2) \widehat{U} - (1-\tilde c^2 ) \Delta \widehat{U} - \alpha \beta \theta \widehat{U}^2 = \widehat{W}, \\
-&\frac {\partial \widehat{W}}{\partial t} + \Delta \widehat{W} = - \tilde c^2 (E- \Delta) \widehat{U}_{\tilde x \tilde x}.
+&\frac {\partial \widehat{W}}{\partial t} - \Delta \widehat{W} =\tilde c^2 (E- \Delta) \widehat{U}_{\tilde x \tilde x}.
 \end{split}
 \end{equation}
 
@@ -328,7 +328,7 @@ where  $( \tilde x_i, \tilde y_j) \in \Omega_B$. The set $\Omega_B$ includes not
 \section{Validation tests}
 
 Two tests are made to verify the new condition on the computational boundary where the finite difference schemes are fourth order of approximation and the following constants are fixed:
- $\alpha = 1, \beta = 3$  and  $ \tilde c = 0.45$.
+ $\alpha = 1, \beta = 3$  and  $c = 0.45$.
 
 \subsection{Test 1.}
 
