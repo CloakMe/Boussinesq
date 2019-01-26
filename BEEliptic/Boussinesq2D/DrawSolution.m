@@ -32,9 +32,9 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
 
     Yk = bigU;
     bigZeroMatrix=zeros(size(Yk));
-    dyy_yk = c^2*YDer(Yk,secondDerivative);
+    dyy_yk = bt*c^2*YDer(Yk,secondDerivative);
     deltaU = Delta(Yk,bigZeroMatrix,bigZeroMatrix,bigZeroMatrix,bigZeroMatrix,bigZeroMatrix,secondDerivative);
-    residual =  Delta(bt*Yk + al*bt*Yk.^2 -deltaU +dyy_yk ,...
+    residual =  Delta(bt*Yk - deltaU + al*bt*Yk.^2 + dyy_yk ,...
         bigZeroMatrix,bigZeroMatrix,bigZeroMatrix,bigZeroMatrix,bigZeroMatrix,secondDerivative) - dyy_yk;
     figure(4)
     mesh(x(9:end-8),y(9:end-8),residual(9:end-8,9:end-8)');
@@ -91,7 +91,7 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
     %axis([x_st2 x_end2 y_st2 y_end2 -0.5 1]);
     axis([x_st x_end y_st y_end -0.1 .1]);
     colorbar;
-    caxis([-0.1 .1]);
+    caxis([-0.00000001 .00000001]);
     view(0,90);
 
     fig_ss12=figure(12);
@@ -103,6 +103,6 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
     %axis([x_st2 x_end2 y_st2 y_end2 -0.5 1]);
     axis([x_st x_end y_st y_end -0.1 .1]);
     colorbar;
-    caxis([-0.1 .1]);
+    caxis([-0.00000001 .00000001]);
     view(0,90);
 end

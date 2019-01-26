@@ -4,10 +4,9 @@ function [yLen,xLen,yHeiA,xHeiA] = GetInnerNodesForComparingBoundaryFunctions(xL
 % and the current solution (with respect
 % to the current iteration) are to be compared on the following node numbers:
 % (xHeiA,yLen) and (xLen,yHeiA)
-  
-   yLen = 1:step:(floor((yLength-3*step - 1)/step)*step);
-   xLen = 1:step:(floor(xLength/step)*step);
-   yHeiA = yLength-3*step:step:yLength;
-   xHeiA = xLength-3*step:step:xLength;
 
+   yLen = 1:step:yLength;
+   xLen = 1:step:floor(3*yLength/4);
+   yHeiA = floor(3*yLength/4):step:yLength;
+   xHeiA = floor(3*xLength/4):step:xLength;
 end
