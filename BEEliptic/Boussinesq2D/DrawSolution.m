@@ -41,7 +41,15 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
     title('Residual (no boundary values)')
     %mesh(x,y,z4')
     %mesh(x(points(1):points(2)),y(points(3):points(4)),z4')
+    
+    figure(14)
+    mesh(x(3:end-2),y(3:end-2),residual(3:end-2,3:end-2)');
+    title('Residual (with 2 boundary values)')
 
+    figure(15)
+    mesh(x,y,residual');
+    title('Residual (with all boundary values)')
+    
     figure(5)
     plot(y,(y.^2).*bigU(zeroX,:)/theta(end)) %(1+end)/2  
     xlabel('y')
@@ -60,7 +68,7 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
     xlabel('x')
     title('y=y_s_t cross-section');
 
-    figure(9);
+    figure(19);
     mesh(x,y,bigUTimeDer');
     xlabel('x');    ylabel('y');
     title('du/dt');
@@ -89,7 +97,7 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
     xlabel('x');    ylabel('y');
     title('end solution')
     %axis([x_st2 x_end2 y_st2 y_end2 -0.5 1]);
-    axis([x_st x_end y_st y_end -0.1 .1]);
+    axis([x_st x_end y_st y_end -0.01 .01]);
     colorbar;
     caxis([-0.00000001 .00000001]);
     view(0,90);
@@ -101,7 +109,7 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
     xlabel('x');    ylabel('y');
     title('IC')
     %axis([x_st2 x_end2 y_st2 y_end2 -0.5 1]);
-    axis([x_st x_end y_st y_end -0.1 .1]);
+    axis([x_st x_end y_st y_end -0.01 .01]);
     colorbar;
     caxis([-0.00000001 .00000001]);
     view(0,90);

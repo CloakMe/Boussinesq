@@ -9,9 +9,9 @@ function [tau, tauMax, tauIncreasedIteration, tauDecreasedIteration] =...
             tauMax = 0.98*tau;  
             tau = 0.72*tau; 
         end
-        vecX = abs( diff( sign( crrntResidual(floor((1+end)/2):end, 1) ) ) );
-        vecY = abs( diff( sign( crrntResidual(1, floor((1+end)/2):end) ) ) );
-        vec = histc(vecX, unique(vecX)) + histc(vecX, unique(vecY));
+        %vecX = abs( diff( sign( crrntResidual(floor((1+end)/2):end, 1) ) ) );
+        %vecY = abs( diff( sign( crrntResidual(1, floor((1+end)/2):end) ) ) );
+        %vec = histc(vecX, unique(vecX)) + histc(vecX, unique(vecY));
         warnFlag = (abs(crrntResidual(1,1) - crrntResidual(1,3))*3 < abs(crrntResidual(1,1) - crrntResidual(1,2)) &&...
             abs(crrntResidual(1,2) - crrntResidual(1,4))*3 < abs(crrntResidual(1,2) - crrntResidual(1,3)) );
         if(iterCounter > 75 && warnFlag == 1)

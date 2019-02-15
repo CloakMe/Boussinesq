@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%  revisions of 30 January 2019 - by V. Kiryakova %%%%%%%%%%%%%%%%
 
 %%% SAMPLE_IJAM file
 %%% For LaTeX users:
@@ -14,6 +14,7 @@
 \usepackage{array}
 %%\usepackage{wrapfig}
 %%\usepackage{bmpsize}
+%\usepackage{epsfig}
 
 
 \newcommand{\dO}{\partial\Omega_{h}}
@@ -55,7 +56,7 @@
 
 \title{New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation}
 
-\author{K. Angelow  \\[6pt]
+\author{Krassimir Angelow  \\[6pt]
 Institute of Mathematics and Informatics\\
 Bulgarian Academy of Sciences, Acad. G.~Bonchev Block 8\\
 Sofia -- 1113, BULGARIA\\
@@ -69,7 +70,7 @@ The paper considers stationary propagating wave solutions to a two dimensional B
 
 \medskip
 
-{\bf Math. Subject Classification:} Applications of Mathematics in Technical and Natural Sciences
+{\bf Math. Subject Classification:} ............................  %%%% Applications of Mathematics in Technical and Natural Sciences %%%
 
 {\bf Key Words and Phrases:} stationary wave, two dimentional Boussinesq equation, boundary, soliton, uniform grid, false transient method
 
@@ -90,7 +91,7 @@ The paper considers stationary propagating wave solutions to a two dimensional B
 			\hline 	
       $U$        &   $x, y, r$                           & analytical solution for the elliptic equation \eqref{eq3} \\
 			\hline 	
-      $\bar v$        &  $\bar x, \bar y, \bar r$  & analytical solution for the Laplace equation \eqref{eqLap} ( Section 3 only)  \\
+      $\bar v$        &  $\bar x, \bar y, \bar r$  & analytical solution for the Laplace equation \eqref{eqLap} (Section 3 only)  \\
 			\hline 	
      $\tilde U, \tilde W$ & $ \tilde x, \tilde y, \tilde r$  &  analytical solution for the elliptic system \eqref{eq31} after variable change \eqref{eqVCN} \\
 			\hline 	
@@ -121,9 +122,9 @@ A derivation of the BE from the original Boussinesq system with discussion on th
 %\\
 
 The one-dimensional (1D) BE is famous with its approximation for long waves propagating in shallow water \cite{ref2, ref3}. Furthermore, 1D BE admits localized wave solutions (called ‘solitons’),
-\begin{align}
-&u_{tt} - u_{xx} -\beta_1  u_{xxtt} +\beta_2 u_{xxxx} + f(u)_{xx} =0, \label{eq2}
-\end{align}
+$$
+u_{tt} - u_{xx} -\beta_1  u_{xxtt} +\beta_2 u_{xxxx} + f(u)_{xx} =0,
+$$
 which maintain shape and emerge unchanged from collisions with other traveling waves, appear to be a very suitable model for particles \cite{ref4, ref5}.
 Let us find a stationary, traveling in y direction with phase velocity $c$, wave solution to the 2D BE, i.e. a solution to \eqref{eq1}, \eqref{eq1B} of type $u(x,y,t)=U(x,y - ct)$. The waves U satisfy the nonlinear fourth order elliptic equation:
 \begin{equation}
@@ -135,7 +136,7 @@ where $E$ is the identity operator. If the condition $c<min(1/\sqrt{\beta}, 1)$,
 The main goal is to evaluate numerically the stationary solitary waves U to \eqref{eq1}, which are solutions to \eqref{eq3}. In the future, it is planned to investigate such waves as potential 2D  ‘soliton-like’ candidates for the nonstationary equation \eqref{eq1}. This includes but is not limited to evolution in time of the resultant shape and collision of two surges.
 %\\
 
-Different techniques have been applied through the investigation of the elliptic problem \eqref{eq3}. The false transient method and the galerkin spectral method are used in \cite{ref6,ref9} ; the fourier galerkin method is implemented in \cite{ref8,ref9} and the ``perturbation solution” - in \cite{ref10}.
+Different techniques have been applied through the investigation of the elliptic problem \eqref{eq3}. The false transient method and the galerkin spectral method are used in \cite{ref6,ref9} ; the Fourier Galerkin method is implemented in \cite{ref8,ref9} and the ``perturbation solution” - in \cite{ref10}.
 We emphasize that both problems, Eq. \eqref{eq1} and Eq. \eqref{eq3}, are posed on unbounded domain – the plane $R^2$. Thus we have to numerically limit the computational domain so that the results could approximate the exact solution for the unbounded domain and, moreover, to keep the overall computational cost reasonable.
 Thus an artificial boundary $\Omega$ and artificial boundary conditions (BC) are stated, known in the literature as ‘absorbing’ BC or ‘nonreflecting’ BC (see \cite{ref11} for a wave equation, \cite{ref12} for a Helmholtz type equation, \cite{ref13} for elliptic second order equation, etc.).
 %\\
@@ -173,9 +174,9 @@ Now consider equation \eqref{eq3} for sufficiently large values of r. We insert 
 
 
 We apply the following change of variables
-\begin{equation}
-\bar{x} = \sqrt{1-c^2}x , \quad  \bar{y} = y, \quad \bar{v}( \bar{x}, \bar{y}) := \bar{U} (x, y)\label{eqVC}
-\end{equation}
+$$
+\bar{x} = \sqrt{1-c^2}x , \quad  \bar{y} = y, \quad \bar{v}( \bar{x}, \bar{y}) := \bar{U} (x, y)
+$$
 and transform \eqref{eq8} into the Laplace equation for the new function $\bar{v}$
 \begin{equation} \label{eqLap}
 \Delta \bar{v} = 0, \quad \bar{v}( \bar{x}, \bar{y}) \sim \frac{1}{\bar{r^2}}, \quad |\bar{r}|=\sqrt{\bar{x}^2 + \bar{y}^2} \rightarrow \infty.
@@ -244,7 +245,7 @@ $ \widehat{U}(0,0)=1$ and from \eqref{eq31} we get
 
 The value of $\theta $ is found from the  equation
 \begin{equation}\label{eqtheta}
-\theta = \frac{ (1-\tilde c^2 )\Delta \widehat{U} - (\beta-\tilde c^2) \widehat{U} +\widehat{W}}{\alpha \beta  \widehat{U}^2 } |_{\tilde x=0,\tilde y=0} .
+\theta = \frac{ (1-\tilde c^2 )\Delta \widehat{U} - (\beta-\tilde c^2) \widehat{U} +\widehat{W}}{\alpha \beta \widehat{U}^2} |_{\tilde x=0,\tilde y=0} .
 \end{equation}
 
 In order to evaluate numerically the solution to \eqref{eq32} artificial time is introduced, false time derivatives are added and one gets
@@ -262,7 +263,7 @@ Thus the solution to the steady coupled elliptic system \eqref{eq32} is replaced
 The unbounded domain $R^2$ is replaced by a sufficiently large computational domain $\Omega$. Due to the obvious symmetry of the problem, we can look for the solution only in the first quadrant $\Omega = [0,L_x] \times[0,L_y]$.
 %\\
 
-The uniform and non-uniform grid define two different investigation approaches to discretization of \eqref{eq33} in $\Omega$. The meshing, that has been predominantly used in most cited papers for the numerical analysis of BE, is the non-uniform one, see e.g. \cite{ref6}. It has big time advantage of generating a fast solution for the system \eqref{eq33}, but also creates a major problem when moving the solution of \eqref{eq33} in the hyperbolic equation \eqref{eq1}. The ultimate goal is to develop an algorithm which investigates collision of two waves with arbitrary phase speeds $\tilde c$. Shifting the traveling waves in the hyperbolic equation on a larger distance, and further colliding two 'soliton-like' solutions requires a uniform grid. Therefore we decide to apply a uniform grid to solve the equation \eqref{eq3} (\eqref{eq33} respectively).
+The uniform and non-uniform grid define two different investigation approaches to discretization of \eqref{eq33} in $\Omega$. The meshing, that has been predominantly used in most cited papers for the numerical analysis of BE, is the non-uniform one, see e.g. \cite{ref6}. It has big time advantage of generating a fast solution for the system \eqref{eq33}, but also creates a major problem when using the solution of \eqref{eq33} as initial data for hyperbolic equation \eqref{eq1}. The ultimate goal is to develop an algorithm which investigates collision of two waves with arbitrary phase speeds $\tilde c$. Shifting the traveling waves in the hyperbolic equation on a larger distance, and further colliding two 'soliton-like' solutions requires a uniform grid. Therefore we decide to apply a uniform grid to solve equation \eqref{eq3} (\eqref{eq33} respectively).
 A uniform grid $\Omega_h$ is defined in the following way
 $$
 \Omega_h = \{(\tilde x_i, \tilde y_j): \tilde x_i = ih, \tilde y_j = jh, i = 0,\cdots ,N_x, j = 0,\cdots , N_y \},
@@ -332,7 +333,7 @@ Two tests are made to verify the new condition on the computational boundary whe
 
 \subsection{Test 1.}
 
-It reviews the behavior of $\mu_u$  defined in  \eqref{eq10} and numerically evaluated in \eqref{eqMin}. In Table 1, for computational domains  $\tilde \Omega_h = [-L_{ x}, L_{ x}] \times  [-L_{ y}, L_{ y}]$
+It reviews the behavior of $\mu_u$  defined in  \eqref{eq10} and numerically evaluated in \eqref{eqMin}. In Table 1, for computational domains  $\tilde \Omega_h = [0, L_{ x}] \times  [0, L_{ y}]$
 with $ L_{ x} = L_{ y}$ = $20, 40, 80, 160$, and fixed domain discretiization step $h = 0.5$, the following quantities are presented at the end of the iteration procedure:
 
 \begin{description}
@@ -392,7 +393,7 @@ The results obtained for  $\mu_w$  exhibit the same convergence, and are exclude
 	\label{fig1}
 \end{figure}
 
-The second test reveals the asymptotics of the numerical solution presented in log-log plots. Pictures in Figure 1 demonstrate important aspects of solution's cross sections on four different grids. The size of the computational domain is kept constant  $\tilde \Omega_h = [-50, 50]\times[-50, 50]$, $c = \tilde c / \sqrt \beta = 0.45$ and only the discretization step changes, $h = 0.1, 0.2, 0.4, 0.8$. 
+The second test reveals the asymptotics of the numerical solution presented in log-log plots. Pictures in Figure 1 demonstrate important aspects of solution's cross sections on four different grids. The size of the computational domain is kept constant  $\tilde \Omega_h = [0, 50]\times[0, 50]$, $c = \tilde c / \sqrt \beta = 0.45$ and only the discretization step changes, $h = 0.1, 0.2, 0.4, 0.8$.
 
 The first two horizontal pictures in Figure 1 present logarithmic scaled plots of the absolute value of the numerical solution $\widehat{U}$  . One can see the decay $\frac{1}{\tilde r^2}$  at infinity guided by the black line. The next two horizontal pictures show the numerical solution scaled by a factor $\tilde r^2$  . Thus, these graphs display  $\tilde r^2\widehat{U}$  along the vertical z axis. One can observe that the scaled profile of the solution approximates a constant for large values of $ \tilde r$.  These plots are in agreement with the new boundary function $\widehat B(\tilde{x} , \tilde y)$ found in \eqref{eqBCVC} and with the asymptotics of the solution. Further using formulae \eqref{eqBCVC}  for $\tilde x = 0$ or for $\tilde y = 0$ one has for sufficiently large $ \tilde r $
 \begin{equation}\label{eqCross}
@@ -420,7 +421,7 @@ $c = 0.9, \beta = 1$ and $c = 0.5, \beta = 3$.
 	In this paper we evaluate the stationary propagating in direction $y$ with speed $c$ solutions to 2D BE. An iteration method is used to compute the solution of the corresponding fourth order nonlinear  elliptic equation. A high order of approximation finite difference scheme is applied for the discretization of spatial derivatives.
 %\\
 
-A new BC is proposed on the boundary of the computational domain. Later the BC is verified by computation on different grids, using diverse speeds $c$ and dispersion parameters $\beta$. Near the origin the form of the computed here stationary waves is similar to the presented in \cite{ref10} form of 'best-fit' stationary solutions, but near the computational boundary both solutions are quite different.
+A new BC is proposed on the boundary of the computational domain. Later the BC is verified by computation on different grids, using different speeds $c$ and dispersion parameters $\beta$. Near the origin the form of the computed here stationary waves is similar to the presented in \cite{ref10} form of 'best-fit' stationary solutions, but near the computational boundary both solutions are quite different.
 %\\
 
 The obtained analytical formulae \eqref{eqBCVC} of the solution near the boundary give great advantage for the numerical computation of the solutions to the stationary BE \eqref{eq3} and \eqref{eq31} respectively. Instead of choosing bigger domain to represent the zero boundary conditions at infinity, one could use \eqref{eqBCVC}.
@@ -429,62 +430,61 @@ The obtained analytical formulae \eqref{eqBCVC} of the solution near the boundar
 Results concerning convergence of the iterative method, shape of the solution, comparison of the numerical solution with the 'best-fit' formulae from \cite{ref10} will be discussed in another article.
 
 
-%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%
+%%%%%%%%%%% REFERENCES %%%%%%%%% re=edited again by V.K. 30 Jan. 2019 %%%%%%%
 \begin{thebibliography}{99} \normalsize
 
-\bibitem{ref1} C.I. Christov, An energy-consistent dispersive shallow-water model,  {\it Wave Motion }, \textbf{34} (2001), 161-174.
+\bibitem{ref1} C.I. Christov, An energy-consistent dispersive shallow-water model,  {\it Wave Motion}, \textbf{34} (2001), 161-174.
 
-\bibitem{ref2} J. Boussinesq, %J. (1871). “%
-Theorie de l’intumescence liquide, applelee onde solitaire ou de translation, se propageant dans un canal rectangulaire, % ”,  
+\bibitem{ref2} J. Boussinesq,
+Theorie de l’intumescence liquide, applelee onde solitaire ou de translation, se propageant dans un canal rectangulaire,
 {\it Comptes Rendus de l’Academie des Sciences} \textbf{72} (1871), 755-759.
 
-\bibitem{ref3} Boussinesq, 
-Theorie des ondes et des remous qui se propagent le long d’un canal rectangulaire horizontal, 
+\bibitem{ref3} J. Boussinesq,
+Theorie des ondes et des remous qui se propagent le long d’un canal rectangulaire horizontal,
 en communiquant au liquide contenu dans ce canal des vitesses sensiblement pareilles de la surface au fond,
-{\it Journal de Mathematiques Pures et Aplliquees}, Deuxieme Serie \textbf{17} (1872), 55-108.
+{\it Journal de Mathematiques Pures et Aplliquees, Deuxieme Serie}, \textbf{17} (1872), 55-108.
 
-\bibitem{ref4} I. Christov, C.I.Christov, Physical dynamics of quasi-particles in nonlinear wave equations,
-{\it Physics Letters A}, \textbf{372} (2008), Issue 4, 841-848.
+\bibitem{ref4} I. Christov, C.I. Christov, Physical dynamics of quasi-particles in nonlinear wave equations,
+{\it Physics Letters A}, \textbf{372}, Issue 4 (2008),  841-848.
 
-\bibitem{ref5} J. K. Perring, T. H. R. Skyrme, A model unified field equation, {\it Nuclear Physics},  \textbf{31} (1962), 550-555.
+\bibitem{ref5} J.K. Perring, T.H.R. Skyrme, A model unified field equation, {\it Nuclear Physics},  \textbf{31} (1962), 550-555.
 
-\bibitem{ref6}  C. I. Christov, 
-Numerical implementation of the asymptotic boundary conditions for steadily propagating 2D solitons of Boussinesq type equations, 
-{\it Mathematics and Computers in simulation}, \textbf{82} (2012), 1079-1092.
+\bibitem{ref6}  C.I. Christov,
+Numerical implementation of the asymptotic boundary conditions for steadily propagating 2D solitons of Boussinesq type equations,
+{\it Mathematics and Computers in Simulation}, \textbf{82} (2012), 1079-1092.
 
-\bibitem{ref8}  M. Christou, C. I. Christov, 
-Fourier Galerkin method for 2D solitons of Boussinesq equation, 
+\bibitem{ref8}  M. Christou, C.I. Christov,
+Fourier Galerkin method for 2D solitons of Boussinesq equation,
 {\it Mathematics and Computers in Simulation} \textbf{74} (2007), 82-92.
 
-\bibitem{ref9}   M. Christou, C. I. Christov, 
-Galerkin Spectral Method for the 2D Solitary Waves of Boussinesq Paradigm Equation, 
-{\it Applications of Mathematics in Technical and Natural Sciences},
-AIP Conference Proceedings, Sozopol (Bulgaria), \textbf{1186} (2009), Issue 1, 217-225.
+\bibitem{ref9}   M. Christou, C.I. Christov,
+Galerkin spectral method for the 2D solitary waves of Boussinesq paradigm equation,
+In: {\it Applications of Mathematics in Technical and Natural Sciences, Sozopol (Bulgaria)},
+\emph{AIP Conference Proceedings}, \textbf{1186}, Issue 1 (2009), 217-225.
 
-\bibitem{ref10} C. I. Christov, J. Choudhury, Perturbation solution for the 2D Boussinesq equation, {\it Mech. Res. Commun. }, \textbf{38} (2011), 274-281.
+\bibitem{ref10} C.I. Christov, J. Choudhury, Perturbation solution for the 2D Boussinesq equation, {\it Mech. Res. Commun.}, \textbf{38} (2011), 274-281.
 
 \bibitem{ref11} B. Engquist and A. Majda, Absorbing boundary conditions for the numerical simulation of waves, {\it Math. Comp.}, \textbf{31} (1977), 629–651.
 
-\bibitem{ref12}  C. I. Goldstein, A finite element method for solving Helmholtz type equations in waveguides and other unbounded domains, 
+\bibitem{ref12}  C.I. Goldstein, A finite element method for solving Helmholtz type equations in waveguides and other unbounded domains,
 {\it Math. Comp.}, \textbf{39} (1982), 309–324.
 
-\bibitem{ref13}  H.Han, W. Bao, Error estimates for the finite element approximation of problems in unbounded domains, 
-{\it SIAM J. NUMER. ANAL.} \textbf{37}, No. 4, 1101–1119.
+\bibitem{ref13}  H. Han, W. Bao, Error estimates for the finite element approximation of problems in unbounded domains,
+{\it SIAM J. Numer. Anal.} \textbf{37}, No 4 (2000), 1101–1119; DOI: 10.1137/S0036142998341805. %% year was missing !!! %%%
 
-\bibitem{ref14} N. Kolkovska, Two Families of Finite Difference Schemes for Multidimensional Boussinesq Paradigm Equation, 
-{\it Applications of Mathematics in Technical and Natural Sciences},
-AIP Conference Proceedings, Sozopol (Bulgaria), \textbf{1301} (2010), 395.
+\bibitem{ref14} N. Kolkovska, Two families of finite difference schemes for multidimensional Boussinesq paradigm equation, In:
+{\it Applications of Mathematics in Technical and Natural Sciences,  Sozopol (Bulgaria)},
+\emph{AIP Conference Proceedings}, \textbf{1301} (2010), 395.
 
-\bibitem{ref15} N. Kolkovska, K. Angelow, Numerical Computation of the Critical Energy Constant for Two-dimensional Boussinesq Equations,  
-{\it Applications of Mathematics in Technical and Natural Sciences: 7th International Conference for Promoting the Application of Mathematics in Technical and Natural Scienses},
-AIP Conference Proceedings, Albena (Bulgaria), \textbf{1684} (2015), 080007.
+\bibitem{ref15} N. Kolkovska, K. Angelow, Numerical computation of the critical energy constant for two-dimensional Boussinesq equations, In:
+{\it Applications of Mathematics in Technical and Natural Sciences: 7th International Conference for Promoting the Application of Mathematics in Technical and Natural Scienses, Albena (Bulgaria)},
+\emph{AIP Conference Proceedings}, \textbf{1684} (2015), \# 080007; https://doi.org/10.1063/1.4934318.
 
-\bibitem{ref16} P.Northrop, P.A.Ramachandran, W.Schiesser, V. R.Subramanian, A robust false transient method of lines for elliptic partial differential equations, 
-{\it Chemical Engineering Science} \textbf{90} (2013), 32–39.
+\bibitem{ref16} P. Northrop, P.A. Ramachandran, W. Schiesser, V.R. Subramanian, A robust false transient method of lines for elliptic partial differential equations, {\it Chemical Engineering Science} \textbf{90} (2013), 32–39.
 
 \bibitem{ref17}
-B.~Fornberg, Generation of Finite Difference Formulas on Arbitrarily Spaced Grids, {\it  Math. Comput.}, \textbf{51} (1988), 699-706.
-%%% re-edited UP TO HERE ! %%%%%%%%%%%
+B. Fornberg, Generation of finite difference formulas on arbitrarily spaced grids, {\it  Math. Comput.}, \textbf{51} (1988), 699-706.
+%
 \end{thebibliography}
 
 \end{document}
