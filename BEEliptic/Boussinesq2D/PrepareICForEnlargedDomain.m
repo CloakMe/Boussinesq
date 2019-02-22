@@ -7,7 +7,7 @@ function [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,...
     [X,Y]=Domain(x,y);
 
     bt = bt1/bt2;
-    c12 = 1-c^2/bt;
+    c12 = 1-c^2;
     newBigIC = c1*lastTheta*(c12*X.^2-Y.^2)./(c12*X.^2+Y.^2).^2;
     %newBigIC = c1*lastTheta*(c12^2* X.^4 - 6*c12 * X.^2 .* Y.^2 + Y.^4)./(c12*X.^2+Y.^2).^4;
     points = FindOldGrid(compBox.x_st,compBox.x_end,compBox.y_st,compBox.y_end,x,y);
