@@ -1,6 +1,6 @@
 function PlotAssymptVsSolu( x, y, h, zeroX, zeroY, bigU, muTheta, c)
 
-    shift = ceil(6/h);
+    shift = ceil(2/h);
     stX = zeroX+shift-1;
     stY = zeroY+shift-1;
     newX = x(stX:end);

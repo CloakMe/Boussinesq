@@ -4,12 +4,7 @@ function [ stopFlag, Px, Py ] = StopCriteria(x, y, zeroX, zeroY, U, axOld, ayOld
 
     %eps = 1.000e-010;
     
-    if(minResidual > eps)
-       stopFlag = 0;
-       Px = [axOld 0];
-       Py = [ayOld 0];
-       return;
-    end
+    
            
     midX = floor(length(x(zeroX:end))/2);
     midY = floor(length(y(zeroY:end))/2);
@@ -25,6 +20,13 @@ function [ stopFlag, Px, Py ] = StopCriteria(x, y, zeroX, zeroY, U, axOld, ayOld
         stopFlag = 1;
     else
         stopFlag = 0;
+    end
+    
+    if(minResidual > eps)
+       stopFlag = 0;
+       %Px = [axOld 0];
+       %Py = [ayOld 0];
+       %return;
     end
     
 end

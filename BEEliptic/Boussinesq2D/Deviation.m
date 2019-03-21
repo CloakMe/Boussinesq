@@ -4,7 +4,7 @@ function angl =  Deviation(residualInfNorm,subCounter)
         return;
     end
     
-    exponent = 10^(-ceil(log10(residualInfNorm(subCounter)))+1);
+    exponent = 10^(-ceil(log10( abs( residualInfNorm(subCounter) ) ))+1);
     p1 = residualInfNorm(subCounter-2);
     p2 = residualInfNorm(subCounter-1);
     p3 = residualInfNorm(subCounter) ;
