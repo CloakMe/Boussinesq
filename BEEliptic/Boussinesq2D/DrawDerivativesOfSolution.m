@@ -1,4 +1,4 @@
-function DrawDerivativesOfSolution(bigU,compBox,x,y,h,zeroX,zeroY,c,derivative)
+function DrawDerivativesOfSolution(bigU,compBox,x,y,h,zeroX,zeroY,c,derivative,c1)
 
     if(x(1) == compBox.x_st)
         x_st = compBox.x_st;
@@ -148,7 +148,7 @@ function DrawDerivativesOfSolution(bigU,compBox,x,y,h,zeroX,zeroY,c,derivative)
     Boundary=c1*(c12*X.^2-Y.^2)./(c12*X.^2+Y.^2).^2;
     figure(8)
     mesh(x,y,Boundary' - bigU')
-    axis([x_st x_end y_st y_end -0.000001 0.000001]);
+    axis([x_st x_end y_st y_end -0.0001 0.0001]);
     colorbar;
-    caxis([-0.0000001 0.0000001]);
+    caxis([-0.00001 0.00001]);
     view(0,90);
