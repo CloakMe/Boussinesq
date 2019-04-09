@@ -7,9 +7,15 @@ function [yLen,xLen,yHeiA,xHeiA] = GetInnerNodesForComparingBoundaryFunctions(xL
    band = floor(min(xLength, yLength)/4);
    
    stY = mod(yLength , step);
+   if(stY == 0)
+       stY = step;
+   end
    yLen = stY:step:yLength;
    
    stX = mod(xLength-band , step);
+   if(stX == 0)
+       stX = step;
+   end
    xLen = stX:step:xLength-band;
    
    stY = yLength-band+mod(band , step);
