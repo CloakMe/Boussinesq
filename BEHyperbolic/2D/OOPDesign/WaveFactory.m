@@ -14,8 +14,16 @@ classdef WaveFactory
     end
     
     function this = WaveFactory1( this, workspaceName, bndPtsRem )
-
-        load( workspaceName, '-mat');
+        
+        mydir  = pwd;
+        idcs   = strfind(mydir,'/');
+        if(size(idcs,1) == 0 && size(idcs,2) == 0)
+            idcs   = strfind(mydir,'\');
+        end
+        workspacePath = mydir(1:idcs(end-2));
+        workspacePath = strcat(workspacePath,'BEEliptic\Boussinesq2D\SavedWorkspaces\');
+        file = fullfile(workspacePath, strcat(workspaceName,'.mat'));
+        load( file, '-mat');
         this.x = x;
         this.y = y;
         this.compBox = compBox;

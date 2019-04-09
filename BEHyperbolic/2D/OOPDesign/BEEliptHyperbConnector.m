@@ -1,5 +1,8 @@
 clear; clc;
-bndPointsToRemove = 0; %'ChristovIC_40_bt1_c045_h0125_O(h^2)' 
+%return
+bndPointsToRemove = 5; 
+% ChristovIC_80_bt1_c090_h020_O(h^6)
+%'ChristovIC_40_bt1_c045_h0125_O(h^2)' 
 % ChristovIC_30_bt3_c045_h01_O(h^4)
 % ChristovIC_40_bt3_c045_h0125_O(h^2)  
 % ChristovIC_30_bt3_c030_h01_O(h^2)
@@ -22,11 +25,11 @@ bndPointsToRemove = 0; %'ChristovIC_40_bt1_c045_h0125_O(h^2)'
 % ChristovIC_15_bt3_c042_h050_O(h^2)
 % ChristovIC_15_bt3_c050_h050_O(h^2)
 % ChristovIC_15_bt3_c075_h050_O(h^4)
-%waveFactory = WaveFactory( 'ChristovIC_15_bt3_c075_h050_O(h^4)', bndPointsToRemove );
-waveFactory = WaveFactory( 'BestFitIC' );
+waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^4)', bndPointsToRemove );
+%waveFactory = WaveFactory( 'BestFitIC' );
 
     tau = 0.025;
-    tEnd=15.0;
+    tEnd=45.0;
     %turnOnCaxis = 0;
     %waveFactory.PlotSingleWave( turnOnCaxis );
 
@@ -82,7 +85,7 @@ waveFactory = WaveFactory( 'BestFitIC' );
   topView = 1;
   viewTypeX = 81;
   viewTypeY = 18;
-  %MovieForBEHyperbolic( compBoxToShow, viewTypeX, viewTypeY, tt, x, y );
+  MovieForBEHyperbolic( compBoxToShow, viewTypeX, viewTypeY, tt, x, y );
        
     figure(15)
     mesh(x,y,vl')
@@ -102,7 +105,22 @@ waveFactory = WaveFactory( 'BestFitIC' );
     xlabel('time "t"');  ylabel('EN');
   
     %DrawEnergyForHyperbolicBE( engine, tt );
+    
+%----------------------------------------------------------------------------------------
+    waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^4)', 5 );
 
-     
-     
+    tau = 0.1;
+    tEnd=44.0;
+    tt = tau:tau:tEnd;
+        
+    compBoxToShow = waveFactory.compBox;
+    compBoxToShow.x_st = waveFactory.x( 1 );
+    compBoxToShow.x_end = waveFactory.x( end );
+    compBoxToShow.y_st = waveFactory.y( 1 );
+    compBoxToShow.y_end = waveFactory.y( end );
+
+    topView = 1;
+    viewTypeX = 81;
+    viewTypeY = 18;
+    MovieForBEHyperbolic( compBoxToShow, viewTypeX, viewTypeY, tt, waveFactory.x, waveFactory.y );
    
