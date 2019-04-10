@@ -70,11 +70,7 @@ classdef (ConstructOnLoad) BEEngine
         this.sy = length(this.y);
         this.sx = length(this.x);
         
-        if( this.order == 4 )
-            [ ff, dhb ] = BEUtilities.GetFinDiffMat( this.sx, this.h );
-        else %this.order == 2
-            [ dhb, ff ] = BEUtilities.GetFinDiffMat( this.sx, this.h );
-        end
+        dhb = BEUtilities.GetFinDiffMat( this.sx, this.order, this.h );
         [ this.eigenFinDiffMat, w ] = eig( -dhb );
         [ this.IminusDHdiag, this.minusDHdiag ] = this.DiagonalizeAndGetDiagOfFinDiffMat();
         this.vdah = zeros( this.sx, this.sy );

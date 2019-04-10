@@ -69,6 +69,108 @@ classdef BEUtilities
         T=T(:,1:N); % Only output Taylor Table terms that are used  
     end
     
+    function x=SevntSolv(a11,A,b)
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % 
+        % Solve a seven diagonal system Dx=b where D is a strongly nonsingular
+        % matrix, D is symmetric and each subdiagonal has the following vector form:
+        % a*ones(1,N-l) == [a a .... a], (l=0,1,2  depending on the diagonal).
+        % The main diagonal has the following form: [a11 b b .... b a11]
+        % Here the input matrix ( A ) presents the matrix D in a shortened way
+        % A = D(4,1:7)! :
+        %      1 2 3 4 5 6 7 8
+        %    -------------------------------------
+        % 1  | # $ & ^                            |
+        % 2  | $ * $ & ^                          |
+        % 3  | & $ * $ & ^                        | = D
+        % 4  | ^ & $ * $ & ^                      |
+        % 5  |   ^ & $ * $ & ^                    |
+        % 6  |            ...
+        % i.e.: A = [^ & $ * $ & ^] and a11 = #
+        %
+        % If D is not a seven diagonal matrix, results will be wrong
+        %
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        if(size(A,1)*size(A,2)~=7)
+            error('A should be a vector, of type [a b c d c b a]!');
+        end
+        [M,N]=size(b);
+        if((M>1 && N==1) || (M==1 && N>1))
+            if(M>N)
+                N=M;
+            end
+        else
+            error('b should be a vector, not number or matrix!');
+        end
+
+        x=zeros(N,1);
+
+            % Extract bands            
+            d=A(4);
+            f=A(3);
+            e=A(2);
+            c=A(1);
+            
+            D1=zeros(N,1);
+            D2=zeros(N-1,1);
+            D3=zeros(N-2,1);
+            D4=zeros(N-3,1);
+            z=zeros(N,1);
+
+            % Factor A=LDL'
+            D1(1)=a11;
+            D2(1)=f/D1(1);
+            D3(1)=e/D1(1);
+            D4(1)=c/D1(1);
+            
+            D1(2)= d-f*D2(1);
+            D2(2)=(f-e*D2(1))/D1(2);
+            D3(2)=(e-c*D2(1))/D1(2);
+            D4(2)=c/D1(2);
+
+            D1(3)= d - e*D3(1) - D2(2)^2 * D1(2);
+            D2(3)=(f-c*D3(1)-(e-c*D2(1))*D2(2))/D1(3);
+            D3(3)=(e-c*D2(2))/D1(3);
+            D4(3)=c/D1(3);
+            
+            for k=4:N-3
+                D1(k) =  d - D4(k-3)^2 * D1(k-3) - D3(k-2)^2 * D1(k-2) - D2(k-1)^2 * D1(k-1);
+                D2(k) = (f - D4(k-2)*D3(k-2) * D1(k-2) - D3(k-1)*D2(k-1) * D1(k-1))/D1(k);
+                D3(k) = (e - D4(k-1)*D2(k-1) * D1(k-1))/D1(k);
+                D4(k) =  c/D1(k);
+            end
+
+            D1(N-2) =  d - D4(N-5)^2 * D1(N-5) - D3(N-4)^2 * D1(N-4) - D2(N-3)^2 * D1(N-3);
+            D2(N-2) = (f - D4(N-4)*D3(N-4) * D1(N-4) - D3(N-3)*D2(N-3) * D1(N-3))/D1(N-2);
+            D3(N-2) = (e - D4(N-3)*D2(N-3) * D1(N-3))/D1(N-2);
+                
+            D1(N-1) =  d - D4(N-4)^2 * D1(N-4) - D3(N-3)^2 * D1(N-3) - D2(N-2)^2 * D1(N-2);
+            D2(N-1) = (f - D4(N-3)*D3(N-3) * D1(N-3) - D3(N-2)*D2(N-2) * D1(N-2))/D1(N-1);
+            
+            D1(N) =  a11 - D4(N-3)^2 * D1(N-3) - D3(N-2)^2 * D1(N-2) - D2(N-1)^2 * D1(N-1);
+
+            % Update Lx=b, Dc=z
+
+            z(1)=b(1);
+            z(2)=b(2)-D2(1)*z(1);
+            z(3)=b(3)-D3(1)*z(1)-D2(2)*z(2);
+            
+            for k=4:N
+                z(k)=b(k) - D4(k-3)*z(k-3) - D3(k-2)*z(k-2) - D2(k-1)*z(k-1);
+            end
+
+            cc=z./D1;
+
+            % Backsubstitution L'x=c
+            x(N)  = cc(N);
+            x(N-1)= cc(N-1)-D2(N-1)*x(N);
+            x(N-2)= cc(N-2)-D2(N-2)*x(N-1)-D3(N-2)*x(N);
+            
+            for k=3:N-1
+                x(N-k)=cc(N-k)-D2(N-k)*x(N-k+1)-D3(N-k)*x(N-k+2)-D4(N-k)*x(N-k+3);
+            end
+    end
+    
     function x=PentSolv(a11,A,b)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % 
@@ -311,7 +413,7 @@ classdef BEUtilities
         end
     end
     
-    function [dx2,O4dx2]=GetFinDiffMat(sx,h)
+    function [dxMat]=GetFinDiffMat(sx,order,h)
         %
         % Input:
         % sx - size of the matrix 
@@ -320,26 +422,46 @@ classdef BEUtilities
         % First matrix is second order finite diff matrix
         % Second matrix is fourth order finite diff matrix
         %               %
-        dx2=-2*diag(ones(sx,1));
-        dx2(1,2)=1;
-        for l=2:sx-1
-            dx2(l,l-1)=1;
-            dx2(l,l+1)=1;
+        if(order == 2)
+            dxMat=-2*diag(ones(sx,1));
+            dxMat(1,2)=1;
+            for l=2:sx-1
+                dxMat(l,l-1)=1;
+                dxMat(l,l+1)=1;
+            end
+            dxMat(sx,sx-1)=1;
+            %dx2 = dx2/h^2;
+        elseif(order == 4)
+            dxMat=-2.5*diag(ones(sx,1));
+            dxMat(1,1)=-2.5;   dxMat(1,2)=16/12; dxMat(1,3)=-1/12;
+            dxMat(2,1)=16/12;                    dxMat(2,3)=16/12; dxMat(2,4)=-1/12;
+            for l=3:sx-2
+                dxMat(l,l-2)=-1/12;
+                dxMat(l,l+2)=-1/12;
+                dxMat(l,l-1)=16/12;
+                dxMat(l,l+1)=16/12;
+            end
+            dxMat(sx-1,sx-3)=-1/12; dxMat(sx-1,sx-2)=16/12;                       dxMat(sx-1,sx)=16/12;    
+                                    dxMat(sx,sx-2)=-1/12; dxMat(sx,sx-1)=16/12;   dxMat(sx,sx)=-2.5;
+        elseif(order == 6)
+            dxMat=-49/18*diag(ones(sx,1));
+            dxMat(1,1)=-49/18;  dxMat(1,2)=3/2; dxMat(1,3)=-3/20; dxMat(1,4)=1/90;
+            dxMat(2,1)=3/2;                       dxMat(2,3)=3/2; dxMat(2,4)=-3/20; dxMat(2,5)=1/90;
+            dxMat(3,1)=-3/20;  dxMat(3,2)=3/2;                    dxMat(3,4)=3/2;   dxMat(3,5)=-3/20; dxMat(3,6)=1/90;
+            for l=4:sx-3
+                dxMat(l,l-3)=1/90;
+                dxMat(l,l+3)=1/90;
+                dxMat(l,l-2)=-3/20;
+                dxMat(l,l+2)=-3/20;
+                dxMat(l,l-1)=3/2;
+                dxMat(l,l+1)=3/2;
+            end
+            dxMat(sx-2,sx-5)=1/90;  dxMat(sx-2,sx-4)=-3/20; dxMat(sx-2,sx-3)=3/2;                         dxMat(sx-2,sx-1)=3/2; dxMat(sx-2,sx)=-3/20;  
+                                    dxMat(sx-1,sx-4)= 1/90; dxMat(sx-1,sx-3)=-3/20; dxMat(sx-1,sx-2)=3/2;                       dxMat(sx-1,sx)=3/2;    
+                                                            dxMat(sx,sx-3)=1/90; dxMat(sx,sx-2)=-3/20;    dxMat(sx,sx-1)=3/2;   dxMat(sx,sx)=-49/18;
+        else
+            throw('No such order!');
         end
-        dx2(sx,sx-1)=1;
-        %dx2 = dx2/h^2;
-
-        O4dx2=-2.5*diag(ones(sx,1));
-        O4dx2(1,1)=-2.5;   O4dx2(1,2)=16/12; O4dx2(1,3)=-1/12;
-        O4dx2(2,1)=16/12;                    O4dx2(2,3)=16/12; O4dx2(2,4)=-1/12;
-        for l=3:sx-2
-            O4dx2(l,l-2)=-1/12;
-            O4dx2(l,l+2)=-1/12;
-            O4dx2(l,l-1)=16/12;
-            O4dx2(l,l+1)=16/12;
-        end
-        O4dx2(sx-1,sx-3)=-1/12; O4dx2(sx-1,sx-2)=16/12;                       O4dx2(sx-1,sx)=16/12;    
-                                O4dx2(sx,sx-2)=-1/12; O4dx2(sx,sx-1)=16/12;   O4dx2(sx,sx)=-2.5;
         return;
     end
     
