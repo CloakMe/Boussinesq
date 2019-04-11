@@ -131,8 +131,8 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
                                      t,...
                                      timeDerOrd,...
                                      domainUtilsP2spec)
-        if( this.order > 4 )
-            error( 'Not yet implemented for order = 6 (or 8) !' );
+        if( this.order > 6 )
+            error( 'Not yet implemented for order = 8 !' );
         end      
         VV = this.vdah;
         fd2ndDer = this.GetFd2ndDer();
@@ -144,11 +144,12 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
         for j=1:this.sx
             diag = [ -fd2ndDer(1:mid-1) this.IminusDHdiag(j) -fd2ndDer(mid+1:end) ];
             %diag = [(1/12) (-16/12) this.IminusDHdiag(j) (-16/12) 1/12];
-            if( this.order == 2 )      
+            if( this.order == 2 )
                 VV(j,:) = BEUtilities.TridiagSolv( diag, deltab(j,:) );
-            end
-            if( this.order == 4 )   
+            elseif( this.order == 4 )
                 VV(j,:) = BEUtilities.PentSolv( this.IminusDHdiag(j), diag, deltab(j,:));
+            elseif( this.order == 6 )
+                VV(j,:) = BEUtilities.SevenSolv( this.IminusDHdiag(j), diag, deltab(j,:));
             end
         end
         

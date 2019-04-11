@@ -25,11 +25,11 @@ bndPointsToRemove = 5;
 % ChristovIC_15_bt3_c042_h050_O(h^2)
 % ChristovIC_15_bt3_c050_h050_O(h^2)
 % ChristovIC_15_bt3_c075_h050_O(h^4)
-waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^4)', bndPointsToRemove );
+waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^6)', bndPointsToRemove );
 %waveFactory = WaveFactory( 'BestFitIC' );
 
     tau = 0.025;
-    tEnd=45.0;
+    tEnd=10.0;
     %turnOnCaxis = 0;
     %waveFactory.PlotSingleWave( turnOnCaxis );
 
@@ -105,7 +105,7 @@ waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^4)', bndPointsToRemo
     xlabel('time "t"');  ylabel('EN');
   
     %DrawEnergyForHyperbolicBE( engine, tt );
-    
+    return;
 %----------------------------------------------------------------------------------------
     waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^4)', 5 );
 

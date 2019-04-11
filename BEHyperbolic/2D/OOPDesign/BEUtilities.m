@@ -69,7 +69,7 @@ classdef BEUtilities
         T=T(:,1:N); % Only output Taylor Table terms that are used  
     end
     
-    function x=SevntSolv(a11,A,b)
+    function x=SevenSolv(a11,A,b)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % 
         % Solve a seven diagonal system Dx=b where D is a strongly nonsingular
@@ -354,39 +354,37 @@ classdef BEUtilities
         end
         
         sm = size(ma3x,1)*size(ma3x,2);
-        if(sm == 5 || sm == 3)
-        else
-            error('ERROR; size of >ma3x< should be 5 or 3!,i.e. a cross section of the band! ');
+        if(sm ~= 7 && sm ~= 5 && sm ~= 3)
+            error('ERROR; size of >ma3x<, i.e. the band, should be 7, 5 or 3! ');
         end
         sx = size(X,2);
-        ml = size(X,1);
+        sy = size(X,1);
 
-        if(ml>1 && sx~=1)
-           if(ml<5)
+        if(sy>1 && sx~=1)
+            if(sy<7)
                size(X)
-             error('BMM; right side is MATRIX; MATRIX size too small small (<5)!!! ');
-           end
-           if(sm == 3)
-          % HM = zeros(ml-2,sx);
-           HM = X(1:end-2,:);
-           XV(1,:) = HM(:)';
-           HM = X(2:end-1,:);
-           XV(2,:) = HM(:)';
-           HM = X(3:end,:);
-           XV(3,:) = HM(:)';   
+             error('BMM; right side is MATRIX; MATRIX size too small small (<7)!!! ');
+            end
+            if(sm == 3)
+                HM = X(1:end-2,:);
+                XV(1,:) = HM(:)';
+                HM = X(2:end-1,:);
+                XV(2,:) = HM(:)';
+                HM = X(3:end,:);
+                XV(3,:) = HM(:)';   
 
-           Y = zeros(ml,sx);
+                Y = zeros(sy,sx);
 
-             Y(1,:) = ma3x(2:3)*X(1:2,:);
+                Y(1,:) = ma3x(2:3)*X(1:2,:);
 
-               Yc=vec2mat(XV'*ma3x',ml-2)';
+                Yc=vec2mat(XV'*ma3x',sy-2)';
 
-             Ysx = ma3x(1:2)*X(end-1:end,:);
+                Ysx = ma3x(1:2)*X(end-1:end,:);
 
-            Y = [Y(1,:); Yc; Ysx];
-           else
-                error('ERROR; size(ma3x) must equal [1,3] ... not ready yet for 5 diag matrices! ');
-           end
+                Y = [Y(1,:); Yc; Ysx];
+            else
+                error('ERROR; size(ma3x) must equal [1,3] ... not ready yet for 5 or 7 diag matrices! ');
+            end
             return;
         end
 
@@ -400,7 +398,7 @@ classdef BEUtilities
             %end
             Ysx = ma3x(1:2)*X(sx-1:sx)';
             Y = [Y(1) Yc Ysx];
-        else
+        elseif(sm == 5)
             Y(1) = m11*X(1) + ma3x(4:5)*X(2:3)';
             Y(2) = ma3x(2:5)*X(1:4)';
             %for l=3:sx-2
@@ -410,6 +408,19 @@ classdef BEUtilities
             Ysx1 = ma3x(1:4)*X(sx-3:sx)';
             Ysx =  ma3x(1:2)*X(sx-2:sx-1)' + m11*X(sx);
             Y = [Y(1) Y(2) Yc Ysx1 Ysx];
+        elseif(sm == 7)
+            Y(1) = m11*X(1) + ma3x(5:7)*X(2:4)';
+            Y(2) = ma3x(3:7)*X(1:5)';
+            Y(3) = ma3x(2:7)*X(1:6)';
+            %for l=4:sx-3
+                Yc=ma3x*[X(1:end-6); X(2:end-5); X(3:end-4); X(4:end-3); X(5:end-2); X(6:end-1); X(7:end)];
+            %end
+            Ysx2 = ma3x(1:6)*X(sx-5:sx)';
+            Ysx1 = ma3x(1:5)*X(sx-4:sx)';
+            Ysx =  ma3x(1:3)*X(sx-3:sx-1)' + m11*X(sx);
+            Y = [Y(1) Y(2) Y(3) Yc Ysx2 Ysx1 Ysx];
+        else
+            error('unknown size sm = %d', sm);
         end
     end
     
@@ -460,7 +471,7 @@ classdef BEUtilities
                                     dxMat(sx-1,sx-4)= 1/90; dxMat(sx-1,sx-3)=-3/20; dxMat(sx-1,sx-2)=3/2;                       dxMat(sx-1,sx)=3/2;    
                                                             dxMat(sx,sx-3)=1/90; dxMat(sx,sx-2)=-3/20;    dxMat(sx,sx-1)=3/2;   dxMat(sx,sx)=-49/18;
         else
-            throw('No such order!');
+            error('No such order %d!', order);
         end
         return;
     end
@@ -532,16 +543,16 @@ classdef BEUtilities
 
         sm = size(ma3x,1)*size(ma3x,2);
     
-        if( sm ~= 5 && sm ~= 3 )
-            error('ERROR; size of >ma3x< should be 5 or 3!,i.e. a cross section of the band! ');
+        if( sm ~= 7 && sm ~= 5 && sm ~= 3 )
+            error('ERROR; size of >ma3x<, i.e. the band, should be 7, 5 or 3!');
         end
         sx = size(X,2);
         sy = size(X,1);
 
         if(sy>1 && sx~=1)
-           if(sy<5)
+           if(sy<7)
                size(X)
-             error('BMM; right side is MATRIX; MATRIX size too small small (<5)!!! ');
+             error('BMM; right side is MATRIX; MATRIX size too small small (<7)!!! ');
            end
            if(sm == 3)
                HM = X(1:end-2,:);
@@ -553,7 +564,7 @@ classdef BEUtilities
 
                Y=vec2mat(XV'*ma3x',sy-2)';
 
-           else
+           elseif(sm == 5)
                HM = X(1:end-4,:);
                XV(1,:) = HM(:)';
                HM = X(2:end-3,:);
@@ -566,6 +577,25 @@ classdef BEUtilities
                XV(5,:) = HM(:)';  
 
                Y=vec2mat(XV'*ma3x',sy-4)';
+           elseif(sm == 7)
+               HM = X(1:end-6,:);
+               XV(1,:) = HM(:)';               
+               HM = X(2:end-5,:);
+               XV(2,:) = HM(:)';
+               HM = X(3:end-4,:);
+               XV(3,:) = HM(:)';
+               HM = X(4:end-3,:);
+               XV(4,:) = HM(:)';
+               HM = X(5:end-2,:);
+               XV(5,:) = HM(:)';  
+               HM = X(6:end-1,:);
+               XV(6,:) = HM(:)';
+               HM = X(7:end-0,:);
+               XV(7,:) = HM(:)';  
+
+               Y=vec2mat(XV'*ma3x',sy-6)';
+           else
+               error('unknown size sm = %d', sm)
            end
             return;
         end
@@ -575,11 +605,18 @@ classdef BEUtilities
                 error('X must be a ROW vector! or size of X too small! ');
             end
             Y=ma3x*[X(1:end-2); X(2:end-1); X(3:end)];
-        else
+        elseif(sm == 5)
             if(sx<5)
                 error('X must be a ROW vector! or size of X too small! ');
             end
             Y=ma3x*[X(1:end-4); X(2:end-3); X(3:end-2); X(4:end-1); X(5:end)];
+        elseif(sm == 7)
+            if(sx<7)
+                error('X must be a ROW vector! or size of X too small! ');
+            end
+            Y=ma3x*[X(1:end-6); X(2:end-5); X(3:end-4); X(4:end-3); X(5:end-2); X(6:end-1); X(7:end)];
+        else
+            error('unknown size sm = %d', sm)
         end
     end
     

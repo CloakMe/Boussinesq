@@ -115,9 +115,9 @@ classdef (ConstructOnLoad) BEEngine
         diag2 = this.GetFDminusDH();
         for i = 1:sxSize
             IminusDHdiag(i) = this.eigenFinDiffMat(:,i)'*...
-                BEUtilities.BandMatMult( diag, this.eigenFinDiffMat(:,i)', diag( mid )  )';%dhb*W(:,i);
+                BEUtilities.BandMatMult( diag, this.eigenFinDiffMat(:,i)', diag( mid )  )';%
             minusDHdiag(i) = this.eigenFinDiffMat(:,i)'*...
-                BEUtilities.BandMatMult( diag2, this.eigenFinDiffMat(:,i)', diag2( mid ) )';
+                BEUtilities.BandMatMult( diag2, this.eigenFinDiffMat(:,i)', diag2( mid ) )';%
         end
     end
     
