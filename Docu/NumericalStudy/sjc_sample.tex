@@ -179,7 +179,7 @@ In this paper we  consider the two dimensional Boussinesq  Equation (BE)
 \\ \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)   \quad\text{for} \, (x,y) \in \RR^2,
 \\  &u(x,y) \rightarrow 0,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{for}  \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11}
 \end{align}
-where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is oftern used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}.
+where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}.
 
 The goal of the article is to seek for solutions to (\ref{eq1}) of the type $u(x,y,t)=U(x,y-ct)$, which 
 are stationary solitary waves (SSW) traveling  in $y$ direction with velocity $c$. In a forthcoming paper the SSW will be applied as initial condition (IC) of the hyperbolic BE \rf{eq1} -- \rf{eq11}. Thus it is useful to have accurate, flexible 
@@ -245,7 +245,7 @@ If the condition $c^2 < \min (1/ \beta,1)$ holds then  \rf{eq3} is an elliptic e
 
 Problem \rf{eq3} can be rewritten  as a  system of two elliptic equations of second order in different ways. We expect that  the derivatives $v_{xx}$ in $x $ direction  will be smaller than the derivative $v_{yy}$ in $y$ direction (since the solution travels in $y$ direction). Therefore the equality $v_{yy} = \Delta v- v_{xx}$ is substituted in \rf{eq3} and, after  introducing an auxiliary  function $w$, we obtain the equivalent to \rf{eq3} system
 \begin{equation}\label{eq4}
-- (1-\beta c^2) \Delta v + \beta (1-c^2) v - \alpha \beta v^2 = w, 
+- (1- c^2 \beta) \Delta v + \beta (1-c^2) v - \alpha \beta v^2 = w, 
 \end{equation}
 \begin{equation}\label{eq44}
  - \Delta w = c^2 \beta (E- \Delta) v_{xx}. 
@@ -254,7 +254,7 @@ We  seek  non--trivial solutions to \rf{eq4},\rf{eq44}. To avoid the trivial sol
 $ \widehat{v}(0,0)=1$ and 
 \begin{equation}\label{eq45}
 \begin{split}
- - (1 - \beta c^2) \Delta \widehat{v} + \beta (1-c^2) \widehat{v} - \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
+ - (1 - c^2 \beta) \Delta \widehat{v} + \beta (1-c^2) \widehat{v} - \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
  - \Delta \widehat{w} =  c^2 \beta (E- \Delta) \widehat{v}_{xx}.\;\;\;\; \;\;\;\;  \;\;\;\;  \;\;\;\; 
 \end{split}
 \end{equation}
@@ -709,7 +709,7 @@ On the left side of Figure~\ref{fig:difference} the phase velocity $c = 0.3$ is 
 \bigskip
 
 \sect{7.~Conclusions.}
-Fourth and sixth order finite difference schemes are applied for numerical evaluation of the stationary travelling wave solutions to the Boussinesq equation in this paper. The high accuracy of the method applied is demonstrated on several experiments. The numerical solution obtained here performs similarly to the numerical solutions given in \cite{Ch2012,Ch2011} with respect to solution shape and the dependence on the velocity $c$ and relative dispersion $\beta$. 
+Fourth and sixth order finite difference schemes are applied for numerical evaluation of the stationary traveling wave solutions to the Boussinesq equation in this paper. The high accuracy of the method applied is demonstrated on several experiments. The numerical solution obtained here performs similarly to the numerical solutions given in \cite{Ch2012,Ch2011} with respect to solution shape and the dependence on the velocity $c$ and relative dispersion $\beta$. 
 The best--fit approximation formulae from  \cite{Ch2011} fail to satisfy the initial equation in the classical sense in the neighborhood of the origin. 
 In the future, we will exploit the obtained stationary traveling wave solutions as initial data to the corresponding Boussinesq equation in order to seek two dimensional solitary wave solutions to \rf{eq1}.
 
