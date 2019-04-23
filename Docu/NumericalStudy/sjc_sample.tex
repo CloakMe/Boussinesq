@@ -142,9 +142,20 @@ No #8, #1} \hfill
 \setcounter{page}{3}
 
 %\baselineskip=0.95\normalbaselineskip
-\kwams{}
-{two dimensional Boussinesq equation, traveling wave solutions (TWS), high order finite difference schemes, asymptotic boundary conditions}
-\def\thefootnote{*}
+%\kwams{}
+%{two dimensional Boussinesq equation, traveling wave solutions (TWS), high order finite difference schemes, asymptotic boundary conditions}
+%{
+\def\thefootnote{}
+\footnote{{\it ACM Computing Classification System $\rm(1998){ G.1.8, G.1.10}$}
+%#1
+
+{}~~{\it Key words:} two dimensional Boussinesq equation, traveling wave solutions (TWS), high order finite difference schemes, asymptotic boundary conditions
+}
+
+
+%\def\thefootnote{\it ACM Computing Classification System $\rm(1998){G.1.8,G.1.10:}$}
+%\footnote{{\it ACM Computing Classification System $\rm(1998){G.1.8,G.1.10:}$}
+
 
 \head{3--4} {
 Numerical Study of Traveling Wave Solutions to 2D Boussinesq  Equation
@@ -165,7 +176,8 @@ Numerical Study of Traveling Wave Solutions to 2D Boussinesq  Equation
 The aim of this paper is to evaluate stationary  propagating  wave solutions  
  to the two dimensional Boussinesq equation. To solve the resulting nonlinear fourth order elliptic  problem we use a  combination of high order finite difference schemes, an iterative procedure  and  new asymptotic boundary conditions.   A number of numerical results are obtained for the validation of the method and for dependence of the wave's shape on the velocity $c$ and dispersion parameters. We give also a comparison with  the numerical results and best--fit formulae given in \cite{Ch2012,Ch2011}.
 \end{abstract}
-\footnotetext{This work was supported by the Institute of Mathematics and Informatics, Bulgarian Academy of Sciences.}
+\footnotetext{*This work is supported by the Institute of Mathematics and Informatics, Bulgarian
+Academy of Sciences. The second author is partially supported by the Bulgarian Science Fund under  Grant~H~22/2 from 2018.}
 
 \bigskip
 \setcounter{footnote}{0}
@@ -708,12 +720,21 @@ On the left side of Figure~\ref{fig:difference} the phase velocity $c = 0.3$ is 
 
 \bigskip
 
+<<<<<<< HEAD
 \sect{7.~Conclusions.}
+=======
+\sect{7.~Conclusion.}
+>>>>>>> 4c752ae52445c2bf01ac149f5055146b3c33b61f
 Fourth and sixth order finite difference schemes are applied for numerical evaluation of the stationary traveling wave solutions to the Boussinesq equation in this paper. The high accuracy of the method applied is demonstrated on several experiments. The numerical solution obtained here performs similarly to the numerical solutions given in \cite{Ch2012,Ch2011} with respect to solution shape and the dependence on the velocity $c$ and relative dispersion $\beta$. 
 The best--fit approximation formulae from  \cite{Ch2011} fail to satisfy the initial equation in the classical sense in the neighborhood of the origin. 
 In the future, we will exploit the obtained stationary traveling wave solutions as initial data to the corresponding Boussinesq equation in order to seek two dimensional solitary wave solutions to \rf{eq1}.
 
 \bigskip
+
+\sect{8.~ Acknowledgments.}
+
+The authors would like to thank the editor and referees for their valuable comments and suggestions.
+
 
 
 \frenchspacing
@@ -722,37 +743,37 @@ In the future, we will exploit the obtained stationary traveling wave solutions 
 
 \bibitem{ChChr}
 C.~I.~Christov, An energy-consistent dispersive shallow-water model,
-Wave Motion,  34, (2001) 161 -- 174
+Wave Motion,  34, (2001) 161 -- 174.
 
 \bibitem{chr-chr-07}
 M.~Christou, C.~I.~Christov, Fourier–Galerkin method for 2D solitons of Boussinesq equation, 
-Mathematics and Computers in Simulation 74 (2007) 82 -- 92.
+Mathematics and Computers in Simulation, 74, (2007) 82 -- 92.
 
 \bibitem{chr-chr}
 M.~Christou, C.~I.~Christov, Galerkin Spectral Method for the 2D Solitary
-Waves of Boussinesq Paradigm Equation, CP 1186 (2009) 217 -- 225.
+Waves of Boussinesq Paradigm Equation, CP 1186, (2009) 217 -- 225.
 
 \bibitem{Ch2012}
 C.~I.~Christov,  Numerical implementation of the asymptotic boundary conditions
 for steadily propagating 2D solitons of   Boussinesq type equation,       
-Math. Computers  Simul., 82 (2012)  1079 -- 1092.
+Math. Computers  Simul., 82 (2012),  1079 -- 1092.
 
 \bibitem{Ch2011}
 C.~I.~Christov, J. Choudhury, Perturbation solution  for the 2D Boussinesq equation,       
-Mech. Res. Commun., 38 (2011)  274 -- 281.
+Mech. Res. Commun., 38 (2011),  274 -- 281.
 
 \bibitem{cher}
-A.~Chertock, C.~Christov, A.~Kurganov, Central--upwind schemes for the  Boussinesq paradigm equation, Comp. Sci. High Performance Comp. IV, NNFM, 113, (2011) 267 -- 281.
+A.~Chertock, C.~Christov, A.~Kurganov, Central--upwind schemes for the  Boussinesq paradigm equation, Comp. Sci. High Performance Comp. IV, NNFM, 113, (2011), 267 -- 281.
 
 \bibitem{dani}
-C.~Christov, N.~Kolkovska, D.~Vasileva, On the numerical simulation of unsteady solutions for the 2D Boussinesq paradigm equation, LNCS, 6046  (2011) 386 -- 394.
+C.~Christov, N.~Kolkovska, D.~Vasileva, On the numerical simulation of unsteady solutions for the 2D Boussinesq paradigm equation, LNCS, 6046  (2011), 386 -- 394.
 
 \bibitem{chd-chr}
-J.~Choudhury, C.~Christov, 2D  Solitary waves of  Boussinesq equation, CP75, (2005) 85 -- 90.
+J.~Choudhury, C.~Christov, 2D  Solitary waves of  Boussinesq equation, CP75, (2005), 85 -- 90.
  
 \bibitem{bnd}
 K.~Angelow, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, 
-International Journal of Applied Mathematics, Vol. 32, No 1 (2019)
+International Journal of Applied Mathematics, Vol. 32, No 1, (2019), 141 -- 154.
 
 \bibitem{forn}
 B.~Fornberg, Generation of Finite Difference Formulas on Arbitrarily Spaced Grids, 

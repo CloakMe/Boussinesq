@@ -69,6 +69,108 @@ classdef BEUtilities
         T=T(:,1:N); % Only output Taylor Table terms that are used  
     end
     
+    function x=SevenSolv(a11,A,b)
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % 
+        % Solve a seven diagonal system Dx=b where D is a strongly nonsingular
+        % matrix, D is symmetric and each subdiagonal has the following vector form:
+        % a*ones(1,N-l) == [a a .... a], (l=0,1,2  depending on the diagonal).
+        % The main diagonal has the following form: [a11 b b .... b a11]
+        % Here the input matrix ( A ) presents the matrix D in a shortened way
+        % A = D(4,1:7)! :
+        %      1 2 3 4 5 6 7 8
+        %    -------------------------------------
+        % 1  | # $ & ^                            |
+        % 2  | $ * $ & ^                          |
+        % 3  | & $ * $ & ^                        | = D
+        % 4  | ^ & $ * $ & ^                      |
+        % 5  |   ^ & $ * $ & ^                    |
+        % 6  |            ...
+        % i.e.: A = [^ & $ * $ & ^] and a11 = #
+        %
+        % If D is not a seven diagonal matrix, results will be wrong
+        %
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        if(size(A,1)*size(A,2)~=7)
+            error('A should be a vector, of type [a b c d c b a]!');
+        end
+        [M,N]=size(b);
+        if((M>1 && N==1) || (M==1 && N>1))
+            if(M>N)
+                N=M;
+            end
+        else
+            error('b should be a vector, not number or matrix!');
+        end
+
+        x=zeros(N,1);
+
+            % Extract bands            
+            d=A(4);
+            f=A(3);
+            e=A(2);
+            c=A(1);
+            
+            D1=zeros(N,1);
+            D2=zeros(N-1,1);
+            D3=zeros(N-2,1);
+            D4=zeros(N-3,1);
+            z=zeros(N,1);
+
+            % Factor A=LDL'
+            D1(1)=a11;
+            D2(1)=f/D1(1);
+            D3(1)=e/D1(1);
+            D4(1)=c/D1(1);
+            
+            D1(2)= d-f*D2(1);
+            D2(2)=(f-e*D2(1))/D1(2);
+            D3(2)=(e-c*D2(1))/D1(2);
+            D4(2)=c/D1(2);
+
+            D1(3)= d - e*D3(1) - D2(2)^2 * D1(2);
+            D2(3)=(f-c*D3(1)-(e-c*D2(1))*D2(2))/D1(3);
+            D3(3)=(e-c*D2(2))/D1(3);
+            D4(3)=c/D1(3);
+            
+            for k=4:N-3
+                D1(k) =  d - D4(k-3)^2 * D1(k-3) - D3(k-2)^2 * D1(k-2) - D2(k-1)^2 * D1(k-1);
+                D2(k) = (f - D4(k-2)*D3(k-2) * D1(k-2) - D3(k-1)*D2(k-1) * D1(k-1))/D1(k);
+                D3(k) = (e - D4(k-1)*D2(k-1) * D1(k-1))/D1(k);
+                D4(k) =  c/D1(k);
+            end
+
+            D1(N-2) =  d - D4(N-5)^2 * D1(N-5) - D3(N-4)^2 * D1(N-4) - D2(N-3)^2 * D1(N-3);
+            D2(N-2) = (f - D4(N-4)*D3(N-4) * D1(N-4) - D3(N-3)*D2(N-3) * D1(N-3))/D1(N-2);
+            D3(N-2) = (e - D4(N-3)*D2(N-3) * D1(N-3))/D1(N-2);
+                
+            D1(N-1) =  d - D4(N-4)^2 * D1(N-4) - D3(N-3)^2 * D1(N-3) - D2(N-2)^2 * D1(N-2);
+            D2(N-1) = (f - D4(N-3)*D3(N-3) * D1(N-3) - D3(N-2)*D2(N-2) * D1(N-2))/D1(N-1);
+            
+            D1(N) =  a11 - D4(N-3)^2 * D1(N-3) - D3(N-2)^2 * D1(N-2) - D2(N-1)^2 * D1(N-1);
+
+            % Update Lx=b, Dc=z
+
+            z(1)=b(1);
+            z(2)=b(2)-D2(1)*z(1);
+            z(3)=b(3)-D3(1)*z(1)-D2(2)*z(2);
+            
+            for k=4:N
+                z(k)=b(k) - D4(k-3)*z(k-3) - D3(k-2)*z(k-2) - D2(k-1)*z(k-1);
+            end
+
+            cc=z./D1;
+
+            % Backsubstitution L'x=c
+            x(N)  = cc(N);
+            x(N-1)= cc(N-1)-D2(N-1)*x(N);
+            x(N-2)= cc(N-2)-D2(N-2)*x(N-1)-D3(N-2)*x(N);
+            
+            for k=3:N-1
+                x(N-k)=cc(N-k)-D2(N-k)*x(N-k+1)-D3(N-k)*x(N-k+2)-D4(N-k)*x(N-k+3);
+            end
+    end
+    
     function x=PentSolv(a11,A,b)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % 
@@ -252,39 +354,37 @@ classdef BEUtilities
         end
         
         sm = size(ma3x,1)*size(ma3x,2);
-        if(sm == 5 || sm == 3)
-        else
-            error('ERROR; size of >ma3x< should be 5 or 3!,i.e. a cross section of the band! ');
+        if(sm ~= 7 && sm ~= 5 && sm ~= 3)
+            error('ERROR; size of >ma3x<, i.e. the band, should be 7, 5 or 3! ');
         end
         sx = size(X,2);
-        ml = size(X,1);
+        sy = size(X,1);
 
-        if(ml>1 && sx~=1)
-           if(ml<5)
+        if(sy>1 && sx~=1)
+            if(sy<7)
                size(X)
-             error('BMM; right side is MATRIX; MATRIX size too small small (<5)!!! ');
-           end
-           if(sm == 3)
-          % HM = zeros(ml-2,sx);
-           HM = X(1:end-2,:);
-           XV(1,:) = HM(:)';
-           HM = X(2:end-1,:);
-           XV(2,:) = HM(:)';
-           HM = X(3:end,:);
-           XV(3,:) = HM(:)';   
+             error('BMM; right side is MATRIX; MATRIX size too small small (<7)!!! ');
+            end
+            if(sm == 3)
+                HM = X(1:end-2,:);
+                XV(1,:) = HM(:)';
+                HM = X(2:end-1,:);
+                XV(2,:) = HM(:)';
+                HM = X(3:end,:);
+                XV(3,:) = HM(:)';   
 
-           Y = zeros(ml,sx);
+                Y = zeros(sy,sx);
 
-             Y(1,:) = ma3x(2:3)*X(1:2,:);
+                Y(1,:) = ma3x(2:3)*X(1:2,:);
 
-               Yc=vec2mat(XV'*ma3x',ml-2)';
+                Yc=vec2mat(XV'*ma3x',sy-2)';
 
-             Ysx = ma3x(1:2)*X(end-1:end,:);
+                Ysx = ma3x(1:2)*X(end-1:end,:);
 
-            Y = [Y(1,:); Yc; Ysx];
-           else
-                error('ERROR; size(ma3x) must equal [1,3] ... not ready yet for 5 diag matrices! ');
-           end
+                Y = [Y(1,:); Yc; Ysx];
+            else
+                error('ERROR; size(ma3x) must equal [1,3] ... not ready yet for 5 or 7 diag matrices! ');
+            end
             return;
         end
 
@@ -298,7 +398,7 @@ classdef BEUtilities
             %end
             Ysx = ma3x(1:2)*X(sx-1:sx)';
             Y = [Y(1) Yc Ysx];
-        else
+        elseif(sm == 5)
             Y(1) = m11*X(1) + ma3x(4:5)*X(2:3)';
             Y(2) = ma3x(2:5)*X(1:4)';
             %for l=3:sx-2
@@ -308,10 +408,23 @@ classdef BEUtilities
             Ysx1 = ma3x(1:4)*X(sx-3:sx)';
             Ysx =  ma3x(1:2)*X(sx-2:sx-1)' + m11*X(sx);
             Y = [Y(1) Y(2) Yc Ysx1 Ysx];
+        elseif(sm == 7)
+            Y(1) = m11*X(1) + ma3x(5:7)*X(2:4)';
+            Y(2) = ma3x(3:7)*X(1:5)';
+            Y(3) = ma3x(2:7)*X(1:6)';
+            %for l=4:sx-3
+                Yc=ma3x*[X(1:end-6); X(2:end-5); X(3:end-4); X(4:end-3); X(5:end-2); X(6:end-1); X(7:end)];
+            %end
+            Ysx2 = ma3x(1:6)*X(sx-5:sx)';
+            Ysx1 = ma3x(1:5)*X(sx-4:sx)';
+            Ysx =  ma3x(1:3)*X(sx-3:sx-1)' + m11*X(sx);
+            Y = [Y(1) Y(2) Y(3) Yc Ysx2 Ysx1 Ysx];
+        else
+            error('unknown size sm = %d', sm);
         end
     end
     
-    function [dx2,O4dx2]=GetFinDiffMat(sx,h)
+    function [dxMat]=GetFinDiffMat(sx,order,h)
         %
         % Input:
         % sx - size of the matrix 
@@ -320,26 +433,46 @@ classdef BEUtilities
         % First matrix is second order finite diff matrix
         % Second matrix is fourth order finite diff matrix
         %               %
-        dx2=-2*diag(ones(sx,1));
-        dx2(1,2)=1;
-        for l=2:sx-1
-            dx2(l,l-1)=1;
-            dx2(l,l+1)=1;
+        if(order == 2)
+            dxMat=-2*diag(ones(sx,1));
+            dxMat(1,2)=1;
+            for l=2:sx-1
+                dxMat(l,l-1)=1;
+                dxMat(l,l+1)=1;
+            end
+            dxMat(sx,sx-1)=1;
+            %dx2 = dx2/h^2;
+        elseif(order == 4)
+            dxMat=-2.5*diag(ones(sx,1));
+            dxMat(1,1)=-2.5;   dxMat(1,2)=16/12; dxMat(1,3)=-1/12;
+            dxMat(2,1)=16/12;                    dxMat(2,3)=16/12; dxMat(2,4)=-1/12;
+            for l=3:sx-2
+                dxMat(l,l-2)=-1/12;
+                dxMat(l,l+2)=-1/12;
+                dxMat(l,l-1)=16/12;
+                dxMat(l,l+1)=16/12;
+            end
+            dxMat(sx-1,sx-3)=-1/12; dxMat(sx-1,sx-2)=16/12;                       dxMat(sx-1,sx)=16/12;    
+                                    dxMat(sx,sx-2)=-1/12; dxMat(sx,sx-1)=16/12;   dxMat(sx,sx)=-2.5;
+        elseif(order == 6)
+            dxMat=-49/18*diag(ones(sx,1));
+            dxMat(1,1)=-49/18;  dxMat(1,2)=3/2; dxMat(1,3)=-3/20; dxMat(1,4)=1/90;
+            dxMat(2,1)=3/2;                       dxMat(2,3)=3/2; dxMat(2,4)=-3/20; dxMat(2,5)=1/90;
+            dxMat(3,1)=-3/20;  dxMat(3,2)=3/2;                    dxMat(3,4)=3/2;   dxMat(3,5)=-3/20; dxMat(3,6)=1/90;
+            for l=4:sx-3
+                dxMat(l,l-3)=1/90;
+                dxMat(l,l+3)=1/90;
+                dxMat(l,l-2)=-3/20;
+                dxMat(l,l+2)=-3/20;
+                dxMat(l,l-1)=3/2;
+                dxMat(l,l+1)=3/2;
+            end
+            dxMat(sx-2,sx-5)=1/90;  dxMat(sx-2,sx-4)=-3/20; dxMat(sx-2,sx-3)=3/2;                         dxMat(sx-2,sx-1)=3/2; dxMat(sx-2,sx)=-3/20;  
+                                    dxMat(sx-1,sx-4)= 1/90; dxMat(sx-1,sx-3)=-3/20; dxMat(sx-1,sx-2)=3/2;                       dxMat(sx-1,sx)=3/2;    
+                                                            dxMat(sx,sx-3)=1/90; dxMat(sx,sx-2)=-3/20;    dxMat(sx,sx-1)=3/2;   dxMat(sx,sx)=-49/18;
+        else
+            error('No such order %d!', order);
         end
-        dx2(sx,sx-1)=1;
-        %dx2 = dx2/h^2;
-
-        O4dx2=-2.5*diag(ones(sx,1));
-        O4dx2(1,1)=-2.5;   O4dx2(1,2)=16/12; O4dx2(1,3)=-1/12;
-        O4dx2(2,1)=16/12;                    O4dx2(2,3)=16/12; O4dx2(2,4)=-1/12;
-        for l=3:sx-2
-            O4dx2(l,l-2)=-1/12;
-            O4dx2(l,l+2)=-1/12;
-            O4dx2(l,l-1)=16/12;
-            O4dx2(l,l+1)=16/12;
-        end
-        O4dx2(sx-1,sx-3)=-1/12; O4dx2(sx-1,sx-2)=16/12;                       O4dx2(sx-1,sx)=16/12;    
-                                O4dx2(sx,sx-2)=-1/12; O4dx2(sx,sx-1)=16/12;   O4dx2(sx,sx)=-2.5;
         return;
     end
     
@@ -410,16 +543,16 @@ classdef BEUtilities
 
         sm = size(ma3x,1)*size(ma3x,2);
     
-        if( sm ~= 5 && sm ~= 3 )
-            error('ERROR; size of >ma3x< should be 5 or 3!,i.e. a cross section of the band! ');
+        if( sm ~= 7 && sm ~= 5 && sm ~= 3 )
+            error('ERROR; size of >ma3x<, i.e. the band, should be 7, 5 or 3!');
         end
         sx = size(X,2);
         sy = size(X,1);
 
         if(sy>1 && sx~=1)
-           if(sy<5)
+           if(sy<7)
                size(X)
-             error('BMM; right side is MATRIX; MATRIX size too small small (<5)!!! ');
+             error('BMM; right side is MATRIX; MATRIX size too small small (<7)!!! ');
            end
            if(sm == 3)
                HM = X(1:end-2,:);
@@ -431,7 +564,7 @@ classdef BEUtilities
 
                Y=vec2mat(XV'*ma3x',sy-2)';
 
-           else
+           elseif(sm == 5)
                HM = X(1:end-4,:);
                XV(1,:) = HM(:)';
                HM = X(2:end-3,:);
@@ -444,6 +577,25 @@ classdef BEUtilities
                XV(5,:) = HM(:)';  
 
                Y=vec2mat(XV'*ma3x',sy-4)';
+           elseif(sm == 7)
+               HM = X(1:end-6,:);
+               XV(1,:) = HM(:)';               
+               HM = X(2:end-5,:);
+               XV(2,:) = HM(:)';
+               HM = X(3:end-4,:);
+               XV(3,:) = HM(:)';
+               HM = X(4:end-3,:);
+               XV(4,:) = HM(:)';
+               HM = X(5:end-2,:);
+               XV(5,:) = HM(:)';  
+               HM = X(6:end-1,:);
+               XV(6,:) = HM(:)';
+               HM = X(7:end-0,:);
+               XV(7,:) = HM(:)';  
+
+               Y=vec2mat(XV'*ma3x',sy-6)';
+           else
+               error('unknown size sm = %d', sm)
            end
             return;
         end
@@ -453,11 +605,18 @@ classdef BEUtilities
                 error('X must be a ROW vector! or size of X too small! ');
             end
             Y=ma3x*[X(1:end-2); X(2:end-1); X(3:end)];
-        else
+        elseif(sm == 5)
             if(sx<5)
                 error('X must be a ROW vector! or size of X too small! ');
             end
             Y=ma3x*[X(1:end-4); X(2:end-3); X(3:end-2); X(4:end-1); X(5:end)];
+        elseif(sm == 7)
+            if(sx<7)
+                error('X must be a ROW vector! or size of X too small! ');
+            end
+            Y=ma3x*[X(1:end-6); X(2:end-5); X(3:end-4); X(4:end-3); X(5:end-2); X(6:end-1); X(7:end)];
+        else
+            error('unknown size sm = %d', sm)
         end
     end
     

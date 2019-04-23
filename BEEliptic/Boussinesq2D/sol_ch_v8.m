@@ -98,7 +98,7 @@ end
                zeroMatrix,outerRigthBoundaryF,outerTopBoundaryF,derivative.second);
            
            subCounter=subCounter+1;
-           [residualInfNorm(subCounter)]=thetaVector(iterCounter)*max(max(abs(crrntResidual(1:end-8,1:end-8))));
+           [residualInfNorm(subCounter)]=abs(thetaVector(iterCounter))*max(max(abs(crrntResidual(1:end-8,1:end-8))));
            minResidual = min(minResidual,residualInfNorm(subCounter));
 
            [flag, Px, Py] = StopCriteria(x, y, zeroX, zeroY, U, ax, ay, minResidual, eps);
