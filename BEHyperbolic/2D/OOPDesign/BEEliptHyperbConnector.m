@@ -105,6 +105,7 @@ waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^6)', bndPointsToRemo
     xlabel('time "t"');  ylabel('EN');
   
     %DrawEnergyForHyperbolicBE( engine, tt );
+    save (['lastTest']);
     return;
 %----------------------------------------------------------------------------------------
     waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^4)', 5 );
