@@ -1,0 +1,290 @@
+\documentclass[leqno,11pt]{book}
+\usepackage{amsfonts,amssymb,amsmath,longtable,array,bbm,url}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{float}
+\usepackage{wrapfig}
+
+\newenvironment{proof}{{P\,r\,o\,o\,f. }}{~~~{$\Box$}}
+%\usepackage{serd_inf}
+%\usepackage{fancyhea}
+\usepackage{enumerate}
+\usepackage[dvips]{epsfig}
+
+\newcommand{\rf}[1]{(\ref{#1})}
+\newcommand{\RR}{\mathbb{R}}
+
+\renewcommand{\thesubsection}{}
+\makeatletter
+\def\@seccntformat#1{\@ifundefined{#1@cntformat}%
+   {\csname the#1\endcsname\quad}%    default
+   {\csname #1@cntformat\endcsname}}% enable individual control
+\newcommand\section@cntformat{}     % section level 
+\makeatother
+
+\newtheorem{definition}{Definition}
+\newtheorem{construction}{Construction}
+\newtheorem{example}{Example}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+
+\def\p{\phantom{0}}
+\everymath{\displaystyle}
+\allowdisplaybreaks
+
+\def\theequation{\arabic{equation}}
+
+\def\hlst{\setlength{\topsep}{4pt}\setlength{\partopsep}{4pt}%
+\setlength{\parsep}{4pt}\setlength{\itemsep}{\parskip}}
+%\begin{list}{{$\bullet$}}{\hlst}
+
+%\setlength{\textfloatsep}{3pt}
+%\setlength{\floatsep}{3pt}
+%\setlength{\intextsep}{3pt}
+\newcommand{\eeth}{\rm}
+\newcommand{\dO}{\partial\Omega_{h}}
+%%%%%
+\textwidth 13.5cm
+\textheight 18.5cm
+\topmargin 0in
+\parindent 0.5in
+%\headsep 0in
+\oddsidemargin 0.5in
+\evensidemargin 0.5in
+
+\makeatletter
+\def\ps@serdica{%
+    \let\@oddfoot\@empty\let\@evenfoot\@empty
+    \def\@evenhead{\thepage\hfil{\sl \leftmark} \hfil}%
+    \def\@oddhead{\hfil{\sl \rightmark}\hfil\thepage}%
+
+    }
+\makeatother
+
+\pagestyle{serdica}
+
+\newcommand\kwams[2]
+{
+\def\thefootnote{}
+\footnote{{\it$\rm{}$}
+#1
+
+{}~~{\it Key words:} #2
+}
+}
+
+\def\abstractname{} %{\sc Abstract.}} % <---------
+\def\abstract{\if@twocolumn
+\section*{\abstractname}
+\else \small
+%\begin{center}
+%{\abstractname} %\vspace{-.5em}\vspace{0pt}}
+%\end{center}
+%\noindent
+\quotation  \noindent
+\fi}
+\def\endabstract{\if@twocolumn\else\endquotation\fi}
+
+\def\bibname{\rm R\,E\,F\,E\,R\,E\,N\,C\,E\,S} % <----------
+\def\thebibliography#1{\addvspace{3em}\noindent
+\hfil \bibname \hfill \list
+ {[\arabic{enumi}]}{\settowidth\labelwidth{[#1]}\leftmargin\labelwidth
+ \advance\leftmargin\labelsep
+ \usecounter{enumi}}
+ \def\newblock{\hskip .11em plus .33em minus .07em}
+ \sloppy\clubpenalty4000\widowpenalty4000
+ \sfcode`\.=1000\relax}
+\let\endthebibliography=\endlist
+
+\newcommand{\head}[8]
+{ % 1-page, 2-title, 3-author, 4-short title,
+  % 5-author, 6-vol, 7-year, 8-number
+\thispagestyle{empty}
+
+\noindent {\footnotesize{\rm Serdica} J. Computing {\bf #6} (#7),
+No #8, #1} \hfill
+%\begin{minipage}{42mm}
+\setlength{\unitlength}{1mm}
+\begin{picture}(46,14.13)
+%%%\put(0,2.5){\special{em:graph serd-inf.bmp}} %3
+%\put(54.6,1.9){\special{em:graph serd1o.pcx}}
+\end{picture}
+%\end{minipage}
+
+\vspace*{2cm}
+
+\markboth{#5}{#4} \vspace*{2cm}
+\begin{center}
+{\large\bf #2}  %%%\uppercase{#2}}
+
+\bigskip
+
+{\large #3}
+
+\end{center}
+
+\bigskip
+
+\bigskip
+}
+
+\newcommand{\sect}[1]{\bigskip \par {\large\bf #1}}
+
+%%%%%
+
+
+\begin{document}
+\setcounter{page}{3}
+
+\def\thefootnote{}
+\footnote{{\it ACM Computing Classification System $\rm(1998){ G.1.8, G.1.10}$}
+%#1
+
+{}~~{\it Key words:} two dimensional Boussinesq equation, traveling wave solutions (TWS), high order finite difference schemes, asymptotic boundary conditions
+}
+
+\head{3--4} {
+Numerical Study of Soliton Solutions to 2D Boussinesq  Equation
+}
+{K. Angelow, N. Kolkovska}
+{
+}
+{K. Angelow, N. Kolkovska} {8}{2018}{2}
+
+{\centering
+\small \sl
+
+}
+
+\bigskip
+
+\begin{abstract}\noindent{\sc Abstract.}
+The aim of this paper is to evaluate propagating  wave solutions  to the two dimensional Boussinesq equation. To solve this nonlinear fourth order hyperbolic  problem we use high order finite difference schemes for the spatial derivatives. Taylor Expansion is used to describe the time derivatives. The numerical results show good convergence. 
+\footnotetext{*This work is supported by the Institute of Mathematics and Informatics, Bulgarian
+Academy of Sciences. The second author is partially supported by the Bulgarian Science Fund under  Grant~H~22/2 from 2018.}
+\end{abstract}
+\bigskip
+\setcounter{footnote}{0}
+\def\thefootnote{\arabic{footnote}}
+
+\sect{1.~Introduction.}\label{introduction}
+
+In this paper we  consider the two dimensional Boussinesq  Equation (BE)
+\begin{align}
+&u_{tt} - \Delta u -\beta_1  \Delta u_{tt} +\beta_2 \Delta ^2 u + \Delta f(u)=0   \quad \text{for}  (x,y) \in \RR^2, \, t\in\RR^+,\label{eq1}
+\\ \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)   \quad\text{for} \, (x,y) \in \RR^2,
+\\  &u(x,y) \rightarrow 0,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{for}  \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11}
+\end{align}
+where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}.
+
+The goal of the article is to seek for solutions to (\ref{eq1}) of the type $u(x,y,t)=U(x,y-ct)$, which 
+are stationary solitary waves (SSW) traveling  in $y$ direction with velocity $c$. In a forthcoming paper the SSW will be applied as initial condition (IC) of the hyperbolic BE \rf{eq1} -- \rf{eq11}. Thus it is useful to have accurate, flexible 
+and robust IC in order to test various scenarios with two or more traveling waves colliding with each other.
+
+The SSWs to \rf{eq1} are computed by a Galerkin spectral method in \cite{chr-chr-07,chr-chr}.
+In \cite{Ch2012} a second order  finite difference scheme is used, while in \cite{Ch2011} 
+the perturbation series method with respect to the small parameter $c$ is applied.  Moreover in \cite{Ch2011} 
+the resulting numerical solution is approximated by best--fit formulae. These exact expressions are used further as initial conditions in 
+numerical simulations of the unsteady BE \rf{eq1} -- \rf{eq11}, see  \cite{cher,dani}. These papers show, 
+that for velocities $c<0.3$ the resulting SSW disperse in the form of ring wave expanding to infinity or blow up after some period in time. 
+Thus the traveling wave solutions of the hyperbolic equation  \rf{eq1} are very fragile, i.e. the wave easily blow up or fall apart with time. 
+The relationship between the dispersion and nonlinearity in \rf{eq1} is very sensitive  and the balance between them is easily destroyed.
+Moreover it is well known  that in the one dimensional case the solitary waves are unstable  
+for small wave speeds $c$ while they are stable in form for  velocities $c$ close to $1$. 
+
+Having in mind these  observations, we focus on the more accurate evaluation of SSW $U$ to \rf{eq1}, especially for  velocities $c > 0.7$, since it is fundamental for the construction of initial data of the unsteady BE \rf{eq1}. 
+
+Note that the stationary solitary waves $U(x,y-ct)=u(x,y,t)$
+ satisfy the following nonlinear fourth order elliptic equation
+\begin{equation}\label{eq2}
+c^2 (E-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
+\end{equation}
+where $E$ is the identity operator. 
+
+The evaluation of the solution to \rf{eq2} described here follows the steps presented in \cite{Ch2012,chd-chr},
+but new modifications are introduced to meet the higher requirements reported above.
+
+First, for the numerical solution of \rf{eq2} we choose to apply an uniform grid with equal step size $h_x$ = $h_y$ = $h$ in the computational domain $\Omega_h$ instead of a nonuniform grid. The reason for this is that  
+%
+%because of the following circumstances. 
+ the computed solutions to \rf{eq2} will be used as initial conditions in the hyperbolic problem \rf{eq1} and these solutions will travel in time, thus we have to have more mesh points not only close to the peak of the waves, but everywhere in   the  computational domain. 
+
+In order to increase the precision of the numerical method, we apply finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order, i.e. we  approximate second order spatial derivatives with high order finite differences. These  FDS allow one to evaluate the numerical solution with high accuracy on relatively coarse grid. 
+
+
+\frenchspacing
+\def\bibname{\rm R\,E\,F\,E\,R\,E\,N\,C\,E\,S}
+\begin{thebibliography}{30}
+
+\bibitem{ChChr}
+C.~I.~Christov, An energy-consistent dispersive shallow-water model,
+Wave Motion,  34, (2001) 161 -- 174.
+
+\bibitem{chr-chr-07}
+M.~Christou, C.~I.~Christov, Fourier–Galerkin method for 2D solitons of Boussinesq equation, 
+Mathematics and Computers in Simulation, 74, (2007) 82 -- 92.
+
+\bibitem{chr-chr}
+M.~Christou, C.~I.~Christov, Galerkin Spectral Method for the 2D Solitary
+Waves of Boussinesq Paradigm Equation, CP 1186, (2009) 217 -- 225.
+
+\bibitem{Ch2012}
+C.~I.~Christov,  Numerical implementation of the asymptotic boundary conditions
+for steadily propagating 2D solitons of   Boussinesq type equation,       
+Math. Computers  Simul., 82 (2012),  1079 -- 1092.
+
+\bibitem{Ch2011}
+C.~I.~Christov, J. Choudhury, Perturbation solution  for the 2D Boussinesq equation,       
+Mech. Res. Commun., 38 (2011),  274 -- 281.
+
+\bibitem{cher}
+A.~Chertock, C.~Christov, A.~Kurganov, Central--upwind schemes for the  Boussinesq paradigm equation, Comp. Sci. High Performance Comp. IV, NNFM, 113, (2011), 267 -- 281.
+
+\bibitem{dani}
+C.~Christov, N.~Kolkovska, D.~Vasileva, On the numerical simulation of unsteady solutions for the 2D Boussinesq paradigm equation, LNCS, 6046  (2011), 386 -- 394.
+
+\bibitem{chd-chr}
+J.~Choudhury, C.~Christov, 2D  Solitary waves of  Boussinesq equation, CP75, (2005), 85 -- 90.
+ 
+\bibitem{bnd}
+K.~Angelow, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, 
+International Journal of Applied Mathematics, Vol. 32, No 1, (2019), 141 -- 154.
+
+\bibitem{forn}
+B.~Fornberg, Generation of Finite Difference Formulas on Arbitrarily Spaced Grids, 
+Math. Comput., 51(1988),  699 -- 706.
+
+\bibitem{sam}
+A.~Samarskii, The theory of difference schemes, M. Dekker,  2001.
+
+\end{thebibliography}
+
+\bigskip
+\noindent\sl
+\begin{tabular}[b]{l}
+Krassimir Angelow\\
+Institute of Mathematics and Informatics\\
+Bulgarian Academy of Sciences, Acad.\\
+G.~Bonchev Bl.8, 1113, Sofia,
+Bulgaria\\
+e-mail: \texttt{angelow@math.bas.bg}\\
+\\
+Natalia Kolkovska\\
+Institute of Mathematics and Informatics\\
+Bulgarian Academy of Sciences, Acad.\\
+G.~Bonchev Bl.8, 1113, Sofia,
+Bulgaria\\
+e-mail: \texttt{n.kolkovska@gmail.com}
+\end{tabular}
+\hfill
+\begin{tabular}[b]{l}
+Received ...\\
+Final Accepted ...
+\end{tabular}
+
+\end{document}
