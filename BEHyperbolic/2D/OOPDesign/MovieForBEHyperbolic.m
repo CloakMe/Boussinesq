@@ -13,7 +13,7 @@ function MovieForBEHyperbolic( compBoxToShow, viewTypeX, viewTypeY, tt, x, y )
     [ idxCompBox.y_end ] = GetIdx( y, compBoxToShow.y_end );
 
     %tt = 1:0.1:20;    
-    for j = 1:size(tt,2)   
+    for j = 1:5:size(tt,2)   
 
         xxx=x( idxCompBox.x_st:idxCompBox.x_end );
         lenX = length( xxx );

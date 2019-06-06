@@ -1,8 +1,8 @@
 classdef WaveFactory
   methods
-    function this = WaveFactory( workspaceName, bndPtsRem, nat_42 )
+    function this = WaveFactory( workspaceName, bndCutSize, nat_42 )
         if( nargin == 2 )
-            this = this.WaveFactory1( workspaceName, bndPtsRem );
+            this = this.WaveFactory1( workspaceName, bndCutSize );
         end
         if( nargin == 1 )
             this = this.WaveFactory2( workspaceName );
@@ -13,7 +13,7 @@ classdef WaveFactory
         
     end
     
-    function this = WaveFactory1( this, workspaceName, bndPtsRem )
+    function this = WaveFactory1( this, workspaceName, bndCutSize )
         
         mydir  = pwd;
         idcs   = strfind(mydir,'/');
@@ -44,12 +44,14 @@ classdef WaveFactory
         this.theta = theta(end);
         this.mu = ( c1 + c2 ) / 2.0;
         this.c = c;
+        this.beta = bt1/bt2;
         this.beta1 = bt1;
         this.beta2 = bt2;
         this.alpha = al;
         this.order = length( derivative.second ) - 1;
         this.dudt_t0 = this.GetTDer();
         %this.mu = 0;
+        bndPtsRem = bndCutSize/this.h;
         this.x = this.x( bndPtsRem+1:end-bndPtsRem );
         this.y = this.y( bndPtsRem+1:end-bndPtsRem );
         this.dudt_t0 = this.dudt_t0( bndPtsRem+1:end-bndPtsRem, bndPtsRem+1:end-bndPtsRem );
@@ -69,6 +71,7 @@ classdef WaveFactory
         this.x_st = x_st;
         this.h = h;
         this.c = c;
+        this.beta = beta1/beta2;
         this.beta1 = beta1;
         this.beta2 = beta2;
         this.alpha = al;
@@ -129,6 +132,7 @@ classdef WaveFactory
         this.x_st = x_st;
         this.h = h;
         this.c = c;
+        this.beta = beta1/beta2;
         this.beta1 = beta1;
         this.beta2 = beta2;
         this.alpha = al;
@@ -182,6 +186,7 @@ classdef WaveFactory
         mu
         theta
         alpha
+        beta
         beta1
         beta2
         c

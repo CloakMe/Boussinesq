@@ -11,7 +11,7 @@ function [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,c1,c2,zeroX,zero
     [X,Y]=Domain(x,y);
     
     if(prmtrs.ICSwitch == 1)
-       [bigIC,IC] = pola2cart_v5(x, y, gamma1, gamma2, X, Y);%, ode_name, IC);
+       [bigIC,IC] = pola2cart_v5(x, y, gamma1, gamma2);%, ode_name, IC);
     else  
        bigIC = u_ex2d_mat_vc(X,Y,c/sqrt(bt),bt);
        IC = bigIC(zeroX:end,zeroY:end);

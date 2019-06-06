@@ -125,8 +125,8 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
                                      t, ...
                                      dntDhAugDomainOnly,...
                                      dntdttAugDomainOnly )
-        if( this.order > 4 )
-            error( 'Not yet implemented for order = 6 (or 8) !' );
+        if( this.order > 6 )
+            error( 'Not yet implemented for order = 8!' );
         end
         domainUtilsP2 = BEDomainUtilsP2( this.x, this.y, this.order, this.beta, this.c, this.mu, this.theta );
                 
@@ -150,13 +150,16 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
             if( this.order == 4 )   
                 VV(j,:) = BEUtilities.PentSolv( this.IminusDHdiag(j), diag, deltab(j,:));
             end
+            if( this.order == 6 )
+                VV(j,:) = BEUtilities.SevenSolv( this.IminusDHdiag(j), diag, deltab(j,:));
+            end
         end
         if( nargin == 4 )
             deltav = ( domainUtilsP2.DeltaH( highestDer, fd2ndDer ) );%/this.beta; 
         else
             deltav = ( domainUtilsP2.DeltaH( highestDer, fd2ndDer ) + dntDhAugDomainOnly );%/this.beta;
         end
-        dnvz = ( this.eigenFinDiffMat*VV + deltav/this.h^2 );
+        dnvz = ( this.eigenFinDiffMat*VV + deltav/this.h^2 )/this.beta;
     end
        
   end

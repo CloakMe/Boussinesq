@@ -154,7 +154,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
         end
         
         deltav = ( domainUtilsP2spec.DeltaH( timeDerVz, fd2ndDer ) ); % DeltaTimeDerevative
-        dnvz = ( this.eigenFinDiffMat*VV + deltav/this.h^2 );
+        dnvz = ( this.eigenFinDiffMat*VV + deltav/this.h^2 )/this.beta;
     end
        
     function [ vu, numOfIter ] = GetVuPicardi( this, vz, vmo, t )

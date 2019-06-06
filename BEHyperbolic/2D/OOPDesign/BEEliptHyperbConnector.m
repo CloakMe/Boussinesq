@@ -1,35 +1,16 @@
 clear; clc;
 %return
-bndPointsToRemove = 5; 
+bndCutSize = 0; 
 % ChristovIC_80_bt1_c090_h020_O(h^6)
-%'ChristovIC_40_bt1_c045_h0125_O(h^2)' 
-% ChristovIC_30_bt3_c045_h01_O(h^4)
-% ChristovIC_40_bt3_c045_h0125_O(h^2)  
-% ChristovIC_30_bt3_c030_h01_O(h^2)
-% ChristovIC_20_bt3_c030_h005_O(h^2)
-% ChristovIC_20_bt3_c050_h005_O(h^2)
-% ChristovIC_40_bt3_c045_h01_O(h^2)
-% ChristovIC_40_bt3_c050_h01_O(h^2)
-% ChristovIC_30_bt3_c045_h0075_O(h^2)
-% ChristovIC_40_bt1_c045_h0125_O(h^2)
-% ChristovIC_30_bt3_c085_h0075_O(h^2)
-% ChristovIC_45_bt3_c090_h005_O(h^2)
-% ChristovIC_33_bt3_c090_h0075_O(h^2)
-% ChristovIC_30_bt3_c098_h0150_O(h^2)
-% ChristovIC_15_bt3_c090_h050_O(h^2)
-% ChristovIC_15_bt3_c075_h050_O(h^2)
-% ChristovIC_15_bt3_c095_h050_O(h^2)
-% ChristovIC_8_bt3_c095_h030_O(h^2)
-% ChristovIC_12_bt3_c095_h030_O(h^2)
-% ChristovIC_15_bt3_c090_h050_O(h^4)
-% ChristovIC_15_bt3_c042_h050_O(h^2)
-% ChristovIC_15_bt3_c050_h050_O(h^2)
-% ChristovIC_15_bt3_c075_h050_O(h^4)
-waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^6)', bndPointsToRemove );
+% ChristovIC_40_bt1_c090_h020_O(h^4)
+% ChristovIC_80_bt3_c052_h020_O(h^6)
+% ChristovIC_36_bt5_c040_h020_O(h^6)
+% ChristovIC_40_bt069_c090_h020_O(h^6)
+waveFactory = WaveFactory( 'ChristovIC_40_bt069_c090_h020_O(h^6)', bndCutSize );
 %waveFactory = WaveFactory( 'BestFitIC' );
 
-    tau = 0.025;
-    tEnd=10.0;
+    tau = 0.1;
+    tEnd=20.0;
     %turnOnCaxis = 0;
     %waveFactory.PlotSingleWave( turnOnCaxis );
 
@@ -39,7 +20,8 @@ waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^6)', bndPointsToRemo
                                              tau, tEnd, estep );
     eqParams = BEEquationParameters( waveFactory.alpha, waveFactory.beta1, waveFactory.beta2, waveFactory.c );
    ic = BEInitialCondition( waveFactory.u_t0 , waveFactory.dudt_t0, waveFactory.mu, waveFactory.theta );   
-   engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %BEEngineTaylorSoftBnd %BEEngineEnergySaveSoftBnd
+   %engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %BEEngineTaylorSoftBnd %BEEngineEnergySaveSoftBnd
+   engine = BEEngineTaylor( dscrtParams, eqParams, ic ); 
    % _____________________________________
    tic
 
@@ -103,9 +85,12 @@ waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^6)', bndPointsToRemo
     %hold off;
     title('Energy functional');
     xlabel('time "t"');  ylabel('EN');
-  
+    
+    bt = waveFactory.beta1/waveFactory.beta2;
     %DrawEnergyForHyperbolicBE( engine, tt );
-    save (['lastTest']);
+    save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
+        num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) ...
+      '_h0' num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')']);
     return;
 %----------------------------------------------------------------------------------------
     waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^4)', 5 );
@@ -124,4 +109,9 @@ waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^6)', bndPointsToRemo
     viewTypeX = 81;
     viewTypeY = 18;
     MovieForBEHyperbolic( compBoxToShow, viewTypeX, viewTypeY, tt, waveFactory.x, waveFactory.y );
+    
+        figure(1)
+    mesh(x,y(end-500:end-140),vl(:,end-500:end-140)')
+    title('solution');
+    xlabel('x');            ylabel('y');
    

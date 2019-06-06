@@ -8,7 +8,7 @@ classdef (ConstructOnLoad) BEEngineShrink < BEEngine
     
     function this = BEEngineShrink( dscrtParams, eqParams, ic )
         this = this@BEEngine( dscrtParams, eqParams, ic );
-        [ ff, this.dhb ] = BEUtilities.GetFinDiffMat( this.sx, this.h );
+        this.dhb = BEUtilities.GetFinDiffMat( this.sx, this.order, this.h );
     end
     
     function [ this ] = UpdateMatricesSizes( this, newSizeX, newSizeY )
