@@ -1,32 +1,28 @@
 classdef (ConstructOnLoad) BEDomainUtils
     
     properties (SetAccess = private, GetAccess = protected)
-              
+        X
+        Y      
         hx
         hy
-        
-        XxAug
-        YxAug
-        XyAug
-        YyAug
+
         order
         x
         y
     end
     
     properties (SetAccess = private, GetAccess = public)
-        % left right top btm are with respect to matrix not domain!
-        X
-        Y  
-        leftX
-        leftY
-        rightX
-        rightY
-        topX
-        topY
-        btmX
-        btmY
-    end
+        % this X and Y are net over
+        % x augmented domain ( e.g. x(-2), x(-1), x(0), x(1), ... x(end-1), x(end), x(end+1), x(end+2), x(end+3)
+        % and normal y, i.e. y(1), y(2), ..., y(end)
+        X_xAugDomain 
+        Y_xAugDomain
+        % this X and Y are net over
+        % y augmented domain ( e.g. y(-2), y(-1), y(0), y(1), ... y(end-1), y(end), y(end+1), y(end+2), y(end+3)
+        % and normal x, i.e. x(1), x(2), ..., x(end)
+        X_yAugDomain
+        Y_yAugDomain
+    end 
     
   methods( Access = public )
       
@@ -39,20 +35,20 @@ classdef (ConstructOnLoad) BEDomainUtils
         this.hx = x( 2 ) - x( 1 );
         this.hy = y( 2 ) - y( 1 );
         
-        startAugX = x( 1 ) - numberOfExtPoints*this.hx;
-        endAugX = x( end ) + numberOfExtPoints*this.hx;
-        xAug = startAugX : endAugX;
+        leftJointX = (-numberOfExtPoints:1:-1)*this.hx + x( 1 );
+        rightJointX = (1:numberOfExtPoints)*this.hx + x( end );
+        extendedX = [leftJointX x rightJointX];
         
-        startAugY = y( 1 ) - numberOfExtPoints*this.hy;
-        endAugY = y( end ) + numberOfExtPoints*this.hy;
-        yAug = startAugY : endAugY;
+        leftJointY = (-numberOfExtPoints:1:-1)*this.hy + y( 1 );
+        rightJointY = (1:numberOfExtPoints)*this.hy + y( end );
+        extendedY = [leftJointY y rightJointY];
         
         this.x = x;
         this.y = y;
         [ this.X, this.Y ] = this.GetNet(x,y);
-        [ this.XxAug, this.YxAug ] = this.GetNet(xAug,y);
-        [ this.XyAug, this.YyAug ] = this.GetNet(x,yAug); 
-        this = SetBoundingBox( this, x, y, numberOfExtPoints );
+        [ this.X_xAugDomain, this.Y_xAugDomain ] = this.GetNet(extendedX,y);
+        [ this.X_yAugDomain, this.Y_yAugDomain ] = this.GetNet(x,extendedY); 
+        %this = SetBoundingBox( this, x, y, numberOfExtPoints );
 
     end
     
@@ -65,8 +61,9 @@ classdef (ConstructOnLoad) BEDomainUtils
                                          augPntsBtm ) 
 
         if( nargin == 3 )
-            augZeroPointsY = zeros( size( this.leftY ) );
-            augZeroPointsX = zeros( size( this.topX ) );
+            bndPntsCount = this.order/2;
+            augZeroPointsY = zeros( size(M,1), bndPntsCount );
+            augZeroPointsX = zeros( bndPntsCount, size(M,2) );
             zeroMatrix = this.YDerivative( M, augZeroPointsY, augZeroPointsY, finiteDiff ) +...
                          this.XDerivative( M, augZeroPointsX, augZeroPointsX, finiteDiff );
         else

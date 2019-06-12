@@ -246,24 +246,38 @@ classdef WaveFactory
         function dudt_t0 = GetTDer( this )
             
             fdStartPos = this.order/2;
-            fd = BEUtilities.GetFinDiffCoeff( -fdStartPos:fdStartPos, 1);
+            finiteDiff = BEUtilities.GetFinDiffCoeff( -fdStartPos:fdStartPos, 1)';
             
-            domUtils = BEDomainUtilsP2( this.x,...
+            domUtils = BEBoundaryUtils( this.x,...
                                         this.y,...
                                         this.order,...
-                                        this.beta1/this.beta2,...
+                                        this.beta,...
                                         this.c,...
                                         this.mu,...
                                         this.theta );
                                     
-             dersBndLeft = domUtils.GetDersBndLeft( 0 );
-             dersBndRight = domUtils.GetDersBndRight( 0 );
-                 
-             dudt_t0 = -this.c * domUtils.YDerivative(...
-                                             this.u_t0,...
-                                             dersBndLeft(:,:,1),...
-                                             dersBndRight(:,:,1),...
-                                             fd' )/this.h;
+            %dersBndLeft = domUtils.GetAsymptoticFunctionLeft( 0 );
+            %dersBndRight = domUtils.GetDersBndRight( 0 );
+            bndPntsCount = this.order/2;
+            xNet = domUtils.X_yAugDomain(:,1:bndPntsCount);
+            yNet = domUtils.Y_yAugDomain(:,1:bndPntsCount);
+            asymptoticFunctionYStart = domUtils.AsymptoticFunction( xNet, yNet, 0, 0 );      
+            xNet = domUtils.X_yAugDomain(:,end - bndPntsCount + 1:end);
+            yNet = domUtils.Y_yAugDomain(:,end - bndPntsCount + 1:end);
+            asymptoticFunctionYEnd = domUtils.AsymptoticFunction( xNet, yNet, 0, 0 );
+
+            dudt_t0 =  -this.c * domUtils.YDerivative( this.u_t0, asymptoticFunctionYStart, asymptoticFunctionYEnd, finiteDiff )/this.h;
+            %{
+            dudt_t02 =  -this.c * domUtils.YDerivative( this.u_t0, 0*asymptoticFunctionYStart, 0*asymptoticFunctionYEnd, finiteDiff )/this.h;
+            figure(1)
+            mesh(this.x, this.y(1:7), dudt_t0(:,1:7)');
+            xlabel('x');            ylabel('y');
+            figure(2)
+            mesh(this.x, this.y(1:7), dudt_t02(:,1:7)');
+            xlabel('x');            ylabel('y');
+            
+            fg = 5;
+            %}
         end
     end
 end

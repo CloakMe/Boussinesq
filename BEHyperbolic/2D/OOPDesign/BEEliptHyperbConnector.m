@@ -5,8 +5,9 @@ bndCutSize = 0;
 % ChristovIC_40_bt1_c090_h020_O(h^4)
 % ChristovIC_80_bt3_c052_h020_O(h^6)
 % ChristovIC_36_bt5_c040_h020_O(h^6)
-% ChristovIC_40_bt069_c090_h020_O(h^6)
-waveFactory = WaveFactory( 'ChristovIC_40_bt069_c090_h020_O(h^6)', bndCutSize );
+% ChristovIC_40_bt069_c090_h020_O(h^6) 
+% ChristovIC_40_bt05_c085_h020_O(h^6)
+waveFactory = WaveFactory( 'ChristovIC_36_bt3_c030_h020_O(h^6)', bndCutSize );
 %waveFactory = WaveFactory( 'BestFitIC' );
 
     tau = 0.1;
@@ -114,4 +115,19 @@ waveFactory = WaveFactory( 'ChristovIC_40_bt069_c090_h020_O(h^6)', bndCutSize );
     mesh(x,y(end-500:end-140),vl(:,end-500:end-140)')
     title('solution');
     xlabel('x');            ylabel('y');
+    
+    Q = 41;
+        figure(1)
+        mesh(x, y(1:Q), vl(:,1:Q)');
+        xlabel('x');            ylabel('y');
+        figure(2)
+        mesh(x(1:Q), y, vl(1:Q,:)');
+        xlabel('x');            ylabel('y');
+        
+                figure(3)
+        mesh(x, y(end-Q:end), vl(:,end-Q:end)');
+        xlabel('x');            ylabel('y');
+        figure(4)
+        mesh(x(end-Q:end), y, vl(end-Q:end,:)');
+        xlabel('x');            ylabel('y');
    

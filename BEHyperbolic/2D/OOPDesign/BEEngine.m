@@ -318,6 +318,9 @@ classdef (ConstructOnLoad) BEEngine
             if( this.order == 4 )   
                 VV(j,:) = BEUtilities.PentSolv( this.minusDHdiag(j), diag, wvt(j,:));
             end
+            if( this.order == 6 )   
+                VV(j,:) = BEUtilities.SevenSolv( this.minusDHdiag(j), diag, wvt(j,:));
+            end
         end
         
         vec1 = this.eigenFinDiffMat*VV;  %/h^2

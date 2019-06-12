@@ -41,7 +41,7 @@ classdef (ConstructOnLoad) BEDomainUtilsP2 < BEDomainUtils
        
     function [sdah] = DersBnd( this, X, Y, t, derOrd )
         
-        if( nargin == 4 )
+        if( nargin == 3 )
             derOrd = this.order;
         end
         sdah = zeros( size( X, 1 ), size( X, 2 ), this.order+1 );
@@ -153,33 +153,33 @@ classdef (ConstructOnLoad) BEDomainUtilsP2 < BEDomainUtils
     
     function testFunLeft = GetDersBndLeft( this, t, derOrd )
         if( nargin == 2 )
-            testFunLeft = DersBnd( this, this.leftX, this.leftY, t );
+            testFunLeft = this.DersBnd( this, this.leftX, this.leftY, t );
         else
-            testFunLeft = DersBnd( this, this.leftX, this.leftY, t, derOrd );
+            testFunLeft = this.DersBnd( this, this.leftX, this.leftY, t, derOrd );
         end
     end
     
     function testFunRight = GetDersBndRight( this, t, derOrd )
         if( nargin == 2 )
-            testFunRight = DersBnd( this, this.rightX, this.rightY, t );
+            testFunRight = this.DersBnd( this, this.rightX, this.rightY, t );
         else
-            testFunRight = DersBnd( this, this.rightX, this.rightY, t, derOrd );
+            testFunRight = this.DersBnd( this, this.rightX, this.rightY, t, derOrd );
         end        
     end
     
     function testFunTop = GetDersBndTop( this, t, derOrd )
         if( nargin == 2 )
-            testFunTop = DersBnd( this, this.topX, this.topY, t ); 
+            testFunTop = this.DersBnd( this, this.topX, this.topY, t ); 
         else
-            testFunTop = DersBnd( this, this.topX, this.topY, t, derOrd );
+            testFunTop = this.DersBnd( this, this.topX, this.topY, t, derOrd );
         end        
     end
    
     function testFunBtm = GetDersBndBtm( this, t, derOrd )
         if( nargin == 2 )
-            testFunBtm = DersBnd( this, this.btmX, this.btmY, t );
+            testFunBtm = this.DersBnd( this, this.btmX, this.btmY, t );
         else
-            testFunBtm = DersBnd( this, this.btmX, this.btmY, t, derOrd );
+            testFunBtm = this.DersBnd( this, this.btmX, this.btmY, t, derOrd );
         end        
     end
     

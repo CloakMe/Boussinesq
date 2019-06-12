@@ -106,7 +106,8 @@ end
            if(mod(iterCounter,500) ==0)
                fprintf('%d \n',iterCounter);
                fprintf('||R||_Inf = %.4e \n', residualInfNorm(subCounter));
-               fprintf('|ax - axNew| = %.15e \n|ay - ayNew| = %.15e\n eps = %.15e\n', abs( ax-Px(1) ), abs( ay-Py(1) ), eps );
+               fprintf('tau = %.4e \n', tau);
+               %fprintf('|ax - axNew| = %.15e \n|ay - ayNew| = %.15e\n eps = %.15e\n', abs( ax-Px(1) ), abs( ay-Py(1) ), eps );
                 
                if(prmtrs.plotResidual)
                    PlotResidual(x(zeroX:end),y(zeroY:end),crrntResidual*thetaVector(iterCounter));
@@ -131,7 +132,7 @@ end
            
         tauVector(iterCounter) = tau;        
         [tau, tauMax, tauIncreasedIteration, tauDecreasedIteration] =...
-        DefineCurrentTau(subCounter, iterCounter, iterMax, tau,  tauMax, tauIncreasedIteration,...
+        DefineCurrentTau(prmtrs.tau, subCounter, iterCounter, iterMax, tau,  tauMax, tauIncreasedIteration,...
             tauDecreasedIteration, residualInfNorm,UvsUupInfNorm, minResidual, angl , manualStop, flag, crrntResidual);
         
         if( flag == 1 )

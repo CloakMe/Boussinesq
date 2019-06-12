@@ -1,7 +1,8 @@
 function [tau, tauMax, tauIncreasedIteration, tauDecreasedIteration] =...
-    DefineCurrentTau(subCounter, iterCounter, iterMax, tau,  tauMax, tauIncreasedIteration,...
+    DefineCurrentTau(initTau, subCounter, iterCounter, iterMax, tau,  tauMax, tauIncreasedIteration,...
     tauDecreasedIteration, rsdlInf, smallUdiffInf, minResidual, angl, stopSwitch, stopFlag, crrntResidual)
 
+    oldTau = tau;
     if( iterCounter >  tauDecreasedIteration && iterCounter >  500)
         if( (iterCounter > 75 &&  rsdlInf(subCounter)> 50*minResidual) )
             
@@ -14,7 +15,7 @@ function [tau, tauMax, tauIncreasedIteration, tauDecreasedIteration] =...
         %vec = histc(vecX, unique(vecX)) + histc(vecX, unique(vecY));
         warnFlag = (abs(crrntResidual(1,1) - crrntResidual(1,3))*3 < abs(crrntResidual(1,1) - crrntResidual(1,2)) &&...
             abs(crrntResidual(1,2) - crrntResidual(1,4))*3 < abs(crrntResidual(1,2) - crrntResidual(1,3)) );
-        if(iterCounter > 75 && warnFlag == 1)
+        if(iterCounter > 75 && warnFlag == 1 )
            %if(vec(2)/sum(vec) > 0.5) 
                tauDecreasedIteration=iterCounter+10;
                %tauMax = 0.98*tau; 
@@ -36,7 +37,12 @@ function [tau, tauMax, tauIncreasedIteration, tauDecreasedIteration] =...
       
             tauIncreasedIteration = iterCounter;
             tau = 1.015*tau; 
+        end       
+        
+        if( tau < initTau/100)
+            tau = oldTau;
         end
+       
     end
 
 end
