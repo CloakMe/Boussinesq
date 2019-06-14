@@ -78,10 +78,10 @@ waveFactory = WaveFactory( 'ChristovIC_40_bt3_c045_h010_O(h^6)', bndCutSize );
     figure(13)
     mesh(x, y(end-Q:end), vl(:,end-Q:end)');
     title('Top domain boundary');
-    xlabel('x');            ylabel('y (y_{end})');
-    title('Right domain boundary');
+    xlabel('x');            ylabel('y (y_{end})');    
     figure(14)
     mesh(x(end-Q:end), y, vl(end-Q:end,:)');
+    title('Right domain boundary');
     xlabel('x (x_{end})');            ylabel('y');
     
     figure(15)
