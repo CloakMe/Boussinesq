@@ -1,5 +1,6 @@
 clear; clc;
 %return
+
 bndCutSize = 0; 
 % ChristovIC_80_bt1_c090_h020_O(h^6)
 % ChristovIC_40_bt1_c090_h020_O(h^4)
@@ -7,11 +8,11 @@ bndCutSize = 0;
 % ChristovIC_36_bt5_c040_h020_O(h^6)
 % ChristovIC_40_bt069_c090_h020_O(h^6) 
 % ChristovIC_40_bt05_c085_h020_O(h^6)
-waveFactory = WaveFactory( 'ChristovIC_36_bt3_c030_h020_O(h^6)', bndCutSize );
+waveFactory = WaveFactory( 'ChristovIC_40_bt3_c045_h010_O(h^6)', bndCutSize );
 %waveFactory = WaveFactory( 'BestFitIC' );
 
-    tau = 0.1;
-    tEnd=20.0;
+    tau = 0.05;
+    tEnd=10.0;
     %turnOnCaxis = 0;
     %waveFactory.PlotSingleWave( turnOnCaxis );
 
@@ -53,23 +54,36 @@ waveFactory = WaveFactory( 'ChristovIC_36_bt3_c030_h020_O(h^6)', bndCutSize );
   yInd(1) = 1;
   yInd(2) = sy;
   %}
-  
+  elapsedTime = toc
   curSz = size( vl );
 
   x = engine.x;
   y = engine.y;
       
-  compBoxToShow = waveFactory.compBox;
-  compBoxToShow.x_st = x( 1 );
-  compBoxToShow.x_end = x( end );
-  compBoxToShow.y_st = y( 1 );
-  compBoxToShow.y_end = y( end );
-  
   topView = 1;
-  viewTypeX = 81;
-  viewTypeY = 18;
-  MovieForBEHyperbolic( compBoxToShow, viewTypeX, viewTypeY, tt, x, y );
+  viewTypeX = 90;
+  viewTypeY = 90;
+  MovieForBEHyperbolic( viewTypeX, viewTypeY, tt, x, y );
        
+   Q = 41;
+    figure(11)
+    mesh(x, y(1:Q), vl(:,1:Q)');
+    title('Bottom domain boundary');
+    xlabel('x');            ylabel('y (y_{start})');
+    figure(12)
+    mesh(x(1:Q), y, vl(1:Q,:)');
+    title('Left domain boundary');
+    xlabel('x (x_{start})');            ylabel('y');
+
+    figure(13)
+    mesh(x, y(end-Q:end), vl(:,end-Q:end)');
+    title('Top domain boundary');
+    xlabel('x');            ylabel('y (y_{end})');
+    title('Right domain boundary');
+    figure(14)
+    mesh(x(end-Q:end), y, vl(end-Q:end,:)');
+    xlabel('x (x_{end})');            ylabel('y');
+    
     figure(15)
     mesh(x,y,vl')
     title('solution');
@@ -86,7 +100,7 @@ waveFactory = WaveFactory( 'ChristovIC_36_bt3_c030_h020_O(h^6)', bndCutSize );
     %hold off;
     title('Energy functional');
     xlabel('time "t"');  ylabel('EN');
-    
+        
     bt = waveFactory.beta1/waveFactory.beta2;
     %DrawEnergyForHyperbolicBE( engine, tt );
     save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
@@ -110,24 +124,7 @@ waveFactory = WaveFactory( 'ChristovIC_36_bt3_c030_h020_O(h^6)', bndCutSize );
     viewTypeX = 81;
     viewTypeY = 18;
     MovieForBEHyperbolic( compBoxToShow, viewTypeX, viewTypeY, tt, waveFactory.x, waveFactory.y );
+
     
-        figure(1)
-    mesh(x,y(end-500:end-140),vl(:,end-500:end-140)')
-    title('solution');
-    xlabel('x');            ylabel('y');
-    
-    Q = 41;
-        figure(1)
-        mesh(x, y(1:Q), vl(:,1:Q)');
-        xlabel('x');            ylabel('y');
-        figure(2)
-        mesh(x(1:Q), y, vl(1:Q,:)');
-        xlabel('x');            ylabel('y');
-        
-                figure(3)
-        mesh(x, y(end-Q:end), vl(:,end-Q:end)');
-        xlabel('x');            ylabel('y');
-        figure(4)
-        mesh(x(end-Q:end), y, vl(end-Q:end,:)');
-        xlabel('x');            ylabel('y');
+
    

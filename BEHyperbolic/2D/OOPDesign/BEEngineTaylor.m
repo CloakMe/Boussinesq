@@ -121,7 +121,7 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
     
     function [dnvz] = GetCurrentDer( this,...
                                      nonlinTerm,...
-                                     highestDer,...
+                                     dnU_dtn,...
                                      t, ...
                                      order)
         if( this.order > 6 )
@@ -133,17 +133,7 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         VV2 = this.vdah;
         fd2ndDer = this.GetFd2ndDer();
         mid = ( this.order/2 + 1 );
-        %{
-        bndPntsCount = this.order/2;
-        xNet = boundaryUtils.X_yAugDomain(:,1:bndPntsCount);
-        yNet = boundaryUtils.Y_yAugDomain(:,1:bndPntsCount);
-        asymptoticFunctionYStart = boundaryUtils.AsymptoticFunction( xNet, yNet, t, order );      
-        xNet = boundaryUtils.X_yAugDomain(:,end - bndPntsCount + 1:end);
-        yNet = boundaryUtils.Y_yAugDomain(:,end - bndPntsCount + 1:end);
-        asymptoticFunctionYEnd = boundaryUtils.AsymptoticFunction( xNet, yNet, t, order );
-
-        dhighestDerdt2 =  this.c^2 * boundaryUtils.YDerivative( VV, asymptoticFunctionYStart, asymptoticFunctionYEnd, fd2ndDer );
-        %}        
+        
         deltab = this.eigenFinDiffMat'* ( boundaryUtils.DeltaH( nonlinTerm, fd2ndDer )+...
             boundaryUtils.DeltaXH( this.beta-1, fd2ndDer, t, order ) );    
 
@@ -165,7 +155,8 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
             end
         end
         
-        deltav = ( boundaryUtils.DeltaH( highestDer, fd2ndDer ) )/this.h^2;%/this.beta;
+        deltav = ( boundaryUtils.DeltaH( dnU_dtn, fd2ndDer ) )/this.h^2;%/this.beta;
+
         myBoundary = boundaryUtils.DeltaXH( 1, fd2ndDer, t, order )/this.h^2;%
         dnvz = ( this.eigenFinDiffMat*VV + deltav + myBoundary)/this.beta;
         %{

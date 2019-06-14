@@ -16,7 +16,7 @@ classdef (ConstructOnLoad) BEBoundaryUtils < BEDomainUtils
         this.theta = theta;
     end
 
-    function [sdah] = AsymptoticFunction( this, X, Y, t, derOrd )
+    function [sdah] = AsymptoticFunction( this, X, Y, t, timeDerOrd )
         
         sdah = zeros( length(this.x), length(this.y) );
         
@@ -27,15 +27,15 @@ classdef (ConstructOnLoad) BEBoundaryUtils < BEDomainUtils
         A = (1-c^2)*X.^2 - Y.^2;
         B = (1-c^2)*X.^2 + Y.^2;
                 
-        if( derOrd == 0 )
+        if( timeDerOrd == 0 )
             sdah =  muTheta * ( (1-c^2) * X.^2 - (Y - c * t).^2 ) ./ ((1-c^2) * X.^2 + (Y - c * t).^2).^2;
             return;
-        elseif(derOrd == 1 )
+        elseif(timeDerOrd == 1 )
         
             sdah =  2 * muTheta * c * (Y - c * t) .* (B + 2 * Y * c * t - c ^ 2 * t ^ 2 + 2 * A) ./...
                        (B - 2 * Y * c * t + c ^ 2 * t ^ 2) .^ 3;
             return;
-        elseif(derOrd == 2 )
+        elseif(timeDerOrd == 2 )
         
             sdah =  -2 * muTheta * c ^ 2 * (-10 * A * c ^ 2 * t ^ 2 - 8 * B * c ^ 2 * t ^ 2 -...
                         8 * B .* Y .^ 2 + 16 * Y .^ 2 * c ^ 2 * t ^ 2 - 12 * Y * c ^ 3 * t ^ 3 -...
@@ -43,7 +43,7 @@ classdef (ConstructOnLoad) BEBoundaryUtils < BEDomainUtils
                         16 * B .* Y * c * t + 20 * A .* Y * c * t) ./ (B - 2 * Y * c * t + c ^ 2 * t ^ 2) .^ 4;
                     
             return;
-        elseif(derOrd == 3 )
+        elseif(timeDerOrd == 3 )
 
         	sdah = -24 * muTheta * c ^ 3 * (Y - c * t) .*...
                     (-5 * A * c ^ 2 * t ^ 2 - 5 * B * c ^ 2 * t ^ 2 - 6 * B .* Y .^ 2 +...
@@ -52,7 +52,7 @@ classdef (ConstructOnLoad) BEBoundaryUtils < BEDomainUtils
                     10 * A .* Y * c * t) ./ (B - 2 * Y * c * t + c ^ 2 * t ^ 2) .^ 5;
                 
             return;
-        elseif(derOrd == 4 )
+        elseif(timeDerOrd == 4 )
 
         	sdah = 24 * muTheta * c ^ 4 *...
                     (35 * A * c ^ 4 * t ^ 4 + 84 * A .* Y * c * t .* B + 2 * B .^ 3 -...
@@ -66,7 +66,7 @@ classdef (ConstructOnLoad) BEBoundaryUtils < BEDomainUtils
                     42 * A .* c ^ 2 * t ^ 2 .* B - 48 * B .* A .* Y .^ 2) ./ (B - 2 * Y * c * t + c ^ 2 * t ^ 2) .^ 6;
                 
             return;
-        elseif(derOrd == 5 )
+        elseif(timeDerOrd == 5 )
 
             sdah = 240 * muTheta * c ^ 5 * (Y - c * t) .* (28 * A * c ^ 4 * t ^ 4 +...
                     112 * A .* Y * c * t .* B + 9 * B .^ 3 - 224 * Y .^ 3 .* B * c * t +...
@@ -80,7 +80,7 @@ classdef (ConstructOnLoad) BEBoundaryUtils < BEDomainUtils
                     56 * A .* c ^ 2 * t ^ 2 .* B - 80 * B .* A .* Y .^ 2) ./ (B - 2 * Y * c * t + c ^ 2 * t ^ 2) .^ 7;
                 
             return;
-        elseif(derOrd == 6 )
+        elseif(timeDerOrd == 6 )
 
             sdah = -720 * muTheta * c ^ 6 * (1664 * Y .^ 5 .* B * c * t -...
                 3072 * Y .^ 4 .* B * c ^ 2 * t ^ 2 - 1264 * Y .^ 3 * c * t .* B .^ 2 +...
@@ -107,30 +107,50 @@ classdef (ConstructOnLoad) BEBoundaryUtils < BEDomainUtils
         end
      end
      
-    function [ result ] = DeltaXH( this, coeff, finiteDiff, t, derOrd ) 
+    function [ result ] = DeltaXH( this, coeff, finiteDiff, t, timeDerOrder ) 
 
         bndPntsCount = this.order/2;
-
+        vdah = zeros(length(this.x), length(this.y));
+        dnU_dtnOnBoundary = vdah;
+        
+        if(timeDerOrder > 0)
+            fdStartPos = this.order/2;
+            timeDerivative = BEUtilities.GetFinDiffCoeff( -fdStartPos:fdStartPos, timeDerOrder)';
+            xNet = this.X_yAugDomain(:,1:bndPntsCount);
+            yNet = this.Y_yAugDomain(:,1:bndPntsCount);
+            asymptoticFunctionYStart = this.AsymptoticFunction( xNet, yNet, t, timeDerOrder );      
+            xNet = this.X_yAugDomain(:,end - bndPntsCount + 1:end);
+            yNet = this.Y_yAugDomain(:,end - bndPntsCount + 1:end);
+            asymptoticFunctionYEnd = this.AsymptoticFunction( xNet, yNet, t, timeDerOrder );
+            %timeDerivative could be first, second, third or fourth
+            %derivative! finiteDiff is spatial second derivative.
+            h = this.y(2) - this.y(1);
+            dnU_dtnOnBoundary = (-this.c)^timeDerOrder * this.YDerivative( vdah, asymptoticFunctionYStart, asymptoticFunctionYEnd, timeDerivative )/h^timeDerOrder;  
+            clear('xNet'); clear('yNet');
+        end
+        
         xNet = this.X_xAugDomain(1:bndPntsCount,:);
         yNet = this.Y_xAugDomain(1:bndPntsCount,:);
-        asymptoticFunctionXStart = this.AsymptoticFunction( xNet, yNet, t, derOrd );
+        asymptoticFunctionXStart = this.AsymptoticFunction( xNet, yNet, t, timeDerOrder );
         xNet = this.X_xAugDomain(end - bndPntsCount + 1:end,:);
         yNet = this.Y_xAugDomain(end - bndPntsCount + 1:end,:);
-        asymptoticFunctionXEnd = this.AsymptoticFunction( xNet, yNet, t, derOrd );
+        asymptoticFunctionXEnd = this.AsymptoticFunction( xNet, yNet, t, timeDerOrder );
 
         clear('xNet'); clear('yNet');
 
         xNet = this.X_yAugDomain(:,1:bndPntsCount);
         yNet = this.Y_yAugDomain(:,1:bndPntsCount);
-        asymptoticFunctionYStart = AsymptoticFunction( this, xNet, yNet, t, derOrd );
+        asymptoticFunctionYStart = AsymptoticFunction( this, xNet, yNet, t, timeDerOrder );
         xNet = this.X_yAugDomain(:,end - bndPntsCount + 1:end);
         yNet = this.Y_yAugDomain(:,end - bndPntsCount + 1:end);
-        asymptoticFunctionYEnd = AsymptoticFunction( this, xNet, yNet, t, derOrd );
-
-        vdah = zeros(length(this.x), length(this.y));
-
-        result = coeff*( this.YDerivative( vdah, asymptoticFunctionYStart, asymptoticFunctionYEnd, finiteDiff ) +...
-                     this.XDerivative( vdah, asymptoticFunctionXStart, asymptoticFunctionXEnd, finiteDiff ));                 
+        asymptoticFunctionYEnd = AsymptoticFunction( this, xNet, yNet, t, timeDerOrder );
+               
+        %timeDerivative inside d^nU/dt^n could be first, second, third or fourth
+        %derivative! finiteDiff is spatial second derivative.
+        result = coeff*(...
+             dnU_dtnOnBoundary + ...
+             this.YDerivative( vdah, asymptoticFunctionYStart, asymptoticFunctionYEnd, finiteDiff ) +...
+             this.XDerivative( vdah, asymptoticFunctionXStart, asymptoticFunctionXEnd, finiteDiff ));                 
 
         %if(nargin == 7)
         %    deltaV = this.beta*this.DeltaH(finiteDiff,v)/this.h^2;
