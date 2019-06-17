@@ -29,6 +29,7 @@ sy = (length(y)+1)/2
    ICSwitch=0;
    % IC_switch = 0 ->christov sech formula
    % IC_switch = 1 ->nat42 formula
+   useZeroBoundary  = 0;
    plotResidual  = 0;
    plotBoundary  = 0;
    checkBoundary = 0;
@@ -36,7 +37,8 @@ sy = (length(y)+1)/2
    % if '1' plots the Residual/Boundry
    % if '0' does not plot anything
    prmtrs = struct('h',{h},'tau',{tau},'iterMax',{iterMax},'eps',{eps},'ICSwitch',{ICSwitch},...
-       'plotResidual',{plotResidual},'plotBoundary',{plotBoundary},'plotAssympt',{plotAssympt},'checkBoundary',{checkBoundary});
+       'plotResidual',{plotResidual},'plotBoundary',{plotBoundary},'plotAssympt',{plotAssympt},...
+       'checkBoundary',{checkBoundary}, 'useZeroBoundary', {useZeroBoundary});
    
    firstDerivative = GetFiniteDifferenceCoeff([-3,-2,-1,0,1,2,3],1)'/h;
    secondDerivative = GetFiniteDifferenceCoeff([-3,-2,-1,0,1,2,3],2)'/h^2;

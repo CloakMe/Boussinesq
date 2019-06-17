@@ -1,55 +1,59 @@
 function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,c1,c2,solutionNorms,tauVector, angl]=...
     sol_ch_v8(U,x,y,prmtrs,bt1,bt2,al,c,theta,zeroX,zeroY,derivative,P)
 
-sw = 0;  
-if (nargin == 13) 
-    sw=1; 
-end
+    sw = 0;  
+    if (nargin == 13) 
+        sw=1; 
+    end
 
 % constants
-   tau = prmtrs.tau;
-   h=prmtrs.h;
-   eps = prmtrs.eps;
-   checkBnd = prmtrs.checkBoundary;
-   tauMax = 10*tau;
-   tauIncreasedIteration = 60;
-   tauDecreasedIteration = 1;
-   iterMax = prmtrs.iterMax;
-   bt = bt1/bt2;
-   autoStop = 0;
-   afterCounter = 5000;
-   
-   sx = length(x);
-   sy = length(y);
-   manualStop=0;
-   boundaryHit = 0;
-   sw_div = 0;
+    tau = prmtrs.tau;
+    h=prmtrs.h;
+    eps = prmtrs.eps;
+    checkBnd = prmtrs.checkBoundary;
+    tauMax = 10*tau;
+    tauIncreasedIteration = 60;
+    tauDecreasedIteration = 1;
+    iterMax = prmtrs.iterMax;
+    bt = bt1/bt2;
+    autoStop = 0;
+    afterCounter = 5000;
 
-   UvsUupInfNorm = ones(1,iterMax);
-   thetaVector = zeros(1,iterMax);
-   tauVector = zeros(1,iterMax); 
-   tauVector(1) = tau;
-   residualInfNorm = ones(1,iterMax/10);
-   angl = zeros(1,iterMax/10);
-   step = Step(h);
-   
-   % approxBoundaryF is over the augmented domain 
-   % where four points were added top and bottom
-   approxBoundaryF = GetApproximationForBoundary(x(zeroX:end),y(zeroY:end),h,c);
-   
-   outerTopBoundaryF=approxBoundaryF(1:end-4,end-3:end); 
-   outerRigthBoundaryF=approxBoundaryF(end-3:end,1:end-4); 
-   
-   xLength=length(x(zeroX:end));  yLength=length(y(zeroY:end));
- 
-   [yLen,xLen,yHeiA,xHeiA] = GetInnerNodesForComparingBoundaryFunctions(xLength,yLength,step);
+    sx = length(x);
+    sy = length(y);
+    manualStop=0;
+    boundaryHit = 0;
+    sw_div = 0;
 
-   innerBoundaryUF=[approxBoundaryF(xHeiA,yLen)  approxBoundaryF(xLen,yHeiA)'];
-   innerBoundaryPF = bt*(1-c^2)*innerBoundaryUF;
-   
-   bigZeroMatrix = zeros(sx,sy);
-   zeroMatrix = zeros(size(U));
-    c1 = FindBoundaryConstants(U,0*U,innerBoundaryUF,innerBoundaryPF,step);
+    UvsUupInfNorm = ones(1,iterMax);
+    thetaVector = zeros(1,iterMax);
+    tauVector = zeros(1,iterMax); 
+    tauVector(1) = tau;
+    residualInfNorm = ones(1,iterMax/10);
+    angl = zeros(1,iterMax/10);
+    step = Step(h);
+
+    % approxBoundaryF is over the augmented domain 
+    % where four points were added top and bottom
+    approxBoundaryF = GetApproximationForBoundary(x(zeroX:end),y(zeroY:end),h,c);
+
+    outerTopBoundaryF=approxBoundaryF(1:end-4,end-3:end); 
+    outerRigthBoundaryF=approxBoundaryF(end-3:end,1:end-4); 
+
+    xLength=length(x(zeroX:end));  yLength=length(y(zeroY:end));
+
+    [yLen,xLen,yHeiA,xHeiA] = GetInnerNodesForComparingBoundaryFunctions(xLength,yLength,step);
+
+    innerBoundaryUF=[approxBoundaryF(xHeiA,yLen)  approxBoundaryF(xLen,yHeiA)'];
+    innerBoundaryPF = bt*(1-c^2)*innerBoundaryUF;
+
+    bigZeroMatrix = zeros(sx,sy);
+    zeroMatrix = zeros(size(U));
+    if(prmtrs.useZeroBoundary)
+        c1 = FindBoundaryConstants(U,0*U,innerBoundaryUF,innerBoundaryPF,step);
+    else
+        c1 = 0;
+    end
     deltaU = DeltaEvenFunctions(U,zeroMatrix,c1*outerRigthBoundaryF,c1*outerTopBoundaryF,derivative.second);
     if(sw == 0)
         P = bt*(1-c^2)*U - (1-bt*c^2)*deltaU + theta*al*bt*U.^2;
@@ -73,8 +77,11 @@ end
         P = Pup;
         U = Uup;
         iterCounter=iterCounter+1;
-        [c1,c2] = FindBoundaryConstants(U,P,innerBoundaryUF,innerBoundaryPF,step);
-        %c1 = 0; c2 = 0;
+        if(prmtrs.useZeroBoundary == 1)
+            [c1,c2] = FindBoundaryConstants(U,P,innerBoundaryUF,innerBoundaryPF,step);
+        else
+            c1 = 0; c2 = 0;
+        end
         deltaU = DeltaEvenFunctions(U,zeroMatrix,c1*outerRigthBoundaryF,c1*outerTopBoundaryF,derivative.second); %<--- TIME CONSummable
         Usquare = U .^2;
         thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*deltaU(1,1) )/(al*bt*Usquare(1,1));
