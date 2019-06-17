@@ -49,7 +49,7 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,c1,c2,solutionNorms,tauVec
 
     bigZeroMatrix = zeros(sx,sy);
     zeroMatrix = zeros(size(U));
-    if(prmtrs.useZeroBoundary)
+    if(prmtrs.useZeroBoundary == 0)
         c1 = FindBoundaryConstants(U,0*U,innerBoundaryUF,innerBoundaryPF,step);
     else
         c1 = 0;
@@ -77,7 +77,7 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,c1,c2,solutionNorms,tauVec
         P = Pup;
         U = Uup;
         iterCounter=iterCounter+1;
-        if(prmtrs.useZeroBoundary == 1)
+        if(prmtrs.useZeroBoundary == 0)
             [c1,c2] = FindBoundaryConstants(U,P,innerBoundaryUF,innerBoundaryPF,step);
         else
             c1 = 0; c2 = 0;
