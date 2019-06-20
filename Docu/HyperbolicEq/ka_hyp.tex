@@ -149,7 +149,7 @@ No #8, #1} \hfill
 }
 
 \head{3--4} {
-Numerical Study of Soliton Solutions to 2D Boussinesq  Equation
+Numerical Study of Soliton Solutions to the Two Dimensional Boussinesq  Equation
 }
 {K. Angelow, N. Kolkovska}
 {
@@ -164,7 +164,8 @@ Numerical Study of Soliton Solutions to 2D Boussinesq  Equation
 \bigskip
 
 \begin{abstract}\noindent{\sc Abstract.}
-The aim of this paper is to evaluate propagating  wave solutions  to the two dimensional Boussinesq equation. To solve this nonlinear fourth order hyperbolic  problem we use high order finite difference schemes for the spatial derivatives. Taylor Expansion is used to describe the time derivatives. The numerical results show good convergence. 
+The aim of this paper is to evaluate propagating  wave solutions to the two dimensional Boussinesq Equation (BE). To solve this nonlinear fourth order hyperbolic  problem we use high order finite difference schemes for the spatial derivatives. Taylor Series (TS) expansion is used to describe the time derivatives. A Boundary Condition (BC) is applied on the computational boundary. Results from the TS approach are compared with results from another known method in the literature. The performed numerical tests exhibit good convergence and confirm the validity of the TS method.
+
 \footnotetext{*This work is supported by the Institute of Mathematics and Informatics, Bulgarian
 Academy of Sciences. The second author is partially supported by the Bulgarian Science Fund under  Grant~H~22/2 from 2018.}
 \end{abstract}
@@ -182,48 +183,29 @@ In this paper we  consider the two dimensional Boussinesq  Equation (BE)
 \end{align}
 where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}.
 
-The goal of the article is to seek for solutions to (\ref{eq1}) of the type $u(x,y,t)=U(x,y-ct)$, which 
-are stationary solitary waves (SSW) traveling  in $y$ direction with velocity $c$. In a forthcoming paper the SSW will be applied as initial condition (IC) of the hyperbolic BE \rf{eq1} -- \rf{eq11}. Thus it is useful to have accurate, flexible 
-and robust IC in order to test various scenarios with two or more traveling waves colliding with each other.
-
-The SSWs to \rf{eq1} are computed by a Galerkin spectral method in \cite{chr-chr-07,chr-chr}.
-In \cite{Ch2012} a second order  finite difference scheme is used, while in \cite{Ch2011} 
-the perturbation series method with respect to the small parameter $c$ is applied.  Moreover in \cite{Ch2011} 
-the resulting numerical solution is approximated by best--fit formulae. These exact expressions are used further as initial conditions in 
-numerical simulations of the unsteady BE \rf{eq1} -- \rf{eq11}, see  \cite{cher,dani}. These papers show, 
-that for velocities $c<0.3$ the resulting SSW disperse in the form of ring wave expanding to infinity or blow up after some period in time. 
-Thus the traveling wave solutions of the hyperbolic equation  \rf{eq1} are very fragile, i.e. the wave easily blow up or fall apart with time. 
-The relationship between the dispersion and nonlinearity in \rf{eq1} is very sensitive  and the balance between them is easily destroyed.
-Moreover it is well known  that in the one dimensional case the solitary waves are unstable  
-for small wave speeds $c$ while they are stable in form for  velocities $c$ close to $1$. 
-
-Having in mind these  observations, we focus on the more accurate evaluation of SSW $U$ to \rf{eq1}, especially for  velocities $c > 0.7$, since it is fundamental for the construction of initial data of the unsteady BE \rf{eq1}. 
-
-Note that the stationary solitary waves $U(x,y-ct)=u(x,y,t)$
- satisfy the following nonlinear fourth order elliptic equation
-\begin{equation}\label{eq2}
-c^2 (E-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
-\end{equation}
-where $E$ is the identity operator. 
-
-The evaluation of the solution to \rf{eq2} described here follows the steps presented in \cite{Ch2012,chd-chr},
-but new modifications are introduced to meet the higher requirements reported above.
-
-First, for the numerical solution of \rf{eq2} we choose to apply an uniform grid with equal step size $h_x$ = $h_y$ = $h$ in the computational domain $\Omega_h$ instead of a nonuniform grid. The reason for this is that  
-%
-%because of the following circumstances. 
- the computed solutions to \rf{eq2} will be used as initial conditions in the hyperbolic problem \rf{eq1} and these solutions will travel in time, thus we have to have more mesh points not only close to the peak of the waves, but everywhere in   the  computational domain. 
-
-In order to increase the precision of the numerical method, we apply finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order, i.e. we  approximate second order spatial derivatives with high order finite differences. These  FDS allow one to evaluate the numerical solution with high accuracy on relatively coarse grid. 
+The goal of the article is to seek for soliton solutions to (\ref{eq1}), which 
+are traveling  in $y$ direction with velocity $c$. The most suitable Initial Condition (IC) for the numerical solver of the hyperbolic BE \rf{eq1} -- \rf{eq11} that was developed here, is found in \cite{EllipticProblem}. TS expansion is used to calculate the next time layer with respect to the time step $\tau$. The time derivatives
+are obtained from the main equation by an iterative procedure. This is possible because the equation allows to isolate the highest time derivative on one side of the equation. By differentiating with respect to time variable one could obtain higher time derivatives terms in the TS expansion. The approximations used in the TS expansion could be adjusted to second, fourth or sixth order. To increase the precision of the numerical method, finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order are applied to the spatial derivatives i.e. the second derivative along space are approximated with high order finite differences. These FDS allow one to evaluate the numerical solution with high accuracy on relatively coarse grid.
+In order to compare the results from TS method, a conservative finite difference scheme with weights is used, which applies second order of approximation along
+time and space.
+Both methods are tested with zero boundary and also with BC found and developed in \cite{BoundaryProblem}.
 
 
 \frenchspacing
 \def\bibname{\rm R\,E\,F\,E\,R\,E\,N\,C\,E\,S}
 \begin{thebibliography}{30}
 
-\bibitem{ChChr}
-C.~I.~Christov, An energy-consistent dispersive shallow-water model,
-Wave Motion,  34, (2001) 161 -- 174.
+\bibitem{ChChr} C.I. Christov, An energy-consistent dispersive shallow-water model,  {\it Wave Motion}, \textbf{34} (2001), 161-174.
+
+
+\bibitem{EllipticProblem}
+K. Angelow, N. Kolkovska, Numerical Study of Traveling Wave Solutions to 2D Boussinesq Equation.
+Serdica J. Computing,  8, (2018) 3-4.
+
+\bibitem{BoundaryProblem}
+K. Angelow, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation.
+International Journal of Applied Mathematics, (2018).
+
 
 \bibitem{chr-chr-07}
 M.~Christou, C.~I.~Christov, Fourier–Galerkin method for 2D solitons of Boussinesq equation, 
