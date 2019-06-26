@@ -183,13 +183,28 @@ In this paper we  consider the two dimensional Boussinesq  Equation (BE)
 \end{align}
 where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}.
 
-The goal of the article is to seek for soliton solutions to (\ref{eq1}), which 
+The goal of the article is to seek for soliton solutions to \rf{eq1}, which 
 are traveling  in $y$ direction with velocity $c$. The most suitable Initial Condition (IC) for the numerical solver of the hyperbolic BE \rf{eq1} -- \rf{eq11} that was developed here, is found in \cite{EllipticProblem}. TS expansion is used to calculate the next time layer with respect to the time step $\tau$. The time derivatives
-are obtained from the main equation by an iterative procedure. This is possible because the equation allows to isolate the highest time derivative on one side of the equation. By differentiating with respect to time variable one could obtain higher time derivatives terms in the TS expansion. The approximations used in the TS expansion could be adjusted to second, fourth or sixth order. To increase the precision of the numerical method, finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order are applied to the spatial derivatives i.e. the second derivative along space are approximated with high order finite differences. These FDS allow one to evaluate the numerical solution with high accuracy on relatively coarse grid.
-In order to compare the results from TS method, a conservative finite difference scheme with weights is used, which applies second order of approximation along
-time and space.
+are obtained from the main equation by an iterative procedure. This is possible because the equation allows to isolate the highest time derivative on one side of the equation. By differentiating with respect to time variable one could obtain higher time derivative terms in the TS expansion. Thus the solver could be adjusted to use second, fourth or sixth approximation order, i.e. $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. To increase the precision of the numerical method, finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order are applied to the spatial derivatives i.e. the second derivative along space are approximated with high order finite differences. Thus the numerical solution is computed on relatively coarse grid with high accuracy. In order to compare the results from TS method, a conservative finite difference scheme with weights is used, which applies second order of approximation along time and space.
 Both methods are tested with zero boundary and also with BC found and developed in \cite{BoundaryProblem}.
 
+\sect{2.~Taylor Series Approach for the BE in Two Dimensions}\label{TaylorA}
+
+The following variable change
+\begin{equation}\label{vc}
+x = \sqrt{\beta_1} \tilde x, \quad y = \sqrt{\beta_1} \tilde y, \quad t = \sqrt{\beta_1} \tilde t, \quad \tilde \Delta = \tilde u_{\tilde x \tilde x} + \tilde u_{\tilde y \tilde y}
+\end{equation}
+transforms the main equation \rf{eq1}  into 
+
+\begin{equation}\label{operator}
+(E-\tilde \Delta)  \tilde u_{\tilde t \tilde t} = \frac{(E-\tilde\Delta)\tilde\Delta \tilde u + \alpha \beta \tilde\Delta(\tilde u^2) + (\beta -1)\tilde\Delta \tilde u}{\beta},
+\end{equation}
+where $\beta = \beta_1 / \beta_2$.
+Revert to old abbreviations $x$, $y$, $t$ and $u$ and define $L$ to be an operator of the form
+\begin{equation}
+Lu = \frac{\Delta u + (E-\Delta)^{-1} ( \alpha \beta \Delta( u^2) + (\beta -1)\Delta u)}{\beta},
+\end{equation}
+where the negative power denotes the inverse operator of $(E-\Delta)$. The finite differences along time and space require TS expansions of $u(x,y,t)$. Therefore it is assumed that the solution is $s$ times infinitely differentiable with respect to $t$ and $p$ times infinitely differentiable with respect to $x$ and $y$, i.e. $u \in C^s(I, R)$ and $u \in C^p(\Omega, R)$. For simplicity $s$ also stands for the order of the TS expansion and $p$ stands for the order of the FDS approximations along the computational box $\Omega_h$. It is shown that the error of the method is close to $O(h^p + \tau^s).
 
 \frenchspacing
 \def\bibname{\rm R\,E\,F\,E\,R\,E\,N\,C\,E\,S}
