@@ -278,41 +278,107 @@ A more general formula, which is relevant only to the complexity of the algorith
 \end{align*}
 Nevertheless the formula itself is not our goal, just use the computer to derive it and evaluate it for a given function set $Q_{\tilde s}$.
 
+The spatial  derivatives discretization in \rf{DLeq} is made by using centered finite differences and extending the stencil:
+\begin{equation}\label{fd}
+v_{\widehat{xx},p}(x) :=  \frac{1}{h^2} \sum\limits_{i=-p/2}^{p/2} d_i u(x+ih),
+\end{equation}
+ Here $p$ is equal to $2$, $4$ or $6$.  The weights $d_i$ taken from  \cite{forn} are  
+ $ 1,-2,1$ for $p=2$, $-\frac{1}{12}, \frac{4}{3}, -\frac{5}{2}, \frac{4}{3}, -\frac{1}{12}$ - for $p=4$ and  $\frac{1}{90}, -\frac{3}{20}, \frac{3}{2}, -\frac{49}{18}, \frac{3}{2}, -\frac{3}{20}, \frac{1}{90}$ - for $p=6$. The approximation error of  formulae \rf{fd} is $O(h^p)$. Replacing the Laplace operator in \rf{DLeq} by the discrete Laplacian $$ \Delta_{h,p} v_{i,j} := (v_{i,j})_{\widehat{xx},p} + (v_{i,j})_{\widehat{yy},p}$$ we obtain finite difference schemes with high order of approximation $O(h^4)$ for $p=4$ and  $O(h^6)$ for $p=6 $.  The application of FDS with high order of approximation leads to a high rate of convergence of the method for sufficiently smooth solutions. In this way more accurate solutions can be produced on a coarse grid.
+Till now only space discretization, with step $h$, is applied on \rf{DLeq}. Let's discretize along time domain $T$. The IC $u_0(x,y) = u(x,y,0)$ and $u_1(x,y) = u_t(x,y,0)$ are taken from \cite{EllipticProblem}. Then
+$$
+u_{i,j}^0 = u_{0_h}, \partial / \partial t (u_{i,j}^0) = u_{1_h}
+$$
+and $D^{\tilde s}(u^0)$ could be found iteratively for each $2 \leq \tilde s \leq s$ through \rf{DLeq}. If the finite difference discretizations applied along space $(E - \Delta_h)^{-1}$ and $\Delta_h )$ have order of approximation $O(h^p)$ then Taylor formula gives the following
+
+\begin{align*}
+u(x,y,\tau) = u_h^{(0)} + \tau \frac{\partial}{\partial t}(u_h^{(0)}) + ... +
+\\ + \frac{\tau^s}{ s! } P_s( Q_s(u_h^{(0)}) ) + O(h^p + \tau^s) = u_h^{(1)} + O(h^p + \tau^s),
+\\  \frac{\partial}{\partial t}u(x,y,\tau) = \frac{\partial}{\partial t}( u_h^{(0)}) + \tau P_2( Q_2( (\frac{\partial}{\partial t} u_h^{(0)}) ) + ... +
+\\ + \frac{\tau^s}{ s! } P_{s+1}( Q_{s+1}(\frac{\partial}{\partial t}u_h^{(0)}) ) + O(h^p + \tau^s) = \frac{\partial}{\partial t}u_h^{(1)} + O(h^p + \tau^s)
+\end{align*}
+
+All derivatives on the next time layer $D^{(\tilde s) }( u_h^{(1)} )$ could be found using \rf{DLeq} because $u_h^{(1)}$ and $D^{(1) }( u_h^{(1)} )$
+are already given in the last equation. Again TS could be used to find the solution at the next time layer $u_h^{(2)}$. Of course this is an iterative procedure:
+\begin{align*}\label{Taylor}
+u(x,y,(k+1)\tau) = u_h^{(k+1)} + O(h^p + \tau^s),
+\\
+u_h^{(k+1)} = u_h^{(k)} + \tau \frac{\partial}{\partial t}(u_h^{(k)}) + \sum_{ \tilde s = 2 }^{ s } \frac{ \tau^{\tilde s}}{\tilde s!} P_{\tilde s}( Q_{\tilde s}( u_h^{(k)} ) ) + O(h^p + \tau^s),
+\\  
+\frac{\partial}{\partial t}u(x,y,(k+1)\tau) = \frac{\partial}{\partial t}( u_h^{(k+1)}) + O(h^p + \tau^s),
+\\
+\frac{\partial}{\partial t}( u_h^{(k+1)}) = \frac{\partial}{\partial t}( u_h^{(k)}) + \sum_{ \tilde s = 2 }^{ s + 1 } \frac{ \tau^{\tilde s - 1}}{(\tilde s-1)!} P_{\tilde s}( Q_{\tilde s}( \frac{\partial}{\partial t} u_h^{(k)} ) )+ O(h^p + \tau^s),
+\end{align*}
+with approximation order $O(h^p + \tau^s)$ which is easily proved by induction. Note that the derivative set $Q_s$ at time $t_k = 0$ is calculated with approximation order $O(h^p)$ and all other sets $Q_s$ that correspond to times $t_k$, $k \in N$, are approximated with $O(h^p + \tau^s)$. At each step this numerical procedure calculates TS expansions of two numerical values: $u_h$ and its first derivative $D(u_h)$, because the PDE is of second order in time. The complexity of the algorithm depends on the order and type of the time derivatives $D^{(\tilde s)}(u_h)$ in the PDE.
+
+The IC developed in \rf{EllipticProblem} for equation 
+The following boundary function
+\begin{equation}\label{eqBCV}
+\widehat U_B(x , y, t) = \mu_u \frac{ (1 - \tilde c^2/\beta) x^2 - y^2}{( (1 - \tilde c^2/\beta) x^2 + y^2)^2}
+\end{equation}
+found in \cite{BoundaryProblem} is used to solve the stationary elliptic problem described in \cite{BoundaryProblem}.
+Near  the computational boundaries $(x,y):x=L_x$ and $(x,y):y=L_y$ we do not change the stencil as described in \rf{fd}. The discrete Laplacian
+is defined there by using the values of the discrete solution
+\begin{equation}\label{eqBCV}
+\widehat U_B(x , y, t) = \mu_u \frac{ (1 - c^2) x^2 - (y-ct)^2}{( (1 - c^2) x^2 + (y-ct)^2)^2}
+\end{equation}
+found in \cite{BoundaryProblem} at points outside the computational domain. The value of $\mu_u$ is obtained again from the method developed in \cite{BoundaryProblem}. For $p=2$ the second derivative $\partial^2 / \partial x^2$ is approximated with three points (green color) and uses one point outside the computational domain $\Omega_h$. For $p=4$, the derivative $\partial^2 / \partial x^2$ implies five point stencil (blue color) with maximum
+\begin{wrapfigure}{r}{0.5\textwidth}
+     \begin{center}
+     \includegraphics[scale=0.5]{Pictures/BoundaryPicture.png}
+     \end{center}
+	\caption{Finite Differences near the computational boundary.}
+	\label{fig:BoundaryFD}
+\end{wrapfigure}
+two extra points and for $p=6$ it implies seven point stencil (purple color) with maximum three extra points outside the computational domain $\Omega_h$ (see Figure \ref{fig:BoundaryFD}). Same reasoning is implied for the $\partial^2 / \partial y^2$ derivative. The affected terms in equation \rf{Leq} which make use of the boundary function \rf{eqBCV} are the following:
+\begin{equation*}
+\frac{ \Delta_h u_h}{\beta}, \frac{ (E - \Delta_h)^{-1} ( (\beta -1)\Delta_h u_h) }{\beta}
+\end{equation*}
+The TS approach also requires time derivatives of both terms defined above
+\begin{equation*}
+\frac{ \Delta_h D^{(\tilde s)} (u_h)}{\beta}, \frac{ (E - \Delta_h)^{-1} ( (\beta -1)\Delta_h D^{(\tilde s)}(u_h) ) }{\beta}
+\end{equation*}
+for $\tilde s = 0, ..., s-2$.  Thus, $D^{\tilde s}(\widehat U_B(x , y, t))$  time derivative values outside the computational boundary $\partial \Omega_h$ are also used to extend the $p+1$ point stencil where needed (see Figure  \ref{fig:BoundaryFD}).
+
+
 \frenchspacing
 \def\bibname{\rm R\,E\,F\,E\,R\,E\,N\,C\,E\,S}
 \begin{thebibliography}{30}
 
+%1
 \bibitem{ChChr} C.I. Christov, An energy-consistent dispersive shallow-water model,  {\it Wave Motion}, \textbf{34} (2001), 161-174.
 
-
+%2
 \bibitem{EllipticProblem}
 K. Angelow, N. Kolkovska, Numerical Study of Traveling Wave Solutions to 2D Boussinesq Equation.
 Serdica J. Computing,  8, (2018) 3-4.
 
+%3
 \bibitem{BoundaryProblem}
 K. Angelow, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation.
 International Journal of Applied Mathematics, (2018).
 
+%4
 \bibitem{FPS}
 T. Lyche, Fast Poisson Solvers and FFT, Lecture Notes, University of Oslo, Norway
 
+%5
 \bibitem{chr-chr-07}
 M.~Christou, C.~I.~Christov, Fourier–Galerkin method for 2D solitons of Boussinesq equation, 
 Mathematics and Computers in Simulation, 74, (2007) 82 -- 92.
-
+%6
 \bibitem{chr-chr}
 M.~Christou, C.~I.~Christov, Galerkin Spectral Method for the 2D Solitary
 Waves of Boussinesq Paradigm Equation, CP 1186, (2009) 217 -- 225.
-
+%7
 \bibitem{Ch2012}
 C.~I.~Christov,  Numerical implementation of the asymptotic boundary conditions
 for steadily propagating 2D solitons of   Boussinesq type equation,       
 Math. Computers  Simul., 82 (2012),  1079 -- 1092.
-
+%8
 \bibitem{Ch2011}
 C.~I.~Christov, J. Choudhury, Perturbation solution  for the 2D Boussinesq equation,       
 Mech. Res. Commun., 38 (2011),  274 -- 281.
-
+%9
 \bibitem{cher}
 A.~Chertock, C.~Christov, A.~Kurganov, Central--upwind schemes for the  Boussinesq paradigm equation, Comp. Sci. High Performance Comp. IV, NNFM, 113, (2011), 267 -- 281.
 

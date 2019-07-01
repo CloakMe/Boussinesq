@@ -6,9 +6,9 @@ for jl = 1:3
     yo(1,:) = '40';
     yo(2,:) = '20';
     yo(3,:) = '10';
-
+%_tau05
     yo = cellstr(yo);
-    cellStr = strcat('SavedWorkspaces\Hyperb_40_bt3_c045_tau05_h0', yo(jl), '_O(h^4)' );
+    cellStr = strcat('SavedWorkspaces\Hyperb_40_bt3_c045_h0', yo(jl), '_O(h^6)' );
     %cellStr = strcat('Hyp_40_bt1_c090_h0', yo(jl), '_O(h^4)' );
     warning('off','all');
     load (  cellStr{1} );

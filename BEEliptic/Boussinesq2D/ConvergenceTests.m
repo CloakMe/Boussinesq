@@ -1,13 +1,13 @@
 clear;
 
 for jl = 1:3
-    yo(1,:) = '20';
-    yo(2,:) = '10';
-    yo(3,:) = '05';
+    yo(1,:) = '40';
+    yo(2,:) = '20';
+    yo(3,:) = '10';
 
     yo = cellstr(yo);
     ICType = 'Christov'; % Christov  Natali
-    cellStr = strcat('SavedWorkspaces\', ICType, 'IC_30_bt3_c045_h0', yo(jl), '_O(h^6)' );
+    cellStr = strcat('SavedWorkspaces\', ICType, 'IC_40_bt3_c054_h0', yo(jl), '_O(h^4)' );
     load (  cellStr{1} );
     %sum(tauVector)
     if(jl==1)
@@ -19,7 +19,7 @@ for jl = 1:3
     if(jl==3)
        vd = U(1:end,1:end); 
     end
-    PlotAssymptotics(x,y,h,zeroX,zeroY,bigU,0);
+    %PlotAssymptotics(x,y,h,zeroX,zeroY,bigU,0);
     clear('U');clear('cellStr');clear('yo');
 end
 
