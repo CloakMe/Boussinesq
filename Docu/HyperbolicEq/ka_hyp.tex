@@ -183,24 +183,22 @@ In this paper we  consider the two dimensional Boussinesq  Equation (BE)
 \end{align}
 where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}.
 
-The goal of the article is to seek for soliton solutions to \rf{eq1}, which 
-are traveling  in $y$ direction with velocity $c$. The most suitable Initial Condition (IC) for the numerical solver of the hyperbolic BE \rf{eq1} -- \rf{eq11} that was developed here, is found in \cite{EllipticProblem}. TS expansion is used to calculate the next time layer with respect to the time step $\tau$. The time derivatives
-are obtained from the main equation by an iterative procedure. This is possible because the equation allows to isolate the highest time derivative on one side of the equation. By differentiating with respect to time variable one could obtain higher time derivative terms in the TS expansion. Thus the solver could be adjusted to use second, fourth or sixth approximation order, i.e. $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. To increase the precision of the numerical method, finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order are applied to the spatial derivatives i.e. the second derivative along space are approximated with high order finite differences. Thus the numerical solution is computed on relatively coarse grid with high accuracy. In order to compare the results from TS method, a conservative finite difference scheme with weights is used, which applies second order of approximation along time and space.
+In previous work \cite{EllipticProblem} and \cite{BoundaryProblem} the stationary BE is studied once again. The obtained results there could serve as initial and boundary condition for the hyperbolic equation \rf{eq1}, \rf{eq11}  here. In order to relate to \cite{EllipticProblem} and \cite{BoundaryProblem}
+the following variable change is applied
+\begin{equation}\label{vc}
+x = \sqrt{\beta_1} \tilde x, \quad y = \sqrt{\beta_1} \tilde y, \quad t = \sqrt{\beta_1} \tilde t, \quad \tilde \Delta = \tilde u_{\tilde x \tilde x} + \tilde u_{\tilde y \tilde y}
+\end{equation}
+which transforms the main equation \rf{eq1}  into 
+\begin{equation}\label{eqVC}
+(E-\tilde \Delta)  \tilde u_{\tilde t \tilde t} = \frac{(E-\tilde\Delta)\tilde\Delta \tilde u + \alpha \beta \tilde\Delta(\tilde u^2) + (\beta -1)\tilde\Delta \tilde u}{\beta},
+\end{equation}
+where $\beta = \beta_1 / \beta_2$. The goal of the article is to seek for soliton solutions to \rf{eqVC}, which 
+are traveling  in $y$ direction with velocity $c$. TS expansion is used to calculate the next time layer with respect to the time step $\tau$. The time derivatives
+are obtained from the equation \rf{eqVC} by an iterative procedure. This is possible because the equation allows to isolate the highest time derivative on one side of the equation. By differentiating with respect to time variable one could obtain higher time derivative terms in the TS expansion. Thus the solver could be adjusted to use second, fourth or sixth approximation order, i.e. $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. To increase the precision of the numerical method, finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order are applied to the spatial derivatives i.e. the second derivative along space are approximated with high order finite differences. Thus the numerical solution is computed on relatively coarse grid with high accuracy. In order to compare the results from TS method, a conservative finite difference scheme with weights is used, which applies second order of approximation along time and space.
 Both methods are tested with zero boundary and also with BC found and developed in \cite{BoundaryProblem}.
 
 \sect{2.~Taylor Series Approach for the BE in Two Dimensions}\label{TaylorA}
 
-The following variable change
-\begin{equation}\label{vc}
-x = \sqrt{\beta_1} \tilde x, \quad y = \sqrt{\beta_1} \tilde y, \quad t = \sqrt{\beta_1} \tilde t, \quad \tilde \Delta = \tilde u_{\tilde x \tilde x} + \tilde u_{\tilde y \tilde y}
-\end{equation}
-transforms the main equation \rf{eq1}  into 
-
-
-\begin{equation}\label{eqVC}
-(E-\tilde \Delta)  \tilde u_{\tilde t \tilde t} = \frac{(E-\tilde\Delta)\tilde\Delta \tilde u + \alpha \beta \tilde\Delta(\tilde u^2) + (\beta -1)\tilde\Delta \tilde u}{\beta},
-\end{equation}
-where $\beta = \beta_1 / \beta_2$.
 Revert to old abbreviations $x$, $y$, $t$ and $u$ and define $L$ to be an operator of the form
 \begin{equation}\label{operator}
 Lu = \frac{\Delta u + (E-\Delta)^{-1} ( \alpha \beta \Delta( u^2) + (\beta -1)\Delta u)}{\beta},
@@ -310,26 +308,28 @@ u_h^{(k+1)} = u_h^{(k)} + \tau \frac{\partial}{\partial t}(u_h^{(k)}) + \sum_{ \
 \end{align*}
 with approximation order $O(h^p + \tau^s)$ which is easily proved by induction. Note that the derivative set $Q_s$ at time $t_k = 0$ is calculated with approximation order $O(h^p)$ and all other sets $Q_s$ that correspond to times $t_k$, $k \in N$, are approximated with $O(h^p + \tau^s)$. At each step this numerical procedure calculates TS expansions of two numerical values: $u_h$ and its first derivative $D(u_h)$, because the PDE is of second order in time. The complexity of the algorithm depends on the order and type of the time derivatives $D^{(\tilde s)}(u_h)$ in the PDE.
 
-The IC developed in \rf{EllipticProblem} for equation 
+\sect{3.~Boundary Conditions}\label{TaylorA}
+
 The following boundary function
 \begin{equation}\label{eqBCV}
-\widehat U_B(x , y, t) = \mu_u \frac{ (1 - \tilde c^2/\beta) x^2 - y^2}{( (1 - \tilde c^2/\beta) x^2 + y^2)^2}
+\widehat U_B(x , y) = \mu_u \frac{ (1 - \tilde c^2/\beta) x^2 - \tilde y^2}{( (1 - \tilde c^2/\beta) \tilde x^2 + \tilde y^2)^2}
 \end{equation}
-found in \cite{BoundaryProblem} is used to solve the stationary elliptic problem described in \cite{BoundaryProblem}.
-Near  the computational boundaries $(x,y):x=L_x$ and $(x,y):y=L_y$ we do not change the stencil as described in \rf{fd}. The discrete Laplacian
-is defined there by using the values of the discrete solution
-\begin{equation}\label{eqBCV}
-\widehat U_B(x , y, t) = \mu_u \frac{ (1 - c^2) x^2 - (y-ct)^2}{( (1 - c^2) x^2 + (y-ct)^2)^2}
+found in \cite{BoundaryProblem} is used to to evaluate stationary propagating wave solutions described in \cite{EllipticProblem}. The last article focus on solutions to \rf{eqVC} of the type $u(x, y, t) = U(x, y - ct)$, which are stationary solitary waves traveling in y direction
+with velocity c. In order to use \rf{eqBCV} as BC for \rf{eqVC} it is transformed into
+\begin{equation}\label{eqBCH}
+\widehat U_B(x , y, t) = \mu_u \frac{ (1 - c^2) x_b^2 - (y_b-ct)^2}{( (1 - c^2) x_b^2 + (y_b-ct_b)^2)^2}
 \end{equation}
-found in \cite{BoundaryProblem} at points outside the computational domain. The value of $\mu_u$ is obtained again from the method developed in \cite{BoundaryProblem}. For $p=2$ the second derivative $\partial^2 / \partial x^2$ is approximated with three points (green color) and uses one point outside the computational domain $\Omega_h$. For $p=4$, the derivative $\partial^2 / \partial x^2$ implies five point stencil (blue color) with maximum
+with $c = \tilde c / \sqrt{\beta}$, $x_b = \tilde x$, $t_b = \tilde t$ and $y_b - ct_b = \tilde y$. 
+Near the computational boundaries $(x,y):x=L_x$ and $(x,y):y=L_y$ we do not change the stencil \rf{fd} which is described in the next section . The discrete Laplacian
+is defined there by using the values of the discrete solution \rf{eqBCH} at points outside the computational domain. The value of $\mu_u$ is obtained again from the method developed in \cite{BoundaryProblem}. If the second derivative $\partial^2 / \partial x^2$ is approximated with three points (green color), then it uses one point outside the computational domain $\Omega_h$. If the derivative $\partial^2 / \partial x^2$ implies five point stencil (blue color), it uses maximum
 \begin{wrapfigure}{r}{0.5\textwidth}
      \begin{center}
-     \includegraphics[scale=0.5]{Pictures/BoundaryPicture.png}
+     \includegraphics[scale=0.4]{Pictures/BoundaryPicture.png}
      \end{center}
 	\caption{Finite Differences near the computational boundary.}
 	\label{fig:BoundaryFD}
 \end{wrapfigure}
-two extra points and for $p=6$ it implies seven point stencil (purple color) with maximum three extra points outside the computational domain $\Omega_h$ (see Figure \ref{fig:BoundaryFD}). Same reasoning is implied for the $\partial^2 / \partial y^2$ derivative. The affected terms in equation \rf{Leq} which make use of the boundary function \rf{eqBCV} are the following:
+two extra points and if it implies seven point stencil (purple color), it uses maximum three extra points outside the computational domain $\Omega_h$ (see Figure \ref{fig:BoundaryFD}). Same reasoning is implied for the $\partial^2 / \partial y^2$ derivative. The affected terms in equation \rf{Leq} which make use of the boundary function \rf{eqBCV} are the following:
 \begin{equation*}
 \frac{ \Delta_h u_h}{\beta}, \frac{ (E - \Delta_h)^{-1} ( (\beta -1)\Delta_h u_h) }{\beta}
 \end{equation*}
@@ -338,7 +338,6 @@ The TS approach also requires time derivatives of both terms defined above
 \frac{ \Delta_h D^{(\tilde s)} (u_h)}{\beta}, \frac{ (E - \Delta_h)^{-1} ( (\beta -1)\Delta_h D^{(\tilde s)}(u_h) ) }{\beta}
 \end{equation*}
 for $\tilde s = 0, ..., s-2$.  Thus, $D^{\tilde s}(\widehat U_B(x , y, t))$  time derivative values outside the computational boundary $\partial \Omega_h$ are also used to extend the $p+1$ point stencil where needed (see Figure  \ref{fig:BoundaryFD}).
-
 
 \frenchspacing
 \def\bibname{\rm R\,E\,F\,E\,R\,E\,N\,C\,E\,S}
