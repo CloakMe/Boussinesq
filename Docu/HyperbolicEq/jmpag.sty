@@ -1,0 +1,343 @@
+\makeatletter  
+
+%%%%%%%%%%%%%%%%%%%%%%%%% intro %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\allowdisplaybreaks
+
+\binoppenalty=1 \relpenalty=1
+
+\renewcommand{\thefootnote}{}
+
+\newcommand{\JOURNAL}{Journal of Mathematical Physics, Analysis, Geometry}
+
+\renewcommand{\emph}[1]{\textsl{#1}}
+
+\setlist[enumerate,1]{label=\upshape{\arabic*.}, ref=\upshape{\arabic*}, leftmargin=3.6ex, labelwidth=2ex, topsep=3pt, listparindent=3.6ex}
+
+\addto\captionsenglish{\renewcommand{\figurename}{Fig.}}
+
+\@addtoreset{section}{part}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+%%%%%%%%%%%%%%%%% end intro %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%% PAGESTYLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\ps@jmpag}{%
+\renewcommand{\@oddfoot}{}
+%{{\small %%\sf  %%%%%%%%
+%\JOURNAL, \rule{0pt}{17mm}% 
+ %       \Year, Vol.\ \Vol, No.\ \No}\hfill\thepage}%
+%
+\renewcommand{\@evenfoot}{}
+%{\rule{0pt}{17mm}\thepage\hfil{\small %%%\sf  %%%%%%%%%
+%       \JOURNAL, \Year, Vol.\ \Vol, No. \No}}%
+%         
+\renewcommand{\@evenhead}{\underline{\makebox[135mm][c]{\lower.5em%
+       \hbox  to \textwidth{\thepage\hfil \sl \leftmark  \hfil}}}}%
+%       
+\renewcommand{\@oddhead}{\underline{\makebox[135mm][c]{\lower.5em%
+       \hbox to \textwidth{\hfil\sl \rightmark \hfil\thepage}}}}%
+}%
+
+\newcommand{\ps@jmpagfirst}{%
+    \let\@mkboth\markboth
+   \renewcommand{\@oddfoot}{}
+   \renewcommand{\@evenfoot}{}
+    \renewcommand{\@evenhead}{}     % Left heading.
+    \renewcommand{\@oddhead}{}      % Right heading.
+      }%
+%
+%%%%%%%%%%%%%%%%%%%% END PAGESTYLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+%%%%%%%%%%%%%%%%%%%%% AUTHOR TITLE AFFILIATION %%%%%%%%%%%%%%%%
+
+\newcommand\@shorttitle{Short Title}
+\renewcommand*{\title}[2][\@title]{%
+\renewcommand*{\@title}{#2}
+\renewcommand*{\@shorttitle}{#1}
+}
+
+\newcounter{author}
+\newcounter{auth}
+\newcounter{au}
+\newcommand*\authors[1]{#1}
+\renewcommand*\author[1]{%
+  \stepcounter{author}%
+   \csgdef{author@\the\c@author}{#1}
+  \ifnum\c@author=1
+    \gdef\@author{#1}%
+        \gdef\@authors{#1}%
+  \else
+  \ifnum\c@author=2
+    \xdef\@author{\unexpanded\expandafter{\@author{} and #1}}%
+        \xdef\@authors{\unexpanded\expandafter{\@authors{}, #1}}%
+   \else
+        \xdef\@author{\unexpanded\expandafter{\@authors{}, and #1}}
+           \xdef\@authors{\unexpanded\expandafter{\@authors{},  #1}}
+   \fi\fi
+ }%%%%%%%%%%
+%%%%
+\newcommand*\email[1]{%
+  \csgdef{email@\the\c@author}{#1}}
+%%%
+\newcommand*\address[1]{%
+  \csgdef{address@\the\c@author}{#1}}
+%%%
+\newcommand\Data{\nopagebreak\vskip 0.5em{\par\noindent\small\textrm\@date.\par \vskip 0.5em}}
+
+
+\newcommand{\Auth}[1]{%
+      {\vskip 0.5em\par\noindent\small\textrm{\upshape #1,}\par%
+   \vskip 0.1em}}
+   
+\newcommand{\Affil}[1]{{\par\noindent\parbox[t]{\textwidth}{\small\textrm{\slshape #1,}}
+      \par%
+   \vskip 0.1em}}
+   
+\newcommand{\Email}[1]{\par\noindent\small{E-mail:\ \@ifundefined{href}%
+{{\mdseries\ttfamily  #1}}%
+{\href{mailto:#1}{{\mdseries\ttfamily #1}}}}
+\par\vskip 0.1em} 
+
+%\makeatletter
+\newcounter{aut}
+\newcommand{\authaffil}{%
+\forLoop[1]{1}{\value{author}}{aut}{%
+\Auth{\csuse{author@\the\c@aut}}
+\Affil{\csuse{address@\the\c@aut}}
+\Email{\csuse{email@\the\c@aut}}
+}%%%%%%%%%%%%%author@\the\c@author
+}
+%\makeatother
+     
+%%%%%%%%%%%%%%%%%%% AUTHOR TITLE AFFILIATION %%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%% beginning %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\makeatletter
+\newcommand{\doi}{xxxxxxxxxxx}
+
+\newcommand{\head}{%
+\clearpage\thispagestyle{empty}%\refstepcounter{page}
+ \noindent
+           {\JOURNAL\hfill\newline
+           \small \Year, Vol.\ \Vol, No. \No, pp.~\protect{\firstpage}--\protect{\lastpage}
+           \newline doi:\ \doi\hfill}%\@lastpage
+           %doi
+           
+ \medskip
+\ifnum\c@author<4
+\markboth{\@author}{\@shorttitle}
+\else
+\markboth{\csuse{author@1}{} et al.}{\@shorttitle}
+\fi
+%\@ifundefined{href}{%
+%\addcontentsline{rus}{\@author.}{\@title}}{}
+%\@ifundefined{href}{%
+%\addcontentsline{eng}{\@author.}{\@title}}{}
+\refstepcounter{part}
+\begin{center}%
+  {\LARGE\bfseries\@title\footnote{\rule{-6mm}{4mm}\copyright\space\@author,\space\Year} \par}%
+  \vskip 0.2em\null
+  {\large
+   \lineskip 0.5em
+%   \begin{tabular}[t]{c}
+   \Large\@author\\[0.5em]
+%   \end{tabular}
+   \par}%
+%  \vskip 0.5em\null
+\end{center}%
+ \par
+}%
+%\makeatother
+
+%\newcommand{\shorttitle}[1]{\markright{#1}}
+%%%%%%%%%%%%%%%%%%%%%%% end beginning %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+%%%%%%%%%%%%% New definition of \thebibliography
+   \renewcommand{\thebibliography}[1]{\begin{small}
+    \section*{\refname}\list
+   {\@biblabel{\arabic{enumiv}}}{\settowidth\labelwidth{\@biblabel{#1}}%
+    \leftmargin\labelwidth
+    \advance\leftmargin\labelsep
+    \usecounter{enumiv}%
+    \let\p@enumiv\@empty
+    \def\theenumiv{\arabic{enumiv}}}%
+    \def\newblock{\hskip .11em plus.33em minus.07em}%
+    \sloppy\clubpenalty4000\widowpenalty4000
+    \sfcode`\.=1000\relax}
+
+\renewcommand{\endthebibliography}{%
+  \def\@noitemerr{\@warning{Empty `thebibliography' environment}}%
+  \endlist\end{small}
+  }%
+%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% abstract %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\key}[1]{\par\vskip 0.5em\small{\slshape Key words:\/} #1}
+
+%\newcommand{\keyu}[1]{\par\vskip 0.5em\small{\slshape Ключові слова:\/} #1}
+
+\newcommand{\msc}[1]{\par\vskip 0.5em\small{\slshape Mathematical Subject Classification 2010:\/} #1}
+
+\renewenvironment{abstract}{\begin{small}\begin{quotation}\vskip -0.5em}%
+                           {\end{quotation}\end{small}\par
+}
+
+
+\newcommand{\abstracthead}[2]{
+\begin{center}
+{\large\bfseries #1\\[0.3em]}
+{\normalsize #2}\\[1em]
+\end{center}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end abstract %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% SECTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\@sect#1#2#3#4#5#6[#7]#8{\ifnum #2>\c@secnumdepth
+     \def\@svsec{}\else
+     \refstepcounter{#1}\edef\@svsec{\csname the#1\endcsname . \hskip .5em }\fi
+     \@tempskipa #5\relax
+      \ifdim \@tempskipa>\z@
+        \begingroup #6\relax
+          \@hangfrom{\hskip #3\relax\@svsec}{\interlinepenalty \@M #8 \par}
+        \endgroup
+       \csname #1mark\endcsname{#7}%
+       \addcontentsline %
+         {toc}{#1}{\ifnum #2>\c@secnumdepth \else
+                      \protect\numberline{\csname the#1\endcsname.}\fi
+                    #7}\else
+        \def\@svsechd{#6\hskip #3\@svsec #8.\csname #1mark\endcsname
+                      {#7}\addcontentsline
+                           {toc}{#1}{\ifnum #2>\c@secnumdepth \else
+                             \protect\numberline{\csname the#1\endcsname.}\fi
+                       #7}}\fi
+     \@xsect{#5}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\section}{\@startsection{section}{1}{18pt}{3.25ex plus 1ex minus 0.2ex}%
+{1.5ex plus .2ex}{\bfseries\rmfamily\large}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{18pt}{3.25ex plus 1ex minus 0.2ex}%
+{-1.5ex plus .2ex}{\bfseries\rmfamily}} %%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% end sections %%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% theorems %%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtheoremstyle{myplain}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\itshape}  % BODYFONT
+  {18pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {.}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {}          % CUSTOM-HEAD-SPEC
+  
+\newtheoremstyle{mydefinition}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\normalfont}  % BODYFONT
+  {18pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {.}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {}          % CUSTOM-HEAD-SPEC
+  
+\newtheoremstyle{myremark}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\normalfont}  % BODYFONT
+  {18pt}       % INDENT (empty value is the same as 0pt)
+  {\slshape} % HEADFONT
+  {.}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {}          % CUSTOM-HEAD-SPEC
+\theoremstyle{myremark}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{myplain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{mydefinition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{myremark}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\renewenvironment{proof}[1][\proofname]{\par
+\pushQED{\qed}%
+\normalfont \topsep6\p@\@plus6\p@\relax
+\trivlist
+\item\relax
+{\hspace{18pt}\slshape
+#1\@addpunct{.}}\hspace\labelsep\ignorespaces
+}{%
+\popQED\endtrivlist\@endpefalse
+}
+
+%%%%%%%%%%%%%%%%%%%%% end theorems %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%% others %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\arXiv[1]{\@ifundefined{href}
+{{\mdseries\ttfamily arxiv.org/abs/#1}}{\href{https://arxiv.org/abs/#1}{{\mdseries\ttfamily arxiv.org/abs/#1}}}}
+
+\newcommand\URL[1]{\@ifundefined{href}
+{{\mdseries\ttfamily #1}}{\href{#1}{{\mdseries\ttfamily #1}}}}
+
+%%%%%%%%%%%%%%%%%%%%%% end otners %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\makeatother
+
+
+
+
+%%%%%%%%%%%%%%%%%%%% DATA %%%%%%%%%%%%%%%%%%
+%\newcommand{\JOURNAL}{Journal of Mathematical Physics, Analysis, Geometry}
+\newcommand{\Year}{20XX}%%% Year
+\newcommand{\Vol}{XX}%%%%% Volume
+\newcommand{\No}{X}%%%%% Number
+%\newcommand{\Monthu}{Місяць}% Month in Ukrainian
+\newcommand{\Month}{Month}%%%  Month in English
+%%%% the authors are not expected to provide this data %%%%%%%%%%%%%
+
+\newcommand{\BeginPaper}{%
+%%%%%%%%%%%%%%%%%
+\selectlanguage{english} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\firstpage{\pageref{begin}} 
+\newcommand\lastpage{\pageref{end}}
+\renewcommand{\doi}{}
+%{\ \URL{https://doi.org/10.15407/mag14.01.xxx}}
+\date{Received Month XX, 20XX, revised Month XX, 20XX} 
+%%%% the authors are not expected to provide this data %%%%%%%%%%%%%
+\phantomsection\label{begin}%%%% do not remove this label %%%%%%%%%%%%%%%%%%
+\head%%%%%%% do not remove this command %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+}%%%%%
+
+
+\newcommand{\EndPaper}{%
+\Data 
+\authaffil
+%%%%
+\phantomsection\label{end}%%%%%%%%%%%%%%%% do not remove this label %%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{author}{0}
+}%

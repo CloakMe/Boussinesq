@@ -70,7 +70,7 @@
 %Institution2, address2, City2, Postal Code2, Country2
 \address{Bulgarian Academy of Sciences, Institute of Mathematics and Informatics, ul. Acad. G. Bonchev, block 8, 1113 Sofia, Bulgaria}
 %e-mail2
-\email{kolkovska@gmail.com}
+\email{n.kolkovska@gmail.com}
 
 
 %%%%%%%%%%%%%%%% END TITLE and AUTHORS %%%%%%%%%%%%%%%%%%%
@@ -125,6 +125,62 @@ where $\beta = \beta_1 / \beta_2$. The goal of the article is to seek for solito
 are traveling  in $y$ direction with velocity $c$. TS expansion is used to calculate the next time layer with respect to the time step $\tau$. The time derivatives
 are obtained from the equation \rf{eqVC} by an iterative procedure. This is possible because the equation allows to isolate the highest time derivative on one side of the equation. By differentiating with respect to time variable one could obtain higher time derivative terms in the TS expansion. Here, the solver could be adjusted to use second, fourth or sixth approximation order, i.e. $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. To increase the precision of the numerical method, finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order are applied to the spatial derivatives i.e.  second derivatives along space are approximated with high order finite differences. Thus, the numerical solution is computed on relatively coarse grid with high accuracy. In order to compare the results from TS method, a conservative finite difference scheme with weights is used, which applies second order of approximation along time and space.
 Both methods are tested with zero boundary and also with BC found and developed in \cite{BoundaryProblem}.
+
+%The title of your subsection in the section
+\section{Fast Poisson Solvers and Invertion of $(E-\tilde \Delta)$ in \rf{eqVC}}
+
+\begin{lemma} \label{eigenLema} Let the set of all eigenvectors $W :=$ $W_1, W_2, ..., W_n$ of a real matrix $A \in \RR^{n \times n}$ builds an orthogonal basis in $\RR^n$. Let the eigenvalues of $A$ are \{ $\lambda_1, ..., \lambda_n$ \} and further let $AW_i = \lambda_i W_i$ for $i=1,...n$. Then the matrix $\beta E + A$ has the same set of eigenvectors W as A and furthermore $( \beta E + A) W_i = (\beta + \lambda_i)W_i$.
+\end{lemma}
+
+\begin{proof}
+$(\beta E + A)W_i = \beta W_i + AW_i = \beta W_i + \lambda_i W_i = (\beta + \lambda_i)W_i$.
+\end{proof}
+Suppose the following linear equaion
+\begin{equation}\label{FPeq}
+Au:=u-\Delta u = f
+\end{equation}
+defined on $\Gamma = \{ (0,1) \times (0,1) \}$ with homogeneous Dirichlet boundary conditions $u(x,y) = 0$, $(x,y) \in \partial \Gamma$. The discrete version of \rf{FPeq} - $A_h u_h = f_h$ - using the notations defined in previous sections, is a system of linear equations where $A_h \in \RR^{n^2 \times n^2}$, $f_h, u_h \in \RR^{n^2}$ and n is defined by the relation $h=1/(n+1)$. For simplicity the same discretization step $h$ is applied along both space directions. Therefore,
+%\begin{equation}\label{MATeq}
+\[
+A_h = \frac{1}{h^2}
+\begin{bmatrix}
+    A_{11}       & -E          &  0              & \dots & 0 \\
+    -E               & A_{22}  & -E              & \dots & \dots  \\
+      \dots         & \dots     & \searrow  & \searrow  & \searrow  \\
+      \dots         & \dots    & \dots         & \dots & -E  \\
+     0                 & \dots   &  0               & -E    & A_{nn}
+\end{bmatrix}
+,
+u_h = 
+\begin{bmatrix}
+    \bar u_{1} \\
+    \bar u_{2}  \\
+    \vdots  \\
+    \vdots  \\
+    \bar u_{n}
+\end{bmatrix}
+,
+f_h = 
+\begin{bmatrix}
+    \bar f_{1} \\
+    \bar f_{2}  \\
+    \vdots  \\
+    \vdots  \\
+    \bar f_{n}
+\end{bmatrix}
+\]
+where $\bar u_k = (u_{k,1}, u_{k,2}, ..., u_{k,n})\in \RR^{n}$ and $\bar f_k = (f_{k,1}, f_{k,2}, ..., f_{k,n})\in \RR^{n}$. Furthermore, $A_{i,i} \in \RR^{n \times n}$, $i = 1, ..., n$ is defined as
+\[
+A_{i,i} = 
+\begin{bmatrix}
+    4+h^2       & -1          &  0              & \dots & 0 \\
+    -1               & 4+h^2  & -1              & \dots & \dots  \\
+      \dots         & \dots     & \searrow  & \searrow  & \searrow  \\
+      \dots         & \dots    & \dots         & \dots & -1  \\
+     0                 & \dots   &  0               & -1    & 4+h^2
+\end{bmatrix}
+\]
+Therefore, $A_h u_h = f_h$ is equivalent to the simplified linear system
 
 \section{Taylor Series Approach for the BE in Two Dimensions}\label{TaylorA}
 
@@ -236,51 +292,6 @@ u_h^{(k+1)} = u_h^{(k)} + \tau \frac{\partial}{\partial t}(u_h^{(k)}) + \sum_{ \
 \frac{\partial}{\partial t}( u_h^{(k+1)}) = \frac{\partial}{\partial t}( u_h^{(k)}) + \sum_{ \tilde s = 2 }^{ s + 1 } \frac{ \tau^{\tilde s - 1}}{(\tilde s-1)!} P_{\tilde s}( Q_{\tilde s}( \frac{\partial}{\partial t} u_h^{(k)} ) )+ O(h^p + \tau^s),
 \end{align*}
 with approximation order $O(h^p + \tau^s)$ which is easily proved by induction. Note that the derivative set $Q_s$ at time $t_k = 0$ is calculated with approximation order $O(h^p)$ and all other sets $Q_s$ that correspond to times $t_k$, $k \in N$, are approximated with $O(h^p + \tau^s)$. At each step this numerical procedure calculates TS expansions of two numerical values: $u_h$ and its first derivative $D(u_h)$, because the PDE is of second order in time. The complexity of the algorithm depends on the order and type of the time derivatives $D^{(\tilde s)}(u_h)$ in the PDE.
-
-%The title of your subsection in the section
-\section{Fast Poisson Solvers}
-
-\begin{lemma} \label{eigenLema} Let the set of all eigenvectors $W :=$ $W_1, W_2, ..., W_n$ of a real matrix $A \in \RR^{n \times n}$ builds an orthogonal basis in $\RR^n$. Let the eigenvalues of $A$ are \{ $\lambda_1, ..., \lambda_n$ \} and further let $AW_i = \lambda_i W_i$ for $i=1,...n$. Then the matrix $\beta E + A$ has the same set of eigenvectors W as A and furthermore $( \beta E + A) W_i = (\beta + \lambda_i)W_i$.
-\end{lemma}
-
-\begin{proof}
-$(\beta E + A)W_i = \beta W_i + AW_i = \beta W_i + \lambda_i W_i = (\beta + \lambda_i)W_i$.
-\end{proof}
-Suppose the following linear equaion
-\begin{equation}\label{FPeq}
-Au:=u-\Delta u = f
-\end{equation}
-defined on $\Gamma = \{ (0,1) \times (0,1) \}$ with homogeneous Dirichlet boundary conditions $u(x,y) = 0$, $(x,y) \in \partial \Gamma$. The discrete version of \rf{FPeq} - $A_h u_h = f_h$ - using the notations defined in previous sections, is a system of linear equations where $A_h \in \RR^{n^2 \times n^2}$, $f_h, u_h \in \RR^{n^2}$ and n is defined by the relation $h=1/(n+1)$. For simplicity the same discretization step $h$ is applied along both space directions. Therefore,
-%\begin{equation}\label{MATeq}
-\[
-A_h = \frac{1}{h^2}
-\begin{bmatrix}
-    A_{11}       & -E          &  0              & \dots & 0 \\
-    -E               & A_{22}  & -E              & \dots & \dots  \\
-      \dots         & \dots     & \searrow  & \searrow  & \searrow  \\
-      \dots         & \dots    & \dots         & \dots & -E  \\
-     0                 & \dots   &  0               & -E    & A_{nn}
-\end{bmatrix}
-,
-u_h = 
-\begin{bmatrix}
-    \bar u_{1} \\
-    \bar u_{2}  \\
-    \vdots  \\
-    \vdots  \\
-    \bar u_{n}
-\end{bmatrix}
-,
-f_h = 
-\begin{bmatrix}
-    \bar f_{1} \\
-    \bar f_{2}  \\
-    \vdots  \\
-    \vdots  \\
-    \bar f_{n}
-\end{bmatrix}
-\]
-%\end{equation}
 
 \section{Boundary Condition}\label{BndS}
 
