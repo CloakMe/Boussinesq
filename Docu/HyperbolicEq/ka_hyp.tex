@@ -139,14 +139,15 @@ Suppose the following linear equaion
 \begin{equation}\label{FPeq}
 Au:=u-\Delta u = f
 \end{equation}
-defined on $\Gamma = \{ (0,1) \times (0,1) \}$ with homogeneous Dirichlet boundary conditions $u(x,y) = 0$, $(x,y) \in \partial \Gamma$. The discrete version of \rf{FPeq} - $A_h u_h = f_h$ - using the notations defined in previous sections, is a system of linear equations where $A_h \in \RR^{n^2 \times n^2}$, $f_h, u_h \in \RR^{n^2}$ and n is defined by the relation $h=1/(n+1)$. For simplicity the same discretization step $h$ is applied along both space directions. Therefore,
+defined on $\Gamma = \{ (0,1) \times (0,1) \}$ with homogeneous Dirichlet boundary conditions $u(x,y) = 0$, $(x,y) \in \partial \Gamma$. The discrete version of \rf{FPeq} - $A_h u_h = f_h$ - using the notations defined in previous sections, is a system of linear equations where $A_h \in \RR^{n^2 \times n^2}$, $f_h, u_h \in \RR^{n^2}$ and n is defined by the relation $h=1/n$. For simplicity the same discretization step $h$ is applied along both space directions. Therefore,
 %\begin{equation}\label{MATeq}
 \[
 A_h = \frac{1}{h^2}
 \begin{bmatrix}
     A_{11}       & -E          &  0              & \dots & 0 \\
     -E               & A_{22}  & -E              & \dots & \dots  \\
-      \dots         & \dots     & \searrow  & \searrow  & \searrow  \\
+      \dots         & \searrow     & \searrow  & \searrow  & \dots  \\
+      \dots         & \dots     & \dots         & \dots   &    \dots  \\
       \dots         & \dots    & \dots         & \dots & -E  \\
      0                 & \dots   &  0               & -E    & A_{nn}
 \end{bmatrix}
@@ -175,12 +176,37 @@ A_{i,i} =
 \begin{bmatrix}
     4+h^2       & -1          &  0              & \dots & 0 \\
     -1               & 4+h^2  & -1              & \dots & \dots  \\
-      \dots         & \dots     & \searrow  & \searrow  & \searrow  \\
+      \dots         & \searrow     & \searrow  & \searrow  & \dots  \\
+      \dots         & \dots     & \dots         & \dots   &    \dots  \\
       \dots         & \dots    & \dots         & \dots & -1  \\
      0                 & \dots   &  0               & -1    & 4+h^2
 \end{bmatrix}
 \]
 Therefore, $A_h u_h = f_h$ is equivalent to the simplified linear system
+\begin{align}
+A_{1,1}\bar u_1 - \bar u_2 &= h^2\bar f_1, \nonumber \\
+- \bar u_{i-1}  + A_{i,i}\bar u_i - \bar u_{i+1}  &= h^2\bar f_i, i = 2,...,n-1, \nonumber \\
+- \bar u_{n-1} + A_{n,n}\bar u_n &= h^2\bar f_n.\label{linSys}
+\end{align}
+The matrix $A_{i,i}$ could be decomposed to  $A_{i,i} = \tilde A + (2+h^2)E$ with  $\tilde A_{i,i} = (\tilde a_{i,i})$, $\tilde a_{i,i} = 2$ and $\tilde a_{i,i+1} = \tilde a_{i-1,i} = -1$. The idea is that the matrix $\tilde A = diag(-1, 2, -1)$ is well studied in the literature (see \cite{FPS}) and could be easily decomposed to $\tilde A = \tilde W \tilde D \tilde W^T$, where $\tilde W$ denotes an $n \times n$ matrix of the orthonormal eigenvectors of $\tilde A$ and $\tilde D$ is a diagonal matrix consisting of the eigenvalues of $\tilde A$. Then using lemma \rf{eigenLema}, one could establish corelations between $\tilde W$ and $\tilde D$ on one side and $W$ and $D$ on the other, if  $A_{i,i} = WDW^T$ is the decomposition of $A_{i,i}$. Indeed 
+$$W = \tilde W, \quad D = \tilde D + (2+h^2)E.$$
+For the case with domain $\Gamma$ and $h = 1/n$ one could show that (see \cite{FPS})
+\begin{align*}
+& \tilde W^T \tilde A = \tilde D \tilde W^T, \\
+& \tilde D = \{ \tilde \lambda_j \} = \{4 sin^2( j \pi h/2) \}_{j=1}^n, \\
+& \tilde W = \{ \tilde w_{i,j} \} _{i,j=1}^n = \{ \sqrt{2h} sin(ij\pi h)\}_{i,j=1}^n.
+\end{align*}
+Thus, matrices $W$ and $D$ are known with $W^T W = W W^T = E$ and $A_{i,i} = WDW^T$. The following substitution 
+$$
+y_i := W^T \bar u_i, q_i := W^T \bar f_i, i = 1, ...,n
+$$
+is applied after multiplying \rf{linSys} with $W^T$ and decomposing $A_{i,i}$
+\begin{align}
+Dy_1 - y_2 &= h^2 q_1,\nonumber \\
+-y_{i-1} + D y_i - y_{i+1} &= h^2 q_i, i = 2,...,n-1,\nonumber \\
+- y_{n-1} + Dy_n &= h^2 q_n.\label{SubSys}
+\end{align}
+The last system \rf{SubSys} is rearranged as we group equations that correspond to the same eigenvalue $\lambda_i \in D$ for all $i = 1,...,n$. Thus we obtain $n$ tridiagonal linear systems which can be solved using Tridiagonal Matrix Algorithm (TDMA) a.k.a. Thomas Algorithm.
 
 \section{Taylor Series Approach for the BE in Two Dimensions}\label{TaylorA}
 
