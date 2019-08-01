@@ -89,7 +89,7 @@
 %%%%%%%%%%%%%%%%%%%%%%% ABSTRACT %%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-The aim of this paper is to evaluate propagating wave solutions to the two dimensional Boussinesq Equation (BE). To solve this nonlinear fourth order hyperbolic problem we use Fast Poisson Solver with high order finite difference schemes for the spatial derivatives. Taylor Series (TS) expansion about time is used to move the soliton forward. A Boundary Condition (BC) is applied on the computational boundary. Results from the TS approach are compared with results from another known method in the literature. The performed numerical tests exhibit good convergence and confirm the validity of the TS method.
+This paper evaluates propagating wave solutions to the two dimensional Boussinesq Equation (BE). To solve this nonlinear fourth order hyperbolic problem we use Fast Poisson Solver with high order finite difference schemes for the spatial derivatives. Taylor Series (TS) expansion about time is used to move the soliton forward. A Boundary Condition (BC) is applied on the computational boundary. The performed numerical tests exhibit good convergence and confirm the validity of the TS method.
 
 
 
@@ -110,7 +110,7 @@ In this paper we  consider the two dimensional Boussinesq  Equation (BE)
 \\ \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)   \quad\text{for} \, (x,y) \in \RR^2,
 \\  &u(x,y) \rightarrow 0,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{for}  \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11}
 \end{align}
-where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}. An approximation for initial condition (IC) with small wave velocities $c$ was developed in \cite{Ch2011}. Other methods for obtaining IC were developed in \cite{chr-chr},\cite{chr-chr-07} and \cite{EllipticProblem}. The asymptotic of the solution function was mainly researched in \cite{chr-chr-07}, \cite{Ch2012} and \cite{BoundaryProblem}. The articles \cite{cher} and \cite{dani} showed results for the hyperbolic problem \rf{eq1} with small wave speeds $c \approx 0.3$ and used the Perturbation Solution, which is developed in \cite{Ch2011}, as IC . There, the wave either blows up or vanishes very quickly. Thus, the following article appeared \cite{critEn}, which gives the partial answer whether the IC is going to blow-up, depending on the computation of the critical energy constant for the two-dimensional BE. Nevertheless, there are still no tests in the literature for \rf{eq1} with higher wave speeds $c \approx min(1, 1/\sqrt{\beta_1})$ and no tests with IC different from the Perturbation Solution in \cite{Ch2011}. The last seems to be very adaptive and useful as the author gives an explicit formula in two dimensions. Unfortunately, the formula has its limitations and downsides. 
+where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics, geotechnical engineering, athmosphere dynamics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}. In order to obtain an initial condition (IC) for equation \rf{eq1}, \rf{eq11}, it is required to solve another elliptic differential equation with similar terms. An approximation for IC with small wave velocities $c$ was developed in \cite{Ch2011}. Other methods for obtaining IC were developed in \cite{chr-chr},\cite{chr-chr-07} and \cite{EllipticProblem}. The asymptotic of the solution function is also an important topic and was mainly researched in \cite{chr-chr-07}, \cite{Ch2012} and \cite{BoundaryProblem}. If the aymptotic behavior is known, then one could use a finite domain $\Omega$ with $u:\Omega \rightarrow \RR$ and apply the corresponding boundary conditions on $\partial \Omega$. Let us once again recall the initial equation \rf{eq1}, \rf{eq11}. The articles \cite{cher} and \cite{dani} showed results for the hyperbolic problem \rf{eq1} with small wave speeds $c \approx 0.3$ and used the Perturbation Solution, which is developed in \cite{Ch2011}, as IC . There, the wave either blows up or vanishes very quickly. Thus, the following article appeared \cite{critEn}, which gives the partial answer whether the IC is going to blow-up, depending on the computation of the critical energy constant for the two-dimensional BE. Nevertheless, there are still no tests in the literature for \rf{eq1} with higher wave speeds $c \approx min(1, 1/\sqrt{\beta_1})$ and no tests with IC different from the Perturbation Solution in \cite{Ch2011}. The last seems to be very adaptive and useful as the author gives an explicit formula in two dimensions. Unfortunately, the formula has its limitations and downsides. 
 The obtained results in our previous work \cite{EllipticProblem} and \cite{BoundaryProblem} serve as initial and boundary condition for the hyperbolic equation \rf{eq1}, \rf{eq11}  here. In order to relate to \cite{EllipticProblem} and \cite{BoundaryProblem}
 the following variable change is applied
 \begin{equation}\label{vc}
@@ -122,7 +122,7 @@ which transforms the main equation \rf{eq1}  into
 \end{equation}
 where $\beta = \beta_1 / \beta_2$. The goal of the article is to seek for soliton solutions to \rf{eqVC}, which 
 are traveling  in $y$ direction with velocity $c$. TS expansion is used to calculate the next time layer with respect to the time step $\tau$. The time derivatives
-are obtained from the equation \rf{eqVC} by an iterative procedure. This is possible because the equation allows to isolate the highest time derivative on one side of the equation. By differentiating with respect to time variable one could obtain higher time derivative terms in the TS expansion. Here, the solver could be adjusted to use second, fourth or sixth approximation order, i.e. $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. To increase the precision of the numerical method, finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order are applied to the spatial derivatives i.e.  second derivatives along space are approximated with high order finite differences. Thus, the numerical solution is computed on relatively coarse grid with high accuracy. The inversion of $E - \tilde \Delta$ operator is discussed in section \rf{FPSsection}. In order to compare the results from TS method, a conservative finite difference scheme with weights is used, which applies second order of approximation along time and space.
+are obtained from the equation \rf{eqVC} by an iterative procedure. This is possible because the equation allows to isolate the highest time derivative on one side of the equation. By differentiating with respect to time variable one could obtain higher time derivative terms in the TS expansion. Here, the solver could be adjusted to use second, fourth or sixth approximation order, i.e. $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. To increase the precision of the numerical method, finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order are applied to the spatial derivatives i.e.  second derivatives along space are approximated with high order finite differences. Thus, the numerical solution is computed on relatively coarse grid with high accuracy. The inversion of $(E - \tilde \Delta)$ operator is discussed in section \rf{FPSsection}. Using spectral analysis, one could decompose the discrete version of the operator by finding its eigenvectors and corresponding eigenvalues. After a suitable substitution $n$ linear systems $A_{i,i} \bar u_i = \bar f_i$, $i = 1,...,n$ are obtained where $n$ is the discrete step count along the $x$ axis. The best part is that the matrices $A_{i,i}$ are tri-, five-, or seven-diagonal depending on the local approximation used for the second derivatives in the discrete laplace operator, i.e. second $O(h^2)$,  fourth $O(h^4)$ or sixth $O(h^6)$ respectively. In order to compare the results from TS method, a conservative finite difference scheme with weights is used, which applies second order of approximation along time and space.
 Both methods are tested with zero boundary and also with BC found and developed in \cite{BoundaryProblem}.
 
 \section{Taylor Series Approach for the BE in Two Dimensions}\label{TaylorA}
@@ -248,7 +248,7 @@ Suppose the following linear equaion
 \begin{equation}\label{FPeq}
 Au:=u-\Delta u = f
 \end{equation}
-defined on $\Gamma = \{ (0,1) \times (0,1) \}$ with homogeneous Dirichlet boundary conditions $u(x,y) = 0$, $(x,y) \in \partial \Gamma$. The discrete version of \rf{FPeq} - $A_h u_h = f_h$ - using the notations defined in previous sections, is a system of linear equations where $A_h \in \RR^{n^2 \times n^2}$, $f_h, u_h \in \RR^{n^2}$ and n is defined by the relation $h=1/n$. For simplicity the same discretization step $h$ is applied along both space directions. Therefore,
+defined on $\Gamma = \{ (0,1) \times (0,1) \}$ with homogeneous Dirichlet boundary conditions $u(x,y) = 0$, $(x,y) \in \partial \Gamma$. The discrete version of \rf{FPeq} - $A_h u_h = f_h$ - using the notations defined in previous sections, is a system of linear equations where $A_h \in \RR^{n^2 \times n^2}$, $f_h, u_h \in \RR^{n^2}$ and $n$ is defined by the relation $h=1/n$. For simplicity the same discretization step $h$ is applied along both space directions. Therefore,
 %\begin{equation}\label{MATeq}
 \[
 A_h = \frac{1}{h^2}
@@ -293,11 +293,10 @@ A_{i,i} =
 \]
 Here, the discrete Laplacian operator is presented by five point cross stencil
 \[
-A_{i,i} = 
 \begin{bmatrix}
-            &  -1  &  \\
-    -1     &  4    & -1\\
-            &  -1  & 
+            &  1  &  \\
+    1     &  -4    & 1\\
+            &  1  & 
 \end{bmatrix}
 \]
 with approximation order $O(h^2)$. Therefore, $A_h u_h = f_h$ is equivalent to the simplified linear system
@@ -306,7 +305,7 @@ A_{1,1}\bar u_1 - \bar u_2 &= h^2\bar f_1, \nonumber \\
 - \bar u_{i-1}  + A_{i,i}\bar u_i - \bar u_{i+1}  &= h^2\bar f_i, i = 2,...,n-1, \nonumber \\
 - \bar u_{n-1} + A_{n,n}\bar u_n &= h^2\bar f_n.\label{linSys}
 \end{align}
-The matrix $A_{i,i}$ could be decomposed to  $A_{i,i} = \tilde A + (2+h^2)E$ with  $\tilde A_{i,i} = (\tilde a_{i,i})$, $\tilde a_{i,i} = 2$ and $\tilde a_{i,i+1} = \tilde a_{i-1,i} = -1$. The idea is that the matrix $\tilde A = diag(-1, 2, -1)$ is well studied in the literature (see \cite{FPS}) and could be easily decomposed to $\tilde A = \tilde W \tilde D \tilde W^T$, where $\tilde W$ denotes an $n \times n$ matrix of the orthonormal eigenvectors of $\tilde A$ and $\tilde D$ is a diagonal matrix consisting of the eigenvalues of $\tilde A$. Then using lemma \rf{eigenLema}, one could establish corelations between $\tilde W$ and $\tilde D$ on one side and $W$ and $D$ on the other, if  $A_{i,i} = WDW^T$ is the decomposition of $A_{i,i}$. Indeed 
+The matrix $A_{i,i}$ could be decomposed to  $A_{i,i} = \tilde A + (2+h^2)E$ with  $\tilde A_{i,i} = (\tilde a_{i,i})$, $\tilde a_{i,i} = 2$ and $\tilde a_{i,i+1} = \tilde a_{i-1,i} = -1$. The idea is that the matrix $\tilde A = diag(-1, 2, -1)$ is well studied in the literature (see \cite{FPS}) and could easily be decomposed to $\tilde A = \tilde W \tilde D \tilde W^T$, where $\tilde W$ denotes an $n \times n$ matrix of the orthonormal eigenvectors of $\tilde A$ and $\tilde D$ is a diagonal matrix consisting of the eigenvalues of $\tilde A$. Then using lemma \rf{eigenLema}, one could establish corelations between $\tilde W$ and $\tilde D$ on one side and $W$ and $D$ on the other, if  $A_{i,i} = WDW^T$ is the decomposition of $A_{i,i}$. Indeed 
 $$W = \tilde W, \quad D = \tilde D + (2+h^2)E.$$
 For the case with domain $\Gamma$ and $h = 1/n$ one could show that (see \cite{FPS})
 \begin{align*}
@@ -315,9 +314,9 @@ For the case with domain $\Gamma$ and $h = 1/n$ one could show that (see \cite{F
 & \tilde W = \{ \tilde w_{i,j} \} _{i,j=1}^n = \{ \sqrt{2h} sin(ij\pi h)\}_{i,j=1}^n.
 \end{align*}
 Thus, matrices $W$ and $D$ are known with $W^T W = W W^T = E$ and $A_{i,i} = WDW^T$. The following substitution 
-$$
+\begin{equation}\label{subst}
 y_i := W^T \bar u_i, q_i := W^T \bar f_i, i = 1, ...,n
-$$
+\end{equation}
 is applied after multiplying \rf{linSys} with $W^T$ and decomposing $A_{i,i}$
 \begin{align}
 Dy_1 - y_2 &= h^2 q_1,\nonumber \\
@@ -325,6 +324,75 @@ Dy_1 - y_2 &= h^2 q_1,\nonumber \\
 - y_{n-1} + Dy_n &= h^2 q_n.\label{SubSys}
 \end{align}
 The last system \rf{SubSys} is rearranged as we group equations that correspond to the same eigenvalue $\lambda_i \in D$ for all $i = 1,...,n$. Thus we obtain $n$ tridiagonal linear systems which can be solved using Tridiagonal Matrix Algorithm (TDMA) a.k.a. Thomas Algorithm.
+
+If the discrete Laplacian operator is defined by nine point cross stencil
+\[
+\begin{bmatrix}
+          &       &  -1/12  & &  \\
+          &       &  4/3     &   & \\
+-1/12 & 4/3 &  -5       & 4/3 & -1/12\\
+          &       &   4/3    &    &\\
+          &       &  -1/12  &    &
+\end{bmatrix}
+\]
+with approximation order $O(h^4)$, then $A_h$ is transforms into
+\[
+A_h = \frac{1}{h^2}
+\begin{bmatrix}
+    A_{11}            & -(4/3)E    &  (1/12)E       & 0                       & 0                      & \dots  & 0 \\
+    -(4/3)E            & A_{22}    & -(4/3)E        &  (1/12)E         & 0                      & \dots & \dots   \\
+    (1/12)E            & -(4/3)E   &      A_{33}  & -(4/3)E            & (1/12)E             & \dots  & \dots   \\
+      \dots             & \dots       & \dots                       & \dots                &    \dots             &  \dots &    \dots  \\
+     0                    & \dots        &  0                             &  0                     & (1/12)E             & -(4/3)E & A_{nn}
+\end{bmatrix}
+\]
+and $A_{i,i}$ equals to
+\[
+A_{i,i} = 
+\begin{bmatrix}
+    5 + h^2  & -4/3          &  1/12       & 0         & 0                      & \dots  & 0 \\
+    -4/3         & 5 + h^2   &  -4/3        &  1/12  & 0                    & \dots & \dots   \\
+    1/12        &  -4/3         & 5 + h^2  &  -4/3   &  1/12              & \dots & \dots   \\
+      \dots             & \dots                 & \dots                       & \dots                &    \dots             &  \dots &    \dots  \\
+     0                    & \dots                 &  0                             &  0                     & 1/12                 & -4/3    & 5 + h^2
+\end{bmatrix}.
+\]
+Then, after the substitution \rf{subst} an equivalent to \rf{SubSys} system is obtained,
+\begin{align}
+Dy_1 - (4/3)y_2 + (1/12)y_3 &= h^2 q_1,\nonumber \\
+-(4/3)y_1 + Dy_2 - (4/3)y_3 + (1/12)y_4  &= h^2 q_2,\nonumber \\
+ (1/12)y_{i-2} - (4/3)y_{i-1} + D y_i - (4/3)y_{i+1} + (1/12)y_{i+2} &= h^2 q_i, i = 3,...,n-2,\nonumber \\
+ (1/12)y_{n-3} - (4/3)y_{n-2} + Dy_{n-1} - (4/3)y_n &= h^2 q_{n-1}, \nonumber \\
+ (1/12)y_{n-2} - (4/3)y_{n-1} + Dy_n &= h^2 q_n.\label{SubSys5}
+\end{align}
+
+If the discrete Laplacian operator is defined by thirteen point cross stencil
+\[
+\begin{bmatrix}
+          &       &       &   1/90  & & &  \\
+          &       &       &  -3/20  & & &  \\
+          &       &       &   3/2     & &   & \\
+1/90 & -3/20 &  3/2 & -49/18 & 3/2 & -3/20 & 1/90 \\
+          &       &       &   3/2     & &   & \\
+          &       &       &  -3/20  & & &  \\
+          &       &       &   1/90  & & &
+\end{bmatrix}
+\]
+with approximation order $O(h^6)$, then in short notations:
+ \begin{align*} 
+A_h &= \frac{1}{h^2}diag( -(1/90)E, (3/20)E, -(3/2)E, A_{i,i}, -(3/2)E, (3/20)E, -(1/90)E), \\
+A_{i,i} & = diag(-1/90, 3/20, -3/2, 49/9 + h^2, -3/2, 3/20, -1/90),
+\end{align*}
+and after the substitution \rf{subst} an equivalent to \rf{SubSys} system is obtained:
+\begin{align}
+-(1/90)y_{i-3} + (3/20)y_{i-2} - (3/2)y_{i-1} + D y_i  &-\nonumber \\
+  - (3/2)y_{i+1} + (3/20)y_{i+2} -  (1/90)y_{i+3} &= h^2 q_i,\nonumber \\
+ i = 4,...,n  &-3. \label{SubSys7}
+\end{align}
+After rearranging system \rf{SubSys5}, a total number of $n$ linear systems are produced which are five diagonal. For system \rf{SubSys}, there are $n$ linear systems which are seven diagonal. To solve equation \rf{DLeq} for the unknown derivative $D^{\tilde s}u_h$, the right side $f_h$ is described by
+$$
+f_h = \Delta_h D^{\tilde s - 2} ( \alpha \beta u_h^2  + (\beta -1)u_h).
+$$
 
 \section{Boundary Condition}\label{BndS}
 
@@ -335,9 +403,9 @@ The following boundary function
 found in \cite{BoundaryProblem} is used to to evaluate stationary propagating wave solutions described in \cite{EllipticProblem}. The last article focus on solutions to \rf{eqVC} of the type $u(x, y, t) = U(x, y - ct)$, which are stationary solitary waves traveling in y direction
 with velocity c. In order to use \rf{eqBCV} as BC for \rf{eqVC} it is transformed into
 \begin{equation}\label{eqBCH}
-\widehat U_B(x , y, t) = \mu_u \frac{ (1 - c^2) x_b^2 - (y_b-ct)^2}{( (1 - c^2) x_b^2 + (y_b-ct_b)^2)^2}
+\widehat U_B(x_b , y_b, t_b) = \mu_u \frac{ (1 - c^2) x_b^2 - (y_b-ct_b)^2}{( (1 - c^2) x_b^2 + (y_b-ct_b)^2)^2}
 \end{equation}
-with $c = \tilde c / \sqrt{\beta}$, $x_b = \tilde x$, $t_b = \tilde t$ and $y_b - ct_b = \tilde y$. 
+with $c = \tilde c / \sqrt{\beta}$, $x_b = \tilde x$ and $y_b - ct_b = \tilde y$. 
 Near the computational boundaries $(x,y):x=L_x$ and $(x,y):y=L_y$ we do not change the stencil \rf{fd}. The discrete Laplacian
 is defined there by using the values of the discrete solution \rf{eqBCH} at points outside the computational domain. The value of $\mu_u$ is obtained again from the method developed in \cite{BoundaryProblem}. If the second derivative $\partial^2 / \partial x^2$ is approximated with three points, i.e. $p=2$, (green color), then it uses one point outside the computational domain $\Omega_h$. For $p=4$, the derivative $\partial^2 / \partial x^2$ implies five point stencil (blue color) with maximum
 
@@ -356,7 +424,7 @@ The TS approach also requires time derivatives of both terms defined above
 \begin{equation*}
 \frac{ \Delta_h D^{(\tilde s)} (u_h)}{\beta}, \frac{ (E - \Delta_h)^{-1} ( (\beta -1)\Delta_h D^{(\tilde s)}(u_h) ) }{\beta}
 \end{equation*}
-for $\tilde s = 0, ..., s-2$.  Thus, $D^{\tilde s}(\widehat U_B(x , y, t))$  time derivative values outside the computational boundary $\partial \Omega_h$ are also used to extend the $p+1$ point stencil where needed (see Figure  \ref{fig:BoundaryFD}).
+for $\tilde s = 0, ..., s-2$.  Thus, $D^{\tilde s}(\widehat U_B(x_b , y_b, t_b))$  time derivative values outside the computational boundary $\partial \Omega_h$ are also used to extend the $p+1$ point stencil where needed (see Figure  \ref{fig:BoundaryFD}).
 
 
 %The title of your section \href{mailto:#1}{{\mdseries\ttfamily #1}}}
