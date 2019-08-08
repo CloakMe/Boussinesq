@@ -18,7 +18,7 @@ classdef (ConstructOnLoad) BEEngineShrink < BEEngine
         [ this.eigenFinDiffMat, w ] = eig( -this.dhb );
 
         [ this.IminusDHdiag, this.minusDHdiag ] =...
-            this.DiagonalizeAndGetDiagOfFinDiffMat( newSizeX );
+            this.GetEigenMatrices( newSizeX );
         this.vdah = zeros( newSizeX, newSizeY );
         this.sx = newSizeX;
         this.sy = newSizeY;

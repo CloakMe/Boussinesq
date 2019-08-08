@@ -72,7 +72,7 @@ classdef (ConstructOnLoad) BEEngine
         
         dhb = BEUtilities.GetFinDiffMat( this.sx, this.order, this.h );
         [ this.eigenFinDiffMat, w ] = eig( -dhb );
-        [ this.IminusDHdiag, this.minusDHdiag ] = this.DiagonalizeAndGetDiagOfFinDiffMat();
+        [ this.IminusDHdiag, this.minusDHdiag ] = this.GetEigenMatrices();
         this.vdah = zeros( this.sx, this.sy );
         numberOfBndPnts = this.order/2;
         this.maximumOnBnd = this.GetBndMax( this.u_t0, numberOfBndPnts );
@@ -101,7 +101,7 @@ classdef (ConstructOnLoad) BEEngine
     end
     
     % DiagonalizeAndGetDiagOfFinDiffMat internal
-    function [ IminusDHdiag, minusDHdiag ] = DiagonalizeAndGetDiagOfFinDiffMat( this, sxSize )
+    function [ IminusDHdiag, minusDHdiag ] = GetEigenMatrices( this, sxSize )
 
         if( nargin == 1 )
             sxSize = this.sx

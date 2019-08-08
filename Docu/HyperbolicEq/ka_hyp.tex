@@ -110,7 +110,7 @@ In this paper we  consider the two dimensional Boussinesq  Equation (BE)
 \\ \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)   \quad\text{for} \, (x,y) \in \RR^2,
 \\  &u(x,y) \rightarrow 0,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{for}  \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11}
 \end{align}
-where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics, geotechnical engineering, athmosphere dynamics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}. In order to obtain an initial condition (IC) for equation \rf{eq1}, \rf{eq11}, it is required to solve another elliptic differential equation with similar terms. An approximation for IC with small wave velocities $c$ was developed in \cite{Ch2011}. Other methods for obtaining IC were developed in \cite{chr-chr},\cite{chr-chr-07} and \cite{EllipticProblem}. The asymptotic of the solution function is also an important topic and was mainly researched in \cite{chr-chr-07}, \cite{Ch2012} and \cite{BoundaryProblem}. If the aymptotic behavior is known, then one could use a finite domain $\Omega$ with $u:\Omega \rightarrow \RR$ and apply the corresponding boundary conditions on $\partial \Omega$. Let us once again recall the initial equation \rf{eq1}, \rf{eq11}. The articles \cite{cher} and \cite{dani} showed results for the hyperbolic problem \rf{eq1} with small wave speeds $c \approx 0.3$ and used the Perturbation Solution, which is developed in \cite{Ch2011}, as IC . There, the wave either blows up or vanishes very quickly. Thus, the following article appeared \cite{critEn}, which gives the partial answer whether the IC is going to blow-up, depending on the computation of the critical energy constant for the two-dimensional BE. Nevertheless, there are still no tests in the literature for \rf{eq1} with higher wave speeds $c \approx min(1, 1/\sqrt{\beta_1})$ and no tests with IC different from the Perturbation Solution in \cite{Ch2011}. The last seems to be very adaptive and useful as the author gives an explicit formula in two dimensions. Unfortunately, the formula has its limitations and downsides. 
+where $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics, geotechnical engineering, athmosphere dynamics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}. In order to obtain an initial condition (IC) for equation \rf{eq1}, \rf{eq11}, it is required to solve another elliptic differential equation with similar terms. An approximation for IC with small wave velocities $c$ was developed in \cite{Ch2011}. Other methods for obtaining IC were developed in \cite{chr-chr},\cite{chr-chr-07} and \cite{EllipticProblem}. The asymptotic of the solution function is also an important topic and was mainly researched in \cite{chr-chr-07}, \cite{Ch2012} and \cite{BoundaryProblem}. If the aymptotic behavior is known, then one could use a finite domain $\Omega$ with $u:\Omega \rightarrow \RR$ and apply the corresponding boundary conditions on $\partial \Omega$. Let us once again recall the initial equation \rf{eq1}, \rf{eq11}. The articles \cite{cher} and \cite{dani} showed results for the hyperbolic problem \rf{eq1} with small wave speeds $c \approx 0.3$ and used the Perturbation Solution, which is developed in \cite{Ch2011}, as IC . There, the wave either blows up or vanishes very quickly. Thus, the following article appeared \cite{critEn}, which gives the partial answer whether the IC is going to blow-up, depending on the computation of the critical energy constant for the two-dimensional BE. Nevertheless, there are still no tests in the literature for \rf{eq1} with higher wave speeds $c \approx min(1, 1/\sqrt{\beta_1})$ and no tests with IC different from the Perturbation Solution in \cite{Ch2011}. The last seems to be very adaptive and useful as the author gives an explicit formula in two dimensions. Unfortunately, the formula has its limitations and downsides. 
 The obtained results in our previous work \cite{EllipticProblem} and \cite{BoundaryProblem} serve as initial and boundary condition for the hyperbolic equation \rf{eq1}, \rf{eq11}  here. In order to relate to \cite{EllipticProblem} and \cite{BoundaryProblem}
 the following variable change is applied
 \begin{equation}\label{vc}
@@ -156,8 +156,12 @@ is obtained. The solution is $s$ times differentiable on $T$ and therefore the l
 D^{\tilde s} (u_h) =\frac{ \Delta_h D^{\tilde s - 2}(u_h) + (E - \Delta_h)^{-1}( \Delta_h D^{\tilde s - 2} ( \alpha \beta u_h^2  + (\beta -1)u_h) )  }{\beta} 
 \end{equation}
 
-with $D^{(\tilde s)} := \partial^{\tilde s} / \partial t^{\tilde s}$ and $\tilde s = 2,...,s$. The $\tilde s^{th}$ time derivative requires $(\tilde s-2)^{th}$, $(\tilde s-3)^{th}$, ..., $2^{nd}$ and $1^{st}$ derivatives and the function $u_h$ itself. E.g. if one would like to calculate the $7^{th}$ derivative $\partial^7 u / \partial t^7$, then $5^{th}$, $4^{th}$, $3^{rd}$, $2^{nd}$, $1^{st}$ and $0^{th}$ derivatives are used and the $5^{th}$ requires  $3^{rd}$, $2^{nd}$, $1^{st}$ and $0^{th}$ and so on.  Thus if $\psi$ and $\bar \psi$ are two known functions with $\psi(x,y) = u(x,y, t_k)$ and $\bar \psi(x,y) = u_t(x,y, t_k)$ then the derivative $\partial^{\tilde s} u / \partial t^{\tilde s}$ could be expressed solely by $\psi$ and $\bar \psi$ at $t = t_k$. Let's define the following function set
+with $D^{(\tilde s)} := \partial^{\tilde s} / \partial t^{\tilde s}$ and $\tilde s = 2,...,s$. The $\tilde s^{th}$ time derivative requires $(\tilde s-2)^{th}$, $(\tilde s-3)^{th}$, ..., $2^{nd}$ and $1^{st}$ derivatives and the function $u_h$ itself. E.g. if one would like to calculate the $7^{th}$ derivative $\partial^7 u / \partial t^7$, then $5^{th}$, $4^{th}$, $3^{rd}$, $2^{nd}$, $1^{st}$ and $0^{th}$ derivatives are used and the $5^{th}$ requires  $3^{rd}$, $2^{nd}$, $1^{st}$ and $0^{th}$ and so on.  Thus if $\psi$ and $\bar \psi$ are two known functions with $\psi(x,y) = u(x,y, t_k)$ and $\bar \psi(x,y) = u_t(x,y, t_k)$ then the derivative $\partial^{\tilde s} u / \partial t^{\tilde s}$ could be expressed solely by $\psi$ and $\bar \psi$ at $t = t_k$.
 
+%=============BEGIN Formal Def========================================
+\iffalse
+Formal (Long) version:
+Let's define the following function set
 \begin{equation}
 Q_{\tilde s}(u_h) := \{ D^{q}(u_h), q = 0, ... , \tilde s - 2 \}.
 \end{equation}
@@ -208,42 +212,35 @@ A more general formula, which is relevant only to the complexity of the algorith
  (E - \Delta)^{-1}( \Delta ( \alpha \beta \sum_{j=0}^{ \tilde s - 2}  { \tilde s - 2\choose j} D^j(u) D^{ (\tilde s - 2 - j) }(u)+ (\beta -1) D^{ (\tilde s - 2) }(u) ) ).
 \end{align*}
 Nevertheless the formula itself is not our goal, just use the computer to derive it and evaluate it for a given function set $Q_{\tilde s}$.
+\fi
 
+%=============END Formal Def========================================
 
-Till now only space discretization, with step $h$, is applied on \rf{DLeq}. Let's discretize along time domain $T$. The IC $u_0(x,y) = u(x,y,0)$ and $u_1(x,y) = u_t(x,y,0)$ are taken from \cite{EllipticProblem}. Then
-$$
-u_{i,j}^0 = u_{0_h}, \partial / \partial t (u_{i,j}^0) = u_{1_h}
-$$
-and $D^{\tilde s}(u^0)$ could be found iteratively for each $2 \leq \tilde s \leq s$ through \rf{DLeq}. If the finite difference discretizations applied along space $(E - \Delta_h)^{-1}$ and $\Delta_h )$ have order of approximation $O(h^p)$ then Taylor formula gives the following
+Till now only space discretization, with step $h$, is applied on $\Omega$ and equation \rf{DLeq}. First, Let's define $t_k = \tau k$, $k \in N \cup \{0\}$, where $\tau$ is the time step and $t_k \in T_{\tau}$ describes the time domain. Second, let's take an IC $u_0(x,y) = u(x,y,0)$ and $u_1(x,y) = u_t(x,y,0)$ from \cite{EllipticProblem}. Third, 
+a polynomial of second degree around $t_k$ approximates $u_h$
+\begin{equation}\label{taylor21}
+u_h(t_{k+1}) = u_h(t_k+\tau) = u_h(t_k) + \frac{\tau } {1!} \frac{ \partial }{ \partial t } u_h( t_k ) + \frac{ \tau^2 } { 2! }L_h u_h( t_k ) + O(\tau^3)
+\end{equation}
+and a polynomial of first degree around $t_k$ approximates $u_{h_t}$
 
-\begin{align*}
-u(x,y,\tau) = u_h^{(0)} + \tau \frac{\partial}{\partial t}(u_h^{(0)}) + ... +
-\\ + \frac{\tau^s}{ s! } P_s( Q_s(u_h^{(0)}) ) + O(h^p + \tau^s) = u_h^{(1)} + O(h^p + \tau^s),
-\\  \frac{\partial}{\partial t}u(x,y,\tau) = \frac{\partial}{\partial t}( u_h^{(0)}) + \tau P_2( Q_2( (\frac{\partial}{\partial t} u_h^{(0)}) ) + ... +
-\\ + \frac{\tau^s}{ s! } P_{s+1}( Q_{s+1}(\frac{\partial}{\partial t}u_h^{(0)}) ) + O(h^p + \tau^s) = \frac{\partial}{\partial t}u_h^{(1)} + O(h^p + \tau^s)
-\end{align*}
+\begin{equation}\label{taylor22}
+\frac{ \partial } { \partial t } u_h( t_{k+1} ) = \frac{\partial } { \partial t }u_h(t_k) + \frac{\tau } {1!} L_h u_h(t_k) + O(\tau^2),
+\end{equation}
+where we use equality \rf{Leq} in the last term of the TS. Then, the formulae \rf{taylor21} and \rf{taylor22} define an iterative procedure with second approximation order along time, and the IC $u_0(x,y) = u_h(0), u_{1_h}(x,y) = \partial / \partial t (u_h(0))$ is used at the start $t_0 = 0$.
 
-All derivatives on the next time layer $D^{(\tilde s) }( u_h^{(1)} )$ could be found using \rf{DLeq} because $u_h^{(1)}$ and $D^{(1) }( u_h^{(1)} )$
-are already given in the last equation. Again TS could be used to find the solution at the next time layer $u_h^{(2)}$. Of course this is an iterative procedure:
-\begin{align*}\label{Taylor}
-u(x,y,(k+1)\tau) = u_h^{(k+1)} + O(h^p + \tau^s),
-\\
-u_h^{(k+1)} = u_h^{(k)} + \tau \frac{\partial}{\partial t}(u_h^{(k)}) + \sum_{ \tilde s = 2 }^{ s } \frac{ \tau^{\tilde s}}{\tilde s!} P_{\tilde s}( Q_{\tilde s}( u_h^{(k)} ) ) + O(h^p + \tau^s),
-\\  
-\frac{\partial}{\partial t}u(x,y,(k+1)\tau) = \frac{\partial}{\partial t}( u_h^{(k+1)}) + O(h^p + \tau^s),
-\\
-\frac{\partial}{\partial t}( u_h^{(k+1)}) = \frac{\partial}{\partial t}( u_h^{(k)}) + \sum_{ \tilde s = 2 }^{ s + 1 } \frac{ \tau^{\tilde s - 1}}{(\tilde s-1)!} P_{\tilde s}( Q_{\tilde s}( \frac{\partial}{\partial t} u_h^{(k)} ) )+ O(h^p + \tau^s),
-\end{align*}
-with approximation order $O(h^p + \tau^s)$ which is easily proved by induction. Note that the derivative set $Q_s$ at time $t_k = 0$ is calculated with approximation order $O(h^p)$ and all other sets $Q_s$ that correspond to times $t_k$, $k \in N$, are approximated with $O(h^p + \tau^s)$. At each step this numerical procedure calculates TS expansions of two numerical values: $u_h$ and its first derivative $D(u_h)$, because the PDE is of second order in time. The complexity of the algorithm depends on the order and type of the time derivatives $D^{(\tilde s)}(u_h)$ in the PDE.
+The algorithm could be generalized to use higher terms it the TS expansion. All derivatives $D^{\tilde s}(u(t_k))$ could be found iteratively for each $2 \leq \tilde s \leq s$ through \rf{DLeq}. If the finite difference discretizations applied along space $(E - \Delta_h)^{-1}$ and $\Delta_h$ have order of approximation $O(h^p)$ then Taylor formula gives the following
+\begin{align} \label{GeneralIt}
+u(x,y,t_{k+1}) = u_h(t_k) + \frac{\tau } {1!}  \frac{\partial}{\partial t} u_h(t_k) + \frac{ \tau^2} { 2!}L_h u_h(t_k) +... + \nonumber
+\\ + \frac{\tau^s}{ s! }L_h \frac{\partial^{s-2}}{\partial t^{s-2}} u_h(t_k) + O(h^p + \tau^{s+1}) = u_h(t_{k+1}) + O(h^p + \tau^{s+1}), \nonumber
+\\  \frac{\partial}{\partial t}u(x,y,t_{k+1}) = \frac{\partial}{\partial t} u_h(t_k) + \frac{\tau } {1!}  L_h u_h(t_k) + ... + \nonumber
+\\ + \frac{\tau^{s-1}}{ (s-1)! } L_h \frac{\partial^{s-2} }{\partial t^{s-2}} u_h(t_k)  + O(h^p + \tau^s) = \frac{\partial}{\partial t}u_h(t_{k+1}) + O(h^p + \tau^s)
+\end{align}
+
+Formulae \rf{GeneralIt} define an iterative procedure with approximation order $O(h^p + \tau^s)$ which is easily proved by induction. At each step this numerical procedure calculates TS expansions of two numerical values: $u_h$ and its first derivative $D(u_h)$, because the PDE is of second order in time. The complexity of the algorithm depends on the order and type of the time derivatives $D^{(\tilde s)}(u_h)$ in the PDE.
 
 \section{Fast Poisson Solvers and Invertion of $(E-\tilde \Delta)$ in \rf{eqVC}}\label{FPSsection}
 
-\begin{lemma} \label{eigenLema} Let the set of all eigenvectors $W :=$ $W_1, W_2, ..., W_n$ of a real matrix $A \in \RR^{n \times n}$ builds an orthogonal basis in $\RR^n$. Let the eigenvalues of $A$ are \{ $\lambda_1, ..., \lambda_n$ \} and further let $AW_i = \lambda_i W_i$ for $i=1,...n$. Then the matrix $\beta E + A$ has the same set of eigenvectors W as A and furthermore $( \beta E + A) W_i = (\beta + \lambda_i)W_i$.
-\end{lemma}
-
-\begin{proof}
-$(\beta E + A)W_i = \beta W_i + AW_i = \beta W_i + \lambda_i W_i = (\beta + \lambda_i)W_i$.
-\end{proof}
+\subsection{Second order approximation}
 Suppose the following linear equaion
 \begin{equation}\label{FPeq}
 Au:=u-\Delta u = f
@@ -303,28 +300,24 @@ with approximation order $O(h^2)$. Therefore, $A_h u_h = f_h$ is equivalent to t
 \begin{align}
 A_{1,1}\bar u_1 - \bar u_2 &= h^2\bar f_1, \nonumber \\
 - \bar u_{i-1}  + A_{i,i}\bar u_i - \bar u_{i+1}  &= h^2\bar f_i, i = 2,...,n-1, \nonumber \\
-- \bar u_{n-1} + A_{n,n}\bar u_n &= h^2\bar f_n.\label{linSys}
+- \bar u_{n-1} + A_{n,n}\bar u_n &= h^2\bar f_n.\label{LinSys}
 \end{align}
-The matrix $A_{i,i}$ could be decomposed to  $A_{i,i} = \tilde A + (2+h^2)E$ with  $\tilde A_{i,i} = (\tilde a_{i,i})$, $\tilde a_{i,i} = 2$ and $\tilde a_{i,i+1} = \tilde a_{i-1,i} = -1$. The idea is that the matrix $\tilde A = diag(-1, 2, -1)$ is well studied in the literature (see \cite{FPS}) and could easily be decomposed to $\tilde A = \tilde W \tilde D \tilde W^T$, where $\tilde W$ denotes an $n \times n$ matrix of the orthonormal eigenvectors of $\tilde A$ and $\tilde D$ is a diagonal matrix consisting of the eigenvalues of $\tilde A$. Then using lemma \rf{eigenLema}, one could establish corelations between $\tilde W$ and $\tilde D$ on one side and $W$ and $D$ on the other, if  $A_{i,i} = WDW^T$ is the decomposition of $A_{i,i}$. Indeed 
-$$W = \tilde W, \quad D = \tilde D + (2+h^2)E.$$
-For the case with domain $\Gamma$ and $h = 1/n$ one could show that (see \cite{FPS})
-\begin{align*}
-& \tilde W^T \tilde A = \tilde D \tilde W^T, \\
-& \tilde D = \{ \tilde \lambda_j \} = \{4 sin^2( j \pi h/2) \}_{j=1}^n, \\
-& \tilde W = \{ \tilde w_{i,j} \} _{i,j=1}^n = \{ \sqrt{2h} sin(ij\pi h)\}_{i,j=1}^n.
-\end{align*}
-Thus, matrices $W$ and $D$ are known with $W^T W = W W^T = E$ and $A_{i,i} = WDW^T$. The following substitution 
+The idea is that the matrix $A_{i,i} = diag(-1, (4+h^2), -1)$ could be decomposed to $A_{i,i}  = W D W^T$, where $W$ denotes an $n \times n$ matrix of the orthonormal eigenvectors of $A_{i,i} $ and $ D$ is a diagonal matrix consisting of the eigenvalues of $A_{i,i}$. The matrices $W$ and $D$ could be found using Singular Value Decomposition with $W^T W = W W^T = E$ and $A_{i,i} = WDW^T$ (see \cite{Tref}, \cite{FPS}). The following substitution 
 \begin{equation}\label{subst}
 y_i := W^T \bar u_i, q_i := W^T \bar f_i, i = 1, ...,n
 \end{equation}
-is applied after multiplying \rf{linSys} with $W^T$ and decomposing $A_{i,i}$
+is applied after multiplying \rf{LinSys} with $W^T$ and decomposing $A_{i,i}$
 \begin{align}
 Dy_1 - y_2 &= h^2 q_1,\nonumber \\
 -y_{i-1} + D y_i - y_{i+1} &= h^2 q_i, i = 2,...,n-1,\nonumber \\
 - y_{n-1} + Dy_n &= h^2 q_n.\label{SubSys}
 \end{align}
-The last system \rf{SubSys} is rearranged as we group equations that correspond to the same eigenvalue $\lambda_i \in D$ for all $i = 1,...,n$. Thus we obtain $n$ tridiagonal linear systems which can be solved using Tridiagonal Matrix Algorithm (TDMA) a.k.a. Thomas Algorithm.
+The last system \rf{SubSys} is rearranged as we group equations that correspond to the same eigenvalue $\lambda_i \in D$ for all $i = 1,...,n$. Thus we obtain $n$ tridiagonal linear systems which can be solved using Tridiagonal Matrix Algorithm (TDMA) a.k.a. Thomas Algorithm. The final step is back substitution $\bar u_i = W y_i$ in order to revert to the initial function. To solve equation \rf{DLeq} for the unknown derivative $D^{\tilde s}u_h$, the right side $\bar f_h$  in \rf{SubSys} and \rf{LinSys} is described by
+$$
+q_h = W^T \bar f_h, \quad \bar f_h = \Delta_h D^{\tilde s - 2} ( \alpha \beta u_h^2  + (\beta -1)u_h).
+$$
 
+\subsection{Fourth order approximation}
 If the discrete Laplacian operator is defined by nine point cross stencil
 \[
 \begin{bmatrix}
@@ -366,6 +359,7 @@ Dy_1 - (4/3)y_2 + (1/12)y_3 &= h^2 q_1,\nonumber \\
  (1/12)y_{n-2} - (4/3)y_{n-1} + Dy_n &= h^2 q_n.\label{SubSys5}
 \end{align}
 
+\subsection{Sixth order approximation}
 If the discrete Laplacian operator is defined by thirteen point cross stencil
 \[
 \begin{bmatrix}
@@ -389,10 +383,7 @@ and after the substitution \rf{subst} an equivalent to \rf{SubSys} system is obt
   - (3/2)y_{i+1} + (3/20)y_{i+2} -  (1/90)y_{i+3} &= h^2 q_i,\nonumber \\
  i = 4,...,n  &-3. \label{SubSys7}
 \end{align}
-After rearranging system \rf{SubSys5}, a total number of $n$ linear systems are produced which are five diagonal. For system \rf{SubSys}, there are $n$ linear systems which are seven diagonal. To solve equation \rf{DLeq} for the unknown derivative $D^{\tilde s}u_h$, the right side $f_h$ is described by
-$$
-f_h = \Delta_h D^{\tilde s - 2} ( \alpha \beta u_h^2  + (\beta -1)u_h).
-$$
+After rearranging system \rf{SubSys5}, a total number of $n$ linear systems are produced which are five diagonal. For system \rf{SubSys7}, there are $n$ linear systems which are seven diagonal. 
 
 \section{Boundary Condition}\label{BndS}
 
@@ -401,7 +392,7 @@ The following boundary function
 \widehat U_B(x , y) = \mu_u \frac{ (1 - \tilde c^2/\beta) x^2 - \tilde y^2}{( (1 - \tilde c^2/\beta) \tilde x^2 + \tilde y^2)^2}
 \end{equation}
 found in \cite{BoundaryProblem} is used to to evaluate stationary propagating wave solutions described in \cite{EllipticProblem}. The last article focus on solutions to \rf{eqVC} of the type $u(x, y, t) = U(x, y - ct)$, which are stationary solitary waves traveling in y direction
-with velocity c. In order to use \rf{eqBCV} as BC for \rf{eqVC} it is transformed into
+with velocity c. In order to use \rf{eqBCV} as BC for \rf{eqVC}, it is transformed into
 \begin{equation}\label{eqBCH}
 \widehat U_B(x_b , y_b, t_b) = \mu_u \frac{ (1 - c^2) x_b^2 - (y_b-ct_b)^2}{( (1 - c^2) x_b^2 + (y_b-ct_b)^2)^2}
 \end{equation}
@@ -426,6 +417,7 @@ The TS approach also requires time derivatives of both terms defined above
 \end{equation*}
 for $\tilde s = 0, ..., s-2$.  Thus, $D^{\tilde s}(\widehat U_B(x_b , y_b, t_b))$  time derivative values outside the computational boundary $\partial \Omega_h$ are also used to extend the $p+1$ point stencil where needed (see Figure  \ref{fig:BoundaryFD}).
 
+\section{Numerical tests and convergence}\label{NumTests}
 
 %The title of your section \href{mailto:#1}{{\mdseries\ttfamily #1}}}
 \section{Introduction}
@@ -832,6 +824,11 @@ LNCS, 6046  (2011), 386 -- 394.
 N. Kolkovska and K. Angelow,
 \emph{Numerical computation of the critical energy constant for two-dimensional Boussinesq equations}
 AIP Conference Proceedings 1684, 080007 (2015)
+
+\bibitem{Tref}
+L.  Trefethen and D. Bau,
+\emph{Numerical linear algebra},
+1$^{st}$ ed., SIAM, Philadelphia, 1997.
 
 %4
 \bibitem{FPS}
