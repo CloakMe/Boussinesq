@@ -238,14 +238,17 @@ u(x,y,t_{k+1}) = u_h(t_k) + \frac{\tau } {1!}  \frac{\partial}{\partial t} u_h(t
 
 Formulae \rf{GeneralIt} define an iterative procedure with approximation order $O(h^p + \tau^s)$ which is easily proved by induction. At each step this numerical procedure calculates TS expansions of two numerical values: $u_h$ and its first derivative $D(u_h)$, because the PDE is of second order in time. The complexity of the algorithm depends on the order and type of the time derivatives $D^{(\tilde s)}(u_h)$ in the PDE.
 
+%=============BEGIN FPP========================================
 \section{Fast Poisson Solvers and Invertion of $(E-\tilde \Delta)$ in \rf{eqVC}}\label{FPSsection}
-
-\subsection{Second order approximation}
+%=============BEGIN FPP========================================
 Suppose the following linear equaion
 \begin{equation}\label{FPeq}
-Au:=u-\Delta u = f
+Az:=z-\Delta z = f
 \end{equation}
-defined on $\Gamma = \{ (0,1) \times (0,1) \}$ with homogeneous Dirichlet boundary conditions $u(x,y) = 0$, $(x,y) \in \partial \Gamma$. The discrete version of \rf{FPeq} - $A_h u_h = f_h$ - using the notations defined in previous sections, is a system of linear equations where $A_h \in \RR^{n^2 \times n^2}$, $f_h, u_h \in \RR^{n^2}$ and $n$ is defined by the relation $h=1/n$. For simplicity the same discretization step $h$ is applied along both space directions. Therefore,
+defined on $\Gamma = \{ (0,1) \times (0,1) \}$ with homogeneous Dirichlet boundary conditions $z(x,y) = 0$, $(x,y) \in \partial \Gamma$. The discrete version of \rf{FPeq} - $A_h z_h = f_h$ - using the notations defined in previous sections, is a system of linear equations where $A_h \in \RR^{n^2 \times n^2}$, $f_h, z_h \in \RR^{n^2}$ and $n$ is defined by the relation $h=1/n$. For simplicity the same discretization step $h$ is applied along both space directions.
+\subsection{Second order approximation}
+
+Here,
 %\begin{equation}\label{MATeq}
 \[
 A_h = \frac{1}{h^2}
@@ -258,13 +261,13 @@ A_h = \frac{1}{h^2}
      0                 & \dots   &  0               & -E    & A_{nn}
 \end{bmatrix}
 ,
-u_h = 
+z_h = 
 \begin{bmatrix}
-    \bar u_{1} \\
-    \bar u_{2}  \\
+    \bar z_{1} \\
+    \bar z_{2}  \\
     \vdots  \\
     \vdots  \\
-    \bar u_{n}
+    \bar z_{n}
 \end{bmatrix}
 ,
 f_h = 
@@ -276,7 +279,7 @@ f_h =
     \bar f_{n}\
 \end{bmatrix}
 \]
-where $\bar u_k = (u_{k,1}, u_{k,2}, ..., u_{k,n})\in \RR^{n}$ and $\bar f_k = (f_{k,1}, f_{k,2}, ..., f_{k,n})\in \RR^{n}$. Furthermore, $A_{i,i} \in \RR^{n \times n}$, $i = 1, ..., n$ is defined as
+where $\bar z_k = (z_{k,1}, z_{k,2}, ..., z_{k,n})\in \RR^{n}$ and $\bar f_k = (f_{k,1}, f_{k,2}, ..., f_{k,n})\in \RR^{n}$. Furthermore, $A_{i,i} \in \RR^{n \times n}$, $i = 1, ..., n$ is defined as
 \[
 A_{i,i} = 
 \begin{bmatrix}
@@ -290,21 +293,22 @@ A_{i,i} =
 \]
 Here, the discrete Laplacian operator is presented by five point cross stencil
 \[
+S_5 = 
 \begin{bmatrix}
             &  1  &  \\
     1     &  -4    & 1\\
-            &  1  & 
+            &  1  &  
 \end{bmatrix}
 \]
-with approximation order $O(h^2)$. Therefore, $A_h u_h = f_h$ is equivalent to the simplified linear system
+with approximation order $O(h^2)$. Therefore, $A_h z_h = f_h$ is equivalent to the simplified linear system
 \begin{align}
-A_{1,1}\bar u_1 - \bar u_2 &= h^2\bar f_1, \nonumber \\
-- \bar u_{i-1}  + A_{i,i}\bar u_i - \bar u_{i+1}  &= h^2\bar f_i, i = 2,...,n-1, \nonumber \\
-- \bar u_{n-1} + A_{n,n}\bar u_n &= h^2\bar f_n.\label{LinSys}
+A_{1,1}\bar z_1 - \bar z_2 &= h^2\bar f_1, \nonumber \\
+- \bar z_{i-1}  + A_{i,i}\bar z_i - \bar z_{i+1}  &= h^2\bar f_i, i = 2,...,n-1, \nonumber \\
+- \bar z_{n-1} + A_{n,n}\bar z_n &= h^2\bar f_n.\label{LinSys}
 \end{align}
 The idea is that the matrix $A_{i,i} = diag(-1, (4+h^2), -1)$ could be decomposed to $A_{i,i}  = W D W^T$, where $W$ denotes an $n \times n$ matrix of the orthonormal eigenvectors of $A_{i,i} $ and $ D$ is a diagonal matrix consisting of the eigenvalues of $A_{i,i}$. The matrices $W$ and $D$ could be found using Singular Value Decomposition with $W^T W = W W^T = E$ and $A_{i,i} = WDW^T$ (see \cite{Tref}, \cite{FPS}). The following substitution 
 \begin{equation}\label{subst}
-y_i := W^T \bar u_i, q_i := W^T \bar f_i, i = 1, ...,n
+y_i := W^T \bar z_i, q_i := W^T \bar f_i, i = 1, ...,n
 \end{equation}
 is applied after multiplying \rf{LinSys} with $W^T$ and decomposing $A_{i,i}$
 \begin{align}
@@ -312,14 +316,16 @@ Dy_1 - y_2 &= h^2 q_1,\nonumber \\
 -y_{i-1} + D y_i - y_{i+1} &= h^2 q_i, i = 2,...,n-1,\nonumber \\
 - y_{n-1} + Dy_n &= h^2 q_n.\label{SubSys}
 \end{align}
-The last system \rf{SubSys} is rearranged as we group equations that correspond to the same eigenvalue $\lambda_i \in D$ for all $i = 1,...,n$. Thus we obtain $n$ tridiagonal linear systems which can be solved using Tridiagonal Matrix Algorithm (TDMA) a.k.a. Thomas Algorithm. The final step is back substitution $\bar u_i = W y_i$ in order to revert to the initial function. To solve equation \rf{DLeq} for the unknown derivative $D^{\tilde s}u_h$, the right side $\bar f_h$  in \rf{SubSys} and \rf{LinSys} is described by
+The last system \rf{SubSys} is rearranged as we group equations that correspond to the same eigenvalue $\lambda_i \in D$ for all $i = 1,...,n$. Thus we obtain $n$ tridiagonal linear systems which can be solved using Tridiagonal Matrix Algorithm (TDMA) a.k.a. Thomas Algorithm. The final step is back substitution $\bar z_i = W y_i$ in order to revert to the initial function. To solve equation \rf{DLeq} for the unknown derivative $D^{\tilde s}u_h$, the right side $\bar f_h$  in \rf{SubSys} and \rf{LinSys} is described by
 $$
-q_h = W^T \bar f_h, \quad \bar f_h = \Delta_h D^{\tilde s - 2} ( \alpha \beta u_h^2  + (\beta -1)u_h).
+q_h = W^T \bar f_h, \quad \bar f_h = \Delta_h \frac{ \partial^{ \tilde s - 2 } } { \partial t^{ \tilde s - 2 } } ( \alpha \beta u_h^2  + (\beta -1)u_h).
 $$
+A closer look on the sub-diagonals of matrices $A_h$ and $A_{i,i}$ reveals that the five point stencil $S_5$ (also $S_9$ and $S_{13}$) is not fully applied near the computational boundary $\partial \Gamma_h$. Furthermore, the definition of $A_h$ and $A_{i,i}$ implies that $z_h$ is zero outside $ \partial \Gamma_h$. Thus, the Dirichlet boundary condition  $u(x,y) = 0$, $(x,y) \in \partial \Gamma$ is implemented in a "mild way", i.e. the function is zero on a rectangular defined by the following $(x,y)$ points: $(-h,-h)$, $(1+h,-h)$, $(1+h,1+h)$ and $(-h,1+h)$. This technique turns out to be good enough to produce smooth results on the boundary. For further details please check the next chapter \rf{BndS} about the boundary condition.
+\subsection{Forth order approximation}
 
-\subsection{Fourth order approximation}
 If the discrete Laplacian operator is defined by nine point cross stencil
 \[
+S_9 =
 \begin{bmatrix}
           &       &  -1/12  & &  \\
           &       &  4/3     &   & \\
@@ -358,10 +364,13 @@ Dy_1 - (4/3)y_2 + (1/12)y_3 &= h^2 q_1,\nonumber \\
  (1/12)y_{n-3} - (4/3)y_{n-2} + Dy_{n-1} - (4/3)y_n &= h^2 q_{n-1}, \nonumber \\
  (1/12)y_{n-2} - (4/3)y_{n-1} + Dy_n &= h^2 q_n.\label{SubSys5}
 \end{align}
+After rearranging system \rf{SubSys5}, a total number of $n$ linear systems are produced which are five diagonal.
 
 \subsection{Sixth order approximation}
+
 If the discrete Laplacian operator is defined by thirteen point cross stencil
 \[
+S_{13} = 
 \begin{bmatrix}
           &       &       &   1/90  & & &  \\
           &       &       &  -3/20  & & &  \\
@@ -383,10 +392,11 @@ and after the substitution \rf{subst} an equivalent to \rf{SubSys} system is obt
   - (3/2)y_{i+1} + (3/20)y_{i+2} -  (1/90)y_{i+3} &= h^2 q_i,\nonumber \\
  i = 4,...,n  &-3. \label{SubSys7}
 \end{align}
-After rearranging system \rf{SubSys5}, a total number of $n$ linear systems are produced which are five diagonal. For system \rf{SubSys7}, there are $n$ linear systems which are seven diagonal. 
+For system \rf{SubSys7}, there are $n$ linear systems which are seven diagonal. 
 
+%=============BEGIN Boundary========================================
 \section{Boundary Condition}\label{BndS}
-
+%=============BEGIN Boundary========================================
 The following boundary function
 \begin{equation}\label{eqBCV}
 \widehat U_B(x , y) = \mu_u \frac{ (1 - \tilde c^2/\beta) x^2 - \tilde y^2}{( (1 - \tilde c^2/\beta) \tilde x^2 + \tilde y^2)^2}
@@ -398,7 +408,7 @@ with velocity c. In order to use \rf{eqBCV} as BC for \rf{eqVC}, it is transform
 \end{equation}
 with $c = \tilde c / \sqrt{\beta}$, $x_b = \tilde x$ and $y_b - ct_b = \tilde y$. 
 Near the computational boundaries $(x,y):x=L_x$ and $(x,y):y=L_y$ we do not change the stencil \rf{fd}. The discrete Laplacian
-is defined there by using the values of the discrete solution \rf{eqBCH} at points outside the computational domain. The value of $\mu_u$ is obtained again from the method developed in \cite{BoundaryProblem}. If the second derivative $\partial^2 / \partial x^2$ is approximated with three points, i.e. $p=2$, (green color), then it uses one point outside the computational domain $\Omega_h$. For $p=4$, the derivative $\partial^2 / \partial x^2$ implies five point stencil (blue color) with maximum
+is defined there by using the values of the discrete solution \rf{eqBCH} at points outside the computational domain. The value of $\mu_u$ is obtained again from the method developed in \cite{BoundaryProblem}. If the second derivative $\partial^2 / \partial x^2$ is approximated with three points, i.e. $p=2$ (green color), then it uses one point outside the computational domain $\Omega_h$. For $p=4$, the derivative $\partial^2 / \partial x^2$ implies five point stencil (blue color) with maximum
 
 \begin{figure}[ht]% It requires \usepackage{graphicx}
 \begin{center}
@@ -415,8 +425,21 @@ The TS approach also requires time derivatives of both terms defined above
 \begin{equation*}
 \frac{ \Delta_h D^{(\tilde s)} (u_h)}{\beta}, \frac{ (E - \Delta_h)^{-1} ( (\beta -1)\Delta_h D^{(\tilde s)}(u_h) ) }{\beta}
 \end{equation*}
-for $\tilde s = 0, ..., s-2$.  Thus, $D^{\tilde s}(\widehat U_B(x_b , y_b, t_b))$  time derivative values outside the computational boundary $\partial \Omega_h$ are also used to extend the $p+1$ point stencil where needed (see Figure  \ref{fig:BoundaryFD}).
+for $\tilde s = 0, ..., s-2$.  Thus, $D^{\tilde s}(\widehat U_B(x_b , y_b, t_b))$  time derivative values outside the computational boundary $\partial \Omega_h$ are also used to extend the $p+1$ point stencil where needed (see Figure  \ref{fig:BoundaryFD}). 
 
+As it is noticed in the previous section, the operator $(E - \Delta_h)^{-1}$ does not fully apply on the computational boundary $\partial \Omega_h$. In the previous section, it is defined that
+\begin{equation*}
+(E-\Delta)(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) u = (E-\Delta)z = \Delta ( \alpha \beta u^2  + (\beta -1)u)
+\end{equation*}
+In order to balance for the incompleteness of $A_h = (E-\Delta_h)$ operator, the following term needs to be subtracted from the right side $f_h$:
+\begin{equation*}
+(E-\Delta)_{ext}(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) \widehat U_{B_h}
+\end{equation*}
+where $(E-\Delta)_{ext}$ is defined only on the "black points" over an extended domain that steps out $\partial \Omega_h$ (see Figure \ref{fig:BoundaryFD}). The identity operator $E$ influences only inside $\bar \Omega_h$ thus the term transforms into
+\begin{equation*}
+-\Delta_{ext}(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) \widehat U_{B_h}.
+\end{equation*}
+which is smaller enough to be neglected.
 \section{Numerical tests and convergence}\label{NumTests}
 
 %The title of your section \href{mailto:#1}{{\mdseries\ttfamily #1}}}
