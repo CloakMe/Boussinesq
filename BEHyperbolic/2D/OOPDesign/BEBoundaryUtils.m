@@ -4,18 +4,112 @@ classdef (ConstructOnLoad) BEBoundaryUtils < BEDomainUtils
     c
     mu
     theta
+    h
   end
   
   methods
       
-    function this = BEBoundaryUtils( x, y, order, beta, c, mu, theta )
+    function this = BEBoundaryUtils( x, y, order, beta, c, mu, theta, h )
         this = this@BEDomainUtils( x, y, order);
         this.beta = beta;
         this.c = c;
         this.mu = mu;
         this.theta = theta;
+        this.h = h;
     end
 
+    function [sdah] = FPSOperatorAsymptoticFunction( this, X, Y, t, timeDerOrd)
+       sdah = zeros( length(this.x), length(this.y) );
+        
+        c = this.c;
+        beta = this.beta;
+        muTheta = this.mu * this.theta;
+        omcs = 1 - c^2;
+        
+        if( timeDerOrd == 0 )  
+            
+            sdah = -6 * muTheta * (Y .^ 4 + omcs ^ 2 * X .^ 4 + c ^ 4 * t ^ 4 + 12 * omcs * X .^ 2 * c .* Y * t -...
+                4 * c ^ 3 * Y * t ^ 3 - 6 * omcs * X .^ 2 .* Y .^ 2 - 4 * Y .^ 3 * c * t + 6 * Y .^ 2 * c ^ 2 * t ^ 2 -...
+                6 * omcs * X .^ 2 * c ^ 2 * t ^ 2) .* (omcs - 1 + beta * c ^ 2) ./ ...
+                (c ^ 2 * t ^ 2 - 2 * c * Y * t + omcs * X .^ 2 + Y .^ 2) .^ 4;
+            return;
+        elseif(timeDerOrd == 1 )
+            
+            sdah = -24 * muTheta * c * (-c * t + Y) .* (Y .^ 4 + 5 * omcs ^ 2 * X .^ 4 + c ^ 4 * t ^ 4 + ...
+                20 * omcs * X .^ 2 * c .* Y * t - 4 * c ^ 3 * Y * t ^ 3 - 10 * omcs * X .^ 2 .* Y .^ 2 - ...
+                4 .* Y .^ 3 * c * t + 6 * Y .^ 2 * c ^ 2 * t ^ 2 - 10 * omcs * X .^ 2 * c ^ 2 * t ^ 2) .* (omcs - ...
+                1 + beta * c ^ 2) ./ (c ^ 2 * t ^ 2 - 2 * c * Y * t + omcs * X .^ 2 + Y .^ 2) .^ 5;
+            return;
+        elseif(timeDerOrd == 2 )
+            
+            sdah =  120 * muTheta * c ^ 2 * (omcs * X .^ 2 - Y .^ 2 + 2 * c * Y * t - c ^ 2 * t ^ 2) .* ...
+                (omcs ^ 2 * X .^ 4 + 28 * omcs * X .^ 2 * c .* Y * t - 14 * omcs * X .^ 2 .* Y .^ 2 - ...
+                14 * omcs * X .^ 2 * c ^ 2 * t ^ 2 + Y .^ 4 + c ^ 4 * t ^ 4 + 6 * Y .^ 2 * c ^ 2 * t ^ 2 - ...
+                4 * c ^ 3 * Y * t ^ 3 - 4 * Y .^ 3 * c * t) .* (omcs - 1 + beta * c ^ 2) ./ ...
+                (c ^ 2 * t ^ 2 - 2 * c * Y * t + omcs * X .^ 2 + Y .^ 2) .^ 6;
+            return;
+        elseif(timeDerOrd == 3 )
+            
+            sdah = 720 * muTheta * c ^ 3 * (-c * t + Y) .* (6 * c ^ 5 * Y * t ^ 5 - 15 * c ^ 4 * Y .^ 2 * t ^ 4 + ...
+                20 * c ^ 3 * Y .^ 3 * t ^ 3 - 15 * c ^ 2 * Y .^ 4 * t ^ 2 + 6 * c * Y .^ 5 * t - ...
+                35 * Y .^ 2 * omcs ^ 2 .* X .^ 4 + 21 * Y .^ 4 * omcs .* X .^ 2 + 21 * c ^ 4 * omcs .* X .^ 2 * t ^ 4 - ...
+                35 * c ^ 2 * omcs ^ 2 .* X .^ 4 * t ^ 2 - c ^ 6 * t ^ 6 + 7 * omcs ^ 3 * X .^ 6 - Y .^ 6 - ...
+                84 * c ^ 3 * omcs * X .^ 2 .* Y * t ^ 3 + 126 * c ^ 2 * omcs * X .^ 2 .* Y .^ 2 * t ^ 2 + ...
+                70 * c * Y * omcs ^ 2 .* X .^ 4 * t - 84 * c * Y .^ 3 * omcs .* X .^ 2 * t) .* (omcs - 1 + beta * c ^ 2) ./ ...
+                (c ^ 2 * t ^ 2 - 2 * c * Y * t + omcs * X .^ 2 + Y .^ 2) .^ 7;
+            return;
+        elseif(timeDerOrd == 4 )
+            
+            sdah = -5040 * muTheta * c ^ 4 * (168 * c ^ 5 * omcs * X .^ 2 .* Y * t ^ 5 - ...
+                420 * c ^ 4 * omcs * X .^ 2 .* Y .^ 2 * t ^ 4 - 280 * c ^ 3 * Y * omcs ^ 2 .* X .^ 4 * t ^ 3 + ...
+                560 * c ^ 3 * Y .^ 3 * omcs .* X .^ 2 * t ^ 3 + 420 * Y .^ 2 * c ^ 2 * omcs ^ 2 .* X .^ 4 * t ^ 2 - ...
+                420 * Y .^ 4 * c ^ 2 * omcs .* X .^ 2 * t ^ 2 - 280 * Y .^ 3 * c * omcs ^ 2 .* X .^ 4 * t + ...
+                168 * Y .^ 5 * c * omcs .* X .^ 2 * t + 56 * c * Y * omcs ^ 3 .* X .^ 6 * t - ...
+                28 * c ^ 6 * omcs .* X .^ 2 * t ^ 6 + 70 * c ^ 4 * omcs ^ 2 .* X .^ 4 * t ^ 4 - ...
+                28 * c ^ 2 * omcs ^ 3 .* X .^ 6 * t ^ 2 + Y .^ 8 + c ^ 8 * t ^ 8 + omcs ^ 4 .* X .^ 8 - ...
+                56 * c ^ 3 * Y .^ 5 * t ^ 3 + 28 * Y .^ 6 * c ^ 2 * t ^ 2 - 8 * Y .^ 7 * c * t + ...
+                70 * Y .^ 4 * omcs ^ 2 .* X .^ 4 - 28 * Y .^ 6 * omcs .* X .^ 2 - 28 * Y .^ 2 * omcs ^ 3 .* X .^ 6 - ...
+                8 * c ^ 7 * Y * t ^ 7 + 28 * c ^ 6 * Y .^ 2 * t ^ 6 - 56 * c ^ 5 * Y .^ 3 * t ^ 5 + ...
+                70 * c ^ 4 * Y .^ 4 * t ^ 4) .* (omcs - 1 + beta * c ^ 2) ./ ...
+                (c ^ 2 * t ^ 2 - 2 * c * Y * t + omcs * X .^ 2 + Y .^ 2) .^ 8;
+            return;
+        end
+    end
+    
+    function [ result ] = FPSOperatorOutside( this, finiteDiff, t, timeDerOrder ) 
+
+        bndPntsCount = this.order/2;
+        vdah = zeros(length(this.x), length(this.y));
+        
+        xNet = this.X_xAugDomain(1:bndPntsCount,:);
+        yNet = this.Y_xAugDomain(1:bndPntsCount,:);
+        asymptoticFunctionXStart = this.FPSOperatorAsymptoticFunction( xNet, yNet, t, timeDerOrder );
+        xNet = this.X_xAugDomain(end - bndPntsCount + 1:end,:);
+        yNet = this.Y_xAugDomain(end - bndPntsCount + 1:end,:);
+        asymptoticFunctionXEnd = this.FPSOperatorAsymptoticFunction( xNet, yNet, t, timeDerOrder );
+
+        clear('xNet'); clear('yNet');
+
+        xNet = this.X_yAugDomain(:,1:bndPntsCount);
+        yNet = this.Y_yAugDomain(:,1:bndPntsCount);
+        asymptoticFunctionYStart = FPSOperatorAsymptoticFunction( this, xNet, yNet, t, timeDerOrder );
+        xNet = this.X_yAugDomain(:,end - bndPntsCount + 1:end);
+        yNet = this.Y_yAugDomain(:,end - bndPntsCount + 1:end);
+        asymptoticFunctionYEnd = FPSOperatorAsymptoticFunction( this, xNet, yNet, t, timeDerOrder );
+               
+        %timeDerivative inside d^nU/dt^n could be first, second, third or fourth
+        %derivative! finiteDiff is spatial second derivative.
+        result = (...
+             this.YDerivative( vdah, asymptoticFunctionYStart, asymptoticFunctionYEnd, finiteDiff ) +...
+             this.XDerivative( vdah, asymptoticFunctionXStart, asymptoticFunctionXEnd, finiteDiff ));      %/this.h^2           
+         
+        %figure(1)
+        %yy = (this.y(1)-3*this.h):this.h:(this.y(1)+3*this.h);
+        %mesh(this.x', yy' , result(:,1:7)');
+        %xlabel('x');            ylabel('y');
+        %yoyo = 6;
+    end
+    
     function [sdah] = AsymptoticFunction( this, X, Y, t, timeDerOrd )
         
         sdah = zeros( length(this.x), length(this.y) );
