@@ -238,6 +238,78 @@ u(x,y,t_{k+1}) = u_h(t_k) + \frac{\tau } {1!}  \frac{\partial}{\partial t} u_h(t
 
 Formulae \rf{GeneralIt} define an iterative procedure with approximation order $O(h^p + \tau^s)$ which is easily proved by induction. At each step this numerical procedure calculates TS expansions of two numerical values: $u_h$ and its first derivative $D(u_h)$, because the PDE is of second order in time. The complexity of the algorithm depends on the order and type of the time derivatives $D^{(\tilde s)}(u_h)$ in the PDE.
 
+
+%=============BEGIN Boundary========================================
+\section{Boundary Condition}\label{BndS}
+%=============BEGIN Boundary========================================
+The following boundary function
+\begin{equation}\label{eqBCV}
+\widehat U_B(x , y) = \mu_u \frac{ (1 - \tilde c^2/\beta) x^2 - \tilde y^2}{( (1 - \tilde c^2/\beta) \tilde x^2 + \tilde y^2)^2}
+\end{equation}
+found in \cite{BoundaryProblem} is used to to evaluate stationary propagating wave solutions described in \cite{EllipticProblem}. The last article focus on solutions to \rf{eqVC} of the type $u(x, y, t) = U(x, y - ct)$, which are stationary solitary waves traveling in y direction
+with velocity c. In order to use \rf{eqBCV} as BC for \rf{eqVC}, it is transformed into
+\begin{equation}\label{eqBCH}
+\widehat U_B(x_b , y_b, t_b) = \mu_u \frac{ (1 - c^2) x_b^2 - (y_b-ct_b)^2}{( (1 - c^2) x_b^2 + (y_b-ct_b)^2)^2}
+\end{equation}
+with $c = \tilde c / \sqrt{\beta}$, $x_b = \tilde x$ and $y_b - ct_b = \tilde y$. 
+Near the computational boundaries $(x,y):x=L_x$ and $(x,y):y=L_y$ we do not change the stencil \rf{fd}. The discrete Laplacian
+is defined there by using the values of the discrete solution \rf{eqBCH} at points outside the computational domain. The value of $\mu_u$ is obtained again from the method developed in \cite{BoundaryProblem}. If the second derivative $\partial^2 / \partial x^2$ is approximated with three points, i.e. $p=2$ (green color), then it uses one point outside the computational domain $\Omega_h$. For $p=4$, the derivative $\partial^2 / \partial x^2$ implies five point stencil (blue color) with maximum
+
+\begin{figure}[ht]% It requires \usepackage{graphicx}
+\begin{center}
+\includegraphics[width=2in]{Pictures/BoundaryPicture.png}
+	\caption{Finite Differences near the computational boundary.}
+	\label{fig:BoundaryFD}
+  \end{center}
+\end{figure}
+two extra points and for $p=6$, it implies seven point stencil (purple color) with maximum three extra points outside the computational domain $\Omega_h$ (see Figure \ref{fig:BoundaryFD}). Same reasoning is implied for the $\partial^2 / \partial y^2$ derivative. The affected terms in equation \rf{Leq} which make use of the boundary function \rf{eqBCV} are the following:
+\begin{equation*}
+\frac{ \Delta_h u_h}{\beta}, \frac{ (E - \Delta_h)^{-1} ( (\beta -1)\Delta_h u_h) }{\beta}
+\end{equation*}
+The TS approach also requires time derivatives of both terms defined above
+\begin{equation*}
+\frac{ \Delta_h D^{(\tilde s)} (u_h)}{\beta}, \frac{ (E - \Delta_h)^{-1} ( (\beta -1)\Delta_h D^{(\tilde s)}(u_h) ) }{\beta}
+\end{equation*}
+for $\tilde s = 0, ..., s-2$.  Thus, $D^{\tilde s}(\widehat U_B(x_b , y_b, t_b))$  time derivative values outside the computational boundary $\partial \Omega_h$ are also used to extend the $p+1$ point stencil where needed (see Figure  \ref{fig:BoundaryFD}). 
+
+As it is noticed in the previous section, the operator $(E - \Delta_h)^{-1}$ does not fully apply on the computational boundary $\partial \Omega_h$. In the previous section, it is defined that
+
+================================================
+
+\begin{equation}
+(E-\Delta_h -\Delta_{ext})(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) u =( \Delta_h + \Delta_{ext}) ( \alpha \beta u^2  + (\beta -1)u) 
+\end{equation}
+
+\begin{align}
+&(E-\Delta_h)(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta_h - \Delta_{ext}) u_h(t_k) - \Delta_{ext}((\beta \frac{ \partial^2 } { \partial t^2 } - \Delta)\widehat U_B(t_k))_h = 
+\\
+&\Delta_h ( \alpha \beta u_h(t_k)^2  + (\beta -1)u_h(t_k)) +  \Delta_{ext} ( \alpha \beta\widehat U_{B_h}(t_k)^2  + (\beta -1)\widehat U_{B_h}(t_k))  
+\end{align}
+
+\begin{align}
+&(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta_h - \Delta_{ext}) u_h(t_k)  = 
+\\
+&(E-\Delta_h)^{-1} ( \Delta_h ( \alpha \beta u_h(t_k)^2  + (\beta -1)u_h(t_k)) +  \Delta_{ext} ( \alpha \beta\widehat U_{B_h}(t_k)^2  + (\beta -1)\widehat U_{B_h}(t_k))   \nonumber
+\\
+&\Delta_{ext}((\beta \frac{ \partial^2 } { \partial t^2 } - \Delta)\widehat U_B(t_k))_h )
+\end{align}
+
+\begin{align}
+&(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta_h - \Delta_{ext}) u_h(t_k)  = 
+\\
+&(E-\Delta_h)^{-1} ( \Delta_h ( \alpha \beta u_h(t_k)^2  + (\beta -1)u_h(t_k)) +  \Delta_{ext} ( (\beta -1)\widehat U_{B_h}(t_k))  )
+\end{align}
+================================================
+In order to balance for the incompleteness of $A_h = (E-\Delta_h)$ operator, the following term needs to be subtracted from the right side $f_h$:
+\begin{equation*}
+(E-\Delta)_{ext}(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) \widehat U_{B_h}
+\end{equation*}
+where $(E-\Delta)_{ext}$ is defined only on the "black points" over an extended domain that steps out $\partial \Omega_h$ (see Figure \ref{fig:BoundaryFD}). The identity operator $E$ influences only inside $\bar \Omega_h$ thus the term transforms into
+\begin{equation*}
+-\Delta_{ext}(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) \widehat U_{B_h}.
+\end{equation*}
+which is smaller enough to be neglected.
+
 %=============BEGIN FPP========================================
 \section{Fast Poisson Solvers and Invertion of $(E-\tilde \Delta)$ in \rf{eqVC}}\label{FPSsection}
 %=============BEGIN FPP========================================
@@ -394,52 +466,6 @@ and after the substitution \rf{subst} an equivalent to \rf{SubSys} system is obt
 \end{align}
 For system \rf{SubSys7}, there are $n$ linear systems which are seven diagonal. 
 
-%=============BEGIN Boundary========================================
-\section{Boundary Condition}\label{BndS}
-%=============BEGIN Boundary========================================
-The following boundary function
-\begin{equation}\label{eqBCV}
-\widehat U_B(x , y) = \mu_u \frac{ (1 - \tilde c^2/\beta) x^2 - \tilde y^2}{( (1 - \tilde c^2/\beta) \tilde x^2 + \tilde y^2)^2}
-\end{equation}
-found in \cite{BoundaryProblem} is used to to evaluate stationary propagating wave solutions described in \cite{EllipticProblem}. The last article focus on solutions to \rf{eqVC} of the type $u(x, y, t) = U(x, y - ct)$, which are stationary solitary waves traveling in y direction
-with velocity c. In order to use \rf{eqBCV} as BC for \rf{eqVC}, it is transformed into
-\begin{equation}\label{eqBCH}
-\widehat U_B(x_b , y_b, t_b) = \mu_u \frac{ (1 - c^2) x_b^2 - (y_b-ct_b)^2}{( (1 - c^2) x_b^2 + (y_b-ct_b)^2)^2}
-\end{equation}
-with $c = \tilde c / \sqrt{\beta}$, $x_b = \tilde x$ and $y_b - ct_b = \tilde y$. 
-Near the computational boundaries $(x,y):x=L_x$ and $(x,y):y=L_y$ we do not change the stencil \rf{fd}. The discrete Laplacian
-is defined there by using the values of the discrete solution \rf{eqBCH} at points outside the computational domain. The value of $\mu_u$ is obtained again from the method developed in \cite{BoundaryProblem}. If the second derivative $\partial^2 / \partial x^2$ is approximated with three points, i.e. $p=2$ (green color), then it uses one point outside the computational domain $\Omega_h$. For $p=4$, the derivative $\partial^2 / \partial x^2$ implies five point stencil (blue color) with maximum
-
-\begin{figure}[ht]% It requires \usepackage{graphicx}
-\begin{center}
-\includegraphics[width=2in]{Pictures/BoundaryPicture.png}
-	\caption{Finite Differences near the computational boundary.}
-	\label{fig:BoundaryFD}
-  \end{center}
-\end{figure}
-two extra points and for $p=6$, it implies seven point stencil (purple color) with maximum three extra points outside the computational domain $\Omega_h$ (see Figure \ref{fig:BoundaryFD}). Same reasoning is implied for the $\partial^2 / \partial y^2$ derivative. The affected terms in equation \rf{Leq} which make use of the boundary function \rf{eqBCV} are the following:
-\begin{equation*}
-\frac{ \Delta_h u_h}{\beta}, \frac{ (E - \Delta_h)^{-1} ( (\beta -1)\Delta_h u_h) }{\beta}
-\end{equation*}
-The TS approach also requires time derivatives of both terms defined above
-\begin{equation*}
-\frac{ \Delta_h D^{(\tilde s)} (u_h)}{\beta}, \frac{ (E - \Delta_h)^{-1} ( (\beta -1)\Delta_h D^{(\tilde s)}(u_h) ) }{\beta}
-\end{equation*}
-for $\tilde s = 0, ..., s-2$.  Thus, $D^{\tilde s}(\widehat U_B(x_b , y_b, t_b))$  time derivative values outside the computational boundary $\partial \Omega_h$ are also used to extend the $p+1$ point stencil where needed (see Figure  \ref{fig:BoundaryFD}). 
-
-As it is noticed in the previous section, the operator $(E - \Delta_h)^{-1}$ does not fully apply on the computational boundary $\partial \Omega_h$. In the previous section, it is defined that
-\begin{equation*}
-(E-\Delta)(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) u = (E-\Delta)z = \Delta ( \alpha \beta u^2  + (\beta -1)u)
-\end{equation*}
-In order to balance for the incompleteness of $A_h = (E-\Delta_h)$ operator, the following term needs to be subtracted from the right side $f_h$:
-\begin{equation*}
-(E-\Delta)_{ext}(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) \widehat U_{B_h}
-\end{equation*}
-where $(E-\Delta)_{ext}$ is defined only on the "black points" over an extended domain that steps out $\partial \Omega_h$ (see Figure \ref{fig:BoundaryFD}). The identity operator $E$ influences only inside $\bar \Omega_h$ thus the term transforms into
-\begin{equation*}
--\Delta_{ext}(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) \widehat U_{B_h}.
-\end{equation*}
-which is smaller enough to be neglected.
 \section{Numerical tests and convergence}\label{NumTests}
 
 %The title of your section \href{mailto:#1}{{\mdseries\ttfamily #1}}}
