@@ -95,7 +95,7 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         if( this.order == 2) return; end
         %{
         fd2ndDer = this.GetFd2ndDer();
-        boundaryUtils = BEBoundaryUtils( this.x, this.y, this.order, this.beta, this.c, this.mu, this.theta, this.h );
+        boundaryUtils = BEBoundaryUtils( this.x, this.y, this.order, this.alpha, this.beta, this.c, this.mu, this.theta, this.h );
          Q=4;
         f1 =  ( this.beta*d2vz - boundaryUtils.DeltaH( vz, fd2ndDer )/this.h^2);
         figure(1)
@@ -146,23 +146,23 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         if( this.order > 6 )
             error( 'Not yet implemented for order = 8!' );
         end
-        boundaryUtils = BEBoundaryUtils( this.x, this.y, this.order, this.beta, this.c, this.mu, this.theta, this.h );
+        boundaryUtils = BEBoundaryUtils( this.x, this.y, this.order, this.alpha, this.beta, this.c, this.mu, this.theta, this.h );
                 
         VV = this.vdah;
         %VV2 = this.vdah;
         fd2ndDer = this.GetFd2ndDer();
         mid = ( this.order/2 + 1 );
-        b1 = boundaryUtils.DeltaXH( this.beta-1, fd2ndDer, t, order );
+        b1 = boundaryUtils.DeltaAssymptoticFuncSquareOutside( fd2ndDer, t, order ) + ...
+        	boundaryUtils.DeltaAssymptoticFuncOutside( this.beta-1, fd2ndDer, t, order );
         b2 = boundaryUtils.FPSOperatorOutside( fd2ndDer, t, order );
+        
         deltab = this.eigenFinDiffMat'* ( boundaryUtils.DeltaH( nonlinTerm, fd2ndDer )+...
             b1 + ...
             b2 );    
         
         %max1 = max( max( b1 ) )
         %max2 = max( max( b2 ) )
-
-        %deltab2 = this.eigenFinDiffMat'* ( boundaryUtils.DeltaH( nonlinTerm, fd2ndDer ));  
-        
+       
         for j=1:this.sx
             diag = [ -fd2ndDer(1:mid-1) this.IminusDHdiag(j) -fd2ndDer(mid+1:end) ];
             %diag = [(1/12) (-16/12) this.IminusDHdiag(j) (-16/12) 1/12];
@@ -181,7 +181,7 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         
         deltav = ( boundaryUtils.DeltaH( dnU_dtn, fd2ndDer ) )/this.h^2;%/this.beta;
 
-        myBoundary = boundaryUtils.DeltaXH( 1, fd2ndDer, t, order )/this.h^2;%+ myBoundary
+        myBoundary = boundaryUtils.DeltaAssymptoticFuncOutside( 1, fd2ndDer, t, order )/this.h^2;%+ myBoundary
         dnvz = ( this.eigenFinDiffMat*VV + deltav + myBoundary)/this.beta;
         %{
         Q = 21;
