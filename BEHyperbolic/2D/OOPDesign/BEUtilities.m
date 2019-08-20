@@ -133,6 +133,10 @@ classdef BEUtilities
             D3(3)=(e-c*D2(2))/D1(3);
             D4(3)=c/D1(3);
             
+            %helperA = 1;
+            %helperB = 1;
+            %helperC = 1;
+            %helperD = 1;
             for k=4:N-3
                 D1(k) =  d - D4(k-3)^2 * D1(k-3) - D3(k-2)^2 * D1(k-2) - D2(k-1)^2 * D1(k-1);
                 D2(k) = (f - D4(k-2)*D3(k-2) * D1(k-2) - D3(k-1)*D2(k-1) * D1(k-1))/D1(k);
@@ -225,10 +229,13 @@ classdef BEUtilities
             alpha(2)=d-f*gamma(1);
             gamma(2)=(f-e*gamma(1))/alpha(2);
             delta(2)=e/alpha(2);
-
+            
+            helper = 1;
             for k=3:N-2
-                alpha(k)=d-e*delta(k-2)-alpha(k-1)*gamma(k-1)^2;
-                gamma(k)=(f-e*gamma(k-1))/alpha(k);
+                helper = alpha(k-1)*gamma(k-1)^2;
+                alpha(k)=d-e*delta(k-2)-helper;
+                helper = f-e*gamma(k-1);
+                gamma(k)=helper/alpha(k);
                 delta(k)=e/alpha(k);
             end
 
