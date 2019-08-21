@@ -66,24 +66,28 @@ waveFactory = WaveFactory( 'ChristovIC_40_80_bt1_c090_h010_O(h^6)', bndCutSize, 
   viewTypeY = 90;
   %MovieForBEHyperbolic( viewTypeX, viewTypeY, tt, x, y );
        
-   Q = 41;
+  Q = 41;
     figure(11)
     mesh(x, y(1:Q), vl(:,1:Q)');
-    title('Bottom domain boundary');
-    xlabel('x');            ylabel('y (y_{start})');
+    view( viewTypeX, viewTypeY );
+    title('Bottom domain boundary near y_{start}');
+    xlabel('x');            ylabel('y');
     figure(12)
     mesh(x(1:Q), y, vl(1:Q,:)');
-    title('Left domain boundary');
-    xlabel('x (x_{start})');            ylabel('y');
+    view( viewTypeX, viewTypeY );    
+    title('Left domain boundary near x_{start}');
+    xlabel('x');            ylabel('y');
 
     figure(13)
     mesh(x, y(end-Q:end), vl(:,end-Q:end)');
-    title('Top domain boundary');
-    xlabel('x');            ylabel('y (y_{end})');    
+    view( viewTypeX, viewTypeY );    
+    title('Top domain boundary near y_{end}');
+    xlabel('x');            ylabel('y');    
     figure(14)
     mesh(x(end-Q:end), y, vl(end-Q:end,:)');
-    title('Right domain boundary');
-    xlabel('x (x_{end})');            ylabel('y');
+    view( viewTypeX, viewTypeY );
+    title('Right domain boundary near x_{end}');
+    xlabel('x');            ylabel('y');
     
     figure(15)
     mesh(x,y,vl')
@@ -91,10 +95,10 @@ waveFactory = WaveFactory( 'ChristovIC_40_80_bt1_c090_h010_O(h^6)', bndCutSize, 
     xlabel('x');            ylabel('y');
     figure(16)
     %hold on;
-    plot(t(1:end-1),max_v,'k')
+    plot(t(1:end-1),max_v,'k', t(1), max_v+0.01, 'k', t(1), max_v-0.01, 'k' );
     %hold off;
     title('Evolution of the maximum');
-    xlabel('time "t"');  ylabel('max(v)');
+    xlabel('time "t"');  ylabel('max(u_h)');
     figure(17)
     %hold on;
     plot(tt,EN,'k',tt(1),EN(1)+EN(1)/1000.0,tt(end),EN(end)-EN(end)/1000.0 )
