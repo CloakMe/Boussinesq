@@ -1,19 +1,19 @@
 classdef WaveFactory
   methods
-    function this = WaveFactory( workspaceName, bndCutSize, nat_42 )
-        if( nargin == 2 )
-            this = this.WaveFactory1( workspaceName, bndCutSize );
+    function this = WaveFactory( workspaceName, bndCutSize, twoWaves )
+        if( nargin == 2 || nargin == 3 )
+            this = this.WaveFactory1( workspaceName, bndCutSize, twoWaves );
         end
         if( nargin == 1 )
             this = this.WaveFactory2( workspaceName );
         end
-        if( nargin == 3 )
-            this = this.WaveFactory3( workspaceName );
-        end
+        %if( nargin == 3 )
+        %    this = this.WaveFactory3( workspaceName );
+        %end
         
     end
     
-    function this = WaveFactory1( this, workspaceName, bndCutSize )
+    function this = WaveFactory1( this, workspaceName, bndCutSize, twoWaves )
         
         mydir  = pwd;
         idcs   = strfind(mydir,'/');
@@ -42,7 +42,7 @@ classdef WaveFactory
         this.h = h;
         this.u_t0 = bigU;
         this.theta = theta(end);
-        this.mu = ( c1 + c2 ) / 2.0;
+        this.mu = c1;
         this.c = c;
         this.beta = bt1/bt2;
         this.beta1 = bt1;
@@ -56,6 +56,11 @@ classdef WaveFactory
         this.y = this.y( bndPtsRem+1:end-bndPtsRem );
         this.dudt_t0 = this.dudt_t0( bndPtsRem+1:end-bndPtsRem, bndPtsRem+1:end-bndPtsRem );
         this.u_t0 = this.u_t0( bndPtsRem+1:end-bndPtsRem, bndPtsRem+1:end-bndPtsRem );
+        if(twoWaves > 0)
+            this.u_t0 = this.u_t0 + fliplr(this.u_t0);
+            this.dudt_t0 = this.dudt_t0 + fliplr(this.dudt_t0);
+            this.mu = 2*c1;
+        end
     end
     
     function this = WaveFactory2( this, bestFitIc )

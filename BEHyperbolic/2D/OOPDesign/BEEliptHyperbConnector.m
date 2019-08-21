@@ -2,17 +2,18 @@ clear; clc;
 %return
 
 bndCutSize = 0; 
+% ChristovIC_40_80_bt1_c090_h010_O(h^6)
 % ChristovIC_80_bt1_c090_h020_O(h^6)
 % ChristovIC_40_bt1_c090_h020_O(h^4)
 % ChristovIC_80_bt3_c052_h020_O(h^6)
 % ChristovIC_36_bt5_c040_h020_O(h^6)
 % ChristovIC_40_bt069_c090_h020_O(h^6) 
 % ChristovIC_40_bt05_c085_h020_O(h^6)
-waveFactory = WaveFactory( 'ChristovIC_40_bt3_c045_h010_O(h^6)', bndCutSize );
+waveFactory = WaveFactory( 'ChristovIC_40_80_bt1_c090_h010_O(h^6)', bndCutSize, 2 );
 %waveFactory = WaveFactory( 'BestFitIC' );
 
-    tau = 0.05;
-    tEnd=10.0;
+    tau = 0.02;
+    tEnd=40.0;
     %turnOnCaxis = 0;
     %waveFactory.PlotSingleWave( turnOnCaxis );
 
@@ -63,7 +64,7 @@ waveFactory = WaveFactory( 'ChristovIC_40_bt3_c045_h010_O(h^6)', bndCutSize );
   topView = 1;
   viewTypeX = 90;
   viewTypeY = 90;
-  MovieForBEHyperbolic( viewTypeX, viewTypeY, tt, x, y );
+  %MovieForBEHyperbolic( viewTypeX, viewTypeY, tt, x, y );
        
    Q = 41;
     figure(11)
@@ -103,9 +104,18 @@ waveFactory = WaveFactory( 'ChristovIC_40_bt3_c045_h010_O(h^6)', bndCutSize );
         
     bt = waveFactory.beta1/waveFactory.beta2;
     %DrawEnergyForHyperbolicBE( engine, tt );
-    save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
+    try
+    save (['SavedWorkspaces\HyperbTwo_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
         num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) ...
       '_h0' num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')']);
+    
+    catch ex
+         save (['SavedWorkspaces\HyperbTwo_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
+             num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) '_h0' ...
+             num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')'], ...
+             'tau', 'x', 'y', 'tt', 'max_v', 't', 'EN', 'II', 'vl', 'dvl');
+        here = 99
+    end
     return;
 %----------------------------------------------------------------------------------------
     waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^4)', 5 );
@@ -126,5 +136,19 @@ waveFactory = WaveFactory( 'ChristovIC_40_bt3_c045_h010_O(h^6)', bndCutSize );
     MovieForBEHyperbolic( compBoxToShow, viewTypeX, viewTypeY, tt, waveFactory.x, waveFactory.y );
 
     
+    flipU = fliplr(this.u_t0);
+    flipU = this.u_t0 + flipU;
+    this.dudt_t0 = this.dudt_t0 + fliplr(this.dudt_t0);
+    this.mu = 2*c1;
+            
+    figure(14)
+    mesh(x,y,flipU')
+    title('solution');
+    xlabel('x');            ylabel('y');
+    
+    figure(15)
+    mesh(x,y,this.u_t0')
+    title('solution');
+    xlabel('x');            ylabel('y');
 
    
