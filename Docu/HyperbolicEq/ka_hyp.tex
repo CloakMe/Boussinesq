@@ -17,6 +17,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{xcolor}
+\usepackage{multirow}
 \definecolor{darkgreen}{HTML}{00A000}
 \definecolor{darkblue}{HTML}{0000A0}
 \definecolor{darkred}{HTML}{D00000}
@@ -236,8 +237,7 @@ u(x,y,t_{k+1}) = u_h(t_k) + \frac{\tau } {1!}  \frac{\partial}{\partial t} u_h(t
 \\ + \frac{\tau^{s-1}}{ (s-1)! } L_h \frac{\partial^{s-2} }{\partial t^{s-2}} u_h(t_k)  + O(h^p + \tau^s) = \frac{\partial}{\partial t}u_h(t_{k+1}) + O(h^p + \tau^s)
 \end{align}
 
-Formulae \rf{GeneralIt} define an iterative procedure with approximation order $O(h^p + \tau^s)$ which is easily proved by induction. At each step this numerical procedure calculates TS expansions of two numerical values: $u_h$ and its first derivative $D(u_h)$, because the PDE is of second order in time. The complexity of the algorithm depends on the order and type of the time derivatives $D^{(\tilde s)}(u_h)$ in the PDE.
-
+Formulae \rf{GeneralIt} define an iterative procedure with approximation order $O(h^p + \tau^s)$ which is easily proved by induction. At each step this numerical procedure calculates TS expansions of two numerical values: $u_h$ and its first derivative $D(u_h)$, because the PDE is of second order in time. 
 
 %=============BEGIN Boundary========================================
 \section{Boundary Condition}\label{BndS}
@@ -262,7 +262,19 @@ is defined there by using the values of the discrete solution \rf{eqBCH} at poin
 	\label{fig:BoundaryFD}
   \end{center}
 \end{figure}
-two extra points and for $p=6$, it implies seven point stencil (purple color) with maximum three extra points outside the computational domain $\Omega_h$ (see Figure \ref{fig:BoundaryFD}). Same reasoning is implied for the $\partial^2 / \partial y^2$ derivative. The affected terms in equation \rf{Leq} which make use of the boundary function \rf{eqBCV} are the following:
+two extra points and for $p=6$, it implies seven point stencil (purple color) with maximum three extra points outside the computational domain $\Omega_h$ (see Figure \ref{fig:BoundaryFD}). Same reasoning is implied for the $\partial^2 / \partial y^2$ derivative. This is a standard procedure which involves symbolic calculation of the following terms:
+\begin{align}
+& \frac{ \partial^{\tilde s} } { \partial t^{\tilde s} } \widehat U_{B_h}(t_k)
+\\
+& \alpha \beta \frac{ \partial^{\tilde s} } { \partial t^{\tilde s} } \widehat U_{B_h}(t_k)^2  + (\beta -1)\frac{ \partial^{\tilde s} } { \partial t^{\tilde s} }\widehat U_{B_h}(t_k), \label{nonLinBnd}
+\\
+& (\beta \frac{ \partial^2 } { \partial t^2 } - \Delta)\frac{ \partial^{\tilde s} } { \partial t^{\tilde s} } \widehat U_{B_h}(t_k) \quad \tilde s = 0,...,s-2 \label{psnBnd}
+\end{align}
+defined over the "black net" on Figure \ref{fig:BoundaryFD}, i.e. a few points outside the domain $\Omega_h$. The function \rf{nonLinBnd} is used when the $\Delta_h$ operator is applied on the non-linear term and \rf{psnBnd} is used when inverting the $E - \Delta_h$ (see section \rf{FPSsection}).
+\iffalse
+
+===========================================================
+ The affected terms in equation \rf{Leq} which make use of the boundary function \rf{eqBCV} are the following:
 \begin{equation*}
 \frac{ \Delta_h u_h}{\beta}, \frac{ (E - \Delta_h)^{-1} ( (\beta -1)\Delta_h u_h) }{\beta}
 \end{equation*}
@@ -274,7 +286,7 @@ for $\tilde s = 0, ..., s-2$.  Thus, $D^{\tilde s}(\widehat U_B(x_b , y_b, t_b))
 
 As it is noticed in the previous section, the operator $(E - \Delta_h)^{-1}$ does not fully apply on the computational boundary $\partial \Omega_h$. In the previous section, it is defined that
 
-================================================
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 \begin{equation}
 (E-\Delta_h -\Delta_{ext})(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) u =( \Delta_h + \Delta_{ext}) ( \alpha \beta u^2  + (\beta -1)u) 
@@ -299,7 +311,8 @@ As it is noticed in the previous section, the operator $(E - \Delta_h)^{-1}$ doe
 \\
 &(E-\Delta_h)^{-1} ( \Delta_h ( \alpha \beta u_h(t_k)^2  + (\beta -1)u_h(t_k)) +  \Delta_{ext} ( (\beta -1)\widehat U_{B_h}(t_k))  )
 \end{align}
-================================================
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 In order to balance for the incompleteness of $A_h = (E-\Delta_h)$ operator, the following term needs to be subtracted from the right side $f_h$:
 \begin{equation*}
 (E-\Delta)_{ext}(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) \widehat U_{B_h}
@@ -309,7 +322,8 @@ where $(E-\Delta)_{ext}$ is defined only on the "black points" over an extended 
 -\Delta_{ext}(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) \widehat U_{B_h}.
 \end{equation*}
 which is smaller enough to be neglected.
-
+================================================
+\fi
 %=============BEGIN FPP========================================
 \section{Fast Poisson Solvers and Invertion of $(E-\tilde \Delta)$ in \rf{eqVC}}\label{FPSsection}
 %=============BEGIN FPP========================================
@@ -392,7 +406,9 @@ The last system \rf{SubSys} is rearranged as we group equations that correspond 
 $$
 q_h = W^T \bar f_h, \quad \bar f_h = \Delta_h \frac{ \partial^{ \tilde s - 2 } } { \partial t^{ \tilde s - 2 } } ( \alpha \beta u_h^2  + (\beta -1)u_h).
 $$
+\iffalse
 A closer look on the sub-diagonals of matrices $A_h$ and $A_{i,i}$ reveals that the five point stencil $S_5$ (also $S_9$ and $S_{13}$) is not fully applied near the computational boundary $\partial \Gamma_h$. Furthermore, the definition of $A_h$ and $A_{i,i}$ implies that $z_h$ is zero outside $ \partial \Gamma_h$. Thus, the Dirichlet boundary condition  $u(x,y) = 0$, $(x,y) \in \partial \Gamma$ is implemented in a "mild way", i.e. the function is zero on a rectangular defined by the following $(x,y)$ points: $(-h,-h)$, $(1+h,-h)$, $(1+h,1+h)$ and $(-h,1+h)$. This technique turns out to be good enough to produce smooth results on the boundary. For further details please check the next chapter \rf{BndS} about the boundary condition.
+\fi
 \subsection{Forth order approximation}
 
 If the discrete Laplacian operator is defined by nine point cross stencil
@@ -466,7 +482,130 @@ and after the substitution \rf{subst} an equivalent to \rf{SubSys} system is obt
 \end{align}
 For system \rf{SubSys7}, there are $n$ linear systems which are seven diagonal. 
 
-\section{Numerical tests and convergence}\label{NumTests}
+%=============BEGIN Numerica testsl========================================
+\section{Convergence, speed and numerical tests}\label{NumTests}
+%=============BEGIN Numerica testsl========================================
+In this section, a few numerical results are presented, which concern the verification of the TS method. 
+For all calculations $\alpha = 1$. For the first set with $c=0.52$ and $\beta = 3$, the solutions are computed on three nested grids in the region $[-40, 40] \times [-40, 40]$ (with $400 \times 400$,  $800 \times 800$, $1600 \times 1600$  grid points) and three different time steps ($\tau = 0.08$, $\tau = 0.04$ and $\tau = 0.02$). For the second set with $c=0.9$ and $\beta = 1$, the solutions are computed on three nested grids in the region $[-40, 40] \times [-80, 80]$ (with $400 \times 800$,  $800 \times 1600$, $1600 \times 3200$  grid points) and three different time steps ($\tau = 0.08$, $\tau = 0.04$ and $\tau = 0.02$).
+
+\begin{center}
+\begin{table}[ht]
+\centering
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	         &                    &                               & Rate   &                                        & Rate \\
+   			\hline 
+					\hline 
+      c=0.9    &0.4    &             &            &           &   \\
+  $\beta=1$   &0.2    &~ 0.000000  &            &~0.000000 &   \\
+  $O(h^2)$ &0.1   &~ 0.000000  &2  &~0.000000 & 2 \\
+			\hline
+      c=0.9    &0.4   &            &            &             &    \\
+      $\beta=1$  &0.2   &~ 0.000000   &           &~0.000000  &   \\
+       $O(h^4)$ &0.1  &~ 0.000000 & 3.9    &~0.000000  & 3.9  \\
+    \hline
+   c=0.9       &0.4   &            &        &                  &      \\
+    $\beta=1$   &0.2  &~ 0.0000e-00 &           &~0.0000e-00      &       \\
+     $O(h^6)$ &0.1 &~ 0.0000e-00 &5.8  &~0.0000e-00 & 5.6        \\
+	   \hline
+			\hline 
+   c=0.52       &0.2, 0.??   &            &        &                  &      \\
+    $\beta=3$   &0.1, 0.??   &~ 0.0000e-00 &           &~0.0000e-00      &       \\
+     $O(h^2)$ &0.05, 0.?? &~ 0.0000e-00 &2  &~0.0000e-00 & 2        \\
+			\hline 
+   c=0.52       &0.2, 0.08   &            &        &                  &      \\
+    $\beta=3$   &0.1, 0.04   &~ 0.0000e-00 &           &~0.0000e-00      &       \\
+     $O(h^4)$ &0.05, 0.02 &~ 0.0000e-00 &4  &~0.0000e-00 & 4        \\
+			\hline 
+   c=0.52       &0.2, 0.08   &            &        &                  &      \\
+    $\beta=3$   &0.1, 0.04   &~ 0.0000e-00 &           &~0.0000e-00      &       \\
+     $O(h^6)$ &0.05, 0.02 &~ 0.0000e-00 &5.8  &~0.0000e-00 & 5.6        \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Convergence test for FDS with different approximation errors ($O(h^{2})$, $O(h^{4})$ and $O(h^{6})$). Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+
+\label{tab:a}
+\end{table}
+\end{center}
+
+\begin{figure}[ht]
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedleft
+		\includegraphics[width=\linewidth]{Pictures/TopBoundary.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedright
+		 \includegraphics[width=\linewidth]{Pictures/BottomBoundary.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedleft
+		\includegraphics[width=\linewidth]{Pictures/LeftBoundary.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedright
+		 \includegraphics[width=\linewidth]{Pictures/RightBoundary.png}
+	\end{minipage}
+	\caption{Numerical solution near the boundary for $\beta=3$ and $c = 0.52$}
+	\label{fig:boundary}
+\end{figure}
+Figure \ref{fig:boundary} shows that the solution function near the boundary $\partial \Omega_h$ is smooth, which partially asserts the validity of the chosen boundary function \rf{eqBCH}. More about the validity of the boundary function could be found in \cite{BoundaryProblem}.
+
+The following paragraph is about the complexity of the algorithm viewed from different perspectives. Around 80\% of the computational time goes for the inversion of the discrete operator $A_h = (E - \Delta_h)$. Let us denote with $n_x$, $n_y$ and $n_t$ the point count along $x$, $y$ and $t$ directions on the discrete domain $\Omega_h \times T_{\tau}$, respectively. Then, if $P_A$ denotes the operation count for a single inversion of the $A_h$ operator, the complexity of the algorithm with respect to the space approximation order is given by the following table
+
+\begin{center}
+\begin{table}[!htbp]
+\centering
+		\begin{tabular}{||c|c|c|c||}
+			\hline
+			\hline
+      Space approximation order  &        $O(h^2)$    &        $O(h^4)$     &        $O(h^6)$    \\
+			\hline 
+      Operation count $P_A$ &        $12 * n_y * n_x$    &        $24 * n_y * n_x$     &        $41 * n_y * n_x$    \\
+			\hline
+			\hline
+		\end{tabular}
+		\caption{Operations count for a single inversion of the $A_h$ operator.}
+
+\label{tab:b}
+\end{table}
+\end{center}
+
+Furthermore, the complexity of the algorithm with respect to the time approximation order could be described by the following table
+
+\begin{center}
+\begin{table}[!htbp]
+\centering
+		\begin{tabular}{||c|c|c|c||}
+			\hline
+			\hline
+       Time approximation order  &        $O(\tau^2)$    &        $O(\tau^4)$     &        $O(\tau^6)$    \\
+			\hline 
+      Operation count  &        $P_A$    &        $3 * P_A$     &        $5 * P_A$    \\
+			\hline
+			\hline
+		\end{tabular}
+		\caption{Operations count for one TS expansion, where.}
+
+\label{tab:c}
+\end{table}
+\end{center}
+
+This is because the second order $O(\tau^2)$ requires only one inversion for $D^2 u_h$, the fourth order $O(\tau^4)$ requires three inversions of $A_h$ for the three derivatives $D^2 u_h$, $D^3 u_h$ and $D^4 u_h$ and the sixth order $O(\tau^6)$ requires five inversions of $A_h$ for $D^2 u_h$, $D^3 u_h$, $D^4 u_h$, $D^5 u_h$ and $D^6 u_h$ in the TS expansion.
+
+The complexity of the algorithm is quadratic with respect to the space step length $h$ (the same step is applied along $x$ and $y$ directions) and linear with respect to the time step length $\tau$. Thus, it takes 8 times more time for the algorithm to complete, if $h$ and $\tau$ are two times smaller ($h/2$, $\tau/2$).
+
+The following test shows single solution wave with $\beta = 1$, $c = 0.9$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. It behaves like a soliton, i.e. preserves its shape and maximum.
+
+The following test shows a head-on collision with two solution waves with $\beta = 1$, $c = 0.9$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. Waves still behave like a solitons, i.e. preserves its shape and maximum even after the collision.
+
+%=============BEGIN Conclusion========================================
+\section{Conclusion}\label{Concl}
+%=============BEGIN Conclusion========================================
+
+The investigated solutions are stable and show soliton behavior for wave speeds near the upper limit $c_{max} = 1/\sqrt{\beta}$, $c < c_{max}$, i.e. first, for $c = 0.52$ with $\beta = 3$ and $c_{max} \approx 0.5774$ and second, for  $c = 0.9$ with $\beta = 1$ and $c_{max} = 1$. The use of regular grid with equidistant step size $h$ turns out to be good choice to test head-on collision of waves. Furthermore, it provides valuable information with sufficient point count on the computational boundary. The performed numerical tests exhibit good convergence and solitonic-like behavior for larger times $t_n \in T_{\tau}$ which validates the TS method. 
 
 %The title of your section \href{mailto:#1}{{\mdseries\ttfamily #1}}}
 \section{Introduction}
