@@ -2,18 +2,21 @@ clear;
 bndCutSizeX = 0;
 bndCutSizeY = 0;
 
-for jl = 1:3
-    yo(1,:) = '40';
-    yo(2,:) = '20';
-    yo(3,:) = '10';
+yo(1,:) = '20';
+yo(2,:) = '10';
+yo(3,:) = '05';
 %_tau05
-    yo = cellstr(yo);
-    cellStr = strcat('SavedWorkspaces\Hyperb_40_bt3_c045_h0', yo(jl), '_O(h^6)' );
+yo = cellstr(yo);
+    
+for jl = 1:3
+
+    cellStr = strcat('SavedWorkspaces\Hyperb_40_bt1_c090_h0', yo(jl), '_O(h^2)' );
     %cellStr = strcat('Hyp_40_bt1_c090_h0', yo(jl), '_O(h^4)' );
     warning('off','all');
     load (  cellStr{1} );
     warning('on','all');
     fprintf('tau = %d\n', tau);
+    fprintf( 'h = 0.0%s \n',  yo{jl});
     %sum(tauVector)
     bndPtsRemX = bndCutSizeX/waveFactory.h;
     bndPtsRemY = bndCutSizeY/waveFactory.h;
@@ -29,7 +32,7 @@ for jl = 1:3
     if(jl==3)
        vd = vl(1:end,1:end); 
     end
-    clear('U');clear('cellStr');clear('yo');
+    clear('U');clear('cellStr');
 end
 
 clear('jl');

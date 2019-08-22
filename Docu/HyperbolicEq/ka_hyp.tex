@@ -249,7 +249,7 @@ The following boundary function
 found in \cite{BoundaryProblem} is used to to evaluate stationary propagating wave solutions described in \cite{EllipticProblem}. The last article focus on solutions to \rf{eqVC} of the type $u(x, y, t) = U(x, y - ct)$, which are stationary solitary waves traveling in y direction
 with velocity c. In order to use \rf{eqBCV} as BC for \rf{eqVC}, it is transformed into
 \begin{equation}\label{eqBCH}
-\widehat U_B(x_b , y_b, t_b) = \mu_u \frac{ (1 - c^2) x_b^2 - (y_b-ct_b)^2}{( (1 - c^2) x_b^2 + (y_b-ct_b)^2)^2}
+\bar U_B(x_b , y_b, t_b) = \mu_u \frac{ (1 - c^2) x_b^2 - (y_b-ct_b)^2}{( (1 - c^2) x_b^2 + (y_b-ct_b)^2)^2}
 \end{equation}
 with $c = \tilde c / \sqrt{\beta}$, $x_b = \tilde x$ and $y_b - ct_b = \tilde y$. 
 Near the computational boundaries $(x,y):x=L_x$ and $(x,y):y=L_y$ we do not change the stencil \rf{fd}. The discrete Laplacian
@@ -282,7 +282,7 @@ The TS approach also requires time derivatives of both terms defined above
 \begin{equation*}
 \frac{ \Delta_h D^{(\tilde s)} (u_h)}{\beta}, \frac{ (E - \Delta_h)^{-1} ( (\beta -1)\Delta_h D^{(\tilde s)}(u_h) ) }{\beta}
 \end{equation*}
-for $\tilde s = 0, ..., s-2$.  Thus, $D^{\tilde s}(\widehat U_B(x_b , y_b, t_b))$  time derivative values outside the computational boundary $\partial \Omega_h$ are also used to extend the $p+1$ point stencil where needed (see Figure  \ref{fig:BoundaryFD}). 
+for $\tilde s = 0, ..., s-2$.  Thus, $D^{\tilde s}(\bar U_B(x_b , y_b, t_b))$  time derivative values outside the computational boundary $\partial \Omega_h$ are also used to extend the $p+1$ point stencil where needed (see Figure  \ref{fig:BoundaryFD}). 
 
 As it is noticed in the previous section, the operator $(E - \Delta_h)^{-1}$ does not fully apply on the computational boundary $\partial \Omega_h$. In the previous section, it is defined that
 
@@ -293,7 +293,7 @@ As it is noticed in the previous section, the operator $(E - \Delta_h)^{-1}$ doe
 \end{equation}
 
 \begin{align}
-&(E-\Delta_h)(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta_h - \Delta_{ext}) u_h(t_k) - \Delta_{ext}((\beta \frac{ \partial^2 } { \partial t^2 } - \Delta)\widehat U_B(t_k))_h = 
+&(E-\Delta_h)(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta_h - \Delta_{ext}) u_h(t_k) - \Delta_{ext}((\beta \frac{ \partial^2 } { \partial t^2 } - \Delta)\bar U_B(t_k))_h = 
 \\
 &\Delta_h ( \alpha \beta u_h(t_k)^2  + (\beta -1)u_h(t_k)) +  \Delta_{ext} ( \alpha \beta\widehat U_{B_h}(t_k)^2  + (\beta -1)\widehat U_{B_h}(t_k))  
 \end{align}
@@ -303,7 +303,7 @@ As it is noticed in the previous section, the operator $(E - \Delta_h)^{-1}$ doe
 \\
 &(E-\Delta_h)^{-1} ( \Delta_h ( \alpha \beta u_h(t_k)^2  + (\beta -1)u_h(t_k)) +  \Delta_{ext} ( \alpha \beta\widehat U_{B_h}(t_k)^2  + (\beta -1)\widehat U_{B_h}(t_k))   \nonumber
 \\
-&\Delta_{ext}((\beta \frac{ \partial^2 } { \partial t^2 } - \Delta)\widehat U_B(t_k))_h )
+&\Delta_{ext}((\beta \frac{ \partial^2 } { \partial t^2 } - \Delta)\bar U_B(t_k))_h )
 \end{align}
 
 \begin{align}
@@ -486,9 +486,7 @@ For system \rf{SubSys7}, there are $n$ linear systems which are seven diagonal.
 \section{Convergence, speed and numerical tests}\label{NumTests}
 %=============BEGIN Numerica testsl========================================
 In this section, a few numerical results are presented, which concern the verification of the TS method. 
-For all calculations $\alpha = 1$. For the first set with $c=0.52$ and $\beta = 3$, the solutions are computed on three nested grids in the region $[-40, 40] \times [-40, 40]$ (with $400 \times 400$,  $800 \times 800$, $1600 \times 1600$  grid points) and three different time steps ($\tau = 0.08$, $\tau = 0.04$ and $\tau = 0.02$). For the second set with $c=0.9$ and $\beta = 1$, the solutions are computed on three nested grids in the region $[-40, 40] \times [-80, 80]$ (with $400 \times 800$,  $800 \times 1600$, $1600 \times 3200$  grid points) and three different time steps ($\tau = 0.08$, $\tau = 0.04$ and $\tau = 0.02$).
-
-\begin{center}
+ The BE equation \rf{eqVC} is examined for two sets of parameters $\beta$ and $c$ where $\alpha = 1$ is kept constant. For the first set with $c=0.52$ and $\beta = 3$, the solutions are computed on three nested grids in the region $[-40, 40] \times [-40, 40] \times [0, 10]$. For $O(h^2 + \tau^2)$, the nested domains contain $401 \times 401$,  $801 \times 801$, $1601 \times 1601$  grid points. For $O(h^4 + \tau^4)$ and $O(h^6 + \tau^6)$, the nested domains are the same and contain $(201 \times 401 \times 126)$,  $(401 \times 801 \times 251)$ and $(801 \times 1601 \times 501)$ grid points.  For the second set with $\beta = 1$ and $c=0.9$, the solutions are also computed on three nested  grids in the region $[-40, 40] \times [-80, 80]\times [0, 10]$. For $O(h^2 + \tau^2)$, the nested domains contain $(401 \times 801 \times 1001)$,  $(801 \times 1601 \times 2001)$ and $(1601 \times 3201 \times 4001)$ grid points. For $O(h^4 + \tau^4)$ and $O(h^6 + \tau^6)$, the nested domains are the same and contain $(201 \times 401 \times 126)$,  $(401 \times 801 \times 251)$ and $(801 \times 1601 \times 501)$ grid points. Refer to Table \rf{tab:a} for details about the space and time steps $h$ and $\tau$ used in the two series  of numerical calculations.
 \begin{table}[ht]
 \centering
 		\begin{tabular}{||c|l|ll|ll||}
@@ -498,19 +496,6 @@ For all calculations $\alpha = 1$. For the first set with $c=0.52$ and $\beta = 
 	         &                    &                               & Rate   &                                        & Rate \\
    			\hline 
 					\hline 
-      c=0.9    &0.4    &             &            &           &   \\
-  $\beta=1$   &0.2    &~ 0.000000  &            &~0.000000 &   \\
-  $O(h^2)$ &0.1   &~ 0.000000  &2  &~0.000000 & 2 \\
-			\hline
-      c=0.9    &0.4   &            &            &             &    \\
-      $\beta=1$  &0.2   &~ 0.000000   &           &~0.000000  &   \\
-       $O(h^4)$ &0.1  &~ 0.000000 & 3.9    &~0.000000  & 3.9  \\
-    \hline
-   c=0.9       &0.4   &            &        &                  &      \\
-    $\beta=1$   &0.2  &~ 0.0000e-00 &           &~0.0000e-00      &       \\
-     $O(h^6)$ &0.1 &~ 0.0000e-00 &5.8  &~0.0000e-00 & 5.6        \\
-	   \hline
-			\hline 
    c=0.52       &0.2, 0.??   &            &        &                  &      \\
     $\beta=3$   &0.1, 0.??   &~ 0.0000e-00 &           &~0.0000e-00      &       \\
      $O(h^2)$ &0.05, 0.?? &~ 0.0000e-00 &2  &~0.0000e-00 & 2        \\
@@ -524,39 +509,64 @@ For all calculations $\alpha = 1$. For the first set with $c=0.52$ and $\beta = 
      $O(h^6)$ &0.05, 0.02 &~ 0.0000e-00 &5.8  &~0.0000e-00 & 5.6        \\
 	   \hline
 			\hline 
+      c=0.9    &0.2, 0.01    &             &            &           &   \\
+  $\beta=1$   &0.1, 0.005     &~ 0.000000  &            &~0.000000 &   \\
+  $O(h^2)$ &0.05, 0.0025   &~ 0.000000  &2  &~0.000000 & 2 \\
+			\hline
+      c=0.9    &0.4, 0.08    &            &            &             &    \\
+      $\beta=1$  &0.2, 0.04    &~ 0.000000   &           &~0.000000  &   \\
+       $O(h^4)$ &0.1, 0.02   &~ 0.000000 & 3.9    &~0.000000  & 3.9  \\
+    \hline
+   c=0.9       &0.4, 0.08    &            &        &                  &      \\
+    $\beta=1$   &0.2, 0.04   &~ 0.0000e-00 &           &~0.0000e-00      &       \\
+     $O(h^6)$ &0.1, 0.02 &~ 0.0000e-00 &5.8  &~0.0000e-00 & 5.6        \\
+	   \hline
+			\hline 
 		\end{tabular}
 		\caption{Convergence test for FDS with different approximation errors ($O(h^{2})$, $O(h^{4})$ and $O(h^{6})$). Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
-
 \label{tab:a}
 \end{table}
-\end{center}
+\iffalse
+Figure \ref{fig:boundary} shows that the solution function near the boundary $\partial \Omega_h$ is smooth, which partially asserts the validity of the chosen boundary function \rf{eqBCH}. More about the validity of the boundary function could be found in \cite{BoundaryProblem}. 
 
-\begin{figure}[ht]
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedleft
+\begin{figure}[!htbp]
+	\centering
+	\begin{minipage}[b]{0.45\linewidth}
+		
 		\includegraphics[width=\linewidth]{Pictures/TopBoundary.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedright
+	\begin{minipage}[b]{0.45\linewidth}
+		
 		 \includegraphics[width=\linewidth]{Pictures/BottomBoundary.png}
 	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedleft
+	\begin{minipage}[b]{0.45\linewidth}
+		
 		\includegraphics[width=\linewidth]{Pictures/LeftBoundary.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedright
+	\begin{minipage}[b]{0.45\linewidth}
+		
 		 \includegraphics[width=\linewidth]{Pictures/RightBoundary.png}
 	\end{minipage}
 	\caption{Numerical solution near the boundary for $\beta=3$ and $c = 0.52$}
 	\label{fig:boundary}
 \end{figure}
-Figure \ref{fig:boundary} shows that the solution function near the boundary $\partial \Omega_h$ is smooth, which partially asserts the validity of the chosen boundary function \rf{eqBCH}. More about the validity of the boundary function could be found in \cite{BoundaryProblem}.
+\fi
+Figure \ref{fig:solMax} displays the evolution of the maximum on the finest grid with the highest approximation order $O(h^6 + \tau^6)$. That is $h=0.05$, $\tau = 0.02$ for the left picture and  $h=0.1$, $\tau = 0.02$ for the right picture. 
 
-The following paragraph is about the complexity of the algorithm viewed from different perspectives. Around 80\% of the computational time goes for the inversion of the discrete operator $A_h = (E - \Delta_h)$. Let us denote with $n_x$, $n_y$ and $n_t$ the point count along $x$, $y$ and $t$ directions on the discrete domain $\Omega_h \times T_{\tau}$, respectively. Then, if $P_A$ denotes the operation count for a single inversion of the $A_h$ operator, the complexity of the algorithm with respect to the space approximation order is given by the following table
+\begin{figure}[!htbp]
+	\centering
+	\begin{minipage}[b]{0.35\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/EvolutionOfMaximum_bt3.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.35\linewidth}
+		 \includegraphics[width=\linewidth]{Pictures/EvolutionOfMaximum_bt1.png}
+	\end{minipage}
 
-\begin{center}
-\begin{table}[!htbp]
+	\caption{$\beta = 3$, $c=0.52$ on the left panel, and $\beta = 1$, $c=0.9$ on the right panel.}
+	\label{fig:solMax}
+\end{figure}
+
+The following paragraph is about the complexity of the algorithm viewed from different perspectives. Around 80\% of the computational time goes for the inversion of the discrete operator $A_h = (E - \Delta_h)$. Let us denote with $n_x$, $n_y$ and $n_t$ the point count along $x$, $y$ and $t$ directions on the discrete domain $\Omega_h \times T_{\tau}$, respectively. Then, if $P_A$ denotes the operation count for a single inversion of the $A_h$ operator, the complexity of the algorithm with respect to the space approximation order is given by the following table \begin{table}[!htbp]
 \centering
 		\begin{tabular}{||c|c|c|c||}
 			\hline
@@ -571,12 +581,8 @@ The following paragraph is about the complexity of the algorithm viewed from dif
 
 \label{tab:b}
 \end{table}
-\end{center}
 
-Furthermore, the complexity of the algorithm with respect to the time approximation order could be described by the following table
-
-\begin{center}
-\begin{table}[!htbp]
+Furthermore, the complexity of the algorithm with respect to the time approximation order could be described by the following table \begin{table}[!htbp]
 \centering
 		\begin{tabular}{||c|c|c|c||}
 			\hline
@@ -591,329 +597,82 @@ Furthermore, the complexity of the algorithm with respect to the time approximat
 
 \label{tab:c}
 \end{table}
-\end{center}
 
 This is because the second order $O(\tau^2)$ requires only one inversion for $D^2 u_h$, the fourth order $O(\tau^4)$ requires three inversions of $A_h$ for the three derivatives $D^2 u_h$, $D^3 u_h$ and $D^4 u_h$ and the sixth order $O(\tau^6)$ requires five inversions of $A_h$ for $D^2 u_h$, $D^3 u_h$, $D^4 u_h$, $D^5 u_h$ and $D^6 u_h$ in the TS expansion.
 
 The complexity of the algorithm is quadratic with respect to the space step length $h$ (the same step is applied along $x$ and $y$ directions) and linear with respect to the time step length $\tau$. Thus, it takes 8 times more time for the algorithm to complete, if $h$ and $\tau$ are two times smaller ($h/2$, $\tau/2$).
 
-The following test shows single solution wave with $\beta = 1$, $c = 0.9$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. It behaves like a soliton, i.e. preserves its shape and maximum.
+Test 1 Wave. The following test shows single solution wave with $\beta = 1$, $c = 0.9$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. This is the finest grid with the highest approximation order $O(h^6 + \tau^6)$. It behaves like a soliton, i.e. preserves its shape and maximum.
 
-The following test shows a head-on collision with two solution waves with $\beta = 1$, $c = 0.9$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. Waves still behave like a solitons, i.e. preserves its shape and maximum even after the collision.
+\begin{figure}[!htbp]
+	\centering
+	\begin{minipage}[b]{0.31\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/Solution1_t=0.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.31\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/Solution1_t=8.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.31\linewidth}
+		 \includegraphics[width=\linewidth]{Pictures/Solution1_t=16.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.31\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/Solution1_t=24.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.31\linewidth}
+		 \includegraphics[width=\linewidth]{Pictures/Solution1_t=32.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.31\linewidth}
+		 \includegraphics[width=\linewidth]{Pictures/Solution1_t=40.png}
+	\end{minipage}
+	\caption{Numerical solution of one wave for $\beta=1$ and $c = 0.9$ at times $t=0,8,16,24,32,40$.}
+	\label{fig:oneWave}
+\end{figure}
+
+Test 2 Waves. The following test shows a head-on collision with two solution waves with $\beta = 1$, $c = 0.9$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. This is the finest grid with the highest approximation order $O(h^6 + \tau^6)$ Waves still behave like a solitons, i.e. preserves its shape and maximum even after the collision.
+
+\begin{figure}[!htbp]
+	\centering
+	\begin{minipage}[b]{0.31\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/Solution2_t=0.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.31\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/Solution2_t=8.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.31\linewidth}
+		 \includegraphics[width=\linewidth]{Pictures/Solution2_t=16.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.31\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/Solution2_t=24.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.31\linewidth}
+		 \includegraphics[width=\linewidth]{Pictures/Solution2_t=32.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.31\linewidth}
+		 \includegraphics[width=\linewidth]{Pictures/Solution2_t=40.png}
+	\end{minipage}
+	\caption{Numerical solution of two waves for $\beta=1$ and $c = 0.9$ at times $t=0,8,16,24,32,40$.}
+	\label{fig:twoWaves}
+\end{figure}
+
+Figure \ref{fig:solMax40} displays the evolution of the solution maximum for Test 1 and Test 2 with one and two waves respectively. In comparison with Figure \ref{fig:solMax}, the time domain is four times bigger with $T_{end}=40$. 
+\begin{figure}[!htbp]
+	\centering
+	\begin{minipage}[b]{0.4\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/EvolutionOfMaximum.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.4\linewidth}
+		 \includegraphics[width=\linewidth]{Pictures/EvolutionOfMaximumTwoWaves.png}
+	\end{minipage}
+
+	\caption{Evolution of the maximum for one wave (left panel) and two waves (right panel).}
+	\label{fig:solMax40}
+\end{figure}
 
 %=============BEGIN Conclusion========================================
 \section{Conclusion}\label{Concl}
 %=============BEGIN Conclusion========================================
 
-The investigated solutions are stable and show soliton behavior for wave speeds near the upper limit $c_{max} = 1/\sqrt{\beta}$, $c < c_{max}$, i.e. first, for $c = 0.52$ with $\beta = 3$ and $c_{max} \approx 0.5774$ and second, for  $c = 0.9$ with $\beta = 1$ and $c_{max} = 1$. The use of regular grid with equidistant step size $h$ turns out to be good choice to test head-on collision of waves. Furthermore, it provides valuable information with sufficient point count on the computational boundary. The performed numerical tests exhibit good convergence and solitonic-like behavior for larger times $t_n \in T_{\tau}$ which validates the TS method. 
-
-%The title of your section \href{mailto:#1}{{\mdseries\ttfamily #1}}}
-\section{Introduction}
-
-Papers should be written in English. Please use the JMPAG template
-(the files \texttt{jmpag.sty} and \texttt{sample.tex}) to prepare
-your tex file after the paper is accepted by the the JMPAG. You should put the files
-\texttt{jmpag.sty} and \texttt{sample.tex} in the same folder to
-work correctly. For detailed instructions in \LaTeX{} see, e.\,g.,
-\URL{https://www.sharelatex.com/learn}. Please open both files \texttt{sample.tex} and
-\texttt{sample.pdf} and read carefully all information in them
-including details proceeded by \% sign (in the \TeX -file). In
-particular, you should set the title of the paper, names of the
-authors, their affiliations, addresses of affiliations, and
-e-mail addresses just after \verb@\begin{document}@ and before
-\verb@\BeginPaper@. After the command \verb@\BeginPaper@ you may
-put your own macros if you need. Note that using  commands of the type \verb@\def@, the command \verb@\renewcommand@ and other  \verb@\renew@\ldots{}  are not allowed. Next, you should give the abstract
-of the paper, keywords, and  the AMS Subject
-Classification 2010 codes:
-\URL{https://mathscinet.ams.org/msc/msc2010.html}. After that you
-may begin the text of your paper. Please note that the footnotes
-are not allowed throughout the paper. Place the list of
-references at the end of the paper, using samples given in
-\texttt{sample.tex}. The command \verb@\EndPaper@ is the last one
-before \verb@\end{document}@. Note that you should run PDF\LaTeX{}
-procedure of compilation for the pdf-file to show up correctly. Thus you obtain the pdf-file directly without dvi-file.
-These are important instructions and explanations. Thank you for
-your cooperation.
-
-
-
-
-
-Please note that using cross-references is \textbf{mabdatory}. It
-may require two \LaTeX{} compilations for the references to show
-up correctly. Please use cross-references to all enumerated elements
-(equations, sections, figures, theorems, etc.) in the
-following way. The command  \verb@\label{name}@ should be used to
-assign the identifier ``name'' to an element. The command
-\verb@\ref{label-name}@ or \verb@\eqref{label-name}@  references the object you have marked before, see Subsections \ref{thrm}, \ref{list},
-and \ref{fig}. The command  \verb@\bibitem{label-bibitem}@
-should be used to
-assign the identifier ``label-bibitem'' to a citation. The command
-\verb@\cite{label-bibitem}@ or \verb@\cite[text]{label-bibitem}@ cites the item you have marked before, see Section \ref{citation}.
-
-
-%The title of your subsection in the section
-\subsection{A sample of theorem}\label{thrm}
-
-\begin{theorem} \label{result1}
-        Content of your theorem.
-\end{theorem}
-
-\begin{proof}
-To refer to equations and statements in your paper, use the
-commands \verb@\ref{label}@ and \verb@\eqref{label}@:
-\eqref{Quotient}, \eqref{Multi}, \eqref{Equ3}, and Lemma \ref{L:
-Lyapunov exponents}.
-\end{proof}
-
-\begin{theorem}[Main theorem] \label{result1a}
-        Content of your theorem.
-\end{theorem}
-
-%The title of your subsection in the section
-\subsection{A sample of lemma}
-
-\begin{lemma} \label{L: Lyapunov exponents} State your lemma here.
-\end{lemma}
-
-\begin{proof}
-Your proof statements.
-\end{proof}
-
-Text in definition and remark should not be slanted.
-
-%The title of your subsection in the section
-\subsection{A sample of remark}
-
-\begin{remark}
-Content of your remark.
-\end{remark}
-
-%The title of your subsection in the section
-\subsection{A sample of definition}
-
-\begin{definition} Sample: Let $\phi_{t}$ be an Anosmia flow on a
-        compact space $V$ and $A \subset V$ a dense set. Say
-        that the upper Lacunae exponents are
-        \emph{$\frac{1}{2}$-pinched} on $A$ if
-
-
-  \begin{equation}\label{Quotient}
-        \sup_{x \in A} \frac{\max \{ |\bar{\lambda}|: \bar{\lambda} \
-        \text{is a nonzero upper Lyapunov exponent at} \ x \}}
-        {\min \{ |\bar{\lambda}|: \bar{\lambda} \ \text{is a
-        nonzero upper Lyapunov exponent at} \ x\}}
-         \leq 2.
-  \end{equation}
-\end{definition}
-
-%The title of your  subsection in the section
-\subsection{Examples of inserting figures}\label{fig}
-
-
- The JMPAG requires graphics to be sent in \texttt{jpeg}, \texttt{jpg}, \texttt{png},
-or \texttt{pdf} format. Use the \texttt{graphicx} package  to
-embed references to your graphics directly in a \LaTeX{} file. The
-use of other packages are strictly prohibited. The \texttt{jpeg},
-\texttt{jpg}, \texttt{png}, and \texttt{pdf} files will not be
-physically included in the \LaTeX{} file. Each graphic must be
-submitted as a separate file along with the \LaTeX{} document.
-%The hard copies of the journal are printed in black and white.
-
-Your may also create graphics using \texttt{TikZ} package. Please
-do not use obsolete graphic packages (e.\,g., \texttt{picture},
-\texttt{epic}, \texttt{eepic}, etc.) for creating your graphics.
-
-Here are the examples of inserting  figures (see Figures
-\ref{fig1}--\ref{fig:5}).
-
-\begin{figure}[ht]
-\begin{center}
-\begin{tikzpicture}% It requires \usepackage{tikz}
-\filldraw[color=red!60, fill=red!5, very thick](-1,0) circle (1.5);
-\fill[blue!50] (2.5,0) ellipse (1.5 and 0.5);
-\draw[ultra thick, ->] (6.5,0) arc (0:220:1);
-\end{tikzpicture}
-  \caption{Here is the caption of your figure}\label{fig1}
-  \end{center}
-\end{figure}
-
-\begin{figure}[ht]% It requires \usepackage{graphicx}
-\begin{center}
-\includegraphics[width=2in]{pic1.png}
-  \caption{Here is the caption of your figure}\label{AIMS}
-  \end{center}
-\end{figure}
-
-\begin{figure}[ht]% It requires \usepackage{tikz,graphicx,subcaption}
-\begin{center}
-\begin{subfigure}[b]{0.45\linewidth}
-\centering  \begin{tikzpicture}
-\draw (0,0) -- (4,0);
-\filldraw [gray] (2,0) circle (2pt);
-\draw (0,-2) .. controls (2,0) .. (4,-2);
-\draw (0,2) .. controls (1,0) and (3,0) .. (4,2);
-\end{tikzpicture}
-\centering \caption{\parbox[t]{0.6\textwidth}{Here is the caption of your figure 1}}
-\label{fig:5.1}
-\end{subfigure}
-\begin{subfigure}[b]{0.45\linewidth}
-\centering \includegraphics[width=2in]{tree.jpg}\\
-\centering \caption{\parbox[t]{0.6\textwidth}{Here is the caption of your figure 2}}
-\label{fig:5.2}
-\end{subfigure}
-      \caption{Here is the caption of your figures}\label{fig:5}
-\end{center}
-\end{figure}
-
-
-%The title of your subsection  in the section
-\subsection{Samples of enumerated lists}\label{list}
-
-For creating enumerated lists, \textbf{only} the package
-\texttt{enumitem} should be used. Please use the commands:
-\verb@\arabic*@, \verb@\Roman*@, \verb@\roman*@, \verb@\Alph*@, or
-\verb@\alph*@, with appropriate symbols of the point, parentheses,
-or braces. Below we give some examples of enumerated lists.
-
-
-Arabic numerals:
-\begin{enumerate}[label=\upshape{\arabic*.},ref=\upshape{\arabic*}]
-\item\label{la1}
-Your first item.
-\item\label{la2}
-Your second item.
-\item\label{la3}
-Your third item.
-\end{enumerate}
-You may create labels and use the command \verb@\ref{label}@ to cite these items, e.\,g., \ref{la2}.
-
-Roman numerals:
-\begin{enumerate}[label=\upshape{(\roman*)},ref=\upshape{(\roman*)}]
-\item\label{laa1}
-your first item;
-\item\label{laa2}
-your second item;
-\item\label{laa3}
-your third item.
-\end{enumerate}
-You may create labels and use the command \verb@\ref{label}@ to cite these items, e.\,g., \ref{laa2}.
-
-An alphabetical list:
-\begin{enumerate}[label=\upshape{\Alph*)},ref=\upshape{\Alph*)}]
-\item\label{laaa1}
-your first item;
-\item\label{laaa2}
-your second item;
-\item\label{laaa3}
-your third item.
-\end{enumerate}
-You may create labels and use the command \verb@\ref{label}@ to cite these items, e.\,g., \ref{laaa2}.
-
-A list with  sublists:
-\begin{enumerate}[label=\upshape{\arabic*.},ref=\upshape{\arabic*}]
-\item\label{lab1}
-Your first item:
-\begin{enumerate}[label=\upshape{\alph*)},ref=\upshape{\alph*)},topsep=1pt]
-\item\label{laaab1}
-your first subitem;
-\item\label{laaab2}
-your second subitem;
-\item\label{laaab3}
-your third subitem.
-\end{enumerate}
-\item\label{lab2}
-Your second item.
-\item\label{lab3}
-Your third item:
-\begin{enumerate}[label=\upshape{(\Roman*)},ref=\upshape{(\Roman*)},topsep=1pt]
-\item\label{laab1}
-your first subitem;
-\item\label{laab2}
-your second subitem;
-\item\label{laab3}
-your third subitem;
-\item\label{laab4}
-your forth subitem.
-\end{enumerate}
-\end{enumerate}
-You may create labels and use the command \verb@\ref{label}@ to cite these items, e.\,g., \ref{lab1}\ref{laaab3}
-
-
-
-
-
-%The title of your section
-\section{How to align  math formulas}
-
-To create your formulas, use the environments \texttt{gather},
-\texttt{align}, \texttt{multline}, \texttt{aligned},
-\texttt{split}, and others except the obsolete environment
-\texttt{eqnarray}.
-
-\begin{theorem} \label{result2}
-        Content of your theorem.
-\end{theorem}
-
-In the proof below, we would like to show you how to align the math
-formulas:
-\begin{proof}[Proof of Theorem \ref{result2}]
-Please refer to the following example and align your math formulas:
-\begin{align}
-    \eps{\theta} \wedge d\eps{\theta}^{n-1}& = (\theta_0 + \ep \alpha)
-    \wedge (d(\theta_0 + \ep \alpha))^{n-1}
-    \nonumber\\
-    &= (\theta_0 + \ep \alpha) \wedge
-    (d\theta_0)^{n-1} + \theta_0 \wedge d\theta_0^{n-1} - \ep d\left(\alpha \wedge
-    \theta_0 \wedge d\theta_0^{n-2}\right)\nonumber\\
-    &\qquad  + \theta_0 \wedge d\theta_0^{n-1} + \ep \alpha \wedge
-    d\theta_0^{n-1}  \nonumber\\
-    &= \theta_0 \wedge d\theta_0^{n-1} - \ep d\left(\alpha \wedge
-    \theta_0 \wedge d\theta_0^{n-2}\right),\label{Multi}
-\end{align}
-
-It also can be aligned in the following way:
-
-\begin{multline}
-    \eps{\theta} \wedge d\eps{\theta}^{n-1} = (\theta_0 + \ep \alpha)
-    \wedge (d(\theta_0 + \ep \alpha))^{n-1}
-    \\
-    = (\theta_0 + \ep \alpha) \wedge
-    (d\theta_0)^{n-1} + \theta_0 \wedge d\theta_0^{n-1} - \ep d\left(\alpha \wedge
-    \theta_0 \wedge d\theta_0^{n-2}\right)\\
-      + \theta_0 \wedge d\theta_0^{n-1} + \ep \alpha \wedge
-    d\theta_0^{n-1}  \\
-    =\theta_0 \wedge d\theta_0^{n-1} - \ep d\left(\alpha \wedge
-    \theta_0 \wedge d\theta_0^{n-2}\right),\label{Multi1}
-\end{multline}
-
-
-
-Here is other example if the math expression in [ ] exceeds one
-line:
-
-\begin{align}
- \int_0^T |u_0(t)|^2dt&  \leq \delta^{-1} \left[\int_0^T
-(\beta(t)+\gamma(t))\, dt  \vphantom{\left(\int_0^T \right)^{\frac{2}{p}}}%to equalize brackets
-\right.\nonumber\\
-\label{Equ3}
-&  \left.+T^{\frac{2(p-1)}{p}}\left(\int_0^T
-|\dot{u}_0(t)|^p\,dt\right)^{\frac{2}{p}}
- +T^{\frac{2(p-1)}{p}}\left(\int_0^T |\dot{u}_0(t)|^p\,dt\right)^{\frac{2}{p}}\right].
-\end{align}
-
- Please use the displaystyle if your formulas fully
-occupy a paragraph, while use textstyle among the text.
-
-For two equations:
-\begin{align*}
-A &= \theta_0 \wedge d\theta_0^{n-1} - \ep d\left(\alpha \wedge \theta_0 \wedge d\theta_0^{n-2}\right),\\
-B&=\theta_1 \wedge d\theta_1^{n-1} - \ep d\left(\alpha \wedge \theta_1
-\wedge d\theta_1^{n-2}\right).
-\end{align*}
-Please align your formulas nicely according to the above examples. Thanks.
-\end{proof}
-
+The investigated solutions are stable and show soliton behavior for wave speeds near the upper limit $c_{max} = 1/\sqrt{\beta}$, $c < c_{max}$, i.e. first, for $c = 0.52$ with $\beta = 3$ and $c_{max} \approx 0.5774$ and second, for  $\beta = 1$, $c=0.9$ and $c_{max} = 1$. The use of regular grid with equidistant step size $h$ turns out to be good choice to test head-on collision of waves. Furthermore, it provides valuable information with sufficient point count on the computational boundary. The performed numerical tests exhibit good convergence and solitonic-like behavior for larger times $t_n \in T_{\tau}$ which validates the TS method. 
 
 %The title of your section
 \section{References}
