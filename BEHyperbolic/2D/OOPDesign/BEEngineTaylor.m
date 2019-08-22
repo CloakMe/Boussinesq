@@ -152,8 +152,8 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         %VV2 = this.vdah;
         fd2ndDer = this.GetFd2ndDer();
         mid = ( this.order/2 + 1 );
-        b1 = boundaryUtils.DeltaAssymptoticFuncSquareOutside( fd2ndDer, t, order ) + ...
-        	boundaryUtils.DeltaAssymptoticFuncOutside( this.beta-1, fd2ndDer, t, order );
+        b1 = boundaryUtils.AssymptoticFuncSquareOutside( fd2ndDer, t, order ) + ...
+        	boundaryUtils.AssymptoticFuncOutside( this.beta-1, fd2ndDer, t, order );
         b2 = boundaryUtils.FPSOperatorOutside( fd2ndDer, t, order );
         
         deltab = this.eigenFinDiffMat'* ( boundaryUtils.DeltaH( nonlinTerm, fd2ndDer )+...
@@ -181,7 +181,7 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         
         deltav = ( boundaryUtils.DeltaH( dnU_dtn, fd2ndDer ) )/this.h^2;%/this.beta;
 
-        myBoundary = boundaryUtils.DeltaAssymptoticFuncOutside( 1, fd2ndDer, t, order )/this.h^2;%+ myBoundary
+        myBoundary = boundaryUtils.AssymptoticFuncOutside( 1, fd2ndDer, t, order )/this.h^2;%+ myBoundary
         dnvz = ( this.eigenFinDiffMat*VV + deltav + myBoundary)/this.beta;
         %{
         Q = 21;
