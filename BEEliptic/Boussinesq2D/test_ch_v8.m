@@ -1,31 +1,31 @@
 clear;clc;
 %return
 tic
-x_st = -15.0;    y_st = -15.0;
-x_end = 15.0;    y_end = 15.0;
-x_st2 = -80.0;   y_st2 = -80.0;
-x_end2 = 80.0;   y_end2 = 80.0;
+x_st = -40.0;    y_st = -40.0;
+x_end = 40.0;    y_end = 40.0;
+x_st2 = -40.0;   y_st2 = -40.0;
+x_end2 = 40.0;   y_end2 = 60.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
 
 UseExtendedDomain=1;
 
-h = 0.2;
+h = 0.05;
 x=x_st2:h:x_end2; 
 y=y_st2:h:y_end2; 
 %tau = 0.00114425*8;% getTau(h,x_end,y_end)/20;
-tau = getTau(h,x_end,y_end)/20;
+tau = getTau(h,x_end,y_end)/10;
 
 sx = (length(x)+1)/2
 sy = (length(y)+1)/2
    
    al = -1;%99979 izb
-   bt1 = 1;bt2 = 1; bt = bt1/bt2;
-   c = 0.9; 
+   bt1 = 3;bt2 = 1; bt = bt1/bt2;
+   c = 0.52; 
    iterMax = 9000000;
    %eps = 1/max(y_end^6,((1-c^2)*x_end^2)^3);
-   eps = 1.0e-08;%5.0e-09;
+   eps = 1.0e-09;
    ICSwitch=0;
    % IC_switch = 0 ->christov sech formula
    % IC_switch = 1 ->nat42 formula
@@ -50,7 +50,7 @@ sy = (length(y)+1)/2
   if(length(tauVector)<iterMax && UseExtendedDomain == 1 && size(bigUTimeDerivative,1)~=1)
      fprintf('\nLarge Domamin Calculations:\n\n');
      prmtrs.checkBoundary = 0;
-     prmtrs.eps = 1.0e-13;
+     prmtrs.eps = 1.0e-10;
      prmtrs.plotResidual = 0;
      prmtrs.tau = tauVector(end);
      [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,zeroX,zeroY,tauVector,angl] =...
@@ -86,6 +86,8 @@ solutionNorms.BoundaryFunctionPvsPL2Norm = solutionNormsCont.BoundaryFunctionPvs
 save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
       '_h0' num2str(h*100) '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
 return;
+
+
 DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDerivative,newBigIC,U,compBox,secondDerivative);
 
 PlotAssymptVsSolu( x, y, h, zeroX, zeroY, bigU, c1*theta(end), c/sqrt(bt) );

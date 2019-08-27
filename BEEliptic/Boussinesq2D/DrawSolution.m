@@ -42,14 +42,10 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
     %mesh(x,y,z4')
     %mesh(x(points(1):points(2)),y(points(3):points(4)),z4')
     
-    figure(14)
-    mesh(x(3:end-2),y(3:end-2),residual(3:end-2,3:end-2)');
-    title('Residual (with 2 boundary values)')
-
     figure(15)
     mesh(x,y,residual');
     title('Residual (with all boundary values)')
-    
+    return;
     figure(5)
     plot(y,(y.^2).*bigU(zeroX,:)/theta(end)) %(1+end)/2  
     xlabel('y')

@@ -9,7 +9,7 @@ bndCutSize = 0;
 % ChristovIC_36_bt5_c040_h020_O(h^6)
 % ChristovIC_40_bt069_c090_h020_O(h^6) 
 % ChristovIC_40_bt05_c085_h020_O(h^6)
-waveFactory = WaveFactory( 'ChristovIC_40_80_bt1_c090_h010_O(h^6)', bndCutSize, 2 );
+waveFactory = WaveFactory( 'ChristovF_40_bt3_c052_h005_O(h^6)', bndCutSize, 0 );
 %waveFactory = WaveFactory( 'BestFitIC' );
 
     tau = 0.02;
@@ -95,7 +95,7 @@ waveFactory = WaveFactory( 'ChristovIC_40_80_bt1_c090_h010_O(h^6)', bndCutSize, 
     xlabel('x');            ylabel('y');
     figure(16)
     %hold on;
-    plot(t(1:end-1),max_v,'k', t(1), max_v+0.01, 'k', t(1), max_v-0.01, 'k' );
+    plot(t(1:end-1),max_v,'k', t(1), max_v+0.2, 'k', t(1), max_v-0.2, 'k' );
     %hold off;
     title('Evolution of the maximum');
     xlabel('time "t"');  ylabel('max(u_h)');
@@ -109,12 +109,12 @@ waveFactory = WaveFactory( 'ChristovIC_40_80_bt1_c090_h010_O(h^6)', bndCutSize, 
     bt = waveFactory.beta1/waveFactory.beta2;
     %DrawEnergyForHyperbolicBE( engine, tt );
     try
-    save (['SavedWorkspaces\HyperbTwo_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
+    save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
         num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) ...
       '_h0' num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')']);
     
     catch ex
-         save (['SavedWorkspaces\HyperbTwo_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
+         save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
              num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) '_h0' ...
              num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')'], ...
              'tau', 'x', 'y', 'tt', 'max_v', 't', 'EN', 'II', 'vl', 'dvl');
@@ -144,15 +144,37 @@ waveFactory = WaveFactory( 'ChristovIC_40_80_bt1_c090_h010_O(h^6)', bndCutSize, 
     flipU = this.u_t0 + flipU;
     this.dudt_t0 = this.dudt_t0 + fliplr(this.dudt_t0);
     this.mu = 2*c1;
-            
+	
+    
     figure(14)
     mesh(x,y,flipU')
     title('solution');
     xlabel('x');            ylabel('y');
     
     figure(15)
-    mesh(x,y,this.u_t0')
+    mesh(x,y(1:841),waveFactory.u_t0(:,1:841)')
     title('solution');
     xlabel('x');            ylabel('y');
-
+    
+    figure(16)
+    mesh(x,y(361:end),vl(:,361:end)')
+    title('solution');
+    xlabel('x');            ylabel('y');
    
+    figure(17)
+    mesh(x,y(361:end),(vl(:,361:end) - waveFactory.u_t0(:,1:841))')
+    title('solution diff');
+    xlabel('x');            ylabel('y');
+    
+    res_d = vl(:,361:end) - waveFactory.u_t0(:,1:841);
+    
+    norm_L2 = waveFactory.h*norm(res_d(:),2);
+    fprintf('||u_h(40) - u_h(0)||_L2 = %.6f \n', norm_L2);
+    
+    norm_Inf = max(max(abs(res_d(:))));
+    fprintf('||u_h(40) - u_h(0)||_Inf = %.6f \n', norm_Inf);
+    
+    vz = waveFactory.u_t0;
+    str = ['SOL\vz_0.mat'];
+    save( str, 'vz' );    
+    CreatePictures( viewTypeX, viewTypeY, tt, x, y );  

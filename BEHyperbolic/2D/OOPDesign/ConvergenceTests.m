@@ -2,15 +2,15 @@ clear;
 bndCutSizeX = 0;
 bndCutSizeY = 0;
 
-yo(1,:) = '20';
-yo(2,:) = '10';
-yo(3,:) = '05';
+yo(1,:) = '40';
+yo(2,:) = '20';
+yo(3,:) = '10';
 %_tau05
 yo = cellstr(yo);
     
 for jl = 1:3
 
-    cellStr = strcat('SavedWorkspaces\Hyperb_40_bt1_c090_h0', yo(jl), '_O(h^2)' );
+    cellStr = strcat('SavedWorkspaces\Hyperb_40_bt1_c090_h0', yo(jl), '_O(h^6)' );
     %cellStr = strcat('Hyp_40_bt1_c090_h0', yo(jl), '_O(h^4)' );
     warning('off','all');
     load (  cellStr{1} );
