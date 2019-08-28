@@ -162,10 +162,7 @@ Taylor series (TS) expansion of the solution   is used to calculate the solution
 The time derivatives
 are obtained from the equation \rf{eqVC} by an iterative procedure. This is possible because the equation allows to isolate the highest time derivative on one side of the equation, see \rf{eqVC}. By differentiating with respect to time variable one could obtain higher time derivative terms in the TS expansion. Here, the solver could be adjusted to use second, fourth or sixth approximation order, i.e. $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. To increase the precision of the numerical method, finite difference schemes (FDS) with local approximation of second $O(h^2)$, forth $O(h^4)$ and sixth $O(h^6)$ order are  applied to the spatial derivatives, i.e.  second derivatives along space are approximated with high order finite differences. Thus, the numerical solution is computed on relatively coarse grid with  accuracy of $O(h^2+\tau^2)$, $O(h^4+\tau^4)$ and $O(h^6+\tau^6)$ order. The inversion of $(E - \tilde \Delta)$ operator is discussed in section \rf{FPSsection}. Using spectral analysis, one could decompose the discrete version of this operator by finding its eigenvectors and corresponding eigenvalues. After a suitable substitution $n$ linear systems $A_{i,i} \bar u_i = \bar f_i$, $i = 1,...,n$ are obtained, where $n$ is the discrete step count along the $x$ axis. The best part is that the matrices $A_{i,i}$ are tri-, five-, or seven-diagonal depending on the local approximation used for the second derivatives in the discrete Laplace operator, i.e. second $O(h^2)$,  fourth $O(h^4)$ or sixth $O(h^6)$ respectively. 
 
-????In order to compare the results from TS method, a conservative finite difference scheme with weights is used, which applies second order of approximation along time and space.
-Both methods are tested with zero boundary conditions and also with BC, found and developed in \cite{BoundaryProblem}.????
-
-The paper is organized in the following way.  Taylor series expansion method for solving hyperbolic problem is presented in Section~2 and  a formula for boundary conditions is posed in  Section~3. The application of fast Poison solvers to the numerical evaluation of the operator $(E - \tilde \Delta)^{-1}$ is explained in Section~4. Convergence of the numerical method and tests for propagation in time of one solution are reported in Section~5. 
+The paper is organized in the following way.  Taylor series expansion method for solving hyperbolic problem is presented in Section \rf{TaylorA} and  a formula for boundary conditions is posed in  Section \rf{BndS}. The application of fast Poison solvers to the numerical evaluation of the operator $(E - \tilde \Delta)^{-1}$ is explained in Section  \rf{FPSsection}. Convergence of the numerical method and tests for propagation in time of one solution are reported in Section \rf{NumTests}. 
 
 \section{Taylor Series Approach for the BE in Two Dimensions}\label{TaylorA}
 
@@ -526,8 +523,15 @@ For system \rf{SubSys7}, there are $n$ linear systems which are seven diagonal.
 %=============BEGIN Numerica testsl========================================
 \section{Convergence, speed and numerical tests}\label{NumTests}
 %=============BEGIN Numerica testsl========================================
-In this section, a few numerical results are presented, which concern the verification of the TS method. 
- The BE equation \rf{eqVC} is examined for two sets of parameters $\beta$ and $c$ where $\alpha = 1$ is kept constant. For the first set with $c=0.52$ and $\beta = 3$, the solutions are computed on three nested grids in the region $[-40, 40] \times [-40, 40] \times [0, 10]$. For $O(h^2 + \tau^2)$, the nested domains contain $401 \times 401$,  $801 \times 801$, $1601 \times 1601$  grid points. For $O(h^4 + \tau^4)$ and $O(h^6 + \tau^6)$, the nested domains are the same and contain $(201 \times 401 \times 126)$,  $(401 \times 801 \times 251)$ and $(801 \times 1601 \times 501)$ grid points.  For the second set with $\beta = 1$ and $c=0.9$, the solutions are also computed on three nested  grids in the region $[-40, 40] \times [-80, 80]\times [0, 10]$. For $O(h^2 + \tau^2)$, the nested domains contain $(401 \times 801 \times 1001)$,  $(801 \times 1601 \times 2001)$ and $(1601 \times 3201 \times 4001)$ grid points. For $O(h^4 + \tau^4)$ and $O(h^6 + \tau^6)$, the nested domains are the same and contain $(201 \times 401 \times 126)$,  $(401 \times 801 \times 251)$ and $(801 \times 1601 \times 501)$ grid points. Refer to Table \rf{tab:a} for details about the space and time steps $h$ and $\tau$ used in the two series  of numerical calculations.
+In this section, a few numerical results are presented, which concern the verification of the TS method. The main tool for testing the convergence rate $\xi$ of all examined finite difference schemes and TS expansions is the Runge's Method. It is given by
+\begin{equation}\label{Runge}
+\xi = ln  \frac{\Vert u_{h,\tau} - u_{(h,\tau)/2} \Vert_\kappa } {\Vert  u_{(h,\tau)/2} - u_{(h,\tau)/4} \Vert_\kappa  } | / ln(2),
+\end{equation}
+when no exact solution to the problem is known. Here $u_{h,\tau}$, $u_{(h,\tau)/2}$ and $u_{(h,\tau)/4}$ represent the same solution over three nested grids. The convergence error is defined as
+\begin{equation}\label{Norm}
+E_i = \Vert u_{(h,\tau)/(2l)} - u_{(h,\tau)/l} \Vert_\kappa, \quad l = 1,2
+\end{equation}
+where $\kappa$ denotes either the $L_2$ or $L_\infty$  norm.
 \begin{table}[ht]
 \centering
 		\begin{tabular}{||c|l|ll|ll||}
@@ -537,36 +541,46 @@ In this section, a few numerical results are presented, which concern the verifi
 	         &                    &                               & Rate   &                                        & Rate \\
    			\hline 
 					\hline 
-   c=0.52       &0.2, 0.??   &            &        &                  &      \\
-    $\beta=3$   &0.1, 0.??   &~ 0.0000e-00 &           &~0.0000e-00      &       \\
-     $O(h^2)$ &0.05, 0.?? &~ 0.0000e-00 &2  &~0.0000e-00 & 2        \\
+  $\beta=3$       &0.2, 0.02   &            &        &                  &      \\
+      c=0.52   &0.1, 0.01   &~ 1.097302 &           &~1.170439      &       \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.005 &~ 0.141356 &2.95  &~0.174157 & 2 .74       \\
 			\hline 
-   c=0.52       &0.2, 0.08   &            &        &                  &      \\
-    $\beta=3$   &0.1, 0.04   &~ 0.0000e-00 &           &~0.0000e-00      &       \\
-     $O(h^4)$ &0.05, 0.02 &~ 0.0000e-00 &4  &~0.0000e-00 & 4        \\
+   $\beta=3$        &0.2, 0.08   &            &        &                  &      \\
+   c=0.52   &0.1, 0.04   &~ 0.310917 &           &~0.376470      &       \\
+     $O(h^4+ \tau^4)$ &0.05, 0.02 &~ 0.021432 &3.85 &~0.023294 & 4.01        \\
 			\hline 
-   c=0.52       &0.2, 0.08   &            &        &                  &      \\
-    $\beta=3$   &0.1, 0.04   &~ 0.0000e-00 &           &~0.0000e-00      &       \\
-     $O(h^6)$ &0.05, 0.02 &~ 0.0000e-00 &5.8  &~0.0000e-00 & 5.6        \\
+  $\beta=3$               &0.2, 0.08   &            &        &                  &      \\
+   c=0.52                  &0.1, 0.04       &~ 0.094731 &           &~0.126129      &       \\
+     $O(h^6+ \tau^6)$ &0.05, 0.02 &~ 0.001756 &5.75    &~0.002004 & 5.97       \\
 	   \hline
 			\hline 
-      c=0.9    &0.2, 0.01    &             &            &           &   \\
-  $\beta=1$   &0.1, 0.005     &~ 0.000000  &            &~0.000000 &   \\
-  $O(h^2)$ &0.05, 0.0025   &~ 0.000000  &2  &~0.000000 & 2 \\
+       $\beta=1$       &0.4, 0.02        &             &            &           &   \\
+                  c=0.9    &0.2, 0.01       &~ 0.237432  &            &~0.097758 &   \\
+  $O(h^2+ \tau^2)$ &0.1, 0.005   &~ 0.056544  &2.07  &~0.023651 & 2.04 \\
 			\hline
-      c=0.9    &0.4, 0.08    &            &            &             &    \\
-      $\beta=1$  &0.2, 0.04    &~ 0.000000   &           &~0.000000  &   \\
-       $O(h^4)$ &0.1, 0.02   &~ 0.000000 & 3.9    &~0.000000  & 3.9  \\
+      $\beta=1$    &0.4, 0.08    &            &            &             &    \\
+       c=0.9 &0.2, 0.04    &~ 0.028098   &           &~0.013511  &   \\
+       $O(h^4+ \tau^4)$ &0.1, 0.02   &~ 0.001801 & 3.96    &~0.000971  & 3.79  \\
     \hline
-   c=0.9       &0.4, 0.08    &            &        &                  &      \\
-    $\beta=1$   &0.2, 0.04   &~ 0.0000e-00 &           &~0.0000e-00      &       \\
-     $O(h^6)$ &0.1, 0.02 &~ 0.0000e-00 &5.8  &~0.0000e-00 & 5.6        \\
+  $\beta=1$     &0.4, 0.08   &            &          &                  &      \\
+      c=0.9    &0.2, 0.04   &~ 0.006722 &           &~0.003341      &       \\
+     $O(h^6+ \tau^6)$ &0.1, 0.02 &~ 0.000137 &5.62  &~0.000070 & 5.58        \\
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Convergence test for FDS with different approximation errors ($O(h^{2})$, $O(h^{4})$ and $O(h^{6})$). Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+		\caption{Convergence test for FDS with different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
 \label{tab:a}
 \end{table}
+The BE equation \rf{eqVC} is examined for two sets of parameters $\beta$ and $c$ where $\alpha = 1$ is kept constant. 
+
+For the \textbf{first set} with {\boldmath$\beta = 3$} and {\boldmath$c=0.52$}, the solutions are computed on three nested grids in the region $[-40, 40] \times [-40, 40] \times [0, 10]$. 
+	For $O(h^2 + \tau^2)$, the nested domains contain $(401 \times 401 \times 501)$,  $(801 \times 801  \times 1001)$, $(1601 \times 1601  \times 2001)$  grid points.
+	For $O(h^4 + \tau^4)$ and $O(h^6 + \tau^6)$, the nested domains are the same and contain $(401 \times 401 \times 126)$,  $(801 \times 801 \times 251)$ and $(1601 \times 1601 \times 501)$ grid points. 
+
+For the \textbf{second set} with {\boldmath$\beta = 1$} and {\boldmath$c=0.9$}, the solutions are also computed on three nested  grids in the region $[-40, 40] \times [-80, 80]\times [0, 10]$. 
+	For $O(h^2 + \tau^2)$, the nested domains contain $(201 \times 401 \times 501)$,  $(401 \times 801 \times 1001)$ and $(801 \times 1601 \times 2001)$ grid points.
+	 For $O(h^4 + \tau^4)$ and $O(h^6 + \tau^6)$, the nested domains are the same and contain $(201 \times 401 \times 126)$,  $(401 \times 801 \times 251)$ and $(801 \times 1601 \times 501)$ grid points. Refer to Table \rf{tab:a} for details about the space and time steps $h$ and $\tau$ used in the two series  of numerical calculations.
+
 \iffalse
 Figure \ref{fig:boundary} shows that the solution function near the boundary $\partial \Omega_h$ is smooth, which partially asserts the validity of the chosen boundary function \rf{eqBCH}. More about the validity of the boundary function could be found in \cite{BoundaryProblem}. 
 
@@ -592,7 +606,7 @@ Figure \ref{fig:boundary} shows that the solution function near the boundary $\p
 	\label{fig:boundary}
 \end{figure}
 \fi
-Figure \ref{fig:solMax} displays the evolution of the maximum on the finest grid with the highest approximation order $O(h^6 + \tau^6)$. That is $h=0.05$, $\tau = 0.02$ for the left picture and  $h=0.1$, $\tau = 0.02$ for the right picture. 
+Figure \ref{fig:solMax} displays the evolution of the maximum on the finest grid with the highest approximation order $O(h^6 + \tau^6)$. That is $h=0.05$, $\tau = 0.02$ for the left picture and  $h=0.1$, $\tau = 0.02$ for the right picture. The graph is jagged because the solution maximum is not exactly positioned on the points of the grid $\Omega_h \times T_{\tau}$ but often among them. 
 
 \begin{figure}[!htbp]
 	\centering
@@ -607,7 +621,7 @@ Figure \ref{fig:solMax} displays the evolution of the maximum on the finest grid
 	\label{fig:solMax}
 \end{figure}
 
-The following paragraph is about the complexity of the algorithm viewed from different perspectives. Around 80\% of the computational time goes for the inversion of the discrete operator $A_h = (E - \Delta_h)$. Let us denote with $n_x$, $n_y$ and $n_t$ the point count along $x$, $y$ and $t$ directions on the discrete domain $\Omega_h \times T_{\tau}$, respectively. Then, if $P_A$ denotes the operation count for a single inversion of the $A_h$ operator, the complexity of the algorithm with respect to the space approximation order is given by the following table \begin{table}[!htbp]
+The following paragraph is about the complexity of the algorithm viewed from different perspectives. Around 80\% of the computational time goes for the inversion of the discrete operator $A_h = (E - \Delta_h)$. Let us denote with $n_x$, $n_y$ and $n_t$ the point count along $x$, $y$ and $t$ directions on the discrete domain $\Omega_h \times T_{\tau}$, respectively. Then, if $P_A$ denotes the operation count for a single inversion of the $A_h$ operator, the complexity of the algorithm with respect to the space approximation order is given by the following table \rf{tab:b}. \begin{table}[!htbp]
 \centering
 		\begin{tabular}{||c|c|c|c||}
 			\hline
@@ -623,7 +637,8 @@ The following paragraph is about the complexity of the algorithm viewed from dif
 \label{tab:b}
 \end{table}
 
-Furthermore, the complexity of the algorithm with respect to the time approximation order could be described by the following table \begin{table}[!htbp]
+The inverse operator $A_h^{-1}$ is a full matrix and working with it requires much more operations $P_A \sim O(n_y^3 * n_x)$. Therefore, it is much cheaper and faster to invert a band matrix with Gauss elimination, e.g. like Thomas algorithm in case of tridiagonal matrix.
+Furthermore, the complexity of the algorithm with respect to the time approximation order could be described by the following table \rf{tab:c}. \begin{table}[!htbp]
 \centering
 		\begin{tabular}{||c|c|c|c||}
 			\hline
@@ -640,11 +655,32 @@ Furthermore, the complexity of the algorithm with respect to the time approximat
 \end{table}
 
 This is because the second order $O(\tau^2)$ requires only one inversion for $D^2 u_h$, the fourth order $O(\tau^4)$ requires three inversions of $A_h$ for the three derivatives $D^2 u_h$, $D^3 u_h$ and $D^4 u_h$ and the sixth order $O(\tau^6)$ requires five inversions of $A_h$ for $D^2 u_h$, $D^3 u_h$, $D^4 u_h$, $D^5 u_h$ and $D^6 u_h$ in the TS expansion.
-
+\begin{figure}[!htbp]
+	\centering
+	\begin{minipage}[b]{0.31\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/Solution_bt3_t=0.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.31\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/Solution_bt3_t=8.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.31\linewidth}
+		 \includegraphics[width=\linewidth]{Pictures/Solution_bt3_t=16.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.31\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/Solution_bt3_t=24.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.31\linewidth}
+		 \includegraphics[width=\linewidth]{Pictures/Solution_bt3_t=32.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.31\linewidth}
+		 \includegraphics[width=\linewidth]{Pictures/Solution_bt3_t=40.png}
+	\end{minipage}
+	\caption{Numerical solution of two waves for $\beta=1$ and $c = 0.9$ at times $t=0,8,16,24,32,40$.}
+	\label{fig:oneWaveB}
+\end{figure}
 The complexity of the algorithm is quadratic with respect to the space step length $h$ (the same step is applied along $x$ and $y$ directions) and linear with respect to the time step length $\tau$. Thus, it takes 8 times more time for the algorithm to complete, if $h$ and $\tau$ are two times smaller ($h/2$, $\tau/2$).
 
-Test 1 Wave. The following test shows single solution wave with $\beta = 1$, $c = 0.9$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. This is the finest grid with the highest approximation order $O(h^6 + \tau^6)$. It behaves like a soliton, i.e. preserves its shape and maximum.
-
+Test Wave $bt = 3$ (see Figure \rf{fig:oneWaveB}). The following test shows single solution wave with $\beta = 3$, $c = 0.52$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. The approximation order is $O(h^6 + \tau^6)$ and the time domain is also increased four times compared to results in table \rf{tab:a}. In order to compare the initial condition $u_h(0)$ with the end solution $u_h(40)$, the last is artificially shifted backwards $y = y^* - 20.8$ so that both functions are centered with their maximums on $(0,0)$. It is obtained that $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_2} = 0.023453 $ and $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_\infty} = 0.026302$. 
 \begin{figure}[!htbp]
 	\centering
 	\begin{minipage}[b]{0.31\linewidth}
@@ -666,8 +702,43 @@ Test 1 Wave. The following test shows single solution wave with $\beta = 1$, $c 
 		 \includegraphics[width=\linewidth]{Pictures/Solution1_t=40.png}
 	\end{minipage}
 	\caption{Numerical solution of one wave for $\beta=1$ and $c = 0.9$ at times $t=0,8,16,24,32,40$.}
-	\label{fig:oneWave}
+	\label{fig:oneWaveA}
 \end{figure}
+
+Test Wave $\beta = 1$ (see Figure \rf{fig:oneWaveA}). The following test shows single solution wave with $\beta = 1$, $c = 0.9$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. This is the finest grid for this set with the highest approximation order $O(h^6 + \tau^6)$. Notice that the time domain is increased four times. Here the wave travels a distance which is $36 = 40*0.9$ units along the $y$ axis. Thus, it is obtained that $\Vert u_h(40)_{y = y*-36} - u_h(0) \Vert_{L_2} = 0.000812$ and $\Vert u_h(40)_{y = y*-36} - u_h(0) \Vert_{L_\infty} = 0.000039$.
+
+Both waves behave like solitons, i.e. preserve shape and furthermore figure \ref{fig:solMax40} shows that the solutions have stable maxima.
+\begin{figure}[ht]
+	\centering
+	\begin{minipage}[b]{0.4\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/EvolutionOfMaximum_bt3_t40.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.4\linewidth}
+		 \includegraphics[width=\linewidth]{Pictures/EvolutionOfMaximum.png}
+	\end{minipage}
+
+	\caption{Evolution of the maximum for Test Wave $\beta =3$ (left panel) and $\beta=1$ (right panel).}
+	\label{fig:solMax40}
+\end{figure}
+
+%=========================================================================
+\iffalse
+Test 2 (see Figure \rf{fig:oneWaveB}). The following test shows single solution wave with $\beta = 3$, $c = 0.52$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. The approximation order is $O(h^6 + \tau^6)$ and the time domain is also increased four times compared to results in table \rf{tab:a}. This wave also behave like a soliton, i.e. preserves its shape and maximum even after the collision. Here the wave travels a distance which is $20.8 = 40*0.52$ units along the $y$ axis. It is obtained that $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_2} = 0.000000$ and $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_\infty} = 0.000000$.
+
+Figure \ref{fig:solMax40} shows that solutions from both tests have stable maximums.
+\begin{figure}[!htbp]
+	\centering
+	\begin{minipage}[b]{0.4\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/EvolutionOfMaximum.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.4\linewidth}
+		 \includegraphics[width=\linewidth]{Pictures/EvolutionOfMaximumTwoWaves.png}
+	\end{minipage}
+
+	\caption{Evolution of the maximum for Test 1 (left panel) and Test 2 (right panel).}
+	\label{fig:solMax40}
+\end{figure}
+
 
 Test 2 Waves. The following test shows a head-on collision with two solution waves with $\beta = 1$, $c = 0.9$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. This is the finest grid with the highest approximation order $O(h^6 + \tau^6)$ Waves still behave like a solitons, i.e. preserves its shape and maximum even after the collision.
 
@@ -708,12 +779,12 @@ Figure \ref{fig:solMax40} displays the evolution of the solution maximum for Tes
 	\caption{Evolution of the maximum for one wave (left panel) and two waves (right panel).}
 	\label{fig:solMax40}
 \end{figure}
-
+\fi
 %=============BEGIN Conclusion========================================
 \section{Conclusion}\label{Concl}
 %=============BEGIN Conclusion========================================
 
-We propose Taylor series expansion method  to solve BE with  accuracy of   second, fourth and sixth order in space and time.  The advantage of this method is ...???
+We propose Taylor Series expansion method to solve BE with accuracy of second, fourth and sixth order in space and time. The advantage of this method is how easily one could calculate such complex functions. Often, the solution blows up or disperse and Figures \rf{fig:oneWaveA} and \rf{fig:oneWaveB} show that the accuracy of TS is good enough to produce stable soliton.
 
 We perform a series on numerical experiments to validate the numerical method. The results show that the approximate Taylor series method achieves the prescribed high accuracy. 
 
