@@ -1,21 +1,21 @@
 clear;clc;
 %return
 tic
-x_st = -15.0;    y_st = -15.0;
-x_end = 15.0;    y_end = 15.0;
-x_st2 = -80.0;   y_st2 = -80.0;
-x_end2 = 80.0;   y_end2 = 80.0;
+x_st = -16.0;    y_st = -16.0;
+x_end = 16.0;    y_end = 16.0;
+x_st2 = -40.0;   y_st2 = -40.0;
+x_end2 = 40.0;   y_end2 = 40.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
 
 UseExtendedDomain=1;
 
-h = 0.2;
+h = 0.1;
 x=x_st2:h:x_end2; 
 y=y_st2:h:y_end2; 
 %tau = 0.00114425*8;% getTau(h,x_end,y_end)/20;
-tau = getTau(h,x_end,y_end)/20;
+tau = getTau(h,x_end,y_end)/5;
 
 sx = (length(x)+1)/2
 sy = (length(y)+1)/2
@@ -25,7 +25,7 @@ sy = (length(y)+1)/2
    c = 0.9; 
    iterMax = 9000000;
    %eps = 1/max(y_end^6,((1-c^2)*x_end^2)^3);
-   eps = 1.0e-08;%5.0e-09;
+   eps = 5.0e-10;%5.0e-09;
    ICSwitch=0;
    % IC_switch = 0 ->christov sech formula
    % IC_switch = 1 ->nat42 formula
@@ -40,8 +40,8 @@ sy = (length(y)+1)/2
        'plotResidual',{plotResidual},'plotBoundary',{plotBoundary},'plotAssympt',{plotAssympt},...
        'checkBoundary',{checkBoundary}, 'useZeroBoundary', {useZeroBoundary});
    
-   firstDerivative = GetFiniteDifferenceCoeff([-3,-2,-1,0,1,2,3],1)'/h;
-   secondDerivative = GetFiniteDifferenceCoeff([-3,-2,-1,0,1,2,3],2)'/h^2;
+   firstDerivative = GetFiniteDifferenceCoeff([-1,0,1],1)'/h;
+   secondDerivative = GetFiniteDifferenceCoeff([-1,0,1],2)'/h^2;
    derivative = struct('first',{firstDerivative},'second',{secondDerivative});
    
   [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,c1,c2,zeroX,zeroY,tauVector,angl]=...
@@ -50,7 +50,7 @@ sy = (length(y)+1)/2
   if(length(tauVector)<iterMax && UseExtendedDomain == 1 && size(bigUTimeDerivative,1)~=1)
      fprintf('\nLarge Domamin Calculations:\n\n');
      prmtrs.checkBoundary = 0;
-     prmtrs.eps = 1.0e-13;
+     prmtrs.eps = 1.0e-10;
      prmtrs.plotResidual = 0;
      prmtrs.tau = tauVector(end);
      [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,zeroX,zeroY,tauVector,angl] =...

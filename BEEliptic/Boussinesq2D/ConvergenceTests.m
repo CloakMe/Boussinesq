@@ -1,14 +1,14 @@
 clear;
 
 for jl = 1:3
-    yo(1,:) = '40';
-    yo(2,:) = '20';
-    yo(3,:) = '10';
+    yo(1,:) = '20';
+    yo(2,:) = '10';
+    yo(3,:) = '05';
 
     yo = cellstr(yo);
     ICType = 'Christov'; % Christov  Natali
-    cellStr = strcat('SavedWorkspaces\', ICType, 'IC_40_bt3_c054_h0', yo(jl), '_O(h^4)' );
-    load (  cellStr{1} );
+    strName = strcat('SavedWorkspaces\', ICType, 'IC_40_bt3_c052_h0', yo(jl), '_O(h^2)' );
+    load (  strName{1} );
     %sum(tauVector)
     if(jl==1)
        vb = U(1:end,1:end); hb=h; 

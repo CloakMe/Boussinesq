@@ -9,11 +9,11 @@ bndCutSize = 0;
 % ChristovIC_36_bt5_c040_h020_O(h^6)
 % ChristovIC_40_bt069_c090_h020_O(h^6) 
 % ChristovIC_40_bt05_c085_h020_O(h^6)
-waveFactory = WaveFactory( 'ChristovIC_40_bt1_c090_h010_O(h^2)', bndCutSize, 0 );
+waveFactory = WaveFactory( 'ChristovIC_40_bt3_c052_h005_O(h^6)', bndCutSize, 0 );
 %waveFactory = WaveFactory( 'BestFitIC' );
 
-    tau = 0.01;
-    tEnd=10.0;
+    tau = 0.02;
+    tEnd=2.0;
     %turnOnCaxis = 0;
     %waveFactory.PlotSingleWave( turnOnCaxis );
 
@@ -95,7 +95,7 @@ waveFactory = WaveFactory( 'ChristovIC_40_bt1_c090_h010_O(h^2)', bndCutSize, 0 )
     xlabel('x');            ylabel('y');
     figure(16)
     %hold on;
-    plot(t(1:end-1),max_v,'k', t(1), max_v+0.005, 'k', t(1), max_v-0.005, 'k' );
+    plot(tt(1:end-1),max_v,'k', tt(1), max_v+0.005, 'k', tt(1), max_v-0.005, 'k' );
     %hold off;
     title('Evolution of the maximum');
     xlabel('time "t"');  ylabel('max(u_h)');
@@ -108,6 +108,8 @@ waveFactory = WaveFactory( 'ChristovIC_40_bt1_c090_h010_O(h^2)', bndCutSize, 0 )
         
     bt = waveFactory.beta1/waveFactory.beta2;
     %DrawEnergyForHyperbolicBE( engine, tt );
+    notSavingTheSolution = 1
+    return;
     try
     save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
         num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) ...
