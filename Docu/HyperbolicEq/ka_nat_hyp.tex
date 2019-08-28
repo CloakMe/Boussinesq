@@ -90,7 +90,7 @@
 %%%%%%%%%%%%%%%%%%%%%%% ABSTRACT %%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-This paper evaluates propagating wave solutions to the two dimensional Boussinesq Equation (BE). To solve this nonlinear fourth order hyperbolic problem we use Fast Poisson Solver with high order finite difference schemes for the spatial derivatives. Taylor Series (TS) expansion about time is used to move the soliton forward. A Boundary Condition (BC) is applied on the computational boundary. The performed numerical tests exhibit good convergence and confirm the validity of the TS method.
+This paper evaluates propagating wave solutions to the two dimensional Boussinesq Equation (BE). To solve this nonlinear  hyperbolic problem we use  high order finite difference schemes for the spatial derivatives. Taylor Series (TS) expansion method about time is used to move the solution forward. An explicit formula for boundary Conditions (BC) is applied on the computational boundary. The resulting numerical method has high accuracy of   second, fourth and sixth order both in space and time.   The performed numerical tests exhibit good convergence and confirm the validity of the TS method.
 
 
 
@@ -104,15 +104,45 @@ This paper evaluates propagating wave solutions to the two dimensional Boussines
 
 %The title of your section
 \section{Introduction.}\label{introduction}
-
 In this paper we  consider the two dimensional Boussinesq  Equation (BE)
 \begin{align} \label{eq1}
 &u_{tt} - \Delta u -\beta_1  \Delta u_{tt} +\beta_2 \Delta ^2 u + \Delta f(u)=0   \quad \text{for}  (x,y) \in \RR^2, \, t\in\RR^+, 
 \\ \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)   \quad\text{for} \, (x,y) \in \RR^2,
 \\  &u(x,y) \rightarrow 0,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{for}  \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11}
 \end{align}
-where $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics, geotechnical engineering, athmosphere dynamics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}. In order to obtain an initial condition (IC) for equation \rf{eq1}, \rf{eq11}, it is required to solve another elliptic differential equation with similar terms. An approximation for IC with small wave velocities $c$ was developed in \cite{Ch2011}. Other methods for obtaining IC were developed in \cite{chr-chr},\cite{chr-chr-07} and \cite{EllipticProblem}. The asymptotic of the solution function is also an important topic and was mainly researched in \cite{chr-chr-07}, \cite{Ch2012} and \cite{BoundaryProblem}. If the aymptotic behavior is known, then one could use a finite domain $\Omega$ with $u:\Omega \rightarrow \RR$ and apply the corresponding boundary conditions on $\partial \Omega$. Let us once again recall the initial equation \rf{eq1}, \rf{eq11}. The articles \cite{cher} and \cite{dani} showed results for the hyperbolic problem \rf{eq1} with small wave speeds $c \approx 0.3$ and used the Perturbation Solution, which is developed in \cite{Ch2011}, as IC . There, the wave either blows up or vanishes very quickly. Thus, the following article appeared \cite{critEn}, which gives the partial answer whether the IC is going to blow-up, depending on the computation of the critical energy constant for the two-dimensional BE. Nevertheless, there are still no tests in the literature for \rf{eq1} with higher wave speeds $c \approx min(1, 1/\sqrt{\beta_1})$ and no tests with IC different from the Perturbation Solution in \cite{Ch2011}. The last seems to be very adaptive and useful as the author gives an explicit formula in two dimensions. Unfortunately, the formula has its limitations and downsides. 
-The obtained results in our previous work \cite{EllipticProblem} and \cite{BoundaryProblem} serve as initial and boundary condition for the hyperbolic equation \rf{eq1}, \rf{eq11}  here. In order to relate to \cite{EllipticProblem} and \cite{BoundaryProblem}
+where $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. 
+
+
+The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics, geotechnical engineering, atmosphere dynamics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}. 
+
+
+In order to obtain an initial condition (IC) for equation \rf{eq1}, \rf{eq11}, another elliptic differential equation for a stationary, travelling in $y$  direction with velocity $c$ solution $U$ given by $u(x,y,t)=U(x,y-ct)$,   has to be solved. 
+ The corresponding elliptic problem was treated in \cite{Ch2011} using  the perturbation solution method.  In this way   IC to \rf{eq1}, \rf{eq11}  with small wave velocities $c$ were developed.
+Other methods for obtaining IC were given in \cite{chr-chr},\cite{chr-chr-07} and \cite{EllipticProblem}. 
+Using these  IC with small wave speeds $c \approx 0.3$, the hyperbolic problem \rf{eq1}  was solved and the results are  reported in \cite{cher} and \cite{dani}. 
+%The articles \cite{cher} and \cite{dani} showed results for the hyperbolic problem \rf{eq1} with small wave speeds $c \approx 0.3$ and used the Perturbation Solution,
+The calculations in the above papers show, that the numerical solution of the hyperbolic problem with these IC either blows up or disperse in the form of ring wave expanding to infinity  after some period in time.
+
+%An approximation for IC with small wave velocities $c$ was developed in \cite{Ch2011} using  the perturbation solution method. 
+% which is developed in \cite{Ch2011}, as IC . 
+ Nevertheless, there are still no tests in the literature for solving \rf{eq1} with IC with higher wave speeds $c^2 \approx min(1, \beta_2/{\beta_1})$ and no tests with IC different from the perturbation solutions found in \cite{Ch2011}. The last seems to be very adaptive and useful as the author gives an explicit formula for IC in two dimensions. Unfortunately, the formula has its limitations and downsides. 
+
+The asymptotic of the stationary solitary wave solution $U(x,y)$ as $x^2+y^2 \rightarrow \infty$ is also an important topic and was mainly researched in \cite{chr-chr-07}, \cite{Ch2012} and \cite{BoundaryProblem}. If the asymptotic behavior is known, then one could use a finite domain $\Omega$,  $\Omega \in \RR^2$ and apply the corresponding boundary conditions on $\partial \Omega$. 
+
+Since the IC are  fundamental for solving the unsteady BE (1), we obtain in \cite{EllipticProblem}  more accurate   stationary, travelling in $y$  direction with velocity $c$ solutions $U$ to (1), especially for velocities $c > 0.7$.   We found also  new asymptotic boundary conditions on $\partial \Omega$ in the article \cite{BoundaryProblem}.
+
+%for the construction of initial data of 
+ Having in mind the obtained in  \cite{EllipticProblem} and \cite{BoundaryProblem} new IC and boundary conditions, we seek in this article  accurate solutions to \rf{eq1} with IC from \cite{EllipticProblem}. 
+
+
+
+%Thus, the following article appeared \cite{critEn}, which gives the partial answer whether the IC is going to blow-up, depending on the computation of the critical energy constant for the two-dimensional BE.  
+%
+%
+%
+%The obtained results in our previous work \cite{EllipticProblem} and \cite{BoundaryProblem} serve as initial and boundary condition for the hyperbolic equation \rf{eq1}, \rf{eq11}  here. 
+
+In order to relate to \cite{EllipticProblem} and \cite{BoundaryProblem}
 the following variable change is applied
 \begin{equation}\label{vc}
 x = \sqrt{\beta_1} \tilde x, \quad y = \sqrt{\beta_1} \tilde y, \quad t = \sqrt{\beta_1} \tilde t, \quad \tilde \Delta = \tilde u_{\tilde x \tilde x} + \tilde u_{\tilde y \tilde y}
@@ -121,10 +151,21 @@ which transforms the main equation \rf{eq1}  into
 \begin{equation}\label{eqVC}
 (E-\tilde \Delta)  \tilde u_{\tilde t \tilde t} = \frac{(E-\tilde\Delta)\tilde\Delta \tilde u + \alpha \beta \tilde\Delta(\tilde u^2) + (\beta -1)\tilde\Delta \tilde u}{\beta},
 \end{equation}
-where $\beta = \beta_1 / \beta_2$. The goal of the article is to seek for soliton solutions to \rf{eqVC}, which 
-are traveling  in $y$ direction with velocity $c$. TS expansion is used to calculate the next time layer with respect to the time step $\tau$. The time derivatives
-are obtained from the equation \rf{eqVC} by an iterative procedure. This is possible because the equation allows to isolate the highest time derivative on one side of the equation. By differentiating with respect to time variable one could obtain higher time derivative terms in the TS expansion. Here, the solver could be adjusted to use second, fourth or sixth approximation order, i.e. $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. To increase the precision of the numerical method, finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order are applied to the spatial derivatives i.e.  second derivatives along space are approximated with high order finite differences. Thus, the numerical solution is computed on relatively coarse grid with high accuracy. The inversion of $(E - \tilde \Delta)$ operator is discussed in section \rf{FPSsection}. Using spectral analysis, one could decompose the discrete version of the operator by finding its eigenvectors and corresponding eigenvalues. After a suitable substitution $n$ linear systems $A_{i,i} \bar u_i = \bar f_i$, $i = 1,...,n$ are obtained where $n$ is the discrete step count along the $x$ axis. The best part is that the matrices $A_{i,i}$ are tri-, five-, or seven-diagonal depending on the local approximation used for the second derivatives in the discrete laplace operator, i.e. second $O(h^2)$,  fourth $O(h^4)$ or sixth $O(h^6)$ respectively. In order to compare the results from TS method, a conservative finite difference scheme with weights is used, which applies second order of approximation along time and space.
-Both methods are tested with zero boundary and also with BC found and developed in \cite{BoundaryProblem}.
+where $\beta = \beta_1 / \beta_2$. 
+%
+%
+%
+%The goal of the article is to seek for soliton solutions to \rf{eqVC}, which 
+%are traveling  in $y$ direction with velocity $c$.
+
+Taylor series (TS) expansion of the solution   is used to calculate the solution from time level $t$ to the next time  $t+\tau$.
+The time derivatives
+are obtained from the equation \rf{eqVC} by an iterative procedure. This is possible because the equation allows to isolate the highest time derivative on one side of the equation, see \rf{eqVC}. By differentiating with respect to time variable one could obtain higher time derivative terms in the TS expansion. Here, the solver could be adjusted to use second, fourth or sixth approximation order, i.e. $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. To increase the precision of the numerical method, finite difference schemes (FDS) with local approximation of second $O(h^2)$, forth $O(h^4)$ and sixth $O(h^6)$ order are  applied to the spatial derivatives, i.e.  second derivatives along space are approximated with high order finite differences. Thus, the numerical solution is computed on relatively coarse grid with  accuracy of $O(h^2+\tau^2)$, $O(h^4+\tau^4)$ and $O(h^6+\tau^6)$ order. The inversion of $(E - \tilde \Delta)$ operator is discussed in section \rf{FPSsection}. Using spectral analysis, one could decompose the discrete version of this operator by finding its eigenvectors and corresponding eigenvalues. After a suitable substitution $n$ linear systems $A_{i,i} \bar u_i = \bar f_i$, $i = 1,...,n$ are obtained, where $n$ is the discrete step count along the $x$ axis. The best part is that the matrices $A_{i,i}$ are tri-, five-, or seven-diagonal depending on the local approximation used for the second derivatives in the discrete Laplace operator, i.e. second $O(h^2)$,  fourth $O(h^4)$ or sixth $O(h^6)$ respectively. 
+
+????In order to compare the results from TS method, a conservative finite difference scheme with weights is used, which applies second order of approximation along time and space.
+Both methods are tested with zero boundary conditions and also with BC, found and developed in \cite{BoundaryProblem}.????
+
+The paper is organized in the following way.  Taylor series expansion method for solving hyperbolic problem is presented in Section~2 and  a formula for boundary conditions is posed in  Section~3. The application of fast Poison solvers to the numerical evaluation of the operator $(E - \tilde \Delta)^{-1}$ is explained in Section~4. Convergence of the numerical method and tests for propagation in time of one solution are reported in Section~5. 
 
 \section{Taylor Series Approach for the BE in Two Dimensions}\label{TaylorA}
 
@@ -714,7 +755,23 @@ Figure \ref{fig:solMax40} displays the evolution of the solution maximum for Tes
 \section{Conclusion}\label{Concl}
 %=============BEGIN Conclusion========================================
 
-The investigated solutions are stable and show soliton behavior for wave speeds near the upper limit $c_{max} = 1/\sqrt{\beta}$, $c < c_{max}$, i.e. first, for $c = 0.52$ with $\beta = 3$ and $c_{max} \approx 0.5774$ and second, for  $\beta = 1$, $c=0.9$ and $c_{max} = 1$. The use of regular grid with equidistant step size $h$ turns out to be good choice to test head-on collision of waves. Furthermore, it provides valuable information with sufficient point count on the computational boundary. The performed numerical tests exhibit good convergence and solitonic-like behavior for larger times $t_n \in T_{\tau}$ which validates the TS method. 
+We propose Taylor series expansion method  to solve BE with  accuracy of   second, fourth and sixth order in space and time.  The advantage of this method is ...???
+
+We perform a series on numerical experiments to validate the numerical method. The results show that the approximate Taylor series method achieves the prescribed high accuracy. 
+
+We solve BE \rf{eq1} with two IC with high wave speeds near the maximal possible speed of the wave $c_{max}= min(1, \sqrt{\beta_2/{\beta_1}})$. More precisely, the parameters of the problem are $\beta =\beta_1/{\beta_2}= 3$, $c = 0.52$ (the maximal speed  is $c_{max} \approx 0.5774$  in this case) 
+%i.e. first, for $c = 0.52$ with $\beta = 3$ and $c_{max} \approx 0.5774$ 
+and $\beta =\beta_1/{\beta_2}= 1$, $c=0.9$ (with maximal speed $c_{max} = 1$ in the second case). 
+The resulting two numerical solutions for wave speeds near the upper limit $c_{max} $, $c < c_{max}$ are stable in form and  their maxima are changed for long period of time $T=40$ with small errors.  Thus the obtained solutions show soliton behavior. 
+% for wave speeds near the upper limit $c_{max} = 1/\sqrt{\beta}$, $c < c_{max}$, 
+
+
+ The use of regular grid with equidistant step size $h$ turns out to be good choice to test head-on collision of the obtained two waves. Furthermore, it provides valuable information with sufficient point count on the computational boundary. 
+
+%The performed numerical tests exhibit good convergence and solitonic-like behavior for larger times $t_n \in T_{\tau}$ which validates the TS method. 
+\section{Acknowledgments}
+
+The second author is  partially supported by  the Bulgarian Science Fund under Grant K$\Pi$-06-H22/2.
 
 %The title of your section
 \section{References}
