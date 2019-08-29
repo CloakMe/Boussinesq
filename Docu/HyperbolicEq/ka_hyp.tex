@@ -90,9 +90,7 @@
 %%%%%%%%%%%%%%%%%%%%%%% ABSTRACT %%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-This paper evaluates propagating wave solutions to the two dimensional Boussinesq Equation (BE). To solve this nonlinear  hyperbolic problem we use  high order finite difference schemes for the spatial derivatives. Taylor Series (TS) expansion method about time is used to move the solution forward. An explicit formula for boundary Conditions (BC) is applied on the computational boundary. The resulting numerical method has high accuracy of   second, fourth and sixth order both in space and time.   The performed numerical tests exhibit good convergence and confirm the validity of the TS method.
-
-
+This paper evaluates propagating wave solutions to the two dimensional Boussinesq Equation (BE). High order finite difference schemes for the spatial derivatives are implemented to solve this nonlinear hyperbolic problem. Taylor Series (TS) expansion method about time is used to move the solution forward. An explicit formula for boundary Conditions (BC) is applied on the computational boundary. The resulting numerical method has high accuracy of second, fourth and sixth order both in space and time. The performed numerical tests exhibit good convergence and confirm the validity of the TS method.
 
 \key{differential equation, two dimensional Boussinesq equation, traveling wave solutions (TWS), high order finite difference schemes, Fast Poisson Solvers.}
 
@@ -112,35 +110,19 @@ In this paper we  consider the two dimensional Boussinesq  Equation (BE)
 \end{align}
 where $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. 
 
+The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics, geotechnical engineering, atmosphere dynamics, etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}.
 
-The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics, geotechnical engineering, atmosphere dynamics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}. 
+In order to obtain an initial condition (IC) for equation \rf{eq1}, \rf{eq11}, another elliptic differential equation for a stationary, travelling in $y$  direction, with velocity $c$, solution $U$ given by $u(x,y,t)=U(x,y-ct)$, has to be solved. The corresponding elliptic problem was treated in \cite{Ch2011} using the perturbation solution method. In this way IC to \rf{eq1}, \rf{eq11}  with small wave velocities $c$ were developed. Other methods for obtaining IC were given in \cite{chr-chr},\cite{chr-chr-07} and \cite{EllipticProblem}.
+Using these  IC with small wave speeds $c \approx 0.3$, the hyperbolic problem \rf{eq1} was solved and the results are  reported in \cite{cher} and \cite{dani}. The calculations in the above papers show, that the numerical solution of the hyperbolic problem with these IC either blows up or disperse in the form of ring wave expanding to infinity after some period in time.
 
-
-In order to obtain an initial condition (IC) for equation \rf{eq1}, \rf{eq11}, another elliptic differential equation for a stationary, travelling in $y$  direction with velocity $c$ solution $U$ given by $u(x,y,t)=U(x,y-ct)$,   has to be solved. 
- The corresponding elliptic problem was treated in \cite{Ch2011} using  the perturbation solution method.  In this way   IC to \rf{eq1}, \rf{eq11}  with small wave velocities $c$ were developed.
-Other methods for obtaining IC were given in \cite{chr-chr},\cite{chr-chr-07} and \cite{EllipticProblem}. 
-Using these  IC with small wave speeds $c \approx 0.3$, the hyperbolic problem \rf{eq1}  was solved and the results are  reported in \cite{cher} and \cite{dani}. 
-%The articles \cite{cher} and \cite{dani} showed results for the hyperbolic problem \rf{eq1} with small wave speeds $c \approx 0.3$ and used the Perturbation Solution,
-The calculations in the above papers show, that the numerical solution of the hyperbolic problem with these IC either blows up or disperse in the form of ring wave expanding to infinity  after some period in time.
-
-%An approximation for IC with small wave velocities $c$ was developed in \cite{Ch2011} using  the perturbation solution method. 
-% which is developed in \cite{Ch2011}, as IC . 
  Nevertheless, there are still no tests in the literature for solving \rf{eq1} with IC with higher wave speeds $c^2 \approx min(1, \beta_2/{\beta_1})$ and no tests with IC different from the perturbation solutions found in \cite{Ch2011}. The last seems to be very adaptive and useful as the author gives an explicit formula for IC in two dimensions. Unfortunately, the formula has its limitations and downsides. 
 
 The asymptotic of the stationary solitary wave solution $U(x,y)$ as $x^2+y^2 \rightarrow \infty$ is also an important topic and was mainly researched in \cite{chr-chr-07}, \cite{Ch2012} and \cite{BoundaryProblem}. If the asymptotic behavior is known, then one could use a finite domain $\Omega$,  $\Omega \in \RR^2$ and apply the corresponding boundary conditions on $\partial \Omega$. 
 
-Since the IC are  fundamental for solving the unsteady BE (1), we obtain in \cite{EllipticProblem}  more accurate   stationary, travelling in $y$  direction with velocity $c$ solutions $U$ to (1), especially for velocities $c > 0.7$.   We found also  new asymptotic boundary conditions on $\partial \Omega$ in the article \cite{BoundaryProblem}.
+Since the IC are  fundamental for solving the unsteady BE (1), we obtain more accurate stationary, traveling in $y$  direction with velocity $c$ solutions $U$ to (1), especially for velocities $c > 0.7$ in \cite{EllipticProblem}. We also found new asymptotic boundary conditions on $\partial \Omega$ in \cite{BoundaryProblem}.
 
 %for the construction of initial data of 
- Having in mind the obtained in  \cite{EllipticProblem} and \cite{BoundaryProblem} new IC and boundary conditions, we seek in this article  accurate solutions to \rf{eq1} with IC from \cite{EllipticProblem}. 
-
-
-
-%Thus, the following article appeared \cite{critEn}, which gives the partial answer whether the IC is going to blow-up, depending on the computation of the critical energy constant for the two-dimensional BE.  
-%
-%
-%
-%The obtained results in our previous work \cite{EllipticProblem} and \cite{BoundaryProblem} serve as initial and boundary condition for the hyperbolic equation \rf{eq1}, \rf{eq11}  here. 
+This article investigates accurate solutions to \rf{eq1} with new initial and boundary conditions obtained in \cite{EllipticProblem} and \cite{BoundaryProblem}. 
 
 In order to relate to \cite{EllipticProblem} and \cite{BoundaryProblem}
 the following variable change is applied
@@ -623,13 +605,11 @@ Figure \ref{fig:solMax} displays the evolution of the maximum on the finest grid
 
 The following paragraph is about the complexity of the algorithm viewed from different perspectives. Around 80\% of the computational time goes for the inversion of the discrete operator $A_h = (E - \Delta_h)$. Let us denote with $n_x$, $n_y$ and $n_t$ the point count along $x$, $y$ and $t$ directions on the discrete domain $\Omega_h \times T_{\tau}$, respectively. Then, if $P_A$ denotes the operation count for a single inversion of the $A_h$ operator, the complexity of the algorithm with respect to the space approximation order is given by the following table \rf{tab:b}. \begin{table}[!htbp]
 \centering
-		\begin{tabular}{||c|c|c|c||}
-			\hline
+		\begin{tabular}{|c|c|c|c|}
 			\hline
       Space approximation order  &        $O(h^2)$    &        $O(h^4)$     &        $O(h^6)$    \\
 			\hline 
       Operation count $P_A$ &        $12 * n_y * n_x$    &        $24 * n_y * n_x$     &        $41 * n_y * n_x$    \\
-			\hline
 			\hline
 		\end{tabular}
 		\caption{Operations count for a single inversion of the $A_h$ operator.}
@@ -638,18 +618,17 @@ The following paragraph is about the complexity of the algorithm viewed from dif
 \end{table}
 
 The inverse operator $A_h^{-1}$ is a full matrix and working with it requires much more operations $P_A \sim O(n_y^3 * n_x)$. Therefore, it is much cheaper and faster to invert a band matrix with Gauss elimination, e.g. like Thomas algorithm in case of tridiagonal matrix.
-Furthermore, the complexity of the algorithm with respect to the time approximation order could be described by the following table \rf{tab:c}. \begin{table}[!htbp]
+\rf{tab:c}. Furthermore, the complexity of the algorithm with respect to the time approximation order could be described by table \rf{tab:c}.
+\begin{table}[!htbp]
 \centering
-		\begin{tabular}{||c|c|c|c||}
-			\hline
+		\begin{tabular}{|c|c|c|c|}
 			\hline
        Time approximation order  &        $O(\tau^2)$    &        $O(\tau^4)$     &        $O(\tau^6)$    \\
 			\hline 
       Operation count  &        $P_A$    &        $3 * P_A$     &        $5 * P_A$    \\
 			\hline
-			\hline
 		\end{tabular}
-		\caption{Operations count for one TS expansion, where.}
+		\caption{Operations count for one TS expansion.}
 
 \label{tab:c}
 \end{table}
@@ -680,7 +659,7 @@ This is because the second order $O(\tau^2)$ requires only one inversion for $D^
 \end{figure}
 The complexity of the algorithm is quadratic with respect to the space step length $h$ (the same step is applied along $x$ and $y$ directions) and linear with respect to the time step length $\tau$. Thus, it takes 8 times more time for the algorithm to complete, if $h$ and $\tau$ are two times smaller ($h/2$, $\tau/2$).
 
-Test Wave $bt = 3$ (see Figure \rf{fig:oneWaveB}). The following test shows single solution wave with $\beta = 3$, $c = 0.52$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. The approximation order is $O(h^6 + \tau^6)$ and the time domain is also increased four times compared to results in table \rf{tab:a}. In order to compare the initial condition $u_h(0)$ with the end solution $u_h(40)$, the last is artificially shifted backwards $y = y^* - 20.8$ so that both functions are centered with their maximums on $(0,0)$. It is obtained that $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_2} = 0.023453 $ and $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_\infty} = 0.026302$. 
+Test Wave $bt = 3$ (see Figure \rf{fig:oneWaveB}). The following test shows single solution wave with $\beta = 3$, $c = 0.52$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. The approximation order is $O(h^6 + \tau^6)$ and the time domain is increased four times compared to results in table \rf{tab:a}. Here the wave travels a distance which is $20.8 = 40*0.52$ units along the $y$ axis. In order to compare the initial condition $u_h(0)$ with the end solution $u_h(40)$, the last is artificially shifted backwards $y = y^* - 20.8$ so that both functions are centered with their maximums on $(0,0)$. It is obtained that $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_2} = 0.023453 $ and $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_\infty} = 0.026302$. 
 \begin{figure}[!htbp]
 	\centering
 	\begin{minipage}[b]{0.31\linewidth}
@@ -705,7 +684,7 @@ Test Wave $bt = 3$ (see Figure \rf{fig:oneWaveB}). The following test shows sing
 	\label{fig:oneWaveA}
 \end{figure}
 
-Test Wave $\beta = 1$ (see Figure \rf{fig:oneWaveA}). The following test shows single solution wave with $\beta = 1$, $c = 0.9$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. This is the finest grid for this set with the highest approximation order $O(h^6 + \tau^6)$. Notice that the time domain is increased four times. Here the wave travels a distance which is $36 = 40*0.9$ units along the $y$ axis. Thus, it is obtained that $\Vert u_h(40)_{y = y*-36} - u_h(0) \Vert_{L_2} = 0.000812$ and $\Vert u_h(40)_{y = y*-36} - u_h(0) \Vert_{L_\infty} = 0.000039$.
+Test Wave $\beta = 1$ (see Figure \rf{fig:oneWaveA}). The following test shows single solution wave with $\beta = 1$, $c = 0.9$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. The approximation order is $O(h^6 + \tau^6)$ and the time domain is increased four times compared to results in table \rf{tab:a}. Here the wave travels a distance which is $36 = 40*0.9$ units along the $y$ axis. Thus, it is obtained that $\Vert u_h(40)_{y = y*-36} - u_h(0) \Vert_{L_2} = 0.000812$ and $\Vert u_h(40)_{y = y*-36} - u_h(0) \Vert_{L_\infty} = 0.000039$.
 
 Both waves behave like solitons, i.e. preserve shape and furthermore figure \ref{fig:solMax40} shows that the solutions have stable maxima.
 \begin{figure}[ht]
@@ -786,18 +765,12 @@ Figure \ref{fig:solMax40} displays the evolution of the solution maximum for Tes
 
 We propose Taylor Series expansion method to solve BE with accuracy of second, fourth and sixth order in space and time. The advantage of this method is how easily one could calculate such complex functions. Often, the solution blows up or disperse and Figures \rf{fig:oneWaveA} and \rf{fig:oneWaveB} show that the accuracy of TS is good enough to produce stable soliton.
 
-We perform a series on numerical experiments to validate the numerical method. The results show that the approximate Taylor series method achieves the prescribed high accuracy. 
+Series of numerical experiments validate the numerical method. The results show that the approximate Taylor series method achieves the prescribed high accuracy. 
 
 We solve BE \rf{eq1} with two IC with high wave speeds near the maximal possible speed of the wave $c_{max}= min(1, \sqrt{\beta_2/{\beta_1}})$. More precisely, the parameters of the problem are $\beta =\beta_1/{\beta_2}= 3$, $c = 0.52$ (the maximal speed  is $c_{max} \approx 0.5774$  in this case) 
 %i.e. first, for $c = 0.52$ with $\beta = 3$ and $c_{max} \approx 0.5774$ 
 and $\beta =\beta_1/{\beta_2}= 1$, $c=0.9$ (with maximal speed $c_{max} = 1$ in the second case). 
 The resulting two numerical solutions for wave speeds near the upper limit $c_{max} $, $c < c_{max}$ are stable in form and  their maxima are changed for long period of time $T=40$ with small errors.  Thus the obtained solutions show soliton behavior. 
-% for wave speeds near the upper limit $c_{max} = 1/\sqrt{\beta}$, $c < c_{max}$, 
-
-
- The use of regular grid with equidistant step size $h$ turns out to be good choice to test head-on collision of the obtained two waves. Furthermore, it provides valuable information with sufficient point count on the computational boundary. 
-
-%The performed numerical tests exhibit good convergence and solitonic-like behavior for larger times $t_n \in T_{\tau}$ which validates the TS method. 
 \section{Acknowledgments}
 
 The second author is  partially supported by  the Bulgarian Science Fund under Grant K$\Pi$-06-H22/2.
@@ -837,12 +810,6 @@ publication.
 % References
 
 \begin{thebibliography}{99}
-
-% Example of multiple authors:
-\bibitem{BFL}
-Y. Benoist, P. Foulon and F. Labourie, % Use `and' connect the last two authors
-\emph{Flots d'Anosov a distributions stable et instable differentiables,}
-J. Amer. Math. Soc. \textbf{5} (1992), 33--74 (French).
 
 %1
 \bibitem{ChChr}
@@ -921,74 +888,6 @@ Math. Comput., 51(1988),  699 -- 706.
 
 \bibitem{sam}
 A.~Samarskii, The theory of difference schemes, M. Dekker,  2001.
-
-
-\bibitem{A11}
-FirstNameInitial.  MiddleNameInitial. LastName, % first name middle initial. and then last name.  Only the first character in the paper title is capitalized.
-\emph{Title of the paper,}
-Name of the Journal \textbf{Volume} (Year), StaringPage--EndingPage.
-
-
-
-% Example of multiple authors:
-\bibitem{BFL}
-Y. Benoist, P. Foulon and F. Labourie, % Use `and' connect the last two authors
-\emph{Flots d'Anosov a distributions stable et instable differentiables,}
-J. Amer. Math. Soc. \textbf{5} (1992), 33--74 (French).
-
-% Example of a paper translated in English:
-\bibitem{BY}
-M.Sh. Birman and D.R. Yafaev,
-\emph{The spectral shift function,}  Algebra i Analiz \textbf{4} (1992), No. 5, 1--44 (Russian); Engl. transl.: St. Petersburg Math. J. \textbf{4} (1993), No. 5, 833--870.
-
-% Example of a preprint  with 7 digits archive number:
-\bibitem{quas}
-M. Entov, L. Polterovich and F. Zapolsky,
-\emph{Quasi-morphisms and the Poisson bracket,}
-preprint, \arXiv{math/0605406}.
-
-% Example of a thesis:
-\bibitem{Hoff}
-P. Hoffmann,
-\emph{Torsion Cycles and Set Theoretic Complete Intersection},
-Ph.D thesis, Washington University in St. Louis, 2006.
-
-\bibitem{Mitt}
-F. Mittelbach and M. Goossens, \emph{The LATEX Companion,} 2$^{nd}$ ed., Addison-Wesley Co., Reading,
-MA, 2004.
-
-% No author names:
-\bibitem{Whho}
-\emph{SARS Expert Committee, SARS in Hong Kong: From Experience to
-Action}, Report of Hong Kong SARS Expert Committee,
-2003. Available from: \URL{http://www.sars-expertcom.gov.hk/english/reports/reports.html}.
-
-
-% Example of a paper in Academic Press or a book:
-\bibitem{Serrin}
-J. Serrin,
-\emph{Gradient estimates for solutions of nonlinear elliptic and parabolic equations,}
-Contributions to Nonlinear Functional Analysis (eds. E.H. Zarantonello and Author 2), Academic Press, 1971, 33--75.
-
-% Example of a book in the reference:
-\bibitem{rB}
-J.  Smoller,
-\emph{Shock Waves and Reaction-Diffusion Equations},
-2$^{nd}$ ed.,  Springer-Verlag, New York, 1994.
-
-% Example of a preprint  with 8 digits archive number:
-\bibitem{Te2008}
-A. Teplinsky,
-\emph{Herman's theory revisited,} preprint,
-\arXiv{0707.0078}.
-
-%
-\bibitem{A22}
-C.  Wolf,
-\emph{A mathematical model for the propagation of a hantavirus in structured populations,}
-Discrete Contin. Dyn. Syst. Ser. B \textbf{4} (2004), 1065--1089.
-
-
 
 \end{thebibliography}
 
