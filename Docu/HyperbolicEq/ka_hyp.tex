@@ -266,10 +266,10 @@ The following boundary function
 \begin{equation}\label{eqBCV}
 \widehat U_B(x , y) = \mu_u \frac{ (1 - \tilde c^2/\beta) x^2 - \tilde y^2}{( (1 - \tilde c^2/\beta) \tilde x^2 + \tilde y^2)^2}
 \end{equation}
-found in \cite{BoundaryProblem} is used to to evaluate stationary propagating wave solutions described in \cite{EllipticProblem}. The last article focus on solutions to \rf{eqVC} of the type $u(x, y, t) = U(x, y - ct)$, which are stationary solitary waves traveling in y direction
+found in \cite{BoundaryProblem} is used to to evaluate stationary propagating wave solutions on the boundary $\partial \Omega$. This topic is researched in \cite{EllipticProblem}. The last article focus on solutions to \rf{eqVC} of the type $u(x, y, t) = U(x, y - ct)$, which are stationary solitary waves traveling in y direction
 with velocity c. In order to use \rf{eqBCV} as BC for \rf{eqVC}, it is transformed into
 \begin{equation}\label{eqBCH}
-u_B(x, y, t) = \mu_u \frac{ (1 - c^2) x_b^2 - (y-ct)^2}{( (1 - c^2) x^2 + (y-ct)^2)^2}
+u_B(x, y, t) = \mu_u \frac{ (1 - c^2) x^2 - (y-ct)^2}{( (1 - c^2) x^2 + (y-ct)^2)^2}
 \end{equation}
 with $c = \tilde c / \sqrt{\beta}$, $x = \tilde x$ and $y - ct = \tilde y$. 
 Near the computational boundaries $\partial \Omega$ we do not change the stencil \rf{fd} (see \rf{fig:BoundaryFD}). There, the discrete Laplacian
