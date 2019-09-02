@@ -94,7 +94,7 @@ This paper evaluates propagating wave solutions to the two dimensional Boussines
 
 \key{ Two dimensional Boussinesq equation, traveling wave solutions (TWS), high order finite difference schemes, Fast Poisson Solvers, Taylor Series Method.}
 
-\msc{34L15, 34L20, 35R10}
+\msc{65N06, 35L70, 76B25}
 \end{abstract}
 
 
@@ -122,7 +122,7 @@ The asymptotic of the stationary solitary wave solution $U(x,y)$ as $x^2+y^2 \ri
 Since the IC are  fundamental for solving the unsteady BE (1), we obtain more accurate stationary, traveling in $y$  direction with velocity $c$ solutions $U$ to (1), especially for velocities $c > 0.7$ in \cite{EllipticProblem}. We also found new asymptotic boundary conditions on $\partial \Omega$ in \cite{BoundaryProblem}.
 
 %for the construction of initial data of 
-This article investigates accurate solutions to \rf{eq1} with new initial and boundary conditions obtained in \cite{EllipticProblem} and \cite{BoundaryProblem}. 
+The aim of this article is to investigate accurate solutions to \rf{eq1} with new initial and boundary conditions obtained in \cite{EllipticProblem} and \cite{BoundaryProblem}. 
 
 In order to relate to \cite{EllipticProblem} and \cite{BoundaryProblem}
 the following variable change is applied
@@ -142,9 +142,9 @@ where $\beta = \beta_1 / \beta_2$.
 
 Taylor series (TS) expansion of the solution is used to calculate the solution from time level $t$ to the next time  $t+\tau$.
 The time derivatives
-are obtained from the equation \rf{eqVC} by an iterative procedure. This is possible because the equation allows to isolate the highest time derivative on one side of the equation, see \rf{eqVC}. By differentiating with respect to time variable one could obtain higher time derivative terms in the TS expansion. Here, the solver could be adjusted to use second, fourth or sixth approximation order, i.e. $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. To increase the precision of the numerical method, finite difference schemes (FDS) with local approximation of second $O(h^2)$, forth $O(h^4)$ and sixth $O(h^6)$ order are  applied to the spatial derivatives, i.e.  second derivatives along space are approximated with high order finite differences. Thus, the numerical solution is computed on relatively coarse grid with  accuracy of $O(h^2+\tau^2)$, $O(h^4+\tau^4)$ and $O(h^6+\tau^6)$ order. The inversion of $(E - \tilde \Delta)$ operator is discussed in section \rf{FPSsection}. Using spectral analysis, one could decompose the discrete version of this operator by finding its eigenvectors and corresponding eigenvalues. After a suitable substitution $n$ linear systems $A_{i,i} \bar u_i = \bar f_i$, $i = 1,...,n$ are obtained, where $n$ is the discrete step count along the $x$ axis. The best part is that the matrices $A_{i,i}$ are tri-, five-, or seven-diagonal depending on the local approximation used for the second derivatives in the discrete Laplace operator, i.e. second $O(h^2)$,  fourth $O(h^4)$ or sixth $O(h^6)$ respectively. 
+are obtained from the equation \rf{eqVC} by an iterative procedure. This is possible because the equation allows to isolate the highest time derivative on one side of the equation, see \rf{eqVC}. By differentiating with respect to time variable one could obtain higher time derivative terms in the TS expansion. Here, the solver could be adjusted to use second, fourth or sixth approximation order, i.e. $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. To increase the precision of the numerical method, finite difference schemes (FDS) with local approximation of second $O(h^2)$, forth $O(h^4)$ and sixth $O(h^6)$ order are  applied to the spatial derivatives, i.e.  second derivatives along space are approximated with high order finite differences. Thus, the numerical solution is computed on relatively coarse grid with  accuracy of $O(h^2+\tau^2)$, $O(h^4+\tau^4)$ and $O(h^6+\tau^6)$ order. The inversion of $(E - \tilde \Delta)$ operator is discussed in Section \ref{FPSsection}. Using spectral analysis, one could decompose the discrete version of this operator by finding its eigenvectors and corresponding eigenvalues. After a suitable substitution $n$ linear systems $A_{i,i} \bar u_i = \bar f_i$, $i = 1,...,n$ are obtained, where $n$ is the discrete step count along the $x$ axis. The best part is that the matrices $A_{i,i}$ are tri-, five-, or seven-diagonal depending on the local approximation used for the second derivatives in the discrete Laplace operator, i.e. second $O(h^2)$,  fourth $O(h^4)$ or sixth $O(h^6)$ respectively. 
 
-The paper is organized in the following way.  Taylor series expansion method for solving hyperbolic problem is presented in Section \rf{TaylorA} and  a formula for boundary conditions is posed in  Section \rf{BndS}. The application of fast Poison solvers to the numerical evaluation of the operator $(E - \tilde \Delta)^{-1}$ is explained in Section \rf{FPSsection}. Convergence of the numerical method and tests for propagation in time of one solution are reported in Section \rf{NumTests}. 
+The paper is organized in the following way.  Taylor series expansion method for solving hyperbolic problem is presented in Section \ref{TaylorA} and  a formula for boundary conditions is posed in  Section \ref{BndS}. The application of fast Poison solvers to the numerical evaluation of the operator $(E - \tilde \Delta)^{-1}$ is explained in Section \ref{FPSsection}. Convergence of the numerical method and tests for propagation in time of one solution are reported in Section \ref{NumTests}. 
 
 \section{Taylor Series Approach for the BE in Two Dimensions}\label{TaylorA}
 
@@ -152,7 +152,7 @@ Revert to old abbreviations $x$, $y$, $t$ and $u$ and define $L$ to be an operat
 \begin{equation}\label{operator}
 Lu = \frac{\Delta u + (E-\Delta)^{-1} ( \alpha \beta \Delta( u^2) + (\beta -1)\Delta u)}{\beta},
 \end{equation}
-where the negative power denotes the inverse operator of $(E-\Delta)$. The finite differences along time and space require TS expansions of $u(x,y,t)$. Therefore it is assumed that the solution is $s$ times infinitely differentiable with respect to $t$ and $p$ times infinitely differentiable with respect to $x$ and $y$, i.e. $u \in C^{p,p,s}(\Omega \times T, R)$. For simplicity $s$ also stands for the order of the TS expansion and $p$ stands for the order of the FDS approximations along the computational box $\Omega_h$. It is shown that the error of the method is $O(h^p + \tau^s)$ if a suitable boundary condition is applied on $\partial \Omega_h$.
+where the negative power denotes the inverse operator of $(E-\Delta)$. From here on, the interval $[0\,\, T]$ where $t \in [0\,\, T]$, will be denoted by single letter $T$. The finite differences along time and space require TS expansions of $u(x,y,t)$. Therefore it is assumed that the solution is $s+1$ times infinitely differentiable with respect to $t$ and $p+1$ times infinitely differentiable with respect to $x$ and $y$, i.e. $u \in C^{p+1,p+1,s+1}(\Omega \times T)$. For simplicity $s$ also stands for the order of the TS expansion and $p$ stands for the order of the FDS approximations along the computational box $\Omega_h$. It is shown that the error of the method is $O(h^p + \tau^s)$ if a suitable boundary condition is applied on $\partial \Omega_h$.
 
 The solution function $u$ is defined by $u : \bar \Omega \times T \rightarrow  R$ where $\bar \Omega = \partial \Omega \cup \Omega$. If $\Omega_h$ is the corresponding grid to $\bar \Omega$ with equal step size $h$ along $x$ and $y$ directions, then $u_h$ is defined as the restriction of $u$ over $\Omega_h$
 $$u_h : \bar \Omega_h \times T \rightarrow  R$$
@@ -171,7 +171,7 @@ An explicit formula for the highest derivative of $u$ in PDE \rf{eqVC}
 \begin{equation}\label{Leq}
 \frac{ \partial^2 u_h }{ \partial t^2 } = L_h u_h = \frac{ \Delta_h u_h + (E - \Delta_h)^{-1} ( \alpha \beta \Delta_h( u_h^2) + (\beta -1)\Delta_h u_h) }{\beta}
 \end{equation}
-is obtained. The solution is $s$ times differentiable on $T$ and therefore the last transforms into
+is obtained. The solution is $s$ times differentiable in $T$ and therefore the last transforms into
 
 \begin{equation}\label{DLeq}
 D^{\tilde s} (u_h) =\frac{ \Delta_h D^{\tilde s - 2}(u_h) + (E - \Delta_h)^{-1}( \Delta_h D^{\tilde s - 2} ( \alpha \beta u_h^2  + (\beta -1)u_h) )  }{\beta} 
@@ -397,7 +397,7 @@ f_h =
     \bar f_{n}\
 \end{bmatrix}
 \]
-where $\bar z_k = (z_{k,1}, z_{k,2}, ..., z_{k,n})\in \RR^{n}$ and $\bar f_k = (f_{k,1}, f_{k,2}, ..., f_{k,n})\in \RR^{n}$. Furthermore, $A_{i,i} \in \RR^{n \times n}$, $i = 1, ..., n$ is defined as
+where $\bar z_k = (z_{k,1}, z_{k,2}, ..., z_{k,n})^T\in \RR^{n}$ and $\bar f_k = (f_{k,1}, f_{k,2}, ..., f_{k,n})^T\in \RR^{n}$. Furthermore, $A_{i,i} \in \RR^{n \times n}$, $i = 1, ..., n$ is defined as
 \[
 A_{i,i} = 
 \begin{bmatrix}
@@ -408,7 +408,7 @@ A_{i,i} =
       \dots         & \dots    & \dots         & \dots & -1  \\
      0                 & \dots   &  0               & -1    & 4+h^2
 \end{bmatrix}
-\]
+\].
 Therefore, $A_h z_h = f_h$ is equivalent to the simplified linear system
 \begin{align}
 A_{1,1}\bar z_1 - \bar z_2 &= h^2\bar f_1, \nonumber \\
@@ -427,7 +427,7 @@ Dy_1 - y_2 &= h^2 q_1,\nonumber \\
 \end{align}
 The last system \rf{SubSys} is rearranged as we group equations that correspond to the same eigenvalue $\lambda_i \in D$ for all $i = 1,...,n$. Thus we obtain $n$ tridiagonal linear systems which can be solved using Tridiagonal Matrix Algorithm (TDMA) a.k.a. Thomas Algorithm. The final step is back substitution $\bar z_i = W y_i$ in order to revert to the initial function. To solve equation \rf{DLeq} for the unknown derivative $D^{\tilde s}u_h$, the right side $\bar f_h$  in \rf{SubSys} and \rf{LinSys} is described by
 $$
-q_h = W^T \bar f_h, \quad \bar f_h = \Delta_h \frac{ \partial^{ \tilde s - 2 } } { \partial t^{ \tilde s - 2 } } ( \alpha \beta u_h^2  + (\beta -1)u_h).
+q_h = W^T f_h, \quad f_h = \Delta_h \frac{ \partial^{ \tilde s - 2 } } { \partial t^{ \tilde s - 2 } } ( \alpha \beta u_h^2  + (\beta -1)u_h).
 $$
 \iffalse
 A closer look on the sub-diagonals of matrices $A_h$ and $A_{i,i}$ reveals that the five point stencil $S_5$ (also $S_9$ and $S_{13}$) is not fully applied near the computational boundary $\partial \Gamma_h$. Furthermore, the definition of $A_h$ and $A_{i,i}$ implies that $z_h$ is zero outside $ \partial \Gamma_h$. Thus, the Dirichlet boundary condition  $u(x,y) = 0$, $(x,y) \in \partial \Gamma$ is implemented in a "mild way", i.e. the function is zero on a rectangular defined by the following $(x,y)$ points: $(-h,-h)$, $(1+h,-h)$, $(1+h,1+h)$ and $(-h,1+h)$. This technique turns out to be good enough to produce smooth results on the boundary. For further details please check the next chapter \rf{BndS} about the boundary condition.
@@ -607,10 +607,10 @@ Figure \ref{fig:solMax} displays the evolution of the maximum on the finest grid
 	\caption{$\beta = 3$, $c=0.52$ on the left panel, and $\beta = 1$, $c=0.9$ on the right panel.}
 	\label{fig:solMax}
 \end{figure}
-Finally, the results from Table \rf{tab:a} show that TS method is convergent for all three cases $O(h^2 + \tau^2)$, $O(h^4 + \tau^4)$ and  $O(h^6 + \tau^6)$.
+Finally, the results from Table \rf{tab:a} show that TS method converges for all three cases $O(h^2 + \tau^2)$, $O(h^4 + \tau^4)$ and  $O(h^6 + \tau^6)$.
 %=============BEGIN Complexity========================================
 \subsection{Complexity}
-The following section is about the complexity of the algorithm viewed from different perspectives. Around 80\% of the computational time goes for the inversion of the discrete operator $A_h = (E - \Delta_h)$. Let us denote with $n_x$, $n_y$ and $n_t$ the point count along $x$, $y$ and $t$ directions on the discrete domain $\Omega_h \times T_{\tau}$, respectively. Then, if $P_A$ denotes the operation count for a single inversion of the $A_h$ operator, the complexity of the algorithm with respect to the space approximation order is given by the following table \rf{tab:b}. \begin{table}[!htbp]
+The following section is about the complexity of the algorithm viewed from different perspectives. Around 80\% of the computational time goes for the inversion of the discrete operator $A_h = (E - \Delta_h)$. Let us denote with $n_x$, $n_y$ and $n_t$ the point count along $x$, $y$ and $t$ directions on the discrete domain $\Omega_h \times T_{\tau}$, respectively. Then, if $P_A$ denotes the operation count for a single inversion of the $A_h$ operator, the complexity of the algorithm with respect to the space approximation order is given by the following Table \rf{tab:b}. \begin{table}[!htbp]
 \centering
 		\begin{tabular}{|c|c|c|c|}
 			\hline
@@ -624,8 +624,7 @@ The following section is about the complexity of the algorithm viewed from diffe
 \label{tab:b}
 \end{table}
 
-The inverse operator $A_h^{-1}$ is a full matrix and working with it requires much more operations $P_A \sim O(n_y^3 * n_x)$. Therefore, it is much cheaper and faster to invert a band matrix with Gauss elimination, e.g. like Thomas algorithm in case of tridiagonal matrix.
-\rf{tab:c}. Furthermore, the complexity of the algorithm with respect to the time approximation order could be described by table \rf{tab:c}.
+The inverse operator $A_h^{-1}$ is a full matrix and working with it requires much more operations $P_A \sim O(n_y^3 * n_x)$. Therefore, it is much cheaper and faster to invert a band matrix with Gauss elimination, e.g. like Thomas algorithm in case of tridiagonal matrix. Furthermore, the complexity of the algorithm with respect to the time approximation order could be described by Table \rf{tab:c}.
 \begin{table}[!htbp]
 \centering
 		\begin{tabular}{|c|c|c|c|}
@@ -640,7 +639,7 @@ The inverse operator $A_h^{-1}$ is a full matrix and working with it requires mu
 \label{tab:c}
 \end{table}
 
-This is because the second order $O(\tau^2)$ requires only one inversion for $D^2 u_h$, the fourth order $O(\tau^4)$ requires three inversions of $A_h$ for the three derivatives $D^2 u_h$, $D^3 u_h$ and $D^4 u_h$ and the sixth order $O(\tau^6)$ requires five inversions of $A_h$ for $D^2 u_h$, $D^3 u_h$, $D^4 u_h$, $D^5 u_h$ and $D^6 u_h$ in the TS expansion.
+This is because the second order $O(\tau^2)$ requires only one inversion for $D^2 u_h$, the fourth order $O(\tau^4)$ requires three inversions of $A_h$ for $D^2 u_h$, $D^3 u_h$ and $D^4 u_h$ and the sixth order $O(\tau^6)$ requires five inversions of $A_h$ for $D^2 u_h$, $D^3 u_h$, $D^4 u_h$, $D^5 u_h$ and $D^6 u_h$ derivative(s) in the TS expansion, respectively.
 
 The complexity of the algorithm is quadratic with respect to the space step length $h$ (the same step is applied along $x$ and $y$ directions) and linear with respect to the time step length $\tau$. Thus, it takes 8 times more time for the algorithm to complete, if $h$ and $\tau$ are two times smaller ($h/2$, $\tau/2$).
 \begin{figure}[!htbp]
@@ -667,8 +666,7 @@ The complexity of the algorithm is quadratic with respect to the space step leng
 	\label{fig:oneWaveB}
 \end{figure}
 \subsection{Propagation of test waves}
-
-Test Wave $bt = 3$ (see Figure \rf{fig:oneWaveB}). The following test shows single solution wave with $\beta = 3$, $c = 0.52$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. The approximation order is $O(h^6 + \tau^6)$ and the time domain is increased four times compared to results in table \rf{tab:a}. Here the wave travels a distance which is $20.8 = 40*0.52$ units along the $y$ axis. In order to compare the initial condition $u_h(0)$ with the end solution $u_h(40)$, the last is artificially shifted backwards $y = y^* - 20.8$ so that both functions are centered with their maximums on $(0,0)$. It is obtained that $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_2} = 0.023453 $ and $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_\infty} = 0.026302$. 
+\textbf{Test Wave} {\boldmath$\beta = 3$} (see Figure \rf{fig:oneWaveB}). The following test shows single solution wave with $\beta = 3$, $c = 0.52$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. The approximation order is $O(h^6 + \tau^6)$ and the time domain is increased four times compared to results in Table \rf{tab:a}. Here the wave travels a distance which is $20.8 = 40*0.52$ units along the $y$ axis. In order to compare the initial condition $u_h(0)$ with the end solution $u_h(40)$, the last is artificially shifted backwards $y = y^* - 20.8$ so that both functions are centered with their maximums on $(0,0)$. It is obtained that $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_2} = 0.023453 $ and $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_\infty} = 0.026302$. 
 \begin{figure}[!htbp]
 	\centering
 	\begin{minipage}[b]{0.31\linewidth}
@@ -693,7 +691,7 @@ Test Wave $bt = 3$ (see Figure \rf{fig:oneWaveB}). The following test shows sing
 	\label{fig:oneWaveA}
 \end{figure}
 
-Test Wave $\beta = 1$ (see Figure \rf{fig:oneWaveA}). The following test shows single solution wave with $\beta = 1$, $c = 0.9$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. The approximation order is $O(h^6 + \tau^6)$ and the time domain is increased four times compared to results in table \rf{tab:a}. Here the wave travels a distance which is $36 = 40*0.9$ units along the $y$ axis. Thus, it is obtained that $\Vert u_h(40)_{y = y*-36} - u_h(0) \Vert_{L_2} = 0.000812$ and $\Vert u_h(40)_{y = y*-36} - u_h(0) \Vert_{L_\infty} = 0.000039$.
+\textbf{Test Wave} {\boldmath$\beta = 1$} (see Figure \rf{fig:oneWaveA}). The following test shows single solution wave with $\beta = 1$, $c = 0.9$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. The approximation order is $O(h^6 + \tau^6)$ and the time domain is increased four times compared to results in Table \rf{tab:a}. Here the wave travels a distance which is $36 = 40*0.9$ units along the $y$ axis. Thus, it is obtained that $\Vert u_h(40)_{y = y*-36} - u_h(0) \Vert_{L_2} = 0.000812$ and $\Vert u_h(40)_{y = y*-36} - u_h(0) \Vert_{L_\infty} = 0.000039$.
 
 Both waves behave like solitons, i.e. preserve shape and furthermore figure \ref{fig:solMax40} shows that the solutions have stable maxima.
 \begin{figure}[ht]
@@ -711,7 +709,7 @@ Both waves behave like solitons, i.e. preserve shape and furthermore figure \ref
 
 %=========================================================================
 \iffalse
-Test 2 (see Figure \rf{fig:oneWaveB}). The following test shows single solution wave with $\beta = 3$, $c = 0.52$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. The approximation order is $O(h^6 + \tau^6)$ and the time domain is also increased four times compared to results in table \rf{tab:a}. This wave also behave like a soliton, i.e. preserves its shape and maximum even after the collision. Here the wave travels a distance which is $20.8 = 40*0.52$ units along the $y$ axis. It is obtained that $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_2} = 0.000000$ and $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_\infty} = 0.000000$.
+Test 2 (see Figure \rf{fig:oneWaveB}). The following test shows single solution wave with $\beta = 3$, $c = 0.52$, $\tau = 0.02$, $h = 0.1$ and $\Omega_h \times T_{\tau}$ $= [40, 40] \times [40, 80] \times [0, 40]$. The approximation order is $O(h^6 + \tau^6)$ and the time domain is also increased four times compared to results in Table \rf{tab:a}. This wave also behave like a soliton, i.e. preserves its shape and maximum even after the collision. Here the wave travels a distance which is $20.8 = 40*0.52$ units along the $y$ axis. It is obtained that $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_2} = 0.000000$ and $\Vert u_h(40)_{y = y*-20.8} - u_h(0) \Vert_{L_\infty} = 0.000000$.
 
 Figure \ref{fig:solMax40} shows that solutions from both tests have stable maximums.
 \begin{figure}[!htbp]
@@ -772,7 +770,7 @@ Figure \ref{fig:solMax40} displays the evolution of the solution maximum for Tes
 \section{Conclusion}\label{Concl}
 %=============BEGIN Conclusion========================================
 
-We propose Taylor Series expansion method to solve BE with accuracy of second, fourth and sixth order in space and time. The advantage of this method is how easily one could calculate such complex functions. Often, the solution blows up or disperse and Figures \rf{fig:oneWaveA} and \rf{fig:oneWaveB} show that the accuracy of TS is good enough to produce stable soliton.
+We propose Taylor Series expansion method to solve BE with accuracy of second, fourth and sixth order in space and time. The advantage of this method is how easily one could calculate such complex functions. Often, the solution blows up or disperse (see \cite{cher}, \cite{dani}) and Figures \rf{fig:oneWaveB} and \rf{fig:oneWaveA} show that the accuracy of TS is good enough to produce stable soliton.
 
 Series of numerical experiments validate the numerical method. The results show that the approximate Taylor series method achieves the prescribed high accuracy. 
 
