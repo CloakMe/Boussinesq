@@ -29,7 +29,31 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
     xlabel('x');    ylabel('y');
     title('end solution')
 
+    Q = 41;
+    viewTypeX = 90;
+    viewTypeY = 90;
+    figure(21)
+    mesh(x, y(1:Q), bigU(:,1:Q)');
+    view( viewTypeX, viewTypeY );
+    title('Bottom domain boundary near y_{start}');
+    xlabel('x');            ylabel('y');
+    figure(22)
+    mesh(x(1:Q), y, bigU(1:Q,:)');
+    view( viewTypeX, viewTypeY );    
+    title('Left domain boundary near x_{start}');
+    xlabel('x');            ylabel('y');
 
+    figure(23)
+    mesh(x, y(end-Q:end), bigU(:,end-Q:end)');
+    view( viewTypeX, viewTypeY );    
+    title('Top domain boundary near y_{end}');
+    xlabel('x');            ylabel('y');    
+    figure(24)
+    mesh(x(end-Q:end), y, bigU(end-Q:end,:)');
+    view( viewTypeX, viewTypeY );
+    title('Right domain boundary near x_{end}');
+    xlabel('x');            ylabel('y');
+    
     Yk = bigU;
     bigZeroMatrix=zeros(size(Yk));
     dyy_yk = bt*c^2*YDer(Yk,secondDerivative);
@@ -51,13 +75,13 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
     title('Residual (with all boundary values)')
     
     figure(5)
-    plot(y,(y.^2).*bigU(zeroX,:)/theta(end)) %(1+end)/2  
+    plot(y,bigU(zeroX,:)/theta(end)) %(1+end)/2  
     xlabel('y')
-    title('x==0 cross-section multiplied by r^2');
+    title('x==0 cross-section');
     figure(6) 
-    plot(x,((x.^2)').*bigU(:,zeroY)/theta(end))   % ((x.^2)').*
+    plot(x,bigU(:,zeroY)/theta(end))   % ((x.^2)').*
     xlabel('x')
-    title('y==0 cross-section multiplied by r^2');
+    title('y==0 cross-section');
 
     figure(7)
     plot(y,bigU(1,:)) %(1+end)/2
@@ -85,10 +109,6 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
     %================================
     %================================
     %*sqrt(1-c^2/bt)
-    figure(10);
-    mesh(x(end-5:end),y,(bigU(end-5:end,:))');
-    xlabel('x');    ylabel('y');
-    title('end solution')
 
     fig_ss11=figure(11);
     set(fig_ss11, 'OuterPosition', [0.0      	30.0        380.0     340.0]);
