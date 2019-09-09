@@ -9,11 +9,11 @@ bndCutSize = 0;
 % ChristovIC_36_bt5_c040_h020_O(h^6)
 % ChristovIC_40_bt069_c090_h020_O(h^6) 
 % ChristovIC_40_bt05_c085_h020_O(h^6)
-waveFactory = WaveFactory( 'ChristovIC_40_80_bt1_c090_h010_O(h^6)', bndCutSize, 2 );
+waveFactory = WaveFactory( 'ChristovIC_40_bt3_c052_h005_O(h^6)', bndCutSize, 0 );
 %waveFactory = WaveFactory( 'BestFitIC' );
 
     tau = 0.02;
-    tEnd=40.0;
+    tEnd=2.0;
     %turnOnCaxis = 0;
     %waveFactory.PlotSingleWave( turnOnCaxis );
 
@@ -62,7 +62,7 @@ waveFactory = WaveFactory( 'ChristovIC_40_80_bt1_c090_h010_O(h^6)', bndCutSize, 
   y = engine.y;
       
   topView = 1;
-  viewTypeX = 90;
+  viewTypeX = 0;
   viewTypeY = 90;
   %MovieForBEHyperbolic( viewTypeX, viewTypeY, tt, x, y );
        
@@ -70,23 +70,23 @@ waveFactory = WaveFactory( 'ChristovIC_40_80_bt1_c090_h010_O(h^6)', bndCutSize, 
     figure(11)
     mesh(x, y(1:Q), vl(:,1:Q)');
     view( viewTypeX, viewTypeY );
-    title('Bottom domain boundary near y_{start}');
+    title('Bottom domain boundary near y=-40');
     xlabel('x');            ylabel('y');
     figure(12)
     mesh(x(1:Q), y, vl(1:Q,:)');
     view( viewTypeX, viewTypeY );    
-    title('Left domain boundary near x_{start}');
+    title('Left domain boundary near x=-40');
     xlabel('x');            ylabel('y');
 
     figure(13)
     mesh(x, y(end-Q:end), vl(:,end-Q:end)');
     view( viewTypeX, viewTypeY );    
-    title('Top domain boundary near y_{end}');
+    title('Top domain boundary near y=40');
     xlabel('x');            ylabel('y');    
     figure(14)
     mesh(x(end-Q:end), y, vl(end-Q:end,:)');
     view( viewTypeX, viewTypeY );
-    title('Right domain boundary near x_{end}');
+    title('Right domain boundary near x=40');
     xlabel('x');            ylabel('y');
     
     figure(15)
@@ -95,7 +95,7 @@ waveFactory = WaveFactory( 'ChristovIC_40_80_bt1_c090_h010_O(h^6)', bndCutSize, 
     xlabel('x');            ylabel('y');
     figure(16)
     %hold on;
-    plot(t(1:end-1),max_v,'k', t(1), max_v+0.01, 'k', t(1), max_v-0.01, 'k' );
+    plot(tt(1:end-1),max_v,'k', tt(1), max_v+0.005, 'k', tt(1), max_v-0.005, 'k' );
     %hold off;
     title('Evolution of the maximum');
     xlabel('time "t"');  ylabel('max(u_h)');
@@ -108,13 +108,15 @@ waveFactory = WaveFactory( 'ChristovIC_40_80_bt1_c090_h010_O(h^6)', bndCutSize, 
         
     bt = waveFactory.beta1/waveFactory.beta2;
     %DrawEnergyForHyperbolicBE( engine, tt );
+    notSavingTheSolution = 1
+    return;
     try
-    save (['SavedWorkspaces\HyperbTwo_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
+    save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
         num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) ...
       '_h0' num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')']);
     
     catch ex
-         save (['SavedWorkspaces\HyperbTwo_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
+         save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
              num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) '_h0' ...
              num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')'], ...
              'tau', 'x', 'y', 'tt', 'max_v', 't', 'EN', 'II', 'vl', 'dvl');
@@ -122,7 +124,9 @@ waveFactory = WaveFactory( 'ChristovIC_40_80_bt1_c090_h010_O(h^6)', bndCutSize, 
     end
     return;
 %----------------------------------------------------------------------------------------
-    waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^4)', 5 );
+CreatePictures( viewTypeX, viewTypeY, tt, x, y ); 
+
+waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^4)', 5 );
 
     tau = 0.1;
     tEnd=44.0;
