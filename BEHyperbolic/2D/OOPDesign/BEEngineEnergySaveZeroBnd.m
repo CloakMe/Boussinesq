@@ -130,7 +130,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
                                      nonlinTerm,...
                                      t,...
                                      timeDerOrd,...
-                                     domainUtilsP2spec)
+                                     domainUtils)
         if( this.order > 6 )
             error( 'Not yet implemented for order = 8 !' );
         end      
@@ -138,7 +138,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
         fd2ndDer = this.GetFd2ndDer();
         mid = ( this.order/2 + 1 );
         deltab = this.eigenFinDiffMat'*(...
-            domainUtilsP2spec.DeltaH( nonlinTerm, fd2ndDer ) ); %DeltaTimeDerevative 
+            domainUtils.DeltaH( nonlinTerm, fd2ndDer ) ); %DeltaTimeDerevative 
         deltab = ( deltab );
 
         for j=1:this.sx
@@ -153,7 +153,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
             end
         end
         
-        deltav = ( domainUtilsP2spec.DeltaH( timeDerVz, fd2ndDer ) ); % DeltaTimeDerevative
+        deltav = ( domainUtils.DeltaH( timeDerVz, fd2ndDer ) ); % DeltaTimeDerevative
         dnvz = ( this.eigenFinDiffMat*VV + deltav/this.h^2 )/this.beta;
     end
        
