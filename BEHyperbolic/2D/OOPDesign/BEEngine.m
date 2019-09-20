@@ -296,7 +296,7 @@ classdef (ConstructOnLoad) BEEngine
         vt = (vpo - vz)/this.tau;
         wvt = this.eigenFinDiffMat'*vt;
         
-        domainUtilsP2 = BEDomainUtilsP2( this.x, this.y, this.order, this.beta, this.c, this.mu, this.theta );
+        domainUtils = BEDomainUtils( this.x, this.y, this.order, this.beta, this.c, this.mu, this.theta );
         
         do = 0;
         %left = domainUtilsP2.GetDersBndLeft( t, do ) + domainUtilsP2.GetDersBndLeft( t + this.tau, do );
@@ -306,8 +306,8 @@ classdef (ConstructOnLoad) BEEngine
         
         fd2ndDer = this.GetFd2ndDer();
         mid = ( this.order/2 + 1 );
-        %idhv = vz+vpo - domainUtilsP2.DeltaH( vz+vpo, fd2ndDer, 0*left(:,:,1), 0*right(:,:,1), 0*top(:,:,1), 0*btm(:,:,1) )/this.h^2;
-        idhv = this.beta * (vz+vpo) - domainUtilsP2.DeltaH( vz+vpo, fd2ndDer )/this.h^2;
+        %idhv = vz+vpo - domainUtils.DeltaH( vz+vpo, fd2ndDer, 0*left(:,:,1), 0*right(:,:,1), 0*top(:,:,1), 0*btm(:,:,1) )/this.h^2;
+        idhv = this.beta * (vz+vpo) - domainUtils.DeltaH( vz+vpo, fd2ndDer )/this.h^2;
         VV = zeros( size( this.vdah ) );
         for j=1:this.sx
             diag = [ -fd2ndDer(1:mid-1) this.minusDHdiag(j) -fd2ndDer(mid+1:end) ]/this.h^2;
@@ -325,7 +325,7 @@ classdef (ConstructOnLoad) BEEngine
         
         vec1 = this.eigenFinDiffMat*VV;  %/h^2
         sigma = 0;  
-        IDhvt = this.beta*vt - domainUtilsP2.DeltaH( vt, fd2ndDer )/this.h^2;
+        IDhvt = this.beta*vt - domainUtils.DeltaH( vt, fd2ndDer )/this.h^2;
         Le= this.beta*this.h^2*( sum( sum( vec1.*vt ) ) ) + this.beta*this.h^2 * sum( sum( vt.*vt ) ) +...
             this.h^2 * this.tau^2 * ( sigma - 1/4 ) * sum( sum( IDhvt.*vt ) ) +...
             (this.h^2/4) * sum( sum( idhv.*( vz+vpo ) ) );
