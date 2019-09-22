@@ -196,7 +196,57 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         fg = 5;
         %}
     end
-       
+    
+    function [e] = GetEnergy( this, vz, vpo, t )
+        
+        vt = (vpo - vz)/this.tau;
+        wvt = this.eigenFinDiffMat'*vt;
+        
+        domainUtils = BEDomainUtils( this.x, this.y, this.order);
+        
+        do = 0;
+        %left = domainUtilsP2.GetDersBndLeft( t, do ) + domainUtilsP2.GetDersBndLeft( t + this.tau, do );
+        %right = domainUtilsP2.GetDersBndRight( t, do ) + domainUtilsP2.GetDersBndRight( t + this.tau, do );
+        %top = domainUtilsP2.GetDersBndTop( t, do ) + domainUtilsP2.GetDersBndTop( t + this.tau, do );
+        %btm = domainUtilsP2.GetDersBndBtm( t, do ) + domainUtilsP2.GetDersBndBtm( t + this.tau, do );
+        
+        fd2ndDer = this.GetFd2ndDer();
+        mid = ( this.order/2 + 1 );
+        %idhv = vz+vpo - domainUtils.DeltaH( vz+vpo, fd2ndDer, 0*left(:,:,1), 0*right(:,:,1), 0*top(:,:,1), 0*btm(:,:,1) )/this.h^2;
+        idhv = this.beta * (vz+vpo) - domainUtils.DeltaH( vz+vpo, fd2ndDer )/this.h^2;
+        VV = zeros( size( this.vdah ) );
+        for j=1:this.sx
+            diag = [ -fd2ndDer(1:mid-1) this.minusDHdiag(j) -fd2ndDer(mid+1:end) ]/this.h^2;
+            %diag = [(1/12) (-16/12) this.IminusDHdiag(j) (-16/12) 1/12];
+            if( this.order == 2 )      
+                VV(j,:) = BEUtilities.TridiagSolv( diag, wvt(j,:) );
+            end
+            if( this.order == 4 )   
+                VV(j,:) = BEUtilities.PentSolv( this.minusDHdiag(j), diag, wvt(j,:));
+            end
+            if( this.order == 6 )   
+                VV(j,:) = BEUtilities.SevenSolv( this.minusDHdiag(j), diag, wvt(j,:));
+            end
+        end
+        
+        vec1 = this.eigenFinDiffMat*VV;  %/h^2
+        sigma = 0;  
+        IDhvt = this.beta*vt - domainUtils.DeltaH( vt, fd2ndDer )/this.h^2;
+        Le= this.beta * ( vec1 + vt ) .* vt  +...
+            this.tau^2 * ( sigma - 1/4 ) *  IDhvt.*vt + idhv .* ( vz+vpo ) / 4 ;
+
+        NLe = ( this.alpha*this.beta/3 ) * ( vz.^3  + vpo.^3 );
+
+        energyTerm = Le + NLe;
+        if( this.order == 2) 
+            e = this.GetOh2IntegralOf(energyTerm);
+        elseif( this.order == 4 )
+            e = this.GetOh4IntegralOf(energyTerm);
+        elseif( this.order == 6 )
+            e = this.GetOh6IntegralOf(energyTerm);
+        end
+    end
+      
   end
 
 end

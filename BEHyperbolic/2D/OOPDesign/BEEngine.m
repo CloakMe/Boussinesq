@@ -282,6 +282,47 @@ classdef (ConstructOnLoad) BEEngine
             save( str, 'vmo' ); 
         end        
     end
+    
+    function [result] = GetOh2IntegralOf(this, term)
+        
+        hx = this.h;
+        hy = this.h;
+        result = hx*hy*sum( sum( term(2:end-1, 2:end-1 ) ) ) +...
+            hx/2 * ( sum( term(1, 2:end-1 ) ) + sum( term(end, 2:end-1 ) ) )+...
+            hy/2 * ( sum( term(2:end-1, 1 ) ) + sum( term(2:end-1, end ) ) )+...
+            hx*hy/4 * ( term(1, 1) + term(1, end) + term(end, 1) + term(end, end) );
+    end
+    
+    function [result] = GetOh4IntegralOf(this, term)
+        if( mod (this.sx - 1, 2) == 1 || mod (this.sy - 1, 2) == 1 )
+            error('Argument exception! sx,sy mod 2 ==0 ');
+        end
+        hx = this.h;
+        hy = this.h;        
+        
+        result = hx*hy/3 * ( sum( term(1, 2:end-1 ) ) + sum( term(end, 2:end-1 ) ) +...
+            4 * sum ( sum( term(2:2:end-1, 2:end-1 ) ) ) + 2 * sum ( sum( term(1:2:end, 2:end-1 ) ) ) ) +...
+            hx*hy/6 * ( term(1, 1 ) + term(end, 1) + 4 * sum( term(2:2:end-1, 1) ) + 2 * sum( term(1:2:end, 1) ) )+...
+            hx*hy/6 * ( term(1, end ) + term(end, end) + 4 * sum( term(2:2:end-1, end) ) + 2 * sum( term(1:2:end, end) ) );
+    end
+    
+    function [result] = GetOh6IntegralOf(this, term)        
+        if( mod (this.sx - 1, 4) == 1 || mod (this.sy - 1, 4) == 1 )
+            error('Argument exception! sx,sy mod 4 == 0 ');
+        end
+        hx = this.h;
+        hy = this.h;
+        
+        result = 2*hx*hy/45 * ( 7 * sum( term(1, 2:end-1 ) ) + 7 * sum( term(end, 2:end-1 ) ) +...
+            32 * sum( sum( term(2:2:end-3, 2:end-1) ) ) +...
+            12 * sum( sum( term(3:4:end-1, 2:end-1) ) ) + 14 * sum( sum( term(2:4:end-5, 2:end-1) ) ) ) +...            
+            hx*hy/45 * ( 7 * term(1, 1 ) + 7 * term(end, 1 ) +...
+            32 * sum(  term(2:2:end-3, 1) ) +...
+            12 * sum(  term(3:4:end-1, 1) ) + 14 * sum( term(2:4:end-5, 1) ) ) +...
+            hx*hy/45 * ( 7 * term(1, end ) + 7 * term(end, end ) +...
+            32 * sum( term(2:2:end-3, end) ) +...
+            12 * sum( term(3:4:end-1, end) ) + 14 * sum( term(2:4:end-5, end) ) );
+    end
   end
   
   methods ( Abstract = true )
@@ -296,7 +337,7 @@ classdef (ConstructOnLoad) BEEngine
         vt = (vpo - vz)/this.tau;
         wvt = this.eigenFinDiffMat'*vt;
         
-        domainUtils = BEDomainUtils( this.x, this.y, this.order, this.beta, this.c, this.mu, this.theta );
+        domainUtils = BEDomainUtils( this.x, this.y, this.order );
         
         do = 0;
         %left = domainUtilsP2.GetDersBndLeft( t, do ) + domainUtilsP2.GetDersBndLeft( t + this.tau, do );
