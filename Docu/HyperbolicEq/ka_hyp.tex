@@ -131,7 +131,7 @@ x = \sqrt{\beta_1} \tilde x, \quad y = \sqrt{\beta_1} \tilde y, \quad t = \sqrt{
 \end{equation}
 which transforms the main equation \rf{eq1}  into 
 \begin{equation}\label{eqVC}
-(E-\tilde \Delta)  \tilde u_{\tilde t \tilde t} = \frac{(E-\tilde\Delta)\tilde\Delta \tilde u + \alpha \beta \tilde\Delta(\tilde u^2) + (\beta -1)\tilde\Delta \tilde u}{\beta},
+(E-\tilde \Delta)  \tilde u_{\tilde t \tilde t} = \frac{(E-\tilde\Delta)\tilde\Delta \tilde u - \alpha \beta \tilde\Delta(\tilde u^2) + (\beta -1)\tilde\Delta \tilde u}{\beta},
 \end{equation}
 where $\beta = \beta_1 / \beta_2$. 
 %
@@ -150,7 +150,7 @@ The paper is organized in the following way.  Taylor series expansion method for
 
 Revert to old abbreviations $x$, $y$, $t$ and $u$ and define $L$ to be an operator of the form
 \begin{equation}\label{operator}
-Lu = \frac{\Delta u + (E-\Delta)^{-1} ( \alpha \beta \Delta( u^2) + (\beta -1)\Delta u)}{\beta},
+Lu = \frac{\Delta u + (E-\Delta)^{-1} (-\alpha \beta \Delta( u^2) + (\beta -1)\Delta u)}{\beta},
 \end{equation}
 where the negative power denotes the inverse operator of $(E-\Delta)$. From here on, the interval $[0\,\, T]$ where $t \in [0\,\, T]$, will be denoted by single letter $T$. The finite differences along time and space require TS expansions of $u(x,y,t)$. Therefore it is assumed that the solution is $s+1$ times infinitely differentiable with respect to $t$ and $p+1$ times infinitely differentiable with respect to $x$ and $y$, i.e. $u \in C^{p+1,p+1,s+1}(\Omega \times T)$. For simplicity $s$ also stands for the order of the TS expansion and $p$ stands for the order of the FDS approximations along the computational box $\Omega_h$. It is shown that the error of the method is $O(h^p + \tau^s)$ if a suitable boundary condition is applied on $\partial \Omega_h$.
 
@@ -169,12 +169,12 @@ we obtain finite difference schemes with high order of approximation $O(h^4)$ fo
 An explicit formula for the highest derivative of $u$ in PDE \rf{eqVC} 
 
 \begin{equation}\label{Leq}
-\frac{ \partial^2 u_h }{ \partial t^2 } = L_h u_h = \frac{ \Delta_h u_h + (E - \Delta_h)^{-1} ( \alpha \beta \Delta_h( u_h^2) + (\beta -1)\Delta_h u_h) }{\beta}
+\frac{ \partial^2 u_h }{ \partial t^2 } = L_h u_h = \frac{ \Delta_h u_h + (E - \Delta_h)^{-1} ( -\alpha \beta \Delta_h( u_h^2) + (\beta -1)\Delta_h u_h) }{\beta}
 \end{equation}
 is obtained. The solution is $s$ times differentiable in $T$ and therefore the last transforms into
 
 \begin{equation}\label{DLeq}
-D^{\tilde s} (u_h) =\frac{ \Delta_h D^{\tilde s - 2}(u_h) + (E - \Delta_h)^{-1}( \Delta_h D^{\tilde s - 2} ( \alpha \beta u_h^2  + (\beta -1)u_h) )  }{\beta} 
+D^{\tilde s} (u_h) =\frac{ \Delta_h D^{\tilde s - 2}(u_h) + (E - \Delta_h)^{-1}( \Delta_h D^{\tilde s - 2} ( -\alpha \beta u_h^2  + (\beta -1)u_h) )  }{\beta} 
 \end{equation}
 
 with $D^{(\tilde s)} := \partial^{\tilde s} / \partial t^{\tilde s}$ and $\tilde s = 2,...,s$. The $\tilde s^{th}$ time derivative requires $(\tilde s-2)^{th}$, $(\tilde s-3)^{th}$, ..., $2^{nd}$ and $1^{st}$ derivatives and the function $u_h$ itself. E.g. if one would like to calculate the $7^{th}$ derivative $\partial^7 u / \partial t^7$, then $5^{th}$, $4^{th}$, $3^{rd}$, $2^{nd}$, $1^{st}$ and $0^{th}$ derivatives are used and the $5^{th}$ requires  $3^{rd}$, $2^{nd}$, $1^{st}$ and $0^{th}$ and so on.  Thus if $\psi$ and $\bar \psi$ are two known functions with $\psi(x,y) = u(x,y, t_k)$ and $\bar \psi(x,y) = u_t(x,y, t_k)$ then the derivative $\partial^{\tilde s} u / \partial t^{\tilde s}$ could be expressed solely by $\psi$ and $\bar \psi$ at $t = t_k$.
@@ -218,11 +218,11 @@ u_{tt} = Lu.
 $$
 For $\tilde s = 3$:
 $$
-u_{ttt} = L(D(u)) = \frac{ \Delta u_t + (E - \Delta)^{-1}           ( \Delta (2 \alpha \beta u u_t  +                          (\beta -1)u_t) )  }{\beta}.
+u_{ttt} = L(D(u)) = \frac{ \Delta u_t + (E - \Delta)^{-1}           ( \Delta (2 -\alpha \beta u u_t  +                          (\beta -1)u_t) )  }{\beta}.
 $$
 For $\tilde s = 4$:
 $$
-u_{tttt} = L(D^2(u)) = \frac{ \Delta u_{tt} + (E - \Delta)^{-1}( \Delta (2 \alpha \beta ( u Lu +  u_t^2 )   + (\beta -1) u_{tt} ) )  }{\beta}.
+u_{tttt} = L(D^2(u)) = \frac{ \Delta u_{tt} + (E - \Delta)^{-1}( \Delta (2 -\alpha \beta ( u Lu +  u_t^2 )   + (\beta -1) u_{tt} ) )  }{\beta}.
 $$
 
 A more general formula, which is relevant only to the complexity of the algorithm, i.e. to estimate the number of operations for its calculation, is
@@ -230,7 +230,7 @@ A more general formula, which is relevant only to the complexity of the algorith
 \begin{align*}
 \beta LD^{(\tilde s)} u =   \Delta D^{ (\tilde s - 2) }(u)  +
 \\
- (E - \Delta)^{-1}( \Delta ( \alpha \beta \sum_{j=0}^{ \tilde s - 2}  { \tilde s - 2\choose j} D^j(u) D^{ (\tilde s - 2 - j) }(u)+ (\beta -1) D^{ (\tilde s - 2) }(u) ) ).
+ (E - \Delta)^{-1}( \Delta ( -\alpha \beta \sum_{j=0}^{ \tilde s - 2}  { \tilde s - 2\choose j} D^j(u) D^{ (\tilde s - 2 - j) }(u)+ (\beta -1) D^{ (\tilde s - 2) }(u) ) ).
 \end{align*}
 Nevertheless the formula itself is not our goal, just use the computer to derive it and evaluate it for a given function set $Q_{\tilde s}$.
 \fi
@@ -285,7 +285,7 @@ two extra points and for $p=6$, it implies seven point stencil (purple color) wi
 \begin{align}
 & \frac{ \partial^{\tilde s} } { \partial t^{\tilde s} } u_{B_h}(t_k)
 \\
-& \alpha \beta \frac{ \partial^{\tilde s} } { \partial t^{\tilde s} } u_{B_h}(t_k)^2  + (\beta -1)\frac{ \partial^{\tilde s} } { \partial t^{\tilde s} }u_{B_h}(t_k), \label{nonLinBnd}
+& -\alpha \beta \frac{ \partial^{\tilde s} } { \partial t^{\tilde s} } u_{B_h}(t_k)^2  + (\beta -1)\frac{ \partial^{\tilde s} } { \partial t^{\tilde s} }u_{B_h}(t_k), \label{nonLinBnd}
 \\
 & (\beta \frac{ \partial^2 } { \partial t^2 } - \Delta)\frac{ \partial^{\tilde s} } { \partial t^{\tilde s} } u_{B_h}(t_k) \quad \tilde s = 0,...,s-2 \label{psnBnd}
 \end{align}
@@ -308,19 +308,19 @@ As it is noticed in the previous section, the operator $(E - \Delta_h)^{-1}$ doe
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 \begin{equation}
-(E-\Delta_h -\Delta_{ext})(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) u =( \Delta_h + \Delta_{ext}) ( \alpha \beta u^2  + (\beta -1)u) 
+(E-\Delta_h -\Delta_{ext})(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta) u =( \Delta_h + \Delta_{ext}) ( -\alpha \beta u^2  + (\beta -1)u) 
 \end{equation}
 
 \begin{align}
 &(E-\Delta_h)(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta_h - \Delta_{ext}) u_h(t_k) - \Delta_{ext}((\beta \frac{ \partial^2 } { \partial t^2 } - \Delta)u_B(t_k))_h = 
 \\
-&\Delta_h ( \alpha \beta u_h(t_k)^2  + (\beta -1)u_h(t_k)) +  \Delta_{ext} ( \alpha \beta u_{B_h}(t_k)^2  + (\beta -1)u_{B_h}(t_k))  
+&\Delta_h ( -\alpha \beta u_h(t_k)^2  + (\beta -1)u_h(t_k)) +  \Delta_{ext} ( -\alpha \beta u_{B_h}(t_k)^2  + (\beta -1)u_{B_h}(t_k))  
 \end{align}
 
 \begin{align}
 &(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta_h - \Delta_{ext}) u_h(t_k)  = 
 \\
-&(E-\Delta_h)^{-1} ( \Delta_h ( \alpha \beta u_h(t_k)^2  + (\beta -1)u_h(t_k)) +  \Delta_{ext} ( \alpha \beta u_{B_h}(t_k)^2  + (\beta -1)u_{B_h}(t_k))   \nonumber
+&(E-\Delta_h)^{-1} ( \Delta_h ( -\alpha \beta u_h(t_k)^2  + (\beta -1)u_h(t_k)) +  \Delta_{ext} ( -\alpha \beta u_{B_h}(t_k)^2  + (\beta -1)u_{B_h}(t_k))   \nonumber
 \\
 &\Delta_{ext}((\beta \frac{ \partial^2 } { \partial t^2 } - \Delta)u_B(t_k))_h )
 \end{align}
@@ -328,7 +328,7 @@ As it is noticed in the previous section, the operator $(E - \Delta_h)^{-1}$ doe
 \begin{align}
 &(\beta \frac{ \partial^2 } { \partial t^2 } - \Delta_h - \Delta_{ext}) u_h(t_k)  = 
 \\
-&(E-\Delta_h)^{-1} ( \Delta_h ( \alpha \beta u_h(t_k)^2  + (\beta -1)u_h(t_k)) +  \Delta_{ext} ( (\beta -1) u_{B_h}(t_k))  )
+&(E-\Delta_h)^{-1} ( \Delta_h ( -\alpha \beta u_h(t_k)^2  + (\beta -1)u_h(t_k)) +  \Delta_{ext} ( (\beta -1) u_{B_h}(t_k))  )
 \end{align}
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -426,7 +426,7 @@ Dy_1 - y_2 &= h^2 q_1,\nonumber \\
 \end{align}
 The last system \rf{SubSys} is rearranged as we group equations that correspond to the same eigenvalue $\lambda_i \in D$ for all $i = 1,...,n$. Thus we obtain $n$ tridiagonal linear systems which can be solved using Tridiagonal Matrix Algorithm (TDMA) a.k.a. Thomas Algorithm. The final step is back substitution $\bar z_i = W y_i$ in order to revert to the initial function. To solve equation \rf{DLeq} for the unknown derivative $D^{\tilde s}u_h$, the right side $\bar f_h$  in \rf{SubSys} and \rf{LinSys} is described by
 $$
-q_h = W^T f_h, \quad f_h = \Delta_h \frac{ \partial^{ \tilde s - 2 } } { \partial t^{ \tilde s - 2 } } ( \alpha \beta u_h^2  + (\beta -1)u_h).
+q_h = W^T f_h, \quad f_h = \Delta_h \frac{ \partial^{ \tilde s - 2 } } { \partial t^{ \tilde s - 2 } } ( -\alpha \beta u_h^2  + (\beta -1)u_h).
 $$
 \iffalse
 A closer look on the sub-diagonals of matrices $A_h$ and $A_{i,i}$ reveals that the five point stencil $S_5$ (also $S_9$ and $S_{13}$) is not fully applied near the computational boundary $\partial \Gamma_h$. Furthermore, the definition of $A_h$ and $A_{i,i}$ implies that $z_h$ is zero outside $ \partial \Gamma_h$. Thus, the Dirichlet boundary condition  $u(x,y) = 0$, $(x,y) \in \partial \Gamma$ is implemented in a "mild way", i.e. the function is zero on a rectangular defined by the following $(x,y)$ points: $(-h,-h)$, $(1+h,-h)$, $(1+h,1+h)$ and $(-h,1+h)$. This technique turns out to be good enough to produce smooth results on the boundary. For further details please check the next chapter \rf{BndS} about the boundary condition.
