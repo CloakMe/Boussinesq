@@ -313,10 +313,10 @@ classdef (ConstructOnLoad) BEEngine
         end
         hx = this.h;
         hy = this.h;
-        
+
         D = zeros(1, this.sy);
         for j=1:this.sy
-            D(j) = hx/3 * ( term(1, j) + term(end, j) + 32 * sum( term(2:2:end-1, j) ) +...
+            D(j) = 2*hx/45 * ( 7*term(1, j) + 7*term(end, j) + 32 * sum( term(2:2:end-1, j) ) +...
                 12 * sum( term(3:4:end-2,j ) ) + 14 * sum( term(5:4:end-4,j) ) );
         end
         result = 2*hy/45 * ( 7*D(1) + 7*D(end) + 32*sum ( D(2:2:end-1) ) +...
