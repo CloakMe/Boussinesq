@@ -354,6 +354,84 @@ Suppose the following linear equaion
 Az:=z-\Delta z = f
 \end{equation}
 defined on $\Gamma = \{ (0,1) \times (0,1) \}$ with homogeneous Dirichlet boundary conditions $z(x,y) = 0$, $(x,y) \in \partial \Gamma$. The discrete version of \rf{FPeq} - $A_h z_h = f_h$ - using the notations defined in previous sections, is a system of linear equations where $A_h \in \RR^{n^2 \times n^2}$, $f_h, z_h \in \RR^{n^2}$ and $n$ is defined by the relation $h=1/n$. For simplicity the same discretization step $h$ is applied along both space directions.
+%IF==================================
+The discrete Laplacian operator is described by five point cross stencil
+\[
+S_5 = 
+\begin{bmatrix}
+            &  1  &  \\
+    1     &  -4    & 1\\
+            &  1  &  
+\end{bmatrix}
+\]
+with approximation error $O(h^2)$. The following notations are presented
+%\begin{equation}\label{MATeq}
+\[
+A_h = \frac{1}{h^2}
+\begin{bmatrix}
+    A_{11}       & -E          &  0              & \dots & 0 \\
+    -E               & A_{22}  & -E              & \dots & \dots  \\
+      \dots         & \searrow     & \searrow  & \searrow  & \dots  \\
+      \dots         & \dots     & \dots         & \dots   &    \dots  \\
+      \dots         & \dots    & \dots         & \dots & -E  \\
+     0                 & \dots   &  0               & -E    & A_{nn}
+\end{bmatrix}
+,
+z_h = 
+\begin{bmatrix}
+    \bar z_{1} \\
+    \bar z_{2}  \\
+    \vdots  \\
+    \vdots  \\
+    \bar z_{n}
+\end{bmatrix}
+,
+f_h = 
+\begin{bmatrix}
+    \bar f_{1} \\
+    \bar f_{2}  \\
+    \vdots  \\
+    \vdots  \\
+    \bar f_{n}\
+\end{bmatrix}
+\]
+where $\bar z_k = (z_{k,1}, z_{k,2}, ..., z_{k,n})^T\in \RR^{n}$ and $\bar f_k = (f_{k,1}, f_{k,2}, ..., f_{k,n})^T\in \RR^{n}$. Furthermore, $A_{i,i} \in \RR^{n \times n}$, $i = 1, ..., n$ is defined as
+\[
+A_{i,i} = 
+\begin{bmatrix}
+    4+h^2       & -1          &  0              & \dots & 0 \\
+    -1               & 4+h^2  & -1              & \dots & \dots  \\
+      \dots         & \searrow     & \searrow  & \searrow  & \dots  \\
+      \dots         & \dots     & \dots         & \dots   &    \dots  \\
+      \dots         & \dots    & \dots         & \dots & -1  \\
+     0                 & \dots   &  0               & -1    & 4+h^2
+\end{bmatrix}
+.
+\]
+Therefore, $A_h z_h = f_h$ is equivalent to the simplified linear system
+\begin{align}
+A_{1,1}\bar z_1 - \bar z_2 &= h^2\bar f_1, \nonumber \\
+- \bar z_{i-1}  + A_{i,i}\bar z_i - \bar z_{i+1}  &= h^2\bar f_i, i = 2,...,n-1, \nonumber \\
+- \bar z_{n-1} + A_{n,n}\bar z_n &= h^2\bar f_n.\label{LinSys}
+\end{align}
+The idea is that the matrix $A_{i,i} = diag(-1, (4+h^2), -1)$ could be decomposed to $A_{i,i}  = W D W^T$, where $W$ denotes an $n \times n$ matrix of the orthonormal eigenvectors of $A_{i,i} $ and $ D$ is a diagonal matrix consisting of the eigenvalues of $A_{i,i}$. The matrices $W$ and $D$ could be found using Singular Value Decomposition with $W^T W = W W^T = E$ and $A_{i,i} = WDW^T$ (see \cite{Tref}, \cite{FPS}). The following substitution 
+\begin{equation}\label{subst}
+y_i := W^T \bar z_i, q_i := W^T \bar f_i, i = 1, ...,n
+\end{equation}
+is applied after multiplying \rf{LinSys} with $W^T$ and decomposing $A_{i,i}$
+\begin{align}
+Dy_1 - y_2 &= h^2 q_1,\nonumber \\
+-y_{i-1} + D y_i - y_{i+1} &= h^2 q_i, i = 2,...,n-1,\nonumber \\
+- y_{n-1} + Dy_n &= h^2 q_n.\label{SubSys}
+\end{align}
+The last system \rf{SubSys} is rearranged as we group equations that correspond to the same eigenvalue $\lambda_i \in D$ for all $i = 1,...,n$. Thus we obtain $n$ tridiagonal linear systems which can be solved using Tridiagonal Matrix Algorithm (TDMA) a.k.a. Thomas Algorithm. The final step is back substitution $\bar z_i = W y_i$ in order to revert to the initial function. To solve equation \rf{DLeq} for the unknown derivative $D^{\tilde s}u_h$, the right side $\bar f_h$  in \rf{SubSys} and \rf{LinSys} is described by
+$$
+q_h = W^T f_h, \quad f_h = \Delta_h \frac{ \partial^{ \tilde s - 2 } } { \partial t^{ \tilde s - 2 } } ( -\alpha \beta u_h^2  + (\beta -1)u_h).
+$$
+
+For the cases with fourth and sixth approximation order, one obtain $n$ linear systems which are five- and seven- diagonal matrices respectively.
+%ELSE Fast Poisson SOlver ================================================================== IF
+\iffalse
 \subsection{Second order approximation}
 
 The discrete Laplacian operator is described by five point cross stencil
@@ -407,7 +485,8 @@ A_{i,i} =
       \dots         & \dots    & \dots         & \dots & -1  \\
      0                 & \dots   &  0               & -1    & 4+h^2
 \end{bmatrix}
-\].
+.
+\]
 Therefore, $A_h z_h = f_h$ is equivalent to the simplified linear system
 \begin{align}
 A_{1,1}\bar z_1 - \bar z_2 &= h^2\bar f_1, \nonumber \\
@@ -502,7 +581,10 @@ and after the substitution \rf{subst} an equivalent to \rf{SubSys} system is obt
   - (3/2)y_{i+1} + (3/20)y_{i+2} -  (1/90)y_{i+3} &= h^2 q_i,\nonumber \\
  i = 4,...,n  &-3. \label{SubSys7}
 \end{align}
-For system \rf{SubSys7}, there are $n$ linear systems which are seven diagonal. The obtained tri-, five- or seven- diagonal matrices are inverted with similar to Thomas technique which is a simplified form of Gauss elimination.
+For system \rf{SubSys7}, there are $n$ linear systems which are seven diagonal.
+\fi
+%Fast Poisson SOlver ==================================================================
+The obtained tri-, five- or seven- diagonal matrices are inverted with similar to Thomas technique which is a simplified form of Gauss elimination.
 
 %=============BEGIN Numerica testsl========================================
 \section{Convergence, speed and numerical tests}\label{NumTests}
