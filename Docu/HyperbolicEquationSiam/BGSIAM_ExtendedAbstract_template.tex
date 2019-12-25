@@ -20,146 +20,140 @@
 \writetitle{Numerical Study of Soliton Solutions to the Two Dimensional Boussinesq  Equation}
 {K. Angelow, N. Kolkovska}
 
-The length of the extended abstract should be between 1 and 2 pages.
 
-
-This paper evaluates propagating wave solutions to the two dimensional Boussinesq Equation (BE)
+In this paper we evaluate propagating wave solutions to the two dimensional Boussinesq Equation (BE)
 \begin{align} \label{eq1}
 &u_{tt} - \Delta u -\beta_1  \Delta u_{tt} +\beta_2 \Delta ^2 u + \Delta f(u)=0   \quad \text{for}  (x,y) \in \RR^2, \, t\in\RR^+, 
 \\ \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)   \quad\text{for} \, (x,y) \in \RR^2,
 \\  &u(x,y) \rightarrow 0,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{for}  \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11}
 \end{align}
-where $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. Taylor Series (TS) expansion method about time is used to move the solution forward. The equation allows to isolate the highest time derivative on one side. Thus, by differentiating with respect to time variable one could obtain higher time derivative terms in the TS expansion. Here, the solver could be adjusted to use second, fourth or sixth degree of the Taylor polynomial.
+where $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the two-dimensional Laplace operator. We suppose that the solution of \eqref{eq1} is sufficiently smooth function.
 
-High order finite difference schemes for the spatial derivatives are implemented to solve this nonlinear hyperbolic problem. The two dimensional laplace operator $\Delta$ is approximated by three different cross stencils with five, nine and thirteen points each:
-\[
-S_5 = 
-\begin{bmatrix}
-            &  1  &  \\
-    1     &  -4    & 1\\
-            &  1  &  
-\end{bmatrix},
-S_9 =
-\begin{bmatrix}
-          &       &  -1/12  & &  \\
-          &       &  4/3     &   & \\
--1/12 & 4/3 &  -5       & 4/3 & -1/12\\
-          &       &   4/3    &    &\\
-          &       &  -1/12  &    &
-\end{bmatrix},
-\]
-\[
-S_{13} = 
-\begin{bmatrix}
-          &       &       &   1/90  & & &  \\
-          &       &       &  -3/20  & & &  \\
-          &       &       &   3/2     & &   & \\
-1/90 & -3/20 &  3/2 & -49/18 & 3/2 & -3/20 & 1/90 \\
-          &       &       &   3/2     & &   & \\
-          &       &       &  -3/20  & & &  \\
-          &       &       &   1/90  & & &
-\end{bmatrix}
-\]
-Thus, the numerical solution is computed on relatively coarse grid with high accuracy of second, fourth and sixth order both in space and time. This means that the BE equation solver could be adjusted to use among second, fourth or sixth approximation order.
+The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics, geotechnical engineering, atmosphere dynamics, etc. 
 
-An explicit formula for Boundary Condition (BC) is applied on the computational boundary. The formula is taken from \cite{BoundaryProblem} and adjusted for the hyperbolic equation (\ref{eq1})
+Boussinesq equation \eqref{eq1} admits localized stationary propagating solutions of type $u(x,y,t)=U(x,y-ct)$. They are obtained by different approximation techniques in \cite{chr-chr-07,Ch2012,Ch2011}. The time behavior and structural stability of the solutions to the hyperbolic problem with initial data from \cite{chr-chr-07,Ch2012,Ch2011} are presented in 
+\cite{cher,dani,mil-dani} using numerical methods with second order of approximation in space and time.
+
+In \cite{EllipticProblem} the stationary propagating solutions to \eqref{eq1} are evaluated with high accuracy of fourth and sixth order of approximation. The resulting solutions differ from the solution developed in \cite{chr-chr-07,Ch2012,Ch2011} especially for velocities $c$ close to $\min(1,\frac{\beta_2}{\beta_1})$.  
+
+The aim of this paper is to present and apply a high accuracy numerical method for solving \eqref{eq1} with initial data obtained in \cite{EllipticProblem}.
+
+To construct the numerical method, we first introduce a uniform mesh $\Omega_h$ on a computational domain $\Omega$ and apply finite differences of second, fourth and sixth order for approximation $\Delta_h$ to the Laplace operator. In this way we obtain the following system of second order ODE's with respect to unknowns
+%$u_{i,j}(t)$, 
+ $u_{i,j}(t)= u(x_i,y_j,t)$ 
+\begin{align}\label{eq2}
+%(E-\beta_1 \Delta_h)
+(u_{i,j})_{tt} = (E-\beta_1 \Delta_h)^{-1} \left(\Delta_h u_{i,j} - \beta_2 \Delta_h^2 u_{i,j} -\Delta_h f(u_{i,j})\right),
+\end{align}
+where $E$ is the identity operator.
+
+Then the values of the solutions on the next time $u_{i,j}(t+\tau)$ are evaluated using Taylor series expansion of $u_{i,j}$ at time $t$ with degrees corresponding to the order of space approximation. All time derivatives in the Taylor series expansion are evaluated iteratively by differentiating \eqref{eq2} with respect to the time variable. This is possible since the highest time derivative in \eqref{eq2} is isolated on one side of equation \eqref{eq2}. %one could obtain higher time derivative terms in the TS expansion.
+
+An explicit formula for the numerical solution is applied on the computational boundary $\partial \Omega$. The formula is taken from \cite{BoundaryProblem} and adjusted for the hyperbolic equation (\ref{eq1})
 \begin{equation}\label{eqBCH}
 u_B(x, y, t) = \mu_u \frac{ (1 - c^2) x^2 - (y-ct)^2}{( (1 - c^2) x^2 + (y-ct)^2)^2}.
 \end{equation}
-Near the computational boundaries $\partial \Omega$ we do not change any of the cross stencils defined above. There, the discrete Laplacian is defined by using the values of the discrete solution (\ref{eqBCH}) at points outside the computational domain.
+%The values \eqref{eqBCH} are used also at mesh points included in the cross stencils which lie outside the computational domain.
 
-Fast Poisson Solver technique is used, in order to isolate the highest time derivative on one side of the equation. This is done at each time iteration $t_k = k\tau$, where $\tau$ is the time step. After the two dimensional laplace operator is discretized numerically by any of the cross stencils $S_5, S_9, S_{13}$,  it can be inverted using Fast Poisson Solvers (\cite{FPS} and \cite{Tref}). The FPS produces series of band matrices which need to be inverted. Thomas algorithm is used for three diagonal matrices with the $S_5$ stencil.  Five and seven diagonal matrices (using $S_9$ and $S_{13}$ stencils, respectively) use similar to Thomas technique which is again a simplified form of Gauss elimination.
+Near the computational boundariy $\partial \Omega$ we do not change any of the cross stencils used in the approximation of the discrete Laplacian - 
+%. There, the discrete Laplacian is defined by using the values of the discrete solution (\ref{eqBCH})
+we use the values \eqref{eqBCH} at points outside the computational domain. In the implementation of the numerical method Fast Poisson Solver (FPS) technique  is used at each time  step. The band matrices produced at each time level are inverted by Thomas or similar technique.
 
-The performed numerical tests exhibit good convergence and confirm the validity of the TS method. Furthermore, the propagating wave preserves its maximum and more importantly, its shape.
+In this way the numerical solution to \eqref{eq1} is computed by Taylor series method with high accuracy of second, fourth and sixth order both in space and time on relatively coarse grid.
 
+The performed numerical tests validate the numerical method for solving BE. The results show that the  Taylor series method achieves the prescribed high accuracy. 
 
+We solve BE with two sets of initial parameters and initial data obtained in \cite{EllipticProblem}. 
+%Furthermore, the propagating wave preserves its maximum and more importantly, its shape.
+The resulting two numerical solutions are stable in form and their maxima are changed for
+long period of time $T = 40$ with small errors. Thus the obtained solutions show soliton behavior.
 
 \begin{thebibliography}{99}
-%\bibitem{A11}
-%FirstNameInitial.  MiddleNameInitial. LastName, % first name middle initial. and then last name.  Only the first character in the paper title is capitalized.
-%\emph{Title of the paper,}
-%Name of the Journal \textbf{Volume} (Year), StaringPage--EndingPage.
 
-%7
 \bibitem{BoundaryProblem}
 K. Angelow, 
 \emph{New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation},
 International Journal of Applied Mathematics, \textbf{32, 1} (2019), 141--154.
 
-%5
+%%5
 \bibitem{EllipticProblem}
 K. Angelow and N. Kolkovska, 
 \emph{Numerical Study of Traveling Wave Solutions to 2D Boussinesq Equation},
 Serdica J. Computing,  Accepted for publication.
-
+%
 %8
 \bibitem{cher}
 A. Chertock, C. Christov and A. Kurganov, 
 \emph{Central--upwind schemes for the  Boussinesq paradigm equation},
 Comp. Sci. High Performance Comp. IV, NNFM, \textbf{113} (2011), 267--281.
-
-%3
-\bibitem{chr-chr}
-M. Christou and C. Christov, 
-\emph{Galerkin Spectral Method for the 2D Solitary Waves of Boussinesq Paradigm Equation}
-AIP Conference Proceedings \textbf{1186, 217} (2009) 217--225.
-
-%4
+%
+%%3
+%\bibitem{chr-chr}
+%M. Christou and C. Christov, 
+%\emph{Galerkin Spectral Method for the 2D Solitary Waves of Boussinesq Paradigm Equation}
+%AIP Conference Proceedings \textbf{1186, 217} (2009) 217--225.
+%
+%%4
 \bibitem{chr-chr-07}
 M. Christou and C. Christov, 
 \emph{Fourier–Galerkin method for 2D solitons of Boussinesq equation}, 
 Mathematics and Computers in Simulation, \textbf{74} (2007), 82--92.
-
-%1
-\bibitem{ChChr}
-C. Christov, 
-\emph{An energy-consistent dispersive shallow-water model}, 
-{\it Wave Motion}, \textbf{34} (2001), 161--174.
-
-%6
+%
+%%1
+%\bibitem{ChChr}
+%C. Christov, 
+%\emph{An energy-consistent dispersive shallow-water model}, 
+%{\it Wave Motion}, \textbf{34} (2001), 161--174.
+%
+%%6
 \bibitem{Ch2012}
 C. Christov, 
 \emph{Numerical implementation of the asymptotic boundary conditions
 for steadily propagating 2D solitons of Boussinesq type equation},       
 Math. Computers  Simul., \textbf{82} (2012),  1079--1092.
-
-%2
+%
+%%2
 \bibitem{Ch2011}
 C. Christov and J. Choudhury, 
 \emph{Perturbation solution  for the 2D Boussinesq equation},       
 Mech. Res. Commun., \textbf{38} (2011),  274--281.
-
-%9
+%
+%%9
 \bibitem{dani}
 C. Christov, N. Kolkovska and D. Vasileva, 
 \emph{On the numerical simulation of unsteady solutions for the 2D Boussinesq paradigm equation},
 LNCS, \textbf{6046} (2011), 386--394.
+%
+\bibitem{mil-dani}
+M. Dimova, D. Vasileva, Comparison of two numerical approaches to
+Boussinesq paradigm equation, LNCS, \textbf{8236} 
+(2013), 255--262.
 
-%12
-\bibitem{forn}
-B. Fornberg, 
-\emph{Generation of Finite Difference Formulas on Arbitrarily Spaced Grids}, 
-Math. Comput., \textbf{51} (1988),  699--706.
-
-%11
-\bibitem{FPS}
-T. Lyche,
-\emph{Fast Poisson Solvers and FFT}, 
-Lecture Notes, University of Oslo, Norway
-
-%10
-\bibitem{Tref}
-L. Trefethen and D. Bau,
-\emph{Numerical linear algebra},
-1$^{st}$ ed., SIAM, Philadelphia, 1997.
+%%12
+%\bibitem{forn}
+%B. Fornberg, 
+%\emph{Generation of Finite Difference Formulas on Arbitrarily Spaced Grids}, 
+%Math. Comput., \textbf{51} (1988),  699--706.
+%
+%%11
+%\bibitem{FPS}
+%T. Lyche,
+%\emph{Fast Poisson Solvers and FFT}, 
+%Lecture Notes, University of Oslo, Norway
+%
+%%10
+%\bibitem{Tref}
+%L. Trefethen and D. Bau,
+%\emph{Numerical linear algebra},
+%1$^{st}$ ed., SIAM, Philadelphia, 1997.
 
 %\bibitem{critEn}
 %N. Kolkovska and K. Angelow,
 %\emph{Numerical computation of the critical energy constant for two-dimensional Boussinesq equations}
 %AIP Conference Proceedings 1684, 080007 (2015)
 
-%\bibitem{sam}
-%A.~Samarskii, The theory of difference schemes, M. Dekker,  2001.
+%%\bibitem{sam}
+%%A.~Samarskii, The theory of difference schemes, M. Dekker,  2001.
 
 \end{thebibliography}
 
