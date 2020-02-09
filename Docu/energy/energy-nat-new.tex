@@ -8,6 +8,7 @@
 \usepackage{graphicx}
 \usepackage{color} 
 \usepackage[notref,notcite]{showkeys}
+\usepackage{multirow}
 
 \newcommand{\be}{\begin{equation}}
 \newcommand{\ee}{\end{equation}}
@@ -196,6 +197,90 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 +14 \sum_{j=1}^{\frac{N_2}{4}-1}D_{4j}
 \right\}
 \end{align}
+
+%A
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	         &                    &                               & Rate   &                                        & Rate \\
+   			\hline 
+					\hline 
+  $\beta=3$       &??, ??   &            &        &                  &      \\
+      c=0.52   &??, ??   &?? &           &??      &       \\
+     $O(h^2 + \tau^ 2)$ &??, ??5 &?? &??  &?? & ??       \\
+			\hline 
+   $\beta=3$        &0.2, 0.08   &            &        &                  &      \\
+   c=0.52  &??, ??   &?? &           &??      &       \\
+     $O(h^4+ \tau^4)$ &??, ??5 &?? &??  &?? & ??       \\
+			\hline 
+  $\beta=3$               &0.2, 0.08   &            &        &                  &      \\
+   c=0.52                  &??, ??   &?? &           &??      &       \\
+     $O(h^6+ \tau^6)$ &??, ??5 &?? &??  &?? & ??       \\
+	   \hline
+			\hline 
+       $\beta=1$       &0.4, 0.04        &             &            &           &   \\
+                  c=0.9    &0.2, 0.02       &0.326105   &            &0.152517&   \\
+  $O(h^2+ \tau^2)$ &0.1, 0.01   &0.081954  &1.99 &0.041693  & 1.87 \\
+			\hline
+      $\beta=1$               &0.4, 0.08    &            &               &             &    \\
+       c=0.9                     &0.2, 0.04     & 0.029515   &        &  0.014333   &   \\
+       $O(h^4+ \tau^4)$ &0.1, 0.02   &0.002057 & 3.84   & 0.001041  & 3.78  \\
+    \hline
+  $\beta=1$     &0.4, 0.08   &            &          &                  &      \\
+      c=0.9                    &0.2, 0.04   &0.007320 &           & 0.003625      &       \\
+     $O(h^6+ \tau^6)$ &0.1, 0.02 & 0.000815 &3.16 & 0.000092  & 5.30        \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Convergence test for SOLUTION with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+\label{tableA}
+\end{table}
+
+%B
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	         &                    &                               & Rate   &                                        & Rate \\
+   			\hline 
+					\hline 
+  $\beta=3$       &??, ??   &            &        &                  &      \\
+      c=0.52   &??, ??   &?? &           &??      &       \\
+     $O(h^2 + \tau^ 2)$ &??, ??5 &?? &??  &?? & ??       \\
+			\hline 
+   $\beta=3$        &0.2, 0.08   &            &        &                  &      \\
+   c=0.52  &??, ??   &?? &           &??      &       \\
+     $O(h^4+ \tau^4)$ &??, ??5 &?? &??  &?? & ??       \\
+			\hline 
+  $\beta=3$               &0.2, 0.08   &            &        &                  &      \\
+   c=0.52                  &??, ??   &?? &           &??      &       \\
+     $O(h^6+ \tau^6)$ &??, ??5 &?? &??  &?? & ??       \\
+	   \hline
+			\hline 
+       $\beta=1$       &0.4, 0.04        &             &            &           &   \\
+                  c=0.9    &0.2, 0.02       & 0.399714   &            &1.561666 &   \\
+  $O(h^2+ \tau^2)$ &0.1, 0.01   &0.117543  &1.76  &0.473093  & 1.72 \\
+			\hline
+      $\beta=1$             &0.4, 0.08     &            &            &             &    \\
+       c=0.9                   &0.2, 0.04      & 0.048286   &       &  0.060691  &   \\
+       $O(h^4+ \tau^4)$ &0.1, 0.02   & 0.00459& 3.39    &0.007596  & 2.99  \\
+    \hline
+  $\beta=1$     &0.4, 0.08   &                      &           &                   &      \\
+      c=0.9    &0.2, 0.04        & 0.025302     &           & 0.04921     &       \\
+     $O(h^6+ \tau^6)$         &  0.1, 0.02    & 0.00308 & 3.03  &0.005102 & 3.26        \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Convergence test for ENERGY with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+\label{tableB}
+\end{table}
 
 
 \end{document}
