@@ -27,7 +27,7 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         %xlabel('x');            ylabel('y');
         clear('this.dudt_t0'); clear('d2vz');
 
-        e=1; tt(e) = 0;
+        e=2; tt(e) = 0;
         t(1)=0;t(2)=this.tau;
         k=2;
         vz = vu; vmo = this.u_t0;
@@ -49,7 +49,7 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
                 EN(e) = this.GetEnergy( vz, vu, t( k ) );
                 %EN(e) = Eg2_vc_2d(vmo, vz, vu, this.minusDHdiag, this.eigenFinDiffMat,this.h,this.tau,...
                 %        this.alpha,this.beta, this.sx, this.sy,s_idh, this.vdah,this.vdah,this.vdah);
-                this.SaveSolutionOnIterStep( tt(e), vu, vz );
+                this.SaveSolutionOnIterStep( tt(e), vu );
                 II(e)=sum(sum(vz))*this.h^2;
                 e=e+1;
             end

@@ -56,7 +56,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
 
                 II(e)=sum(sum(vz))*this.h^2;
                 
-                this.SaveSolutionOnIterStep( tt(e), vu, vz );
+                this.SaveSolutionOnIterStep( tt(e), vu );
                 
                 e=e+1;
             end

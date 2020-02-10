@@ -11,7 +11,7 @@ compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
 
 UseExtendedDomain=1;
 
-h = 0.1;
+h = 0.05;
 x=x_st2:h:x_end2; 
 y=y_st2:h:y_end2; 
 %tau = 0.00114425*8;% getTau(h,x_end,y_end)/20;
@@ -25,11 +25,11 @@ sy = (length(y)+1)/2
    c = 0.9; 
    iterMax = 9000000;
    %eps = 1/max(y_end^6,((1-c^2)*x_end^2)^3);
-   eps = 5.0e-10;%5.0e-09;
+   eps = 5.0e-9;%5.0e-09;
    ICSwitch=0;
    % IC_switch = 0 ->christov sech formula
    % IC_switch = 1 ->nat42 formula
-   useZeroBoundary  = 0;
+   useZeroBoundary  = 1;
    plotResidual  = 0;
    plotBoundary  = 0;
    checkBoundary = 0;
@@ -50,7 +50,7 @@ sy = (length(y)+1)/2
   if(length(tauVector)<iterMax && UseExtendedDomain == 1 && size(bigUTimeDerivative,1)~=1)
      fprintf('\nLarge Domamin Calculations:\n\n');
      prmtrs.checkBoundary = 0;
-     prmtrs.eps = 1.0e-10;
+     prmtrs.eps = 1.0e-11;
      prmtrs.plotResidual = 0;
      prmtrs.tau = tauVector(end);
      [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,zeroX,zeroY,tauVector,angl] =...
@@ -58,7 +58,7 @@ sy = (length(y)+1)/2
      x=x_st2:h:x_end2; y=y_st2:h:y_end2;
   end
   elapsed_time = toc
-  save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
+  save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
       '_h0' num2str(h*100) '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
 
 PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
@@ -83,9 +83,13 @@ solutionNorms.PvsPupL2Norm = solutionNormsCont.PvsPupL2Norm;
 solutionNorms.boundaryFunctionUvsUL2Norm = solutionNormsCont.boundaryFunctionUvsUL2Norm;
 solutionNorms.BoundaryFunctionPvsPL2Norm = solutionNormsCont.BoundaryFunctionPvsPL2Norm;
 
-save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
+save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
       '_h0' num2str(h*100) '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
+PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
+PrintResults(solutionNorms,c1,c2);
+PlotAssymptVsSolu( x, y, h, zeroX, zeroY, bigU, c1*theta(end), c);
 return;
+
 DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDerivative,newBigIC,U,compBox,secondDerivative);
 
 PlotAssymptVsSolu( x, y, h, zeroX, zeroY, bigU, c1*theta(end), c/sqrt(bt) );

@@ -3,16 +3,14 @@ clear; clc;
 
 bndCutSize = 0; 
 % ChristovIC_40_80_bt1_c090_h010_O(h^6)
-% ChristovIC_80_bt1_c090_h020_O(h^6)
-% ChristovIC_40_bt1_c090_h020_O(h^4)
-% ChristovIC_80_bt3_c052_h020_O(h^6)
-% ChristovIC_36_bt5_c040_h020_O(h^6)
-% ChristovIC_40_bt069_c090_h020_O(h^6) 
-% ChristovIC_40_bt05_c085_h020_O(h^6)
-waveFactory = WaveFactory( 'ChristovIC_40_bt3_c052_h020_O(h^2)', bndCutSize, 0 );
+
+% partialPath = 'BEEliptic\Boussinesq2D\SavedWorkspaces\';
+
+partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_40_bt3_c052\Oh4\';
+waveFactory = WaveFactory( partialPath, 'ChristovIC_40_ZB1_bt3_c052_h010_O(h^4)', bndCutSize, 0 );
 %waveFactory = WaveFactory( 'BestFitIC' );
 
-    tau = 0.1;
+    tau = 0.01;
     tEnd=10.0;
     SavingTheSolution = 1
     %turnOnCaxis = 0;
@@ -24,8 +22,8 @@ waveFactory = WaveFactory( 'ChristovIC_40_bt3_c052_h020_O(h^2)', bndCutSize, 0 )
                                              tau, tEnd, estep );
     eqParams = BEEquationParameters( waveFactory.alpha, waveFactory.beta1, waveFactory.beta2, waveFactory.c );
    ic = BEInitialCondition( waveFactory.u_t0 , waveFactory.dudt_t0, waveFactory.mu, waveFactory.theta );   
-   engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %BEEngineTaylorSoftBnd %BEEngineEnergySaveSoftBnd
-   %engine = BEEngineTaylor( dscrtParams, eqParams, ic ); 
+   %engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %BEEngineTaylorSoftBnd %BEEngineEnergySaveSoftBnd
+   engine = BEEngineTaylor( dscrtParams, eqParams, ic ); 
    % _____________________________________
    tic
 
@@ -105,7 +103,7 @@ waveFactory = WaveFactory( 'ChristovIC_40_bt3_c052_h020_O(h^2)', bndCutSize, 0 )
     xlabel('time "t"');  ylabel('max(u_h)');
     figure(17)
     %hold on;
-    plot(tt,EN,'k',tt(1),EN(1)+EN(1)/1000.0,tt(end),EN(end)-EN(end)/1000.0 )
+    plot(tt(2:end),EN(2:end),'k',tt(1),EN(2)+EN(2)/1000.0,tt(end),EN(end)-EN(end)/1000.0 )
     %hold off;
     title('Energy functional');
     xlabel('time "t"');  ylabel('EN');
@@ -116,14 +114,19 @@ waveFactory = WaveFactory( 'ChristovIC_40_bt3_c052_h020_O(h^2)', bndCutSize, 0 )
     if( SavingTheSolution == 0)
         return;
     end
-
+    useZeroBoundary = 0;
+    if( waveFactory.mu == 0 )
+        useZeroBoundary = 1;
+    end
     try
-    save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
+    save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) ...
+        '_ZB' num2str(useZeroBoundary) '_bt' ...
         num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) ...
       '_h0' num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')']);
     
     catch ex
-         save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) '_bt' ...
+         save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) ...
+             '_ZB'  num2str(useZeroBoundary)  '_bt' ...
              num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) '_h0' ...
              num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')'], ...
              'tau', 'x', 'y', 'tt', 'max_v', 't', 'EN', 'II', 'vl', 'dvl');

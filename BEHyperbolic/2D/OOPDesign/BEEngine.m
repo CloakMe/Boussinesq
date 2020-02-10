@@ -54,7 +54,7 @@ classdef (ConstructOnLoad) BEEngine
         this.order = dscrtParams.order;
         this.tau = dscrtParams.tau;
         this.tEnd = dscrtParams.tEnd;
-        this.estep = dscrtParams.estep;
+        this.estep = 1;%dscrtParams.estep;
 
         this.alpha = eqParams.alpha;
         this.beta = eqParams.beta1/eqParams.beta2;

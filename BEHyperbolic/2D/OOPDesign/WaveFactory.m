@@ -1,8 +1,8 @@
 classdef WaveFactory
   methods
-    function this = WaveFactory( workspaceName, bndCutSize, twoWaves )
-        if( nargin == 2 || nargin == 3 )
-            this = this.WaveFactory1( workspaceName, bndCutSize, twoWaves );
+    function this = WaveFactory( partialPath, workspaceName, bndCutSize, twoWaves )
+        if( nargin == 4 )
+            this = this.WaveFactory1( partialPath, workspaceName, bndCutSize, twoWaves );
         end
         if( nargin == 1 )
             this = this.WaveFactory2( workspaceName );
@@ -13,7 +13,7 @@ classdef WaveFactory
         
     end
     
-    function this = WaveFactory1( this, workspaceName, bndCutSize, twoWaves )
+    function this = WaveFactory1( this, partialPath, workspaceName, bndCutSize, twoWaves )
         
         mydir  = pwd;
         idcs   = strfind(mydir,'/');
@@ -21,7 +21,7 @@ classdef WaveFactory
             idcs   = strfind(mydir,'\');
         end
         workspacePath = mydir(1:idcs(end-2));
-        workspacePath = strcat(workspacePath,'BEEliptic\Boussinesq2D\SavedWorkspaces\');
+        workspacePath = strcat(workspacePath, partialPath);
         file = fullfile(workspacePath, strcat(workspaceName,'.mat'));
         load( file, '-mat');
         this.x = x;
@@ -42,7 +42,9 @@ classdef WaveFactory
         this.h = h;
         this.u_t0 = bigU;
         this.theta = theta(end);
-        this.mu = c1;
+        if(prmtrs.useZeroBoundary == 1)
+            this.mu = 0;
+        end
         this.c = c;
         this.beta = bt1/bt2;
         this.beta1 = bt1;

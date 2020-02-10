@@ -1,13 +1,20 @@
 clear;
-
+AA = 0;
 for jl = 1:3
-    yo(1,:) = '20';
-    yo(2,:) = '10';
-    yo(3,:) = '05';
-
-    yo = cellstr(yo);
-    ICType = 'Christov'; % Christov  Natali
-    strName = strcat('SavedWorkspaces\', ICType, 'IC_40_bt3_c052_h0', yo(jl), '_O(h^2)' );
+    
+    if(AA ==0)
+        yo(1,:) = '40';
+        yo(2,:) = '20';
+        yo(3,:) = '10';
+    else
+        yo(1,:) = '20';
+        yo(2,:) = '10';
+        yo(3,:) = '05';
+    end
+    
+    yo = cellstr(yo); % ChristovIC_40_ZB1_bt3_c052_h005_O(h^2)
+    ICType = 'Christov'; % Christov  Natali ZeroBoundary SavedWorkspaces
+    strName = strcat('ZeroBoundary\ChristovIC_40_bt1_c090\Oh6\', ICType, 'IC_40_ZB1_bt1_c090_h0', yo(jl), '_O(h^6)' );
     load (  strName{1} );
     %sum(tauVector)
     if(jl==1)

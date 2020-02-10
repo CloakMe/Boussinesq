@@ -19,4 +19,13 @@ function PlotAssymptVsSolu( x, y, h, zeroX, zeroY, bigU, muTheta, c)
     xlabel('x')
     title('y==0 Cross section');
     
+    figure(7)
+    plot(newY, bigU(zeroX,stY:end), 'b', newY, muTheta ./ ( (1-c^2) * newY.^2 ), 'k' ) %(newY.^2).*
+    xlabel('y')
+    title('x==0 Cross section');
+    
+    figure(8)
+    plot(newX, bigU(stX:end,zeroY), 'b', newX, - muTheta ./ newX.^2, 'k' ) % (newX'.^2).*
+    xlabel('x')
+    title('y==0 Cross section');
 end
