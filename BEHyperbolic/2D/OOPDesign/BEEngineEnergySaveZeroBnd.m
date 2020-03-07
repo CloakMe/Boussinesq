@@ -4,6 +4,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
   methods
     
     function this = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic )
+        dscrtParams.order = 2;
         this = this@BEEngine( dscrtParams, eqParams, ic );
     end
     
@@ -14,11 +15,12 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
         dtv = this.vdah;
         % BEDomainUtilsP2Edges( this.x, this.y, this.order, this.beta, this.c, this.mu, this.theta );
         % domUtilsEdges = BEDomainUtils( this.x, this.y, this.order); 
+        this.order = 6;
         [d2vz, d3vz, d4vz, d5vz, d6vz] = this.Calc_der2d( this.u_t0, this.dudt_t0, 0 );
         
         vu = this.u_t0 + this.tau*this.dudt_t0 + (this.tau^2/2)*d2vz + (this.tau^3/6)*d3vz +...
             (this.tau^4/24)*d4vz + (this.tau^5/120)*d5vz + (this.tau^6/720)*d6vz; %#ok<*CPROP>
-        
+        this.order = 2;
         %dtv = this.dudt_t0 + this.tau*d2vz + (this.tau^2/2)*d3vz + (this.tau^3/6)*d4vz +...
         %    (this.tau^4/24)*d5vz + (this.tau^5/120)*d6vz;
 
@@ -28,7 +30,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
         %xlabel('x');            ylabel('y');
         clear('this.dudt_t0'); clear('d2vz');
 
-        e=1; tt(e) = 0;
+        e=2; tt(e) = 0;
         t(1)=0;t(2)=this.tau;
         k=2;
         vz = vu; vmo = this.u_t0;
@@ -56,7 +58,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
 
                 II(e)=sum(sum(vz))*this.h^2;
                 
-                this.SaveSolutionOnIterStep( tt(e), vu );
+                %this.SaveSolutionOnIterStep( tt(e), vu );
                 
                 e=e+1;
             end
@@ -64,23 +66,22 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
                warning('ERROR; BE2D NaN values; Stopping! ');
                return;
             end
-            numAuxPnts = this.order/2;
 
             if( abs( ( this.tEnd - this.tau + 1.00e-010 ) - t(k) )  < this.tau )
                  if( abs( tt(end) - this.tEnd ) > 1.00e-010 )
-                    warning( 'tEnd missed!' ); 
+                    warning( 'End time missed!' ); 
                     tt(end)
                     t(end)      
-                 else
-                     SOL_SAVED = 1
                  end
             end
-                k=k+1;  
+            
+            k=k+1;  
 
-                t(k)=(k-1)*this.tau;
-                if((t(k)-floor(t(k)))==0)
-                    yoyo=t(k)
-                end
+            t(k)=(k-1)*this.tau;
+            if((t(k)-floor(t(k)))==0)
+                fprintf('iteration time: %.4f\n', t(k));
+            end
+            
             vmo = vz; vz = vu; 
         end
         
@@ -134,12 +135,13 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
         if( this.order > 6 )
             error( 'Not yet implemented for order = 8 !' );
         end      
+        
+        
         VV = this.vdah;
         fd2ndDer = this.GetFd2ndDer();
         mid = ( this.order/2 + 1 );
         deltab = this.eigenFinDiffMat'*(...
             domainUtils.DeltaH( nonlinTerm, fd2ndDer ) ); %DeltaTimeDerevative 
-        deltab = ( deltab );
 
         for j=1:this.sx
             diag = [ -fd2ndDer(1:mid-1) this.IminusDHdiag(j) -fd2ndDer(mid+1:end) ];

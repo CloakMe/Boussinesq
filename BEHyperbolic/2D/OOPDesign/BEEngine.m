@@ -104,7 +104,8 @@ classdef (ConstructOnLoad) BEEngine
     function [ IminusDHdiag, minusDHdiag ] = GetEigenMatrices( this, sxSize )
 
         if( nargin == 1 )
-            sxSize = this.sx
+            sxSize = this.sx;
+            fprintf('x size = %.6f\n', sxSize);
         end
         mid = ( this.order/2 + 1 );
         DD = zeros( 1, sxSize );

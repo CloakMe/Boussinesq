@@ -7,23 +7,23 @@ bndCutSize = 0;
 % partialPath = 'BEEliptic\Boussinesq2D\SavedWorkspaces\';
 
 partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_40_bt3_c052\Oh4\';
-waveFactory = WaveFactory( partialPath, 'ChristovIC_40_ZB1_bt3_c052_h010_O(h^4)', bndCutSize, 0 );
+waveFactory = WaveFactory( partialPath, 'ChristovIC_40_ZB1_bt3_c052_h005_O(h^4)', bndCutSize, 0 );
 %waveFactory = WaveFactory( 'BestFitIC' );
 
-    tau = 0.01;
+    tau = 0.005;
     tEnd=10.0;
-    SavingTheSolution = 1
+    SavingTheSolution = 1;
+    fprintf('SavingTheSolution = %.1d\n', SavingTheSolution);
     %turnOnCaxis = 0;
     %waveFactory.PlotSingleWave( turnOnCaxis );
 
     estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
-
     dscrtParams = BEDiscretizationParameters( waveFactory.x, waveFactory.y ,waveFactory.h, waveFactory.order,...
                                              tau, tEnd, estep );
     eqParams = BEEquationParameters( waveFactory.alpha, waveFactory.beta1, waveFactory.beta2, waveFactory.c );
-   ic = BEInitialCondition( waveFactory.u_t0 , waveFactory.dudt_t0, waveFactory.mu, waveFactory.theta );   
-   %engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %BEEngineTaylorSoftBnd %BEEngineEnergySaveSoftBnd
-   engine = BEEngineTaylor( dscrtParams, eqParams, ic ); 
+    ic = BEInitialCondition( waveFactory.u_t0 , waveFactory.dudt_t0, waveFactory.mu, waveFactory.theta );   
+    engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %BEEngineTaylorSoftBnd %BEEngineEnergySaveSoftBnd
+   %engine = BEEngineTaylor( dscrtParams, eqParams, ic ); 
    % _____________________________________
    tic
 
@@ -125,12 +125,13 @@ waveFactory = WaveFactory( partialPath, 'ChristovIC_40_ZB1_bt3_c052_h010_O(h^4)'
       '_h0' num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')']);
     
     catch ex
-         save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) ...
+        fprintf('trying to save most important solution parameters, only...\n');
+        save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) ...
              '_ZB'  num2str(useZeroBoundary)  '_bt' ...
              num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) '_h0' ...
              num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')'], ...
              'tau', 'x', 'y', 'tt', 'max_v', 't', 'EN', 'II', 'vl', 'dvl');
-        here = 99
+        fprintf('parameters saved!\n');
     end
     return;
 %----------------------------------------------------------------------------------------

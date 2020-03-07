@@ -149,7 +149,6 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         boundaryUtils = BEBoundaryUtils( this.x, this.y, this.order, this.alpha, this.beta, this.c, this.mu, this.theta, this.h );
                 
         VV = this.vdah;
-        %VV2 = this.vdah;
         fd2ndDer = this.GetFd2ndDer();
         mid = ( this.order/2 + 1 );
         b1 = boundaryUtils.AssymptoticFuncSquareOutside( fd2ndDer, t, order ) + ...
@@ -168,14 +167,10 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
             %diag = [(1/12) (-16/12) this.IminusDHdiag(j) (-16/12) 1/12];
             if( this.order == 2 )      
                 VV(j,:) = BEUtilities.TridiagSolv( diag, deltab(j,:) );
-            end
-            if( this.order == 4 )   
+            elseif( this.order == 4 )   
                 VV(j,:) = BEUtilities.PentSolv( this.IminusDHdiag(j), diag, deltab(j,:));
-                %VV2(j,:) = BEUtilities.SevenSolv( this.IminusDHdiag(j), diag, deltab2(j,:));
-            end
-            if( this.order == 6 )
+            elseif( this.order == 6 )
                 VV(j,:) = BEUtilities.SevenSolv( this.IminusDHdiag(j), diag, deltab(j,:));
-                %VV2(j,:) = BEUtilities.SevenSolv( this.IminusDHdiag(j), diag, deltab2(j,:));
             end
         end
         
@@ -220,11 +215,9 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
             %diag = [(1/12) (-16/12) this.IminusDHdiag(j) (-16/12) 1/12];
             if( this.order == 2 )      
                 VV(j,:) = BEUtilities.TridiagSolv( diag, wvt(j,:) );
-            end
-            if( this.order == 4 )   
+            elseif( this.order == 4 )   
                 VV(j,:) = BEUtilities.PentSolv( this.minusDHdiag(j), diag, wvt(j,:));
-            end
-            if( this.order == 6 )   
+            elseif( this.order == 6 )   
                 VV(j,:) = BEUtilities.SevenSolv( this.minusDHdiag(j), diag, wvt(j,:));
             end
         end
