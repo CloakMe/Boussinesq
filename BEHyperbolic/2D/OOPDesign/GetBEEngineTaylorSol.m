@@ -1,4 +1,4 @@
-function [x,y,uEnTaylor] = GetBEEngineTaylorSol( btString, cString, hString, orderString )
+function [x,y,t,uEnTaylor] = GetBEEngineTaylorSol( btString, cString, hString, orderString )
 
     bndCutSizeX = 0;
     bndCutSizeY = 0;
@@ -9,9 +9,7 @@ function [x,y,uEnTaylor] = GetBEEngineTaylorSol( btString, cString, hString, ord
     warning('off','all');
     load (  cellStrTlr );
     warning('on','all');
-    fprintf('tau = %d\n', tau);
-    fprintf( 'h = 0.%s \n',  hString);
-
+    
     current_hx = ( x(end) - x(1) ) / ( size(x,1) * size(x,2) );
     current_hy = ( y(end) - y(1) ) / ( size(y,1) * size(y,2) );
     bndPtsRemX = bndCutSizeX/current_hx;

@@ -20,19 +20,25 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
             (this.tau^4/24)*d4vz + (this.tau^5/120)*d5vz + (this.tau^6/720)*d6vz; %#ok<*CPROP>
         dtv = this.dudt_t0 + this.tau*d2vz + (this.tau^2/2)*d3vz + (this.tau^3/6)*d4vz +...
             (this.tau^4/24)*d5vz + (this.tau^5/120)*d6vz;
-
+        
+        EN_1 = this.GetEnergy( this.u_t0, vu, 0 );
+        II_1 = this.GetIntegralOf( this.u_t0 );
         %figure(2)
         %mesh(x,y,(this.tau^2/2)*d2vz')
         %title('(this.tau^2/2)*d^2v/dt^2 , t=this.tau')
         %xlabel('x');            ylabel('y');
-        clear('this.dudt_t0'); clear('d2vz');
-
-        e=2; tt(e) = 0;
+        clear('this.dudt_t0'); clear('d2vz');        
+        e=2;
+        t = zeros(1,this.tEnd/this.tau);
+        tt = zeros(1,this.tEnd/this.tau);
         t(1)=0;t(2)=this.tau;
         k=2;
         vz = vu; vmo = this.u_t0;
         clear('this.u_t0'); clear('v2');
-        EN(1)=0;II(1)=0;
+        EN = zeros(1,this.tEnd/this.tau);
+        II=zeros(1,this.tEnd/this.tau);        
+        EN(1) = EN_1;
+        II(1) = II_1;
         while( t(k) < this.tEnd )
             %[d2vz, d3vz, d4vz, d5vz, d6vz] = calc_der2d(vu,dtv,eigenFinDiffMat,IminusDHdiag,s_idh,vdah, this.h, this.sx,this.alpha,this.beta,this.order);
             [d2vz, d3vz, d4vz, d5vz, d6vz] = this.Calc_der2d( vu, dtv, t(k) );
@@ -43,14 +49,11 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
 
             IS_dudt_NaN = max(max(isnan(vu)));
             max_v(k) = max(max(abs(vu)));
+            EN(k) = this.GetEnergy( vz, vu, t( k ) );
+            II(k)= this.GetIntegralOf( vz );
             if(mod(k,this.estep)==0)
                 tt(e)=k*this.tau;
-                
-                EN(e) = this.GetEnergy( vz, vu, t( k ) );
-                %EN(e) = Eg2_vc_2d(vmo, vz, vu, this.minusDHdiag, this.eigenFinDiffMat,this.h,this.tau,...
-                %        this.alpha,this.beta, this.sx, this.sy,s_idh, this.vdah,this.vdah,this.vdah);
-                this.SaveSolutionOnIterStep( tt(e), vu );
-                II(e)=sum(sum(vz))*this.h^2;
+                %this.SaveSolutionOnIterStep( tt(e), vu );
                 e=e+1;
             end
             if(IS_dudt_NaN == 1)
@@ -61,20 +64,18 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
                  if( abs( tt(end) - this.tEnd ) > 1.00e-010 )
                     warning( 'tEnd missed!' ); 
                     tt(end)
-                    t(end)      
-                 else
-                     SOL_SAVED = 1
+                    t(end)
                  end
             end
-                k=k+1;  
+            k=k+1;
 
-                t(k)=(k-1)*this.tau;
-                if((t(k)-floor(t(k)))==0)
-                    yoyo=t(k)
-                end
+            t(k)=(k-1)*this.tau;
+            if((t(k)-floor(t(k)))==0)
+                fprintf('iteration time: %.4f\n', t(k));
+            end
             vmo = vz; vz = vu; 
         end
-        
+        II(k)= this.GetIntegralOf( vu );
         clear('W');    clear('vmo'); 
         sol_size = size(vu) 
     end
@@ -231,13 +232,7 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         NLe = ( this.alpha*this.beta/3 ) * ( vz.^3  + vpo.^3 );
 
         energyTerm = Le + NLe;
-        if( this.order == 2) 
-            e = this.GetOh2IntegralOf(energyTerm);
-        elseif( this.order == 4 )
-            e = this.GetOh4IntegralOf(energyTerm);
-        elseif( this.order == 6 )
-            e = this.GetOh6IntegralOf(energyTerm);
-        end
+        e = this.GetIntegralOf(energyTerm);
     end
       
   end

@@ -15,8 +15,8 @@ for jl = 1:3
     warning('off','all');
     load (  cellStr{1} );
     warning('on','all');
-    fprintf('tau = %d\n', tau);
-    fprintf( 'h = 0.%s \n',  yo{jl});
+    %fprintf('tau = %f\n', tau);
+    %fprintf( 'h = 0.%s \n',  yo{jl});
     bndPtsRemX = 0.0;
     bndPtsRemY = 0.0;
     if(jl==3)
@@ -32,15 +32,20 @@ for jl = 1:3
     
     vl = vl( bndPtsRemX+1:end-bndPtsRemX, bndPtsRemY+1:end-bndPtsRemY );
     if(jl==1)
-       vb = vl(bndPtsRemX+1:end-bndPtsRemX,bndPtsRemX+1:end-bndPtsRemX); hb=waveFactory.h; taub = tau;
+       vb = vl(bndPtsRemX+1:end-bndPtsRemX,bndPtsRemX+1:end-bndPtsRemX); 
+       hb=waveFactory.h
+       taub = tau
        ENb = EN;
     end
     if(jl==2)
-       vc = vl(bndPtsRemX+1:end-bndPtsRemX,bndPtsRemX+1:end-bndPtsRemX); hc=waveFactory.h; tauc = tau;
+       vc = vl(bndPtsRemX+1:end-bndPtsRemX,bndPtsRemX+1:end-bndPtsRemX); 
+       hc=waveFactory.h
+       tauc = tau
        ENc = EN;
     end
     if(jl==3)
-       vd = vl(bndPtsRemX+1:end-bndPtsRemX,bndPtsRemX+1:end-bndPtsRemX);  taud = tau;
+       vd = vl(bndPtsRemX+1:end-bndPtsRemX,bndPtsRemX+1:end-bndPtsRemX);  
+       taud = tau
        ENd = EN;
     end
     clear('U');clear('cellStr');clear('waveFactory');

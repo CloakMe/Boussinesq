@@ -1,4 +1,4 @@
-function [x,y,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString )
+function [x,y,t,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString )
 
     bndCutSizeX = 0;
     bndCutSizeY = 0;
@@ -9,8 +9,6 @@ function [x,y,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString )
     warning('off','all');
     load (  cellStrEn );
     warning('on','all');
-    fprintf('tau = %d\n', tau);
-    fprintf( 'h = 0.%s \n',  hString);
 
     current_hx = ( x(11) - x(1) ) / 10.0;
     current_hy = ( y(11) - y(1) ) / 10.0;

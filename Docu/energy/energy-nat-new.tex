@@ -236,7 +236,7 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Convergence test for SOLUTION with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+		\caption{Convergence test for TAYLOR METHOD with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
 \label{tableA}
 \end{table}
 
@@ -248,7 +248,7 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 			\hline
 			\hline
       \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
-	         &                    &                               & Rate   &                                        & Rate \\
+	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
    			\hline 
 					\hline 
   $\beta=3$                &0.2, 0.02         &              &            &                     &      \\
@@ -257,7 +257,7 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 			\hline 
   $\beta=3$               &0.2, 0.02       &                &            &                     &      \\
    c=0.52                    &0.1, 0.01      &0.094290 &            &0.499355   &       \\
-     $O(h^4+ \tau^4)$ &??, ??5        &0.003936 &4.58    &0.012718   &5.29      \\
+     $O(h^4+ \tau^4)$ &0.05, 0.005        &0.003936 &4.58    &0.012718   &5.29      \\
 			\hline 
   $\beta=3$               &0.2, 0.02       &                &            &                      &            \\
      c=0.52                 &0.1, 0.01        &0.139543 &            &  0.681089    &           \\
@@ -282,5 +282,99 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 \label{tableB}
 \end{table}
 
+%C
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
+   			\hline 
+					\hline 
+  $\beta=3$                &0.2, 0.02         &                    &                &                  &                   \\
+   c=0.52                     &0.1, 0.01         & 0.723613   &                & 0.697660  &                   \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.005  & 0.173658   & 2.05       & 0.182194   & 1.93    \\
+	   \hline
+			\hline 
+       $\beta=1$           & 0.4, 0.08       &                   &           &                 &   \\
+                  c=0.9       & 0.2, 0.04        & 0.188357   &          &0.071708  &   \\
+  $O(h^2+ \tau^2)$  & 0.1, 0.02       & 0.044656   & 2.07  &0.020959  & 1.77 \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{ Convergence for the energy save METHOD with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+\label{tableB}
+\end{table}
+
+%C
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
+   			\hline 
+					\hline 
+  $\beta=3$                &0.2, 0.02         &                    &                &                  &                   \\
+   c=0.52                     &0.1, 0.01         & 0.724725   &                & 1.622362  &                   \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.005  & 0.167033   & 2.11       & 0.411212   & 1.98   \\
+	   \hline
+			\hline 
+       $\beta=1$           & 0.4, 0.08       &                   &           &                 &   \\
+                  c=0.9       & 0.2, 0.04        & 0.332192   &          &0.372897  &   \\
+  $O(h^2+ \tau^2)$  & 0.1, 0.02       & 0.057919   & 2.51  &0.091762  & 2.02  \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{ Convergence for ENERGY for the energy save method with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+\label{tableB}
+\end{table}
+
+
+%C
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|l|l|l||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  &   $uT_i - uE_i$  in $L_2$     &  $uT_i - uE_i$ in $L_\infty$ & \multirow{2  }{*}{$max|uE_i|$} \\
+	                                        &                                                     &      difference                     &           difference                  &                                                       \\
+   			\hline 
+					\hline 
+  $\beta=3$                   &0.2, 0.02         &  0.342560       & 0.318667  & 1.110878      \\
+   c=0.52                        &0.1, 0.01         &  0.421457       & 0.449651 &  1.808538     \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.005    & 0.289388         &0.308554  &   1.895966    \\
+			\hline 
+  $\beta=3$                 &0.2, 0.02        & 0.663951           &0.620057 & 1.110878     \\
+   c=0.52                      &0.1, 0.01       & 0.209876            &0.218988 & 1.808538    \\
+     $O(h^4+ \tau^4)$ &0.05,  0.005  &0.055032             &0.050886 & 1.895966    \\
+			\hline 
+  $\beta=3$                  &0.2, 0.02       & 0.840484             & 0.767244  &  1.110878  \\
+     c=0.52                     &0.1, 0.01       & 0.226535             &  0.226659 &  1.808538  \\
+     $O(h^6+ \tau^6)$  &0.05, 0.005  &  0.056243            &  0.051445 &   1.895966\\
+	   \hline
+			\hline 
+       $\beta=1$          &0.4, 0.08*        & 0.249341     & 0.122924  & 0.667318   \\
+                  c=0.9      &0.2, 0.04*        & 0.112618      & 0.055048  & 0.684467   \\
+  $O(h^2+ \tau^2)$ &0.1, 0.02*         & 0.054872      &0.024342 & 0.682936  \\
+			\hline
+      $\beta=1$               & 0.4, 0.08     & 0.218457    & 0.083715  & 0.667318    \\
+       c=0.9                      & 0.2, 0.04      & 0.057276   &  0.026339 &  0.684467 \\
+       $O(h^4+ \tau^4)$ & 0.1, 0.02   & 0.014390   &0.006838 &   0.682936 \\
+    \hline
+  $\beta=1$                   & 0.4, 0.08        & 0.236636  & 0.095385  & 0.667318 \\
+      c=0.9                       & 0.2, 0.04        & 0.058944   & 0.027302  &0.684467   \\
+     $O(h^6+ \tau^6)$   & 0.1, 0.02    & 0.014501   & 0.006907    & 0.682936   \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Difference between obtained solution with energy save $uE$ and Taylor $uT$ method with ZERO BOUNDARY condition and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Differences are measured in $L_2$ and $L_\infty$ norms. *For the case  $\beta=1$, $c=0.9$ and $O(h^2+ \tau^2)$ the time step values $\tau$ differ between methods. The shown values are for the energy save method. For the Taylor method it is $\tau = 0.04, 0.02, 0.01 $}
+\label{tableB}
+\end{table}
 
 \end{document}

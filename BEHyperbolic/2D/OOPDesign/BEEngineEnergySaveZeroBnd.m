@@ -23,19 +23,27 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
         this.order = 2;
         %dtv = this.dudt_t0 + this.tau*d2vz + (this.tau^2/2)*d3vz + (this.tau^3/6)*d4vz +...
         %    (this.tau^4/24)*d5vz + (this.tau^5/120)*d6vz;
-
+        
+        EN_1 = this.GetEnergy( this.u_t0, vu, 0 );
+        II_1 = this.GetIntegralOf( this.u_t0 );
+        
         %figure(2)
         %mesh(x,y,(this.tau^2/2)*d2vz')
         %title('(this.tau^2/2)*d^2v/dt^2 , t=this.tau')
         %xlabel('x');            ylabel('y');
         clear('this.dudt_t0'); clear('d2vz');
 
-        e=2; tt(e) = 0;
+        e=2;
+        t = zeros(1,this.tEnd/this.tau);
+        tt = zeros(1,this.tEnd/this.tau);
         t(1)=0;t(2)=this.tau;
         k=2;
         vz = vu; vmo = this.u_t0;
         clear('this.u_t0'); clear('v2');
-        EN(1)=0;II(1)=0;
+        EN=zeros(1,this.tEnd/this.tau);
+        II=zeros(1,this.tEnd/this.tau);
+        EN(1) = EN_1;
+        II(1) = II_1;
         while( t(k) < this.tEnd )
             
             [vu, numOfIter] = this.GetVuPicardi( vz, vmo, t(k) );
@@ -46,6 +54,8 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
             %vu = domUtilsEdges.GetExtrapolationOfVzEdges( vu, t(k) );
             IS_dudt_NaN = max(max(isnan(vu)));
             max_v(k) = max(max(abs(vu)));
+            EN(k) = this.GetEnergy( vz, vu, t( k ) );
+            II(k)= this.GetIntegralOf( vz );
             if(mod(k,this.estep)==0)
                 tt(e)=k*this.tau;
                 %{
@@ -53,13 +63,8 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
                 title('vu , t=this.tau')
                 xlabel('x');            ylabel('y');
                 %==========================================
-                %}
-                EN(e) = this.GetEnergy( vz, vu, t( k ) );
-
-                II(e)=sum(sum(vz))*this.h^2;
-                
-                %this.SaveSolutionOnIterStep( tt(e), vu );
-                
+                %}               
+                %this.SaveSolutionOnIterStep( tt(e), vu );                
                 e=e+1;
             end
             if(IS_dudt_NaN == 1)
@@ -85,6 +90,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
             vmo = vz; vz = vu; 
         end
         
+        II(k)= this.GetIntegralOf( vu );
         clear('W');    clear('vmo'); 
         sol_size = size(vu) 
     end

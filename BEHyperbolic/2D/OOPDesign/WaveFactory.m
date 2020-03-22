@@ -42,8 +42,13 @@ classdef WaveFactory
         this.h = h;
         this.u_t0 = bigU;
         this.theta = theta(end);
-        if(prmtrs.useZeroBoundary == 1)
-            this.mu = 0;
+        this.mu = c1;
+        try
+            if(prmtrs.useZeroBoundary == 1)
+                this.mu = 0;
+            end
+        catch
+            fprintf( 'Using boundary condition!\n' );
         end
         this.c = c;
         this.beta = bt1/bt2;
@@ -52,7 +57,6 @@ classdef WaveFactory
         this.alpha = al;
         this.order = length( derivative.second ) - 1;
         this.dudt_t0 = this.GetTDer();
-        %this.mu = 0;
         bndPtsRem = bndCutSize/this.h;
         this.x = this.x( bndPtsRem+1:end-bndPtsRem );
         this.y = this.y( bndPtsRem+1:end-bndPtsRem );

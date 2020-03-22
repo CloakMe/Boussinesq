@@ -83,45 +83,7 @@ classdef (ConstructOnLoad) BEEngine
         fdEndPoint = this.order/2;
         fd2ndDer = BEUtilities.GetFinDiffCoeff( -fdEndPoint:fdEndPoint, 2 )';
     end
-    
-    % GetFDIminusDH internal
-    function [fd] = GetFDIminusDH( this )
-        mid = ( this.order/2 + 1 );
-        fd2ndDer = this.GetFd2ndDer( );
-        fd2ndDer( mid ) = 2*fd2ndDer( this.order/2 + 1 ) - this.h^2;
-        fd = - fd2ndDer;
-    end
-    
-    % GetFDIminusDH internal
-    function [fd] = GetFDminusDH( this )
-        mid = ( this.order/2 + 1 );
-        fd2ndDer = this.GetFd2ndDer( );
-        fd2ndDer( mid ) = 2*fd2ndDer( this.order/2 + 1 );
-        fd = - fd2ndDer;
-    end
-    
-    % DiagonalizeAndGetDiagOfFinDiffMat internal
-    function [ IminusDHdiag, minusDHdiag ] = GetEigenMatrices( this, sxSize )
-
-        if( nargin == 1 )
-            sxSize = this.sx;
-            fprintf('x size = %.6f\n', sxSize);
-        end
-        mid = ( this.order/2 + 1 );
-        DD = zeros( 1, sxSize );
-        IminusDHdiag = DD;
-        minusDHdiag = DD;
-
-        diag = this.GetFDIminusDH();
-        diag2 = this.GetFDminusDH();
-        for i = 1:sxSize
-            IminusDHdiag(i) = this.eigenFinDiffMat(:,i)'*...
-                BEUtilities.BandMatMult( diag, this.eigenFinDiffMat(:,i)', diag( mid )  )';%
-            minusDHdiag(i) = this.eigenFinDiffMat(:,i)'*...
-                BEUtilities.BandMatMult( diag2, this.eigenFinDiffMat(:,i)', diag2( mid ) )';%
-        end
-    end
-    
+  
 	% GetNonLinTerm internal
     function nonlinTerm = GetNonLinTerm( this, derOrd, fun )
          
@@ -284,45 +246,18 @@ classdef (ConstructOnLoad) BEEngine
         end        
     end
     
-    function [result] = GetOh2IntegralOf(this, term)
-        
-        hx = this.h;
-        hy = this.h;
-        result = hx*hy*sum( sum( term(2:end-1, 2:end-1 ) ) ) +...
-            hx*hy/2 * ( sum( term(1, 2:end-1 ) ) + sum( term(end, 2:end-1 ) ) )+...
-            hx*hy/2 * ( sum( term(2:end-1, 1 ) ) + sum( term(2:end-1, end ) ) )+...
-            hx*hy/4 * ( term(1, 1) + term(1, end) + term(end, 1) + term(end, end) );
+    function [ result ] = GetIntegralOf(this, term)
+        if( this.order == 2) 
+            result = this.GetOh2IntegralOf(term);
+        elseif( this.order == 4 )
+            result = this.GetOh4IntegralOf(term);
+        elseif( this.order == 6 )
+            result = this.GetOh6IntegralOf(term);
+        else
+            error('Order %d is not supported!', this.order);
+        end
     end
-    
-    function [result] = GetOh4IntegralOf(this, term)
-        if( mod (this.sx - 1, 2) == 1 || mod (this.sy - 1, 2) == 1 )
-            error('Argument exception! sx,sy mod 2 ==0 ');
-        end
-        hx = this.h;
-        hy = this.h; 
-        D = zeros(1, this.sy);
-        for j=1:this.sy
-            D(j) = hx/3 * ( term(1, j) + term(end, j) + 4 * sum( term(2:2:end-1, j) ) + 2 * sum( term(3:2:end-2, j) ) );
-        end
-        
-        result = hy/3 * ( D(1) + D(end) + 4 * sum( D(2:2:end-1) ) + 2 * sum( D(3:2:end-2) ) );
-    end
-    
-    function [result] = GetOh6IntegralOf(this, term)        
-        if( mod (this.sx - 1, 4) == 1 || mod (this.sy - 1, 4) == 1 )
-            error('Argument exception! sx,sy mod 4 == 0 ');
-        end
-        hx = this.h;
-        hy = this.h;
-
-        D = zeros(1, this.sy);
-        for j=1:this.sy
-            D(j) = 2*hx/45 * ( 7*term(1, j) + 7*term(end, j) + 32 * sum( term(2:2:end-1, j) ) +...
-                12 * sum( term(3:4:end-2,j ) ) + 14 * sum( term(5:4:end-4,j) ) );
-        end
-        result = 2*hy/45 * ( 7*D(1) + 7*D(end) + 32*sum ( D(2:2:end-1) ) +...
-            12*sum( D(3:4:end-2) ) + 14*sum( D(5:4:end-4) ) );
-    end
+      
   end
   
   methods ( Abstract = true )
@@ -376,6 +311,85 @@ classdef (ConstructOnLoad) BEEngine
         e = Le + NLe;
   
       end
+  end
+  
+  methods ( Access = private )
+      % GetFDIminusDH internal
+    function [fd] = GetFDIminusDH( this )
+        mid = ( this.order/2 + 1 );
+        fd2ndDer = this.GetFd2ndDer( );
+        fd2ndDer( mid ) = 2*fd2ndDer( this.order/2 + 1 ) - this.h^2;
+        fd = - fd2ndDer;
+    end
     
+    % GetFDIminusDH internal
+    function [fd] = GetFDminusDH( this )
+        mid = ( this.order/2 + 1 );
+        fd2ndDer = this.GetFd2ndDer( );
+        fd2ndDer( mid ) = 2*fd2ndDer( this.order/2 + 1 );
+        fd = - fd2ndDer;
+    end
+    
+    % DiagonalizeAndGetDiagOfFinDiffMat internal
+    function [ IminusDHdiag, minusDHdiag ] = GetEigenMatrices( this, sxSize )
+
+        if( nargin == 1 )
+            sxSize = this.sx;
+            fprintf('x size = %.6f\n', sxSize);
+        end
+        mid = ( this.order/2 + 1 );
+        DD = zeros( 1, sxSize );
+        IminusDHdiag = DD;
+        minusDHdiag = DD;
+
+        diag = this.GetFDIminusDH();
+        diag2 = this.GetFDminusDH();
+        for i = 1:sxSize
+            IminusDHdiag(i) = this.eigenFinDiffMat(:,i)'*...
+                BEUtilities.BandMatMult( diag, this.eigenFinDiffMat(:,i)', diag( mid )  )';%
+            minusDHdiag(i) = this.eigenFinDiffMat(:,i)'*...
+                BEUtilities.BandMatMult( diag2, this.eigenFinDiffMat(:,i)', diag2( mid ) )';%
+        end
+    end
+    
+    function [result] = GetOh2IntegralOf(this, term)
+        
+        hx = this.h;
+        hy = this.h;
+        result = hx*hy*sum( sum( term(2:end-1, 2:end-1 ) ) ) +...
+            hx*hy/2 * ( sum( term(1, 2:end-1 ) ) + sum( term(end, 2:end-1 ) ) )+...
+            hx*hy/2 * ( sum( term(2:end-1, 1 ) ) + sum( term(2:end-1, end ) ) )+...
+            hx*hy/4 * ( term(1, 1) + term(1, end) + term(end, 1) + term(end, end) );
+    end
+    
+    function [result] = GetOh4IntegralOf(this, term)
+        if( mod (this.sx - 1, 2) == 1 || mod (this.sy - 1, 2) == 1 )
+            error('Argument exception! sx,sy mod 2 ==0 ');
+        end
+        hx = this.h;
+        hy = this.h; 
+        D = zeros(1, this.sy);
+        for j=1:this.sy
+            D(j) = hx/3 * ( term(1, j) + term(end, j) + 4 * sum( term(2:2:end-1, j) ) + 2 * sum( term(3:2:end-2, j) ) );
+        end
+        
+        result = hy/3 * ( D(1) + D(end) + 4 * sum( D(2:2:end-1) ) + 2 * sum( D(3:2:end-2) ) );
+    end
+    
+    function [result] = GetOh6IntegralOf(this, term)        
+        if( mod (this.sx - 1, 4) == 1 || mod (this.sy - 1, 4) == 1 )
+            error('Argument exception! sx,sy mod 4 == 0 ');
+        end
+        hx = this.h;
+        hy = this.h;
+
+        D = zeros(1, this.sy);
+        for j=1:this.sy
+            D(j) = 2*hx/45 * ( 7*term(1, j) + 7*term(end, j) + 32 * sum( term(2:2:end-1, j) ) +...
+                12 * sum( term(3:4:end-2,j ) ) + 14 * sum( term(5:4:end-4,j) ) );
+        end
+        result = 2*hy/45 * ( 7*D(1) + 7*D(end) + 32*sum ( D(2:2:end-1) ) +...
+            12*sum( D(3:4:end-2) ) + 14*sum( D(5:4:end-4) ) );
+    end
   end
 end
