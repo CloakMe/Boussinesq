@@ -1,9 +1,10 @@
 function CompareSolutions(btString, cString, hString ,orderString, additionalInfo) 
 
     fprintf('c = 0.%s, bt = %s, order = %s \n', cString, btString, orderString);
-    [x1,y1,t1,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString );
-    [x2,y2,t2,uEnTaylor] = GetBEEngineTaylorSol( btString, cString, hString, orderString );
-
+    
+    [x1,y1,t1,EN1,II1,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString );
+    [x2,y2,t2,EN2,II2,uEnTaylor] = GetBEEngineTaylorSol( btString, cString, hString, orderString );
+    
     if( length( x1 ) ~= length( x2 ) || length( y1 ) ~= length( y2 ) )
         fprintf('Different sizes in X, Y or T - dimensions!\n');
         return;
@@ -11,7 +12,7 @@ function CompareSolutions(btString, cString, hString ,orderString, additionalInf
         fprintf('Different values in x, y, t dimension vectors!\n');
         return;
     end
-        
+
     h = (x1(end) - x1(1))/ (length( x1 ) - 1);
     tau_enSave = (t1(end) - t1(1))/ (length( t1 ) - 1);
     fprintf('h   = %f\n',  h);
@@ -21,6 +22,20 @@ function CompareSolutions(btString, cString, hString ,orderString, additionalInf
         fprintf('tau enSave = %f\n', tau_enSave);
         tau_Taylor = (t2(end) - t2(1))/ (length( t2 ) - 1);
         fprintf('tau Taylor = %f\n', tau_Taylor);
+    end
+    
+    if( additionalInfo == 2 )
+        [minEN1, maxEN1, meanEN1] = GetValues(EN1);
+        [minEN2, maxEN2, meanEN2] = GetValues(EN2);
+        [minII1, maxII1, meanII1] = GetValues(II1);
+        [minII2, maxII2, meanII2] = GetValues(II2);
+        fprintf('         mean           min           max       \n');
+        %fprintf('EnSave %4.6f %4.6f %4.6f\n', meanEN1, minEN1, maxEN1 );
+        %fprintf('Taylor %4.6f %4.6f %4.6f\n', meanEN2, minEN2, maxEN2 );
+        fprintf('EnSave %4.6f  & %4.6f  & %4.6f  \n', meanII1, minII1, maxII1 );
+        fprintf('Taylor %4.6f  & %4.6f  & %4.6f  \n', meanII2, minII2, maxII2 );
+        fprintf('----------------------------------------\n\n');
+        return;
     end
     
     difference = (uEnTaylor - uEnSave);
@@ -62,3 +77,16 @@ function CompareSolutions(btString, cString, hString ,orderString, additionalInf
     title('solution difference');
     xlabel('x');            ylabel('y');
 end
+
+function [minValue, maxValue, meanValue] = GetValues(array)
+    if( length( array ) <= 1 )
+       breakHere = 1; 
+    end
+    if( array( 1 ) == 0 )
+        array = array(2:end);
+    end
+    minValue = min(array);
+    maxValue = max(array);
+    meanValue = sum(array)/length(array);
+end
+

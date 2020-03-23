@@ -308,7 +308,7 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 \label{tableB}
 \end{table}
 
-%C
+%D
 \begin{table}[ht]
 \centering
 \small
@@ -335,7 +335,7 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 \end{table}
 
 
-%C
+%E
 \begin{table}[ht]
 \centering
 \small
@@ -374,6 +374,48 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 			\hline 
 		\end{tabular}
 		\caption{Difference between obtained solution with energy save $uE$ and Taylor $uT$ method with ZERO BOUNDARY condition and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Differences are measured in $L_2$ and $L_\infty$ norms. *For the case  $\beta=1$, $c=0.9$ and $O(h^2+ \tau^2)$ the time step values $\tau$ differ between methods. The shown values are for the energy save method. For the Taylor method it is $\tau = 0.04, 0.02, 0.01 $}
+\label{tableB}
+\end{table}
+
+%F
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|l|l|l|l|l|l||}
+			\hline
+			\hline
+      FDS                    & $h$, $\tau$      &   \multicolumn{3}{ |c| }{Energy Save Method}   &    \multicolumn{3}{ |c|| }{Taylor Method}   \\
+                                 &                         & mean &  min   &  max      & mean & min & max  \\
+   			\hline 
+			\hline 
+  $\beta=3$                   &0.2, 0.02       & 4.162741   & 4.138623  & 4.186810 &  4.000487  & 3.996032  & 4.009367       \\
+   c=0.52                        &0.1, 0.01      & 4.172272  & 4.166626  & 4.181522 &  4.133789   & 4.129160  & 4.143036         \\
+     $O(h^2 + \tau^ 2)$ &0.05, 5e-3      & 4.173444  & 4.168763  & 4.182815   &  4.163757  & 4.159080  & 4.173110        \\
+			\hline 
+  $\beta=3$                 &0.2, 0.02        &  --  & --  & --  &  4.151322  & 4.146695  & 4.160544     \\
+   c=0.52                      &0.1, 0.01       & --  & --  & --  &  4.172102  & 4.167428  & 4.181438     \\
+     $O(h^4+ \tau^4)$ &0.05,  5e-3     & --  & --  & --  &  4.173451  & 4.168763  & 4.182828       \\
+			\hline 
+  $\beta=3$                  &0.2, 0.02       & --  & --  & --   & 4.168009  & 4.163363  & 4.177270   \\
+     c=0.52                     &0.1, 0.01       & --  & --  & --   & 4.173450  & 4.168774  & 4.182791   \\
+     $O(h^6+ \tau^6)$  &0.05, 5e-3     & --  & --  & --   & 4.173538  & 4.168849  & 4.182916   \\
+	   \hline
+			\hline 
+       $\beta=1$          &0.4, 0.08*        & 6.964599     & 6.793444  & 7.310656  &  6.964912       & 6.793420  & 7.314835  \\
+                  c=0.9      &0.2, 0.04*        & 7.110346       & 6.933476  & 7.471386 & 7.110507       & 6.933470  & 7.473548   \\
+  $O(h^2+ \tau^2)$ &0.1, 0.02*        & 7.145646       & 6.966815  & 7.512439 &  7.145728       & 6.966814  & 7.513536   \\
+			\hline
+      $\beta=1$               & 0.4, 0.08     & --  & --  & -- &  7.138283       & 6.962601  & 7.493500     \\
+       c=0.9                      & 0.2, 0.04    & --  & --  & -- &  7.155054       & 6.976936  & 7.518645  \\
+       $O(h^4+ \tau^4)$ & 0.1, 0.02   & --  & --  & -- &  7.156956       & 6.977773  & 7.524474   \\
+    \hline
+  $\beta=1$                   & 0.4, 0.08        & --  & --  & -- &  7.151929       & 6.975851  & 7.507948  \\
+      c=0.9                       & 0.2, 0.04        & --  & --  & -- & 7.156091       & 6.977917  & 7.519799   \\
+     $O(h^6+ \tau^6)$   & 0.1, 0.02        & --  & --  & --   & 7.157036       & 6.977836  & 7.524591  \\
+	   		\hline
+			\hline 
+		\end{tabular}
+		\caption{ Mass/Integral. *For the case  $\beta=1$, $c=0.9$ and $O(h^2+ \tau^2)$ the time step values $\tau$ differ between methods. The shown values are for the energy save method. For the Taylor method it is $\tau = 0.04, 0.02, 0.01 $l}
 \label{tableB}
 \end{table}
 
