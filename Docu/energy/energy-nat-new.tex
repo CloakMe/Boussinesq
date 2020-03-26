@@ -198,6 +198,11 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 \right\}
 \end{align}
 
+The energy and integral are vectors of size $[0:\tau:T]$, i.e. those are calculate at each iteration step. In the case of Taylor Method, the energy is calculated using trapezoidal, Simpson's and Boole's rules for $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$, respectively. In the case of Energy save Method, the energy is calculated using trapezoidal rule. The main tool for testing the convergence rate $\xi$ of all examined finite difference schemes and TS expansions is the Runge's Method. 
+\begin{equation}\label{Runge}
+\xi = ln  \frac{\Vert u_{h,\tau} - u_{(h,\tau)/2} \Vert_\kappa } {\Vert  u_{(h,\tau)/2} - u_{(h,\tau)/4} \Vert_\kappa  } | / ln(2),
+\end{equation}
+when no exact solution to the problem is known. It is also used in order to calculate the convergence of the energy. For the last, one obtains three nested vectors of size $[0:\tau:T]$, $[0:\tau/2:T]$ and $[0:\tau/4:T]$. For all calculations and tables below it is given that $$T=10.$$
 %A
 \begin{table}[ht]
 \centering
@@ -278,7 +283,7 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Convergence test for ENERGY with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+		\caption{Convergence test for ENERGY with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms. This is the energy calculated for the Taylor Method.}
 \label{tableB}
 \end{table}
 
@@ -304,7 +309,7 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{ Convergence for the energy save METHOD with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+		\caption{ Convergence for the energy save METHOD with ZERO BOUNDARY with approximation errors $O(h^{2} + \tau^2 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
 \label{tableB}
 \end{table}
 
@@ -330,7 +335,7 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{ Convergence for ENERGY for the energy save method with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+		\caption{ Convergence for ENERGY for the energy save method with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms. }
 \label{tableB}
 \end{table}
 
@@ -373,8 +378,8 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Difference between obtained solution with energy save $uE$ and Taylor $uT$ method with ZERO BOUNDARY condition and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Differences are measured in $L_2$ and $L_\infty$ norms. *For the case  $\beta=1$, $c=0.9$ and $O(h^2+ \tau^2)$ the time step values $\tau$ differ between methods. The shown values are for the energy save method. For the Taylor method it is $\tau = 0.04, 0.02, 0.01 $}
-\label{tableB}
+		\caption{Difference between obtained solution with energy save $uE$ and Taylor $uT$ method with ZERO BOUNDARY condition and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Differences are measured in $L_2$ and $L_\infty$ norms. *For the case  $\beta=1$, $c=0.9$ and $O(h^2+ \tau^2)$ the time step values $\tau$ differ between methods. The shown values are for the energy save method. For the Taylor method it is $\tau = 0.04, 0.02, 0.01 $, because it is more stable. The obtained solution for the energy save $uE$ method is obtained with approximation $O(h^2+ \tau^2)$ and compared to the Taylor method $uT$ with approximations $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. This is because the Taylor method produces reasonable results in case of  higher approximation order, i.e. fourth and sixth. For the case of only second approximation order the Taylor Method produces large deviations and the results become meaningless.}
+\label{tableE}
 \end{table}
 
 %F
@@ -415,8 +420,8 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 	   		\hline
 			\hline 
 		\end{tabular}
-		\caption{ Mass/Integral. *For the case  $\beta=1$, $c=0.9$ and $O(h^2+ \tau^2)$ the time step values $\tau$ differ between methods. The shown values are for the energy save method. For the Taylor method it is $\tau = 0.04, 0.02, 0.01 $l}
-\label{tableB}
+		\caption{ Mass/Integral. *For the case  $\beta=1$, $c=0.9$ and $O(h^2+ \tau^2)$ the time step values $\tau$ differ between methods. The shown values are for the energy save method. For the Taylor method it is $\tau = 0.04, 0.02, 0.01 $. It is the same case as in Table \ref{tableE} because both tables use the same results. Mean value is $ \sum I_i / nE $ where $nE$ is the count of elements in the integral vector. The min, max is simply the minimum and maximum element in the vector. The integral vector is a map from $0:\tau:T \rightarrow D(u(0:\tau:T))$ using formula \rf{int}. }
+\label{tableF}
 \end{table}
-
+Notice that the final time $T=10$  is the same for all tables.
 \end{document}
