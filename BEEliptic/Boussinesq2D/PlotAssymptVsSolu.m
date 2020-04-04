@@ -12,12 +12,12 @@ function PlotAssymptVsSolu( x, y, h, zeroX, zeroY, bigU, muTheta, c)
     figure(5)
     plot(newY, (newY.^2).*bigU(zeroX,stY:end), 'b', newY, assymptXeqZero, 'k' ) %(newY.^2).*
     xlabel('y')
-    title('x==0 Cross section');
+    title('x==0 Cross section * y^2');
     
     figure(6)
     plot(newX, (newX'.^2).*bigU(stX:end,zeroY), 'b', newX, assymptYeqZero, 'k' ) % (newX'.^2).*
     xlabel('x')
-    title('y==0 Cross section');
+    title('y==0 Cross section * x^2');
     
     figure(7)
     plot(newY, bigU(zeroX,stY:end), 'b', newY, muTheta ./ ( (1-c^2) * newY.^2 ), 'k' ) %(newY.^2).*
