@@ -58,23 +58,19 @@ function CompareSolutions(btString, cString, hString ,orderString, additionalInf
 
     if(additionalInfo == 3)
         figure(18)        
-        %l = 1;
-        %if( length(t1) == length(II1) + 1)
-        %    l = 2;
-        %end
         %hold on;
-        %plot(t1(2:end-1),II1(l:end),'k',t1(2),II1(2)+II1(2)/1000.0,t1(end),II1(end)-II1(end)/1000.0 )
+        [indeces, shift] = BEUtilities.GetCommonIndexArray( t1, II1 );
+        indeces(1) = [];
+        plot(t1(indeces+shift),II1(indeces),'k',t1(1),II1(2)+II1(2)/1000.0,t1(end),II1(end)-II1(end)/1000.0 )
         %hold off;
-        %title('Integral En Save');
-        %xlabel('time "t"');  ylabel('EN');
+        title('Integral En Save');
+        xlabel('time "t"');  ylabel('EN');
         
         figure(19)
         %hold on;
-        l = 1;
-        if( length(t2) == length(II2) + 1)
-            l = 2;
-        end
-        plot(t2(2:end-1),II2(l:end),'k',t2(2),II2(2)+II2(2)/1000.0,t2(end),II2(end)-II2(end)/1000.0 )
+        [indeces, shift] = BEUtilities.GetCommonIndexArray( t2, II2 );
+        indeces(1) = [];
+        plot(t2(indeces+shift),II2(indeces),'k',t2(1),II2(2)+II2(2)/1000.0,t2(end),II2(end)-II2(end)/1000.0 )
         %hold off;
         title('Integral Taylor');
         xlabel('time "t"');  ylabel('EN');

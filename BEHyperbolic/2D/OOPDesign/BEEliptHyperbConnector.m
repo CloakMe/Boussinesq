@@ -110,10 +110,12 @@ xlabel('time "t"');  ylabel('EN');
 
 figure(18)
 %hold on;
-plot(t,II,'k',t(1),II(1)+II(1)/1000.0,t(end),II(end)-II(end)/1000.0 )
+[indeces, shift] = BEUtilities.GetCommonIndexArray( t, II );
+indeces(1) = [];
+plot(t(indeces+shift),II(indeces),'k',t(1),II(2)+II(2)/1000.0,t(end),II(end)-II(end)/1000.0 )
 %hold off;
 title('Integral');
-xlabel('time "t"');  ylabel('EN');
+xlabel('time "t"');  ylabel('Integral');
 
 bt = waveFactory.beta1/waveFactory.beta2;
 %DrawEnergyForHyperbolicBE( engine, tt );

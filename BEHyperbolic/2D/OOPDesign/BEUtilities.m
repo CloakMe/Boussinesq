@@ -534,6 +534,21 @@ classdef BEUtilities
 
     end
 
+    function [ index_array, shift1st_array, shift2nd_array ] = GetCommonIndexArray( array1, array2 )
+       
+        len1 = length( array1 );
+        len2 = length( array2 );
+        
+        if( len2 > len1 )
+            shift1st_array = 0;
+            shift2nd_array = len2 - len1;
+            index_array = 1:len1;
+        else
+            shift1st_array = len1 - len2;
+            shift2nd_array = 0;
+            index_array = 1:len2;
+        end
+    end
   end
   
   methods (Access = private, Static)
