@@ -1,9 +1,8 @@
 function [bigU,bigUTimeDerivative,P,U,thetaCont,c1,c2,solutionNormsCont,tauVecCont,anglCont,nx,ny,h] =...
-    PreSolverFromExistingSol(x,y,U,compBox,prmtrs,bt1,bt2,al,c,th,derivative)
+    PreSolverFromExistingSol(x,y,U,compBox,prmtrs,bt1,bt2,al,c,th,derivative,h)
 
     tic
-    prmtrs.h = prmtrs.h/2;
-    h = prmtrs.h;
+    prmtrs.h = h;
     prmtrs.tau = prmtrs.tau/10;
     nx = compBox.x_st2:h:compBox.x_end2;
     ny = compBox.y_st2:h:compBox.y_end2; 

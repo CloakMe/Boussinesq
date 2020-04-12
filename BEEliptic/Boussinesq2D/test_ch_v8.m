@@ -3,15 +3,15 @@ clear;clc;
 tic
 x_st = -50.0;    y_st = -50.0;
 x_end = 50.0;    y_end = 50.0;
-x_st2 = -500.0;   y_st2 = -500.0;
-x_end2 = 500.0;   y_end2 = 500.0;
+x_st2 = -300.0;   y_st2 = -300.0;
+x_end2 = 300.0;   y_end2 = 300.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
 
 UseExtendedDomain=1;
 
-h = 0.2;
+h = 0.4;
 x=x_st2:h:x_end2; 
 y=y_st2:h:y_end2; 
 %tau = 0.00114425*8;% getTau(h,x_end,y_end)/20;
@@ -69,7 +69,7 @@ return;
 
 % Create smoother solution from existing save:
 [bigU,bigUTimeDerivative,P,U,theta,c1,c2,solutionNorms,tauVector,angl,x,y,h] =...
-    PreSolverFromExistingSol(x,y,U,compBox,prmtrs,bt1,bt2,al,c,theta(end),derivative);
+    PreSolverFromExistingSol(x,y,U,compBox,prmtrs,bt1,bt2,al,c,theta(end),derivative,h);
 save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
     '_h0' num2str(h*100) '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
 
