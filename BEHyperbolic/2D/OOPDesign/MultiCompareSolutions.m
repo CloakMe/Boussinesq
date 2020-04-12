@@ -1,5 +1,6 @@
-clear;clc;
 %return;
+clear;clc;
+
 %btString = '1';
 %cString = '90';
 %hString = '40';

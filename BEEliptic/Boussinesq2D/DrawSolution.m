@@ -11,7 +11,7 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
         y_end = compBox.y_end2;   
     end
     
-    mag = floor(5/h);
+    mag = max(20, floor(5/h));
     xx=x(zeroX-mag+1:zeroX+mag-1); yy=y(zeroY-mag+1:zeroY+mag-1); 
 
     BigUNearCenter = bigU(zeroX-mag+1:zeroX+mag-1,zeroY-mag+1:zeroY+mag-1);
