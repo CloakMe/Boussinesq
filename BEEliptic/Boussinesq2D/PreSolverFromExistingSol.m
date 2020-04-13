@@ -22,7 +22,7 @@ function [bigU,bigUTimeDerivative,P,U,thetaCont,c1,c2,solutionNormsCont,tauVecCo
     end
     
     fprintf('elapsed pre solver time = %d \n', toc);
-    fprintf('new solution (x,y) size = (%d,%d)\n', length(nx/2), length(ny/2));
+    fprintf('new solution (x,y) size = (%d,%d)\n', length(nx)/2, length(ny)/2);
     
     tic
     [bigU,bigUTimeDerivative,P,U,thetaCont,c1,c2,solutionNormsCont,tauVecCont,anglCont] =...
