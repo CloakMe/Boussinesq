@@ -1,6 +1,7 @@
-function PlotAssymptVsSolu( x, y, h, zeroX, zeroY, bigU, muTheta, c)
+function PlotAssymptVsSolu( x, y, h, bigU, muTheta, c)
 
     shift = ceil(2/h);
+    [zeroX,zeroY]=GetZeroNodes(x,y);
     stX = zeroX+shift-1;
     stY = zeroY+shift-1;
     newX = x(stX:end);
