@@ -1,5 +1,5 @@
 function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,c1,c2,solutionNorms,tauVector, angl]=...
-    sol_ch_v8(U,x,y,prmtrs,bt1,bt2,al,c,theta,zeroX,zeroY,derivative,P)
+    sol_ch_v8(U,x,y,prmtrs,bt1,bt2,al,c,theta,derivative,P)
 
     sw = 0;  
     if (nargin == 13) 
@@ -34,7 +34,8 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,c1,c2,solutionNorms,tauVec
     step = Step(h);
 
     % approxBoundaryF is over the augmented domain 
-    % where four points were added top and bottom
+    % where four points were added top and right
+    [zeroX,zeroY]=GetZeroNodes(x,y);
     approxBoundaryF = GetApproximationForBoundary(x(zeroX:end),y(zeroY:end),h,c);
 
     outerTopBoundaryF=approxBoundaryF(1:end-4,end-3:end); 

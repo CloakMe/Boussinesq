@@ -26,6 +26,6 @@ function [bigU,bigUTimeDerivative,P,U,thetaCont,c1,c2,solutionNormsCont,tauVecCo
     
     tic
     [bigU,bigUTimeDerivative,P,U,thetaCont,c1,c2,solutionNormsCont,tauVecCont,anglCont] =...
-       sol_ch_v8(nU,nx,ny,prmtrs,bt1,bt2,al,c,th,zeronX,zeronY,derivative);   
+       sol_ch_v8(nU,nx,ny,prmtrs,bt1,bt2,al,c,th,derivative);   
     fprintf('elapsed solver time = %d \n', toc);
 end

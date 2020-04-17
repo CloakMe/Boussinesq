@@ -44,7 +44,7 @@ sy = (length(y)+1)/2
    secondDerivative = GetFiniteDifferenceCoeff([-2,-1,0,1,2],2)'/h^2;
    derivative = struct('first',{firstDerivative},'second',{secondDerivative});
    
-  [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,c1,c2,zeroX,zeroY,tauVector,angl]=...
+  [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,c1,c2,tauVector,angl]=...
   PrepareICForInnerDomain(compBox,prmtrs,al,bt1,bt2,c,derivative);
 
   if(length(tauVector)<iterMax && UseExtendedDomain == 1 && size(bigUTimeDerivative,1)~=1)
@@ -53,7 +53,7 @@ sy = (length(y)+1)/2
      prmtrs.eps = 1.0e-11;
      prmtrs.plotResidual = 0;
      prmtrs.tau = tauVector(end);
-     [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,zeroX,zeroY,tauVector,angl] =...
+     [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,tauVector,angl] =...
      PrepareICForEnlargedDomain(bigU,compBox,prmtrs,al,bt1,bt2,c,c1,theta(end),derivative);
      x=x_st2:h:x_end2; y=y_st2:h:y_end2;
   end
@@ -67,23 +67,11 @@ PrintResults(solutionNorms,c1,c2);
 PlotAssymptVsSolu( x, y, h, bigU, c1*theta(end), c);
 return;
 
-% Create smoother solution from existing save:
-nh = h/2;
-[bigU,bigUTimeDerivative,P,U,theta,c1,c2,solutionNorms,tauVector,angl,x,y,h] =...
-    PreSolverFromExistingSol(x,y,U,compBox,prmtrs,bt1,bt2,al,c,theta(end),derivative,nh);
-save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
-    '_h0' num2str(h*100) '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
-
-PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
-PrintResults(solutionNorms,c1,c2);
-PlotAssymptVsSolu( x, y, h, bigU, c1*theta(end), c);
-return;
-
 % Continue from lasth iteration:
 lastTheta=theta(end); lastU=U; lastP = P;  last_tau = tauVector(end); 
 
 [bigU,bigUTimeDerivative,P,U,thetaCont,c1,c2,solutionNormsCont,tauVecCont,anglCont] =...
-       sol_ch_v8(lastU,x,y,prmtrs,bt1,bt2,al,c,lastTheta,zeroX,zeroY,derivative,lastP);
+       sol_ch_v8(lastU,x,y,prmtrs,bt1,bt2,al,c,lastTheta,derivative,lastP);
 tauVector = [tauVector tauVecCont];
 theta = [ theta thetaCont];
 angl = [angl anglCont];
@@ -99,6 +87,19 @@ solutionNorms.BoundaryFunctionPvsPL2Norm = solutionNormsCont.BoundaryFunctionPvs
 
 save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
       '_h0' num2str(h*100) '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
+PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
+PrintResults(solutionNorms,c1,c2);
+PlotAssymptVsSolu( x, y, h, bigU, c1*theta(end), c);
+return;
+
+% Create smoother solution from existing save:
+nh = h/2;
+[bigU,bigUTimeDerivative,P,U,theta,c1,c2,solutionNorms,tauVector,angl,x,y,h] =...
+    PreSolverFromExistingSol(x,y,U,compBox,prmtrs,bt1,bt2,al,c,theta(end),derivative,nh);
+prmtrs.h = nh;
+save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
+    '_h0' num2str(h*100) '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
+
 PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
 PrintResults(solutionNorms,c1,c2);
 PlotAssymptVsSolu( x, y, h, bigU, c1*theta(end), c);
