@@ -8,14 +8,16 @@ sy = length(y);
    RD = flipud(RD);
 
    R = [RD; RU];
+   clear('RD');
+   clear('RU');
 %figure(3);   mesh(x(ij:sx),y,R(end-sy+1:end,:));
    L = zeros(size(R,1),size(R,2)-1);
    L = R(:,2:end);
    L = fliplr(L);
-   u_t0 = [L R]; 
-   
-   qD = u_t0(end-sy+1:end,:)';
-   
+   %u_t0 = [L R]'; 
+   %qD = u_t0(end-sy+1:end,:)';
+   qD = [L(end-sy+1:end,:) R(end-sy+1:end,:)]'; 
+  
    %{
    figure(12)
    mesh(x,y,qD');
