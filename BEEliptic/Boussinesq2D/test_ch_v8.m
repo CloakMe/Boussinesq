@@ -105,7 +105,7 @@ PrintResults(solutionNorms,c1,c2);
 PlotAssymptVsSolu( x, y, h, bigU, c1*theta(end), c);
 return;
 
-DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDerivative,newBigIC,U,compBox,secondDerivative);
+DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDerivative,newBigIC,U,compBox,secondDerivative);
 
 PlotAssymptVsSolu( x, y, h, bigU, c1*theta(end), c/sqrt(bt) );
 PlotAssymptotics(x,y,h,zeroX,zeroY,bigU);

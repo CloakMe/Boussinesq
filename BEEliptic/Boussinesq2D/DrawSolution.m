@@ -1,4 +1,4 @@
-function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secondDerivative)
+function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secondDerivative)
     if(x(1) == compBox.x_st)
         x_st = compBox.x_st;
         x_end = compBox.x_end;
@@ -12,6 +12,7 @@ function DrawSolution(x,y,h,zeroX,zeroY,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,c
     end
     
     mag = max(20, floor(5/h));
+    [zeroX,zeroY]=GetZeroNodes(x,y);
     xx=x(zeroX-mag+1:zeroX+mag-1); yy=y(zeroY-mag+1:zeroY+mag-1); 
 
     BigUNearCenter = bigU(zeroX-mag+1:zeroX+mag-1,zeroY-mag+1:zeroY+mag-1);
