@@ -7,7 +7,7 @@ function [bigU,bigUTimeDerivative,P,U,thetaCont,c1,c2,solutionNormsCont,tauVecCo
         doInterpolation = 0;
     end
     prmtrs.h = h;
-    prmtrs.tau = prmtrs.tau/10;
+    prmtrs.tau = prmtrs.tau/50;
     nx = compBox.x_st2:h:compBox.x_end2;
     ny = compBox.y_st2:h:compBox.y_end2; 
     [zeroX,zeroY]=GetZeroNodes(x,y);
