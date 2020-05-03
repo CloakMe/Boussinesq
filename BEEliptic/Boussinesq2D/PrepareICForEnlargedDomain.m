@@ -22,6 +22,6 @@ function [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,tauVect
     PlotJunctionPoints(x,y,newBigIC, quater);
 
     [bigU,bigUTimeDerivative,P,U,theta,c1,c2,solutionNorms,tauVector,angl] =...
-       sol_ch_v8(NewIC,x,y,prmtrs,bt1,bt2,al,c,thet,zeroX,zeroY,derivative);
+       sol_ch_v8(NewIC,x,y,prmtrs,bt1,bt2,al,c,thet,derivative);
        
 end
