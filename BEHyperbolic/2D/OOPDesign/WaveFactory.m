@@ -27,7 +27,12 @@ classdef WaveFactory
         this.x = x;
         this.y = y;
         this.compBox = compBox;
-        this.zeroY = zeroY;
+        for k = 1:sy
+            if( -10^(-11)<y(k))
+                this.zeroY = k;
+                break;
+            end
+        end
         if(length(tauVector)<iterMax && UseExtendedDomain == 1 && size(bigUTimeDerivative,1)~=1)
             this.y_st = y_st2;
             this.y_end = y_end2;
