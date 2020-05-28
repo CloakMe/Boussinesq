@@ -1,17 +1,17 @@
-clear; clc;
 %return
+clear; clc;
 
 bndCutSize = 0;
 % ChristovIC_40_80_bt1_c090_h010_O(h^6)
 % partialPath = 'BEEliptic\Boussinesq2D\SavedWorkspaces\';
 
-partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_40_bt1_c090\Oh4\';
-waveFactory = WaveFactory( partialPath, 'ChristovIC_40_ZB1_bt1_c090_h040_O(h^4)', bndCutSize, 0 ); %
+partialPath = 'BEEliptic\Boussinesq2D\WithBoundary\ChristovIC_40_bt1_c090\Oh2\';
+waveFactory = WaveFactory( partialPath, 'ChristovIC_40_ZB0_bt1_c090_h010_O(h^2)', bndCutSize, 0 ); %
 %waveFactory = WaveFactory( 'BestFitIC' );
 
-tau = 0.08;
+tau = 0.01;
 tEnd=10.0;
-SavingTheSolution = 0;
+SavingTheSolution = 1;
 fprintf('SavingTheSolution = %.1d\n', SavingTheSolution);
 %turnOnCaxis = 0;
 %waveFactory.PlotSingleWave( turnOnCaxis );
@@ -21,8 +21,8 @@ dscrtParams = BEDiscretizationParameters( waveFactory.x, waveFactory.y ,waveFact
                                          tau, tEnd, estep );
 eqParams = BEEquationParameters( waveFactory.alpha, waveFactory.beta1, waveFactory.beta2, waveFactory.c );
 ic = BEInitialCondition( waveFactory.u_t0 , waveFactory.dudt_t0, waveFactory.mu, waveFactory.theta );   
-engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %BEEngineTaylorSoftBnd %BEEngineEnergySaveSoftBnd
-%engine = BEEngineTaylor( dscrtParams, eqParams, ic );
+%engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %BEEngineTaylorSoftBnd %BEEngineEnergySaveSoftBnd
+engine = BEEngineTaylor( dscrtParams, eqParams, ic );
 % _____________________________________
 tic
 
@@ -60,6 +60,32 @@ curSz = size( vl );
 
 x = engine.x;
 y = engine.y;
+
+bt = waveFactory.beta1/waveFactory.beta2;
+%DrawEnergyForHyperbolicBE( engine, tt );
+
+useZeroBoundary = 0;
+if( waveFactory.mu == 0 )
+    useZeroBoundary = 1;
+end
+
+if( SavingTheSolution == 1)
+	try
+        save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) ...
+            '_ZB' num2str(useZeroBoundary) '_bt' ...
+            num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) ...
+          '_h0' num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')']);
+
+    catch ex
+        fprintf('trying to save most important solution parameters, only...\n');
+        save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) ...
+             '_ZB'  num2str(useZeroBoundary)  '_bt' ...
+             num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) '_h0' ...
+             num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')'], ...
+             'tau', 'x', 'y', 'tt', 'max_v', 't', 'EN', 'II', 'vl', 'dvl');
+        fprintf('parameters saved!\n');
+    end
+end
 
 topView = 1;
 viewTypeX = 0;
@@ -117,31 +143,6 @@ plot(t(indeces+shift),II(indeces),'k',t(1),II(2)+II(2)/1000.0,t(end),II(end)-II(
 title('Integral');
 xlabel('time "t"');  ylabel('Integral');
 
-bt = waveFactory.beta1/waveFactory.beta2;
-%DrawEnergyForHyperbolicBE( engine, tt );
-
-if( SavingTheSolution == 0)
-    return;
-end
-useZeroBoundary = 0;
-if( waveFactory.mu == 0 )
-    useZeroBoundary = 1;
-end
-try
-save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) ...
-    '_ZB' num2str(useZeroBoundary) '_bt' ...
-    num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) ...
-  '_h0' num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')']);
-
-catch ex
-    fprintf('trying to save most important solution parameters, only...\n');
-    save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) ...
-         '_ZB'  num2str(useZeroBoundary)  '_bt' ...
-         num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) '_h0' ...
-         num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')'], ...
-         'tau', 'x', 'y', 'tt', 'max_v', 't', 'EN', 'II', 'vl', 'dvl');
-    fprintf('parameters saved!\n');
-end
 return;
 %----------------------------------------------------------------------------------------
 CreatePictures( viewTypeX, viewTypeY, tt, x, y ); 
@@ -180,3 +181,9 @@ waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^4)', 5 );
     xlabel('x');            ylabel('y');
 
    
+    figure(17)
+%hold on;
+plot(tt,EN,'k',tt(1),EN(2)+EN(2)/1000.0,tt(end),EN(end)-EN(end)/1000.0 )
+%hold off;
+title('Energy functional');
+xlabel('time "t"');  ylabel('EN');

@@ -1,9 +1,10 @@
-function CompareSolutions(btString, cString, hString ,orderString, additionalInfo) 
+function CompareTaylorWithBoundaryVsZeroBoundary(btString, cString, hString ,orderString, additionalInfo) 
 
     fprintf('c = 0.%s, bt = %s, order = %s \n', cString, btString, orderString);
     
-    [x1,y1,t1,EN1,II1,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString, orderString );
-    [x2,y2,t2,EN2,II2,uEnTaylor] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 0 );
+    %[x1,y1,t1,EN1,II1,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString );
+    [x1,y1,t1,EN1,II1,uEnTaylorWithBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 1 );
+    [x2,y2,t2,EN2,II2,uEnTaylorZeroBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 0 );
     
     if( length( x1 ) ~= length( x2 ) || length( y1 ) ~= length( y2 ) )
         fprintf('Different sizes in X, Y or T - dimensions!\n');
@@ -19,9 +20,9 @@ function CompareSolutions(btString, cString, hString ,orderString, additionalInf
     if( length( t1 ) == length( t2 ) )
         fprintf('tau = %f\n', tau_enSave); 
     else
-        fprintf('tau enSave = %f\n', tau_enSave);
+        fprintf('tau Taylor With Boundary = %f\n', tau_enSave);
         tau_Taylor = (t2(end) - t2(1))/ (length( t2 ) - 1);
-        fprintf('tau Taylor = %f\n', tau_Taylor);
+        fprintf('tau Taylor Zero Boundary = %f\n', tau_Taylor);
     end
     
     if( additionalInfo == 2 )
@@ -32,20 +33,23 @@ function CompareSolutions(btString, cString, hString ,orderString, additionalInf
         fprintf('         mean           min           max       \n');
         %fprintf('EnSave %4.6f %4.6f %4.6f\n', meanEN1, minEN1, maxEN1 );
         %fprintf('Taylor %4.6f %4.6f %4.6f\n', meanEN2, minEN2, maxEN2 );
-        fprintf('EnSave %4.6f  & %4.6f  & %4.6f  \n', meanII1, minII1, maxII1 );
-        fprintf('Taylor %4.6f  & %4.6f  & %4.6f  \n', meanII2, minII2, maxII2 );
+        fprintf('Taylor WB%4.6f  & %4.6f  & %4.6f  \n', meanII1, minII1, maxII1 );
+        fprintf('Taylor ZB%4.6f  & %4.6f  & %4.6f  \n', meanII2, minII2, maxII2 );
         fprintf('----------------------------------------\n\n');
         return;
     end
     
-    difference = (uEnTaylor - uEnSave);
+    difference = (uEnTaylorZeroBoundary - uEnTaylorWithBoundary);
     normDifference_L2 = h*norm(difference(:),2);
-    fprintf('||v_Taylor - v_EnSave||_L2  = %.6f \n', normDifference_L2);
+    %fprintf('||v_Taylor - v_EnSave||_L2  = %.6f \n', normDifference_L2);
+    fprintf('||v_Taylor_WB - v_Taylor_ZB||_L2  = %.6f \n', normDifference_L2);
 
     normDifference_Inf = max(max(abs(difference(:))));
-    fprintf('||v_Taylor - v_EnSave||_Inf = %.6f \n', normDifference_Inf);
+    %fprintf('||v_Taylor - v_EnSave||_Inf = %.6f \n', normDifference_Inf);
+    fprintf('||v_Taylor_WB - v_Taylor_ZB||_Inf = %.6f \n', normDifference_Inf);
     
-    fprintf('||v_EnSave||_Inf            = %.6f \n', max(max(abs(uEnSave(:)))));
+    %fprintf('||v_EnSave||_Inf            = %.6f \n', max(max(abs(uEnSave(:)))));
+    fprintf('||v_Taylor_WB||_Inf            = %.6f \n', max(max(abs(uEnTaylorWithBoundary(:)))));
     fprintf('=========================\n\n');    
     
     if(additionalInfo == 0)
@@ -61,10 +65,13 @@ function CompareSolutions(btString, cString, hString ,orderString, additionalInf
         %hold on;
         [indeces, shift] = BEUtilities.GetCommonIndexArray( t1, II1 );
         indeces(1) = [];
-        plot(t1(indeces+shift),II1(indeces),'k',t1(1),II1(2)+II1(2)/1000.0,t1(end),II1(end)-II1(end)/1000.0 )
+        %plot(t1(indeces+shift),II1(indeces),'k',t1(1),II1(2)+II1(2)/1000.0,t1(end),II1(end)-II1(end)/1000.0 )
+        %
+        st1 = round( length(t1)/length(II1) );
+        plot(t1(st1:st1:end),II1,'k',t1(1),II1(2)+II1(2)/1000.0,t1(end),II1(end)-II1(end)/1000.0 );
         %hold off;
-        title('Integral En Save');
-        xlabel('time "t"');  ylabel('EN');
+        title('Integral Taylor With Boundary');
+        xlabel('time "t"');  ylabel('I');
         
         figure(19)
         %hold on;
@@ -72,27 +79,27 @@ function CompareSolutions(btString, cString, hString ,orderString, additionalInf
         indeces(1) = [];
         plot(t2(indeces+shift),II2(indeces),'k',t2(1),II2(2)+II2(2)/1000.0,t2(end),II2(end)-II2(end)/1000.0 )
         %hold off;
-        title('Integral Taylor');
-        xlabel('time "t"');  ylabel('EN');
+        title('Integral Taylor Zero Boundary');
+        xlabel('time "t"');  ylabel('I');
         return;
     end
     
     figure(14)
-    mesh(x1,y1,uEnSave');
+    mesh(x1,y1,uEnTaylorWithBoundary');
     view( viewTypeX, viewTypeY );
     colorbar;
-    title('solution Energy Save');
+    title('solution Taylor With Boundary');
     xlabel('x');            ylabel('y');
 
     figure(15)
-    mesh(x2,y2,uEnTaylor');
+    mesh(x2,y2,uEnTaylorZeroBoundary');
     view( viewTypeX, viewTypeY );
     colorbar;
-    title('solution Taylor');
+    title('solution Taylor Zero Boundary');
     xlabel('x');            ylabel('y');
 
     figure(16)
-    mesh(x1,y1,(uEnTaylor- uEnSave)');
+    mesh(x1,y1,(uEnTaylorZeroBoundary- uEnTaylorWithBoundary)');
     view( viewTypeX, viewTypeY );
     colorbar;
     title('solution difference');
