@@ -5,10 +5,20 @@ clear;clc;
 %cString = '90';
 %hString = '40';
 %orderString = '4';
-% additionalInfo == 3 plot and compare Integrals
-% additionalInfo == 0 compare solutions
-additionalInfo = 3;
-if( true )
+
+% additionalInfo == 1 compare solutions
+% additionalInfo == 2 compare solutions with additional graphs
+% additionalInfo == 3 compare integrals
+% additionalInfo == 4 compare integrals with additional graphs
+
+for i = 1:50
+    figNumber = i;
+    if(  ishandle(i) == true )
+        close(figure(i));
+    end
+end
+additionalInfo = 4;
+if( false )
     CompareTaylorWithBoundaryVsZeroBoundary('1', '90', '40' ,'2', additionalInfo);
     CompareTaylorWithBoundaryVsZeroBoundary('1', '90', '20' ,'2', additionalInfo);
     CompareTaylorWithBoundaryVsZeroBoundary('1', '90', '10' ,'2', additionalInfo);

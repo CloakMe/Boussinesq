@@ -1,4 +1,4 @@
-function [x,y,t,EN,II,uEnTaylor] = GetBEEngineTaylorSol( btString, cString, hString, orderString, bndFlag )
+function [x,y,t,max_v,EN,II,uEnTaylor] = GetBEEngineTaylorSol( btString, cString, hString, orderString, bndFlag )
 
     bndCutSizeX = 0;
     bndCutSizeY = 0;

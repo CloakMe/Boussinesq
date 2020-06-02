@@ -1,9 +1,8 @@
-function CompareTaylorWithBoundaryVsZeroBoundary(btString, cString, hString ,orderString, additionalInfo) 
+function CompareTaylorVsEnergySave(btString, cString, hString ,orderString, additionalInfo) 
 
     fprintf('c = 0.%s, bt = %s, order = %s \n', cString, btString, orderString);
     
-    %[x1,y1,t1,EN1,II1,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString );
-    [x1,y1,t1,max_v1,EN1,II1,uEnTaylorWithBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 1 );
+    [x1,y1,t1,max_v1,EN1,II1,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString );
     [x2,y2,t2,max_v2,EN2,II2,uEnTaylorZeroBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 0 );
     
     if( length( x1 ) ~= length( x2 ) || length( y1 ) ~= length( y2 ) )
@@ -16,25 +15,24 @@ function CompareTaylorWithBoundaryVsZeroBoundary(btString, cString, hString ,ord
 
     h = (x1(end) - x1(1))/ (length( x1 ) - 1);
     tau_enSave = (t1(end) - t1(1))/ (length( t1 ) - 1);
-    fprintf('sx = %d, sy = %d\n', length(x1), length(y1));    
     fprintf('h   = %f\n',  h);
     if( length( t1 ) == length( t2 ) )
-        fprintf('tau = %f\n', tau_enSave); 
+        fprintf('tau = %f\n', tau_enSave);
     else
-        fprintf('tau Taylor With Boundary = %f\n', tau_enSave);
+        fprintf('tau enSave = %f\n', tau_enSave);
         tau_Taylor = (t2(end) - t2(1))/ (length( t2 ) - 1);
-        fprintf('tau Taylor Zero Boundary = %f\n', tau_Taylor);
+        fprintf('tau Taylor = %f\n', tau_Taylor);
     end
     
     if( additionalInfo == 1 || additionalInfo == 2 )
-        difference = (uEnTaylorZeroBoundary - uEnTaylorWithBoundary);
+        difference = (uEnTaylorZeroBoundary - uEnSave);
         normDifference_L2 = h*norm(difference(:),2);
-        fprintf('||v_Taylor_WB - v_Taylor_ZB||_L2  = %.6f \n', normDifference_L2);
+        fprintf('||v_Taylor - v_EnSave||_L2  = %.6f \n', normDifference_L2);
 
         normDifference_Inf = max(max(abs(difference(:))));
-        fprintf('||v_Taylor_WB - v_Taylor_ZB||_Inf = %.6f \n', normDifference_Inf);
+        fprintf('||v_Taylor - v_EnSave||_Inf = %.6f \n', normDifference_Inf);
 
-        fprintf('||v_Taylor_WB||_Inf            = %.6f \n', max(max(abs(uEnTaylorWithBoundary(:)))));
+        fprintf('||v_EnSave||_Inf            = %.6f \n', max(max(abs(uEnSave(:)))));
         fprintf('=========================\n\n');    
 
         if(additionalInfo == 1)
@@ -50,7 +48,7 @@ function CompareTaylorWithBoundaryVsZeroBoundary(btString, cString, hString ,ord
         viewTypeX = 0;
         viewTypeY = 90;
         figure(figNumber)
-        mesh(x1,y1,(uEnTaylorZeroBoundary- uEnTaylorWithBoundary)');
+        mesh(x1,y1,(uEnSave - uEnTaylorZeroBoundary)');
         view( viewTypeX, viewTypeY );
         colorbar;
         title('solution difference');
@@ -60,7 +58,7 @@ function CompareTaylorWithBoundaryVsZeroBoundary(btString, cString, hString ,ord
         plot(t1(2:end),max_v1, 'r', t2(2:end),max_v2, 'b');
         title('solution maximums');
         xlabel('t');            %ylabel('solution maximums');
-        legend('With Boundary','Zero Boundary')
+        legend('EnergySave','Taylor');
     elseif( additionalInfo == 3 || additionalInfo == 4 )
 
         [minEN1, maxEN1, meanEN1] = GetValues(EN1);
@@ -70,8 +68,8 @@ function CompareTaylorWithBoundaryVsZeroBoundary(btString, cString, hString ,ord
         fprintf('Integral   mean          min           max       \n');
         %fprintf('EnSave %4.6f %4.6f %4.6f\n', meanEN1, minEN1, maxEN1 );
         %fprintf('Taylor %4.6f %4.6f %4.6f\n', meanEN2, minEN2, maxEN2 );
-        fprintf('Taylor WB: %4.6f  & %4.6f  & %4.6f  \n', meanII1, minII1, maxII1 );
-        fprintf('Taylor ZB: %4.6f  & %4.6f  & %4.6f  \n', meanII2, minII2, maxII2 );
+        fprintf('EnSave: %4.6f  & %4.6f  & %4.6f  \n', meanII1, minII1, maxII1 );
+        fprintf('Taylor: %4.6f  & %4.6f  & %4.6f  \n', meanII2, minII2, maxII2 );
         fprintf('----------------------------------------\n\n');
     
         if(additionalInfo == 3)
@@ -99,11 +97,12 @@ function CompareTaylorWithBoundaryVsZeroBoundary(btString, cString, hString ,ord
         
         plot(newt1(indeces1+shift1),II1(indeces1),'r',newt1(1),II1(2)+II1(2)/1000.0,newt1(end),II1(end)-II1(end)/1000.0 , ...
             newt2(indeces2+shift2),II2(indeces2),'b',newt2(1),II2(2)+II2(2)/1000.0,newt2(end),II2(end)-II2(end)/1000.0 )
-        title('Integral Taylor');
-        legend('With Boundary','Zero Boundary')
+        title('Integral EnergySave/Taylor');
+        legend('EnergySave','Taylor');
         xlabel('time "t"');  ylabel('I');
         %hold off;
     end
+  
 end
 
 function [minValue, maxValue, meanValue] = GetValues(array)

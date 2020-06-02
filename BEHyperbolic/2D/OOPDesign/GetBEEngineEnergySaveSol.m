@@ -1,4 +1,4 @@
-function [x,y,t,EN,II,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString )
+function [x,y,t,max_v,EN,II,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString )
 
     bndCutSizeX = 0;
     bndCutSizeY = 0;
