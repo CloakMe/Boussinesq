@@ -16,7 +16,7 @@ for i = 1:50
         close(figure(i));
     end
 end
-additionalInfo = 4;
+additionalInfo = 2;
 if( true )
     CompareTaylorVsEnergySave('1', '90', '40' ,'2', additionalInfo);
     CompareTaylorVsEnergySave('1', '90', '20' ,'2', additionalInfo);
