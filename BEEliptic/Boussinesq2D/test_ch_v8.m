@@ -1,17 +1,17 @@
-%return;
+return;
 clear;clc;
 tic
-x_st = -50.0;    y_st = -50.0;
-x_end = 50.0;    y_end = 50.0;
-x_st2 = -300.0;   y_st2 = -300.0;
-x_end2 = 300.0;   y_end2 = 300.0;
+x_st = -40.0;    y_st = -40.0;
+x_end = 40.0;    y_end = 40.0;
+x_st2 = -80.0;   y_st2 = -80.0;
+x_end2 = 80.0;   y_end2 = 80.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
 
 UseExtendedDomain=1;
 
-h = 0.4;
+h = 0.1;
 x=x_st2:h:x_end2; 
 y=y_st2:h:y_end2; 
 %tau = 0.00114425*8;% getTau(h,x_end,y_end)/20;
@@ -29,7 +29,7 @@ sy = (length(y)+1)/2
    ICSwitch=0;
    % IC_switch = 0 ->christov sech formula
    % IC_switch = 1 ->nat42 formula
-   useZeroBoundary  = 1;
+   useZeroBoundary  = 0;
    plotResidual  = 0;
    plotBoundary  = 0;
    checkBoundary = 0;
@@ -56,12 +56,11 @@ sy = (length(y)+1)/2
      [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,tauVector,angl] =...
      PrepareICForEnlargedDomain(bigU,compBox,prmtrs,al,bt1,bt2,c,c1,theta(end),derivative);
      x=x_st2:h:x_end2; y=y_st2:h:y_end2;
-  end
-  fprintf('elapsed time = %d \n', toc);
-
+  end  
   save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
       '_h0' num2str(h*100) '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
-
+  
+fprintf('elapsed time = %d \n', toc);
 PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
 PrintResults(solutionNorms,c1,c2);
 PlotAssymptVsSolu( x, y, h, bigU, c1*theta(end), c);
