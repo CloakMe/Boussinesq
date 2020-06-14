@@ -104,6 +104,35 @@ PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
 PrintResults(solutionNorms,c1,c2);
 PlotAssymptVsSolu( x, y, h, bigU, c1*theta(end), c);
 return;
+% Enlarge Domain from existing save:
+%old domain parameters from the save must be the same as define here:
+x_st = -40.0;    y_st = -40.0;
+x_end = 40.0;    y_end = 40.0;
+%new domain boundaries:
+x_st2 = -80.0;   y_st2 = -80.0;
+x_end2 = 80.0;   y_end2 = 80.0;
+
+compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
+    {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
+tic
+if(length(tauVector)<iterMax && UseExtendedDomain == 1 && size(bigUTimeDerivative,1)~=1)
+    fprintf('\nLarge Domamin Calculations:\n\n');
+    prmtrs.checkBoundary = 0;
+    prmtrs.eps = 1.0e-11;
+    prmtrs.plotResidual = 0;
+    prmtrs.tau = tauVector(end);
+    [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,tauVector,angl] =...
+    PrepareICForEnlargedDomain(bigU,compBox,prmtrs,al,bt1,bt2,c,c1,theta(end),derivative);
+    x=x_st2:h:x_end2; y=y_st2:h:y_end2;
+end
+save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
+  '_h0' num2str(h*100) '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
+
+fprintf('elapsed time = %d \n', toc);
+PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
+PrintResults(solutionNorms,c1,c2);
+PlotAssymptVsSolu( x, y, h, bigU, c1*theta(end), c);
+return;
 
 DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDerivative,newBigIC,U,compBox,secondDerivative);
 
