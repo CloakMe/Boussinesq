@@ -5,14 +5,22 @@ bndCutSize = 0;
 % ChristovIC_40_80_bt1_c090_h010_O(h^6)
 % partialPath = 'BEEliptic\Boussinesq2D\SavedWorkspaces\';
 
-partialPath = 'BEEliptic\Boussinesq2D\WithBoundary\ChristovIC_40_bt1_c090\Oh2\';
-waveFactory = WaveFactory( partialPath, 'ChristovIC_40_ZB0_bt1_c090_h010_O(h^2)', bndCutSize, 0 ); %
+partialPath = 'BEEliptic\Boussinesq2D\WithBoundary\ChristovIC_40_bt3_c052\Oh2\';
+waveFactory = WaveFactory( partialPath, 'ChristovIC_40_ZB0_bt3_c052_h020_O(h^2)', bndCutSize, 0 ); %
 %waveFactory = WaveFactory( 'BestFitIC' );
 
-tau = 0.01;
 tEnd=10.0;
 SavingTheSolution = 1;
 fprintf('SavingTheSolution = %.1d\n', SavingTheSolution);
+
+tau = waveFactory.h/10;
+if( waveFactory.beta == 3 && waveFactory.order == 2 )
+    tau = waveFactory.h/40;
+elseif( waveFactory.beta == 1 && waveFactory.order == 2 )
+    tau = waveFactory.h/200;
+end
+fprintf('tau = %.6f, h = %.6f, tau/h = %.6f\n', tau, waveFactory.h, waveFactory.h/tau);
+
 %turnOnCaxis = 0;
 %waveFactory.PlotSingleWave( turnOnCaxis );
 
@@ -68,20 +76,20 @@ useZeroBoundary = 0;
 if( waveFactory.mu == 0 )
     useZeroBoundary = 1;
 end
-
+fprintf('Use ZeroBoundary = %d\n', useZeroBoundary);
 if( SavingTheSolution == 1)
 	try
-        save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) ...
+        save (['SavedWorkspaces\' engine.GetName() '_' num2str(floor(waveFactory.compBox.x_end2)) ...
             '_ZB' num2str(useZeroBoundary) '_bt' ...
             num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) ...
-          '_h0' num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')']);
+          '_h0' num2str(waveFactory.h*100,'%.02d') '_O(h^' num2str(  waveFactory.order  ) ')']);
 
     catch ex
-        fprintf('trying to save most important solution parameters, only...\n');
-        save (['SavedWorkspaces\Hyperb_' num2str(floor(waveFactory.compBox.x_end2)) ...
+        fprintf('Trying to save only the most important solution parameters, ...\n');
+        save (['SavedWorkspaces\' engine.GetName() '_' num2str(floor(waveFactory.compBox.x_end2)) ...
              '_ZB'  num2str(useZeroBoundary)  '_bt' ...
              num2str(bt) '_c0' num2str(floor(waveFactory.c*100)) '_h0' ...
-             num2str(waveFactory.h*100) '_O(h^' num2str(  waveFactory.order  ) ')'], ...
+             num2str(waveFactory.h*100,'%.02d') '_O(h^' num2str(  waveFactory.order  ) ')'], ...
              'tau', 'x', 'y', 'tt', 'max_v', 't', 'EN', 'II', 'vl', 'dvl');
         fprintf('parameters saved!\n');
     end

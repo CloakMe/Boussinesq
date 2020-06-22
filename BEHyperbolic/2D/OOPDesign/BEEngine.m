@@ -263,6 +263,7 @@ classdef (ConstructOnLoad) BEEngine
   methods ( Abstract = true )
     % virtual:
     BESolver( this )
+    GetName( this )
   end
 
   methods ( Access = public )      

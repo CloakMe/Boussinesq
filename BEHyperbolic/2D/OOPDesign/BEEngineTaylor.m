@@ -79,7 +79,11 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         clear('W');    clear('vmo'); 
         sol_size = size(vu) 
     end
-
+    
+    function [ name ] = GetName( this )
+        name = 'Taylor';
+    end
+    
     function [d2vz, d3vz, d4vz, d5vz, d6vz] = Calc_der2d( this, vz,dvz, t )
         if( this.order > 6 )
             error( 'Max derivative order is 6th!' ); 
