@@ -1,10 +1,10 @@
-function CompareTaylorWithBoundaryVsZeroBoundary(btString, cString, hString ,orderString, additionalInfo) 
+function CompareTaylorWithBoundaryVsZeroBoundary(btString, cString, hString ,orderString, domainLen, additionalInfo) 
 
     fprintf('c = 0.%s, bt = %s, order = %s \n', cString, btString, orderString);
     
     %[x1,y1,t1,EN1,II1,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString );
-    [x1,y1,t1,max_v1,EN1,II1,uEnTaylorWithBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 1 );
-    [x2,y2,t2,max_v2,EN2,II2,uEnTaylorZeroBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 0 );
+    [x1,y1,t1,max_v1,EN1,II1,uEnTaylorWithBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 1, domainLen );
+    [x2,y2,t2,max_v2,EN2,II2,uEnTaylorZeroBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 0, domainLen );
     
     if( length( x1 ) ~= length( x2 ) || length( y1 ) ~= length( y2 ) )
         fprintf('Different sizes in X, Y or T - dimensions!\n');
@@ -67,11 +67,11 @@ function CompareTaylorWithBoundaryVsZeroBoundary(btString, cString, hString ,ord
         [minEN2, maxEN2, meanEN2] = GetValues(EN2);
         [minII1, maxII1, meanII1] = GetValues(II1);
         [minII2, maxII2, meanII2] = GetValues(II2);
-        fprintf('Integral   mean          min           max       \n');
+        fprintf('Integral   min          max           |diff|       \n');
         %fprintf('EnSave %4.6f %4.6f %4.6f\n', meanEN1, minEN1, maxEN1 );
         %fprintf('Taylor %4.6f %4.6f %4.6f\n', meanEN2, minEN2, maxEN2 );
-        fprintf('Taylor WB: %4.6f  & %4.6f  & %4.6f  \n', meanII1, minII1, maxII1 );
-        fprintf('Taylor ZB: %4.6f  & %4.6f  & %4.6f  \n', meanII2, minII2, maxII2 );
+        fprintf('Taylor WB: %4.6f  & %4.6f  & %4.6f  \n', minII1, maxII1, maxII1 - minII1 );
+        fprintf('Taylor ZB: %4.6f  & %4.6f  & %4.6f  \n', minII2, maxII2, maxII2 - minII2 );
         fprintf('----------------------------------------\n\n');
     
         if(additionalInfo == 3)
