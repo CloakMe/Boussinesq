@@ -5,8 +5,8 @@ bndCutSize = 0;
 % ChristovIC_40_80_bt1_c090_h010_O(h^6)
 % partialPath = 'BEEliptic\Boussinesq2D\SavedWorkspaces\';
 
-partialPath = 'BEEliptic\Boussinesq2D\WithBoundary\ChristovIC_40_bt3_c052\Oh2\';
-waveFactory = WaveFactory( partialPath, 'ChristovIC_40_ZB0_bt3_c052_h020_O(h^2)', bndCutSize, 0 ); %
+partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_40_bt1_c090\Oh4\';
+waveFactory = WaveFactory( partialPath, 'ChristovIC_40_ZB1_bt1_c090_h010_O(h^4)', bndCutSize, 0 ); %
 %waveFactory = WaveFactory( 'BestFitIC' );
 
 tEnd=10.0;
@@ -127,8 +127,10 @@ end
 
 figure(15)
 mesh(x,y,vl')
+view( viewTypeX, viewTypeY );
 title('solution');
 xlabel('x');            ylabel('y');
+colorbar;
 figure(16)
 %hold on;
 plot(t(1:end-1),max_v,'k', t(1), max_v+0.005, 'k', t(1), max_v-0.005, 'k' );
