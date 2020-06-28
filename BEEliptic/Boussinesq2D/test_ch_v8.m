@@ -69,8 +69,11 @@ return;
 % Continue from lasth iteration:
 lastTheta=theta(end); lastU=U; lastP = P;  last_tau = tauVector(end); 
 
-[bigU,bigUTimeDerivative,P,U,thetaCont,c1,c2,solutionNormsCont,tauVecCont,anglCont] =...
+[bigU,bigUTimeDerivative,P,U,thetaCont,c1,c2,solutionNormsCont,tauVecCont,anglCont,sw_div] =...
        sol_ch_v8(lastU,x,y,prmtrs,bt1,bt2,al,c,lastTheta,derivative,lastP);
+if(sw_div == 1)
+    return;
+end
 tauVector = [tauVector tauVecCont];
 theta = [ theta thetaCont];
 angl = [angl anglCont];
@@ -98,7 +101,7 @@ nh = h/2;
 prmtrs.h = nh;
 prmtrs.tau = tauVector(end);
 save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
-    '_h0' num2str(h * 100,'%.02d') '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
+    '_h0' num2str(nh * 100,'%.02d') '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
 
 PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
 PrintResults(solutionNorms,c1,c2);
@@ -106,11 +109,11 @@ PlotAssymptVsSolu( x, y, h, bigU, c1*theta(end), c);
 return;
 % Enlarge Domain from existing save:
 %old domain parameters from the save must be the same as define here:
-x_st = -40.0;    y_st = -40.0;
-x_end = 40.0;    y_end = 40.0;
+x_st = -80.0;    y_st = -80.0;
+x_end = 80.0;    y_end = 80.0;
 %new domain boundaries:
-x_st2 = -80.0;   y_st2 = -80.0;
-x_end2 = 80.0;   y_end2 = 80.0;
+x_st2 = -160.0;   y_st2 = -160.0;
+x_end2 = 160.0;   y_end2 = 160.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
@@ -118,12 +121,15 @@ tic
 if(length(tauVector)<iterMax && UseExtendedDomain == 1 && size(bigUTimeDerivative,1)~=1)
     fprintf('\nLarge Domamin Calculations:\n\n');
     prmtrs.checkBoundary = 0;
-    prmtrs.eps = 1.0e-11;
+    prmtrs.eps = 1.0e-14;
     prmtrs.plotResidual = 0;
     prmtrs.tau = tauVector(end);
-    [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,tauVector,angl] =...
+    [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,tauVector,angl,sw_div] =...
     PrepareICForEnlargedDomain(bigU,compBox,prmtrs,al,bt1,bt2,c,c1,theta(end),derivative);
     x=x_st2:h:x_end2; y=y_st2:h:y_end2;
+end
+if(sw_div == 1)
+    return;
 end
 save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
   '_h0' num2str(h * 100,'%.02d') '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);

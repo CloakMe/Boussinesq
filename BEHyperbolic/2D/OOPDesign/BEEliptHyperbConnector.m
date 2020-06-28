@@ -4,7 +4,6 @@ clear; clc;
 bndCutSize = 0;
 % ChristovIC_40_80_bt1_c090_h010_O(h^6)
 % partialPath = 'BEEliptic\Boussinesq2D\SavedWorkspaces\';
-
 partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_40_bt1_c090\Oh4\';
 waveFactory = WaveFactory( partialPath, 'ChristovIC_40_ZB1_bt1_c090_h010_O(h^4)', bndCutSize, 0 ); %
 %waveFactory = WaveFactory( 'BestFitIC' );

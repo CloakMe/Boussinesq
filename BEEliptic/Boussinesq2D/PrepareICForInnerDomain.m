@@ -1,4 +1,4 @@
-function [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,c1,c2,tauVector,angl]=...
+function [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,c1,c2,tauVector,angl,sw_div]=...
         PrepareICForInnerDomain(compBox,prmtrs,al,bt1,bt2,c,derivative)%,lastP,lastU,lastTheta)
         
 
@@ -19,7 +19,7 @@ function [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,c1,c2,tauVector,
     th = abs(IC(1,1));
     IC = IC/th;
    
-    [bigU,bigUTimeDerivative,P,U,theta,c1,c2,solutionNorms,tauVector,angl] =...
+    [bigU,bigUTimeDerivative,P,U,theta,c1,c2,solutionNorms,tauVector,angl,sw_div] =...
         sol_ch_v8(IC,x,y,prmtrs,bt1,bt2,al,c,th,derivative);
         
 end
