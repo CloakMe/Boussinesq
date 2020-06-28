@@ -1,4 +1,4 @@
-function [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,tauVector,angl]=...
+function [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,tauVector,angl,sw_div]=...
         PrepareICForEnlargedDomain(oldBigU,compBox,prmtrs,al,bt1,bt2,c,c1,lastTheta,derivative)
     
     x=compBox.x_st2:prmtrs.h:compBox.x_end2; y=compBox.y_st2:prmtrs.h:compBox.y_end2;
@@ -21,7 +21,7 @@ function [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,tauVect
     quater = floor(length(compBox.x_end:prmtrs.h:compBox.x_end2));
     PlotJunctionPoints(x,y,newBigIC, quater);
 
-    [bigU,bigUTimeDerivative,P,U,theta,c1,c2,solutionNorms,tauVector,angl] =...
+    [bigU,bigUTimeDerivative,P,U,theta,c1,c2,solutionNorms,tauVector,angl,sw_div] =...
        sol_ch_v8(NewIC,x,y,prmtrs,bt1,bt2,al,c,thet,derivative);
        
 end
