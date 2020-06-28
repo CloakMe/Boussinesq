@@ -2,15 +2,35 @@ clear;
 bndCutSizeX = 0;
 bndCutSizeY = 0;
 
+bndDirectory = 'ZeroBoundary\'; % 'ZeroBoundary\' 'WithBoundary\'
+name = 'Taylor_'; % 'EnergySave_' 'Taylor_'
+domLength = '40_'; %'80_' '40_'
+paramString = 'bt1_c090'; %'bt3_c052' 'bt1_c090'
+orderString = '6';
+
+%=======================================================
 yo(1,:) = '20';
 yo(2,:) = '10';
 yo(3,:) = '05';
-%_tau05
+if( strcmp(paramString, 'bt1_c090') == 1 )
+    yo(1,:) = '40';
+    yo(2,:) = '20';
+    yo(3,:) = '10';
+end
 yo = cellstr(yo);
-    
+bndString = 'ZB0_';
+if( strcmp(bndDirectory, 'ZeroBoundary\') == 1 )
+    bndString = 'ZB1_';
+end
+if( strcmp(name, 'EnergySave_') == 1 && strcmp(orderString, '2') == 0 )
+    fprintf('EnergySave solution; setting order = 2!\n');
+    orderString = '2';
+end
+directory = strcat(bndDirectory, name, domLength, paramString, '\');
+
 for jl = 1:3
 
-    cellStr = strcat('SavedWorkspaces\ZeroBoundary\EnergySave_40_ZB1_bt3_c052_h0', yo(jl), '_O(h^2)' );
+    cellStr = strcat('SavedWorkspaces\', directory, name, domLength, bndString, paramString, '_h0', yo(jl), '_O(h^', orderString, ')' );
     %cellStr = strcat('Hyp_40_bt1_c090_h0', yo(jl), '_O(h^4)' );
     warning('off','all');
     load (  cellStr{1} );
@@ -33,19 +53,19 @@ for jl = 1:3
     vl = vl( bndPtsRemX+1:end-bndPtsRemX, bndPtsRemY+1:end-bndPtsRemY );
     if(jl==1)
        vb = vl(bndPtsRemX+1:end-bndPtsRemX,bndPtsRemX+1:end-bndPtsRemX); 
-       hb=waveFactory.h
-       taub = tau
+       hb=waveFactory.h;
+       taub = tau;
        ENb = EN;
     end
     if(jl==2)
        vc = vl(bndPtsRemX+1:end-bndPtsRemX,bndPtsRemX+1:end-bndPtsRemX); 
-       hc=waveFactory.h
-       tauc = tau
+       hc=waveFactory.h;
+       tauc = tau;
        ENc = EN;
     end
     if(jl==3)
        vd = vl(bndPtsRemX+1:end-bndPtsRemX,bndPtsRemX+1:end-bndPtsRemX);  
-       taud = tau
+       taud = tau;
        ENd = EN;
     end
     clear('U');clear('cellStr');clear('waveFactory');
@@ -55,9 +75,13 @@ clear('jl');
 res_1 = vb - vc(1:2:end,1:2:end);
 res_2 = vc - vd(1:2:end,1:2:end);
 
-sizeSmall = size( ENb, 2 )
-sizeMedium = size( ENc, 2 )
-sizeBig = size( ENd, 2 )
+sizeSmall = size( ENb, 2 );
+sizeMedium = size( ENc, 2 );
+sizeBig = size( ENd, 2 );
+fprintf('sizeSmall = %.1f\n', sizeSmall);
+fprintf('sizeMedium = %.1f\n', sizeMedium);
+fprintf('sizeBig = %.1f\n', sizeBig);
+
 if( sizeSmall ~= 1 && 2*sizeSmall+1 == sizeMedium && ...
     sizeMedium ~= 1 && 2 * sizeMedium + 1 == sizeBig )
     ENb = [ 0, ENb ];
