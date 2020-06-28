@@ -16,13 +16,16 @@ for i = 1:50
         close(figure(i));
     end
 end
-additionalInfo = 4;
+additionalInfo = 1;
 domainLen = '40';
+useSecondOrderOnly = 1;
 if( true )
     CompareTaylorVsEnergySave('1', '90', '40' ,'2', domainLen, additionalInfo);
     CompareTaylorVsEnergySave('1', '90', '20' ,'2', domainLen, additionalInfo);
     CompareTaylorVsEnergySave('1', '90', '10' ,'2', domainLen, additionalInfo);
-
+    if(useSecondOrderOnly == 1)
+        return;
+    end
     fprintf('=========================\n'); 
     fprintf('=========================\n\n');
     CompareTaylorVsEnergySave('1', '90', '40' ,'4', domainLen, additionalInfo);
@@ -38,7 +41,9 @@ else
     CompareTaylorVsEnergySave('3', '52', '20' ,'2', domainLen, additionalInfo);
     CompareTaylorVsEnergySave('3', '52', '10' ,'2', domainLen, additionalInfo);
     CompareTaylorVsEnergySave('3', '52', '05' ,'2', domainLen, additionalInfo);
-
+    if(useSecondOrderOnly == 1)
+        return;
+    end
     fprintf('=========================\n'); 
     fprintf('=========================\n\n');
     CompareTaylorVsEnergySave('3', '52', '20' ,'4', domainLen, additionalInfo);

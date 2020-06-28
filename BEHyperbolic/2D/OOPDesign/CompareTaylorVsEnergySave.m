@@ -65,9 +65,10 @@ function CompareTaylorVsEnergySave(btString, cString, hString ,orderString, doma
         [minEN2, maxEN2, meanEN2] = GetValues(EN2);
         [minII1, maxII1, meanII1] = GetValues(II1);
         [minII2, maxII2, meanII2] = GetValues(II2);
-        fprintf('Energy   min        max      |diff|       \n');
-        fprintf('EnSave %4.6f %4.6f %4.6f\n', minEN1, maxEN1, maxEN1 - minEN1 );
-        fprintf('Taylor %4.6f %4.6f %4.6f\n', minEN2, maxEN2, maxEN2 - minEN2 );
+        fprintf('========================================\n');  
+        fprintf('Energy   min          max        |diff|       \n');
+        fprintf('EnSave %4.6f & %4.6f & %4.6f\n', minEN1, maxEN1, maxEN1 - minEN1 );
+        fprintf('Taylor %4.6f & %4.6f & %4.6f\n', minEN2, maxEN2, maxEN2 - minEN2 );
         fprintf('----------------------------------------\n');
         fprintf('Integral   min        max        |diff|       \n');
         fprintf('EnSave: %4.6f  & %4.6f  & %4.6f  \n', minII1, maxII1, maxII1 - minII1 );

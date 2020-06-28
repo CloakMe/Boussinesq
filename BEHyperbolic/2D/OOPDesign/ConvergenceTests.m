@@ -4,11 +4,13 @@ bndCutSizeY = 0;
 
 bndDirectory = 'ZeroBoundary\'; % 'ZeroBoundary\' 'WithBoundary\'
 name = 'Taylor_'; % 'EnergySave_' 'Taylor_'
-domLength = '40_'; %'80_' '40_'
+domLength = '80_'; %'80_' '40_'
 paramString = 'bt1_c090'; %'bt3_c052' 'bt1_c090'
 orderString = '6';
 
 %=======================================================
+fprintf(paramString);
+fprintf('!\n');
 yo(1,:) = '20';
 yo(2,:) = '10';
 yo(3,:) = '05';
@@ -78,9 +80,9 @@ res_2 = vc - vd(1:2:end,1:2:end);
 sizeSmall = size( ENb, 2 );
 sizeMedium = size( ENc, 2 );
 sizeBig = size( ENd, 2 );
-fprintf('sizeSmall = %.1f\n', sizeSmall);
-fprintf('sizeMedium = %.1f\n', sizeMedium);
-fprintf('sizeBig = %.1f\n', sizeBig);
+fprintf('sizeSmall = %.1f, h=0.%s, tau = %.5f \n', sizeSmall, yo{1}, taub);
+fprintf('sizeMedium = %.1f, h=0.%s, tau = %.5f \n', sizeMedium, yo{2}, tauc);
+fprintf('sizeBig = %.1f, h=0.%s, tau = %.5f \n', sizeBig, yo{3}, taud);
 
 if( sizeSmall ~= 1 && 2*sizeSmall+1 == sizeMedium && ...
     sizeMedium ~= 1 && 2 * sizeMedium + 1 == sizeBig )
