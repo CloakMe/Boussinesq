@@ -15,7 +15,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
         dtv = this.vdah;
         % BEDomainUtilsP2Edges( this.x, this.y, this.order, this.beta, this.c, this.mu, this.theta );
         % domUtilsEdges = BEDomainUtils( this.x, this.y, this.order); 
-        this.order = 6;
+        this.order = 2;
         [d2vz, d3vz, d4vz, d5vz, d6vz] = this.Calc_der2d( this.u_t0, this.dudt_t0, 0 );
         
         vu = this.u_t0 + this.tau*this.dudt_t0 + (this.tau^2/2)*d2vz + (this.tau^3/6)*d3vz +...
@@ -170,7 +170,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
     end
        
     function [ vu, numOfIter ] = GetVuPicardi( this, vz, vmo, t )
-        eps = 10^(-13);
+        epsilon = 10^(-15);
         
         %spparms('bandden',0.5);
     %===============================================
@@ -190,7 +190,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
         mmax=max( max( abs( niv0 ) ) );
         numOfIter=0;
         
-        while( max( max( abs( niv0 - vu ) ) ) > eps * mmax )
+        while( max( max( abs( niv0 - vu ) ) ) > epsilon * mmax )
             niv0=vu;
             mmax = max( abs( vu ) );
             if( numOfIter > 25 )

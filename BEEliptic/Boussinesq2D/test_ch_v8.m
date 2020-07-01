@@ -53,10 +53,13 @@ sy = (length(y)+1)/2
      prmtrs.eps = 1.0e-12;
      prmtrs.plotResidual = 0;
      prmtrs.tau = tauVector(end);
-     [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,tauVector,angl] =...
+     [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,tauVector,angl,sw_div] =...
      PrepareICForEnlargedDomain(bigU,compBox,prmtrs,al,bt1,bt2,c,c1,theta(end),derivative);
      x=x_st2:h:x_end2; y=y_st2:h:y_end2;
   end  
+  if(sw_div == 1)
+        return;
+  end
   save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
       '_h0' num2str(h * 100,'%.02d') '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
   
