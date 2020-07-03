@@ -214,9 +214,9 @@ when no exact solution to the problem is known. It is also used in order to calc
 	         &                    &                               & Rate   &                                        & Rate \\
    			\hline 
 					\hline 
-  $\beta=3$                &0.2, 0.02          &              &              &                     &      \\
-   c=0.52                     &0.1, 0.01          & 1.097527&            &1.170667    &       \\
-     $O(h^2 + \tau^ 2)$ &0.05, 0.005   & 0.141375&2.95    &0.174182    &  2.74       \\
+  $\beta=3$                &0.2, 0.005          &              &              &                     &      \\
+   c=0.52                     &0.1, 0.0025          & 0.947053 &            &0.847522    &       \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.00125   & 0.243282 &1.96    &0.289022    &  1.55       \\
 			\hline 
   $\beta=3$               &0.2, 0.02       &              &            &                     &      \\
    c=0.52                    &0.1, 0.01      &0.305301 &            &0.371968    &       \\
@@ -227,22 +227,22 @@ when no exact solution to the problem is known. It is also used in order to calc
      $O(h^6+ \tau^6)$ &0.05, 0.005 &0.001757 &5.75     & 0.002006     & 5.97       \\
 	   \hline
 			\hline 
-       $\beta=1$       &0.4, 0.04        &             &            &           &   \\
-                  c=0.9    &0.2, 0.02       &0.326105   &            &0.152517&   \\
-  $O(h^2+ \tau^2)$ &0.1, 0.01   &0.081954  &1.99 &0.041693  & 1.87 \\
+       $\beta=1$       &0.4, 0.002        &             &            &           &   \\
+                  c=0.9    &0.2, 0.001       &  0.20366   &            &0.075854 &   \\
+  $O(h^2+ \tau^2)$ &0.1, 0.0005   &0.048320   &2.07  &0.022307  & 1.77 \\
 			\hline
-      $\beta=1$               &0.4, 0.08    &            &               &             &    \\
-       c=0.9                     &0.2, 0.04     & 0.029515   &        &  0.014333   &   \\
-       $O(h^4+ \tau^4)$ &0.1, 0.02   &0.002057 & 3.84   & 0.001041  & 3.78  \\
+      $\beta=1$               &0.4, 0.04    &            &               &             &    \\
+       c=0.9                     &0.2, 0.02     & 0.029515   &        &  0.014333   &   \\
+       $O(h^4+ \tau^4)$ &0.1, 0.01   &0.002057 & 3.84   & 0.001041  & 3.78  \\
     \hline
-  $\beta=1$     &0.4, 0.08   &            &          &                  &      \\
-      c=0.9                    &0.2, 0.04   &0.007320 &           & 0.003625      &       \\
-     $O(h^6+ \tau^6)$ &0.1, 0.02 & 0.000815 &3.16 & 0.000092  & 5.30        \\
+  $\beta=1$     &0.4, 0.04   &            &          &                  &      \\
+      c=0.9                    &0.2, 0.02   &0.007320 &           & 0.003625      &       \\
+     $O(h^6+ \tau^6)$ &0.1, 0.01 & 0.000815 &3.16 & 0.000092  & 5.30        \\
 	   \hline
 			\hline 
 		\end{tabular}
 		\caption{Convergence test for TAYLOR METHOD with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
-\label{tableA}
+\label{table:A}
 \end{table}
 
 %B
@@ -256,37 +256,67 @@ when no exact solution to the problem is known. It is also used in order to calc
 	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
    			\hline 
 					\hline 
-  $\beta=3$                &0.2, 0.02         &              &            &                     &      \\
-   c=0.52                     &0.1, 0.01         & 3.129775  &            &19.148003 &       \\
-     $O(h^2 + \tau^ 2)$ &0.05, 0.005  &0.427489&2.87       &2.932744    & 2.70      \\
+  $\beta=3$                &0.2, 0.005         &              &            &                     &      \\
+   c=0.52                     &0.1, 0.0025         & 0.169971  &            &1.637733 &       \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.00125  &0.029995 &2.50       &0.410479     & 1.99      \\
 			\hline 
   $\beta=3$               &0.2, 0.02       &                &            &                     &      \\
    c=0.52                    &0.1, 0.01      &0.094290 &            &0.499355   &       \\
-     $O(h^4+ \tau^4)$ &0.05, 0.005        &0.003936 &4.58    &0.012718   &5.29      \\
+     $O(h^4+ \tau^4)$ &0.05, 0.005  &0.003936 &4.58    &0.012718   &5.29      \\
 			\hline 
   $\beta=3$               &0.2, 0.02       &                &            &                      &            \\
      c=0.52                 &0.1, 0.01        &0.139543 &            &  0.681089    &           \\
      $O(h^6+ \tau^6)$ &0.05, 0.005 &0.003360 &5.37     & 0.018324     & 5.21   \\
 	   \hline
 			\hline 
-       $\beta=1$       &0.4, 0.04        &             &            &           &   \\
-                  c=0.9    &0.2, 0.02       & 0.399714   &            &1.561666 &   \\
-  $O(h^2+ \tau^2)$ &0.1, 0.01   &0.117543  &1.76  &0.473093  & 1.72 \\
+       $\beta=1$       &0.4, 0.002        &             &            &           &   \\
+                  c=0.9    &0.2, 0.001       &  0.047712   &            &0.363662 &   \\
+  $O(h^2+ \tau^2)$ &0.1, 0.0005   &0.007673   &2.63  &0.089394  & 2.02 \\
 			\hline
-      $\beta=1$             &0.4, 0.08     &            &            &             &    \\
-       c=0.9                   &0.2, 0.04      & 0.048286   &       &  0.060691  &   \\
-       $O(h^4+ \tau^4)$ &0.1, 0.02   & 0.00459& 3.39    &0.007596  & 2.99  \\
+  $\beta=1$               &0.4, 0.04   &                      &           &                   &      \\
+     c=0.9                    &0.2, 0.02        & 0.024546     &           & 0.043234     &       \\
+     $O(h^6+ \tau^6)$         &  0.1, 0.01    & 0.001651 & 3.89  &0.003784 & 3.51        \\
     \hline
-  $\beta=1$     &0.4, 0.08   &                      &           &                   &      \\
-      c=0.9    &0.2, 0.04        & 0.025302     &           & 0.04921     &       \\
-     $O(h^6+ \tau^6)$         &  0.1, 0.02    & 0.00308 & 3.03  &0.005102 & 3.26        \\
+  $\beta=1$               &0.4, 0.04   &                      &           &                   &      \\
+     c=0.9                    &0.2, 0.02        & 0.011717     &           & 0.035984     &       \\
+     $O(h^6+ \tau^6)$         &  0.1, 0.01    & 0.000691 & 4.08  &0.001756 & 4.35        \\
 	   \hline
 			\hline 
 		\end{tabular}
 		\caption{Convergence test for ENERGY with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms. This is the energy calculated for the Taylor Method.}
-\label{tableB}
+\label{table:B}
 \end{table}
 
+%AA
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	         &                    &                               & Rate   &                                        & Rate \\
+	   \hline
+			\hline 
+       $\beta=1$       &0.4, 0.002        &             &            &           &   \\
+                  c=0.9    &0.2, 0.001       &  0.198959   &            &0.073895 &   \\
+  $O(h^2+ \tau^2)$ &0.1, 0.0005   &0.047193   &2.07  &0.021509  & 1.78 \\
+			\hline
+      $\beta=1$               &0.4, 0.04    &            &               &             &    \\
+       c=0.9                     &0.2, 0.02     & 0.028610   &        &  0.013714   &   \\
+       $O(h^4+ \tau^4)$ &0.1, 0.01   &0.001832 & 3.96   & 0.000987  & 3.8  \\
+    \hline
+  $\beta=1$     &0.4, 0.04   &            &          &                  &      \\
+      c=0.9                    &0.2, 0.02   &0.006835 &           & 0.003404      &       \\
+     $O(h^6+ \tau^6)$ &0.1, 0.01 & 0.000224 &4.93 & 0.000072  & 5.56        \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Convergence test for TAYLOR METHOD with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms. L = 80.}
+\label{table:AA}
+\end{table}
+
+The convergence results in case of sixth order and $c = 0.9$ (bottom half of Table \ref{table:A}) are out of the expected range, i.e. much less than sixth approximation order.  Table \ref{table:AA} is created, using the same simulation parameters except the domain size which is doubled, i.e. $L_x = L_y = 80$ in comparison with Table \ref{table:A} with $L_x = L_y = 40$. Thus, much better convergence rate is obtained for the sixth order approximation and slightly better results for the other cases. Values, near the boundary for $L_x = L_y = 40$ and $c = 0.9$ case, are obtained higher than the expected maximum of the solution at the zero. Apparently, in this case the boundary affects the solution. The convergence results for the energy in the case of Taylor method with $L_x = L_y = 80$ are similar to the one displayed in \ref{table:B} and therefore are omitted.
 %C
 \begin{table}[ht]
 \centering
@@ -298,19 +328,19 @@ when no exact solution to the problem is known. It is also used in order to calc
 	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
    			\hline 
 					\hline 
-  $\beta=3$                &0.2, 0.02         &                    &                &                  &                   \\
-   c=0.52                     &0.1, 0.01         & 0.723613   &                & 0.697660  &                   \\
-     $O(h^2 + \tau^ 2)$ &0.05, 0.005  & 0.173658   & 2.05       & 0.182194   & 1.93    \\
+  $\beta=3$                &0.2, 0.005         &                    &                &                  &                   \\
+   c=0.52                     &0.1, 0.0025         & 0.917455   &                & 0.834942  &                   \\
+     $O(h^2 + \tau^ 2)$ &0.05, 125e-6  & 0.289621   & 1.66       & 0.333312   &  1.32    \\
 	   \hline
 			\hline 
-       $\beta=1$           & 0.4, 0.08       &                   &           &                 &   \\
-                  c=0.9       & 0.2, 0.04        & 0.188357   &          &0.071708  &   \\
-  $O(h^2+ \tau^2)$  & 0.1, 0.02       & 0.044656   & 2.07  &0.020959  & 1.77 \\
+       $\beta=1$           & 0.4, 0.002       &                   &           &                 &   \\
+                  c=0.9       & 0.2, 0.001        & 0.200424   &          &0.075337  &   \\
+  $O(h^2+ \tau^2)$  & 0.1, 0.0005       & 0.047899   & 2.06  &0.022467  & 1.74 \\
 	   \hline
 			\hline 
 		\end{tabular}
 		\caption{ Convergence for the energy save METHOD with ZERO BOUNDARY with approximation errors $O(h^{2} + \tau^2 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
-\label{tableB}
+\label{tableC}
 \end{table}
 
 %D
@@ -324,19 +354,19 @@ when no exact solution to the problem is known. It is also used in order to calc
 	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
    			\hline 
 					\hline 
-  $\beta=3$                &0.2, 0.02         &                    &                &                  &                   \\
-   c=0.52                     &0.1, 0.01         & 0.724725   &                & 1.622362  &                   \\
-     $O(h^2 + \tau^ 2)$ &0.05, 0.005  & 0.167033   & 2.11       & 0.411212   & 1.98   \\
+  $\beta=3$                &0.2, 0.005         &                    &                &                  &                   \\
+   c=0.52                     &0.1, 0.0025         & 0.197906   &                & 0.885073  &                   \\
+     $O(h^2 + \tau^ 2)$ &0.05, 125e-6  & 0.040396   & 2.29       & 0.255485   & 1.79   \\
 	   \hline
 			\hline 
-       $\beta=1$           & 0.4, 0.08       &                   &           &                 &   \\
-                  c=0.9       & 0.2, 0.04        & 0.332192   &          &0.372897  &   \\
-  $O(h^2+ \tau^2)$  & 0.1, 0.02       & 0.057919   & 2.51  &0.091762  & 2.02  \\
+       $\beta=1$           & 0.4, 0.002       &                   &           &                 &   \\
+                  c=0.9       & 0.2, 0.001        & 0.051409   &          &0.363515  &   \\
+  $O(h^2+ \tau^2)$  & 0.1, 0.0005       & 0.008939   & 2.52  &0.089393  & 2.02  \\
 	   \hline
 			\hline 
 		\end{tabular}
 		\caption{ Convergence for ENERGY for the energy save method with ZERO BOUNDARY and different approximation errors $O(h^{2} + \tau^2 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms. }
-\label{tableB}
+\label{tableD}
 \end{table}
 
 
@@ -351,34 +381,19 @@ when no exact solution to the problem is known. It is also used in order to calc
 	                                        &                                                     &      difference                     &           difference                  &                                                       \\
    			\hline 
 					\hline 
-  $\beta=3$                   &0.2, 0.02         &  0.342560       & 0.318667  & 1.110878      \\
-   c=0.52                        &0.1, 0.01         &  0.421457       & 0.449651 &  1.808538     \\
-     $O(h^2 + \tau^ 2)$ &0.05, 0.005    & 0.289388         &0.308554  &   1.895966    \\
+  $\beta=3$                   &0.2, 0.001         &  0.021823       & 0.024721  & 0.893215     \\
+   c=0.52                        &0.1, 0.0005        &  0.025126       & 0.028328 &  1.723728     \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.00025     & 0.015794         &0.017048  &   1.872523    \\
 			\hline 
-  $\beta=3$                 &0.2, 0.02        & 0.663951           &0.620057 & 1.110878     \\
-   c=0.52                      &0.1, 0.01       & 0.209876            &0.218988 & 1.808538    \\
-     $O(h^4+ \tau^4)$ &0.05,  0.005  &0.055032             &0.050886 & 1.895966    \\
 			\hline 
-  $\beta=3$                  &0.2, 0.02       & 0.840484             & 0.767244  &  1.110878  \\
-     c=0.52                     &0.1, 0.01       & 0.226535             &  0.226659 &  1.808538  \\
-     $O(h^6+ \tau^6)$  &0.05, 0.005  &  0.056243            &  0.051445 &   1.895966\\
-	   \hline
-			\hline 
-       $\beta=1$          &0.4, 0.04        & 0.233176     & 0.096752 & 0.674800   \\
-                  c=0.9      &0.2, 0.02        & 0.104328      & 0.052505  & 0.687010   \\
-  $O(h^2+ \tau^2)$ &0.1, 0.01         & 0.052839      &0.023494 & 0.683784  \\
+       $\beta=1$          &0.4, 0.002        & 0.011030     & 0.004963 & 0.665358   \\
+                  c=0.9      &0.2, 0.001        & 0.005266      & 0.002489  & 0.684612   \\
+  $O(h^2+ \tau^2)$ &0.1, 0.0005         & 0.002625      &0.001169 & 0.683079  \\
 			\hline
-      $\beta=1$               & 0.4, 0.08     & 0.250242    & 0.089367  & 0.674800    \\
-       c=0.9                      & 0.2, 0.04      & 0.063816   &  0.028013 &  0.687010 \\
-       $O(h^4+ \tau^4)$ & 0.1, 0.02   & 0.015680   &0.007235 &   0.683784 \\
-    \hline
-  $\beta=1$                   & 0.4, 0.08        & 0.265954  & 0.100462  & 0.674800 \\
-      c=0.9                       & 0.2, 0.04        & 0.065358   & 0.028975  &0.687010   \\
-     $O(h^6+ \tau^6)$   & 0.1, 0.02    & 0.015785   & 0.007304    & 0.683784   \\
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Difference between obtained solution with energy save $uE$ and Taylor $uT$ method with ZERO BOUNDARY condition and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Differences are measured in $L_2$ and $L_\infty$ norms. The obtained solution for the energy save $uE$ method is obtained with approximation $O(h^2+ \tau^2)$ and compared to the Taylor method $uT$ with approximations $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. This is because the Taylor method produces reasonable results in case of  higher approximation order, i.e. fourth and sixth. For the case of only second approximation order the Taylor Method produces large deviations and the results become meaningless.}
+		\caption{Difference between obtained solutions with energy save $uE$ and Taylor $uT$ method with ZERO BOUNDARY condition and approximation errors $O(h^{2} + \tau^2 )$. Differences are measured in $L_2$ and $L_\infty$ norms.}
 \label{tableE}
 \end{table}
 
@@ -390,37 +405,30 @@ when no exact solution to the problem is known. It is also used in order to calc
 			\hline
 			\hline
       FDS                    & $h$, $\tau$      &   \multicolumn{3}{ |c| }{Energy Save Method}   &    \multicolumn{3}{ |c|| }{Taylor Method}   \\
-                                 &                         & mean &  min   &  max      & mean & min & max  \\
+                                 &                         & min &  max   &  diff      & min &  max   &  diff  \\
    			\hline 
 			\hline 
-  $\beta=3$                   &0.2, 0.02       & 4.162741   & 4.138623  & 4.186810 &  4.000487  & 3.996032  & 4.009367       \\
-   c=0.52                        &0.1, 0.01      & 4.172272  & 4.166626  & 4.181522 &  4.133789   & 4.129160  & 4.143036         \\
-     $O(h^2 + \tau^ 2)$ &0.05, 5e-3      & 4.173444  & 4.168763  & 4.182815   &  4.163757  & 4.159080  & 4.173110        \\
+  $\beta=3$                   &0.2,  0.001       &28.586694 & 28.586695 & 0.000001 &  28.586695 & 29.273293 & 0.686598       \\
+   c=0.52                        &0.1, 0.0005      & 29.601886 & 29.601886 & 0.000000 &  29.601886 & 29.828547 & 0.226660        \\
+     Energy                     &0.05, 0.00025      &29.862007 & 29.862007 & 0.000000   & 29.862008 & 29.959565 & 0.097557        \\
 			\hline 
-  $\beta=3$                 &0.2, 0.02        &  --  & --  & --  &  4.151322  & 4.146695  & 4.160544     \\
-   c=0.52                      &0.1, 0.01       & --  & --  & --  &  4.172102  & 4.167428  & 4.181438     \\
-     $O(h^4+ \tau^4)$ &0.05,  5e-3     & --  & --  & --  &  4.173451  & 4.168763  & 4.182828       \\
-			\hline 
-  $\beta=3$                  &0.2, 0.02       & --  & --  & --   & 4.168009  & 4.163363  & 4.177270   \\
-     c=0.52                     &0.1, 0.01       & --  & --  & --   & 4.173450  & 4.168774  & 4.182791   \\
-     $O(h^6+ \tau^6)$  &0.05, 5e-3     & --  & --  & --   & 4.173538  & 4.168849  & 4.182916   \\
+  $\beta=3$                   &0.2, 0.001       &3.996038  & 4.009427  & 0.013389 &  3.996038  & 4.009427  & 0.013389      \\
+   c=0.52                        &0.1, 0.0005      & 4.129162  & 4.143066  & 0.013904 & 4.129162  & 4.143066  & 0.013904        \\
+     Integral                     &0.05, 0.00025      &  4.159081  & 4.173124  & 0.014043   &  4.159091  & 4.173133  & 0.014042       \\
+
 	   \hline
 			\hline 
-       $\beta=1$          &0.4, 0.08*        & 6.964599     & 6.793444  & 7.310656  &  6.964912       & 6.793420  & 7.314835  \\
-                  c=0.9      &0.2, 0.04*        & 7.110346       & 6.933476  & 7.471386 & 7.110507       & 6.933470  & 7.473548   \\
-  $O(h^2+ \tau^2)$ &0.1, 0.02*        & 7.145646       & 6.966815  & 7.512439 &  7.145728       & 6.966814  & 7.513536   \\
-			\hline
-      $\beta=1$               & 0.4, 0.08     & --  & --  & -- &  7.138283       & 6.962601  & 7.493500     \\
-       c=0.9                      & 0.2, 0.04    & --  & --  & -- &  7.155054       & 6.976936  & 7.518645  \\
-       $O(h^4+ \tau^4)$ & 0.1, 0.02   & --  & --  & -- &  7.156956       & 6.977773  & 7.524474   \\
-    \hline
-  $\beta=1$                   & 0.4, 0.08        & --  & --  & -- &  7.151929       & 6.975851  & 7.507948  \\
-      c=0.9                       & 0.2, 0.04        & --  & --  & -- & 7.156091       & 6.977917  & 7.519799   \\
-     $O(h^6+ \tau^6)$   & 0.1, 0.02        & --  & --  & --   & 7.157036       & 6.977836  & 7.524591  \\
+       $\beta=1$          &0.4, 0.002        & 13.108471 & 13.108471 & 0.000000  &  13.108324 & 13.220044 & 0.111720  \\
+                  c=0.9      &0.2, 0.001         & 13.471986 & 13.471986 & 0.000000 & 13.471986 & 13.524743 & 0.052757   \\
+  Energy&0.1, 0.0005        & 13.561380 & 13.561380 & 0.000000 &  13.561380 & 13.587439 & 0.026059   \\
+			\hline 
+       $\beta=1$          &0.4, 0.002        & 6.794212     & 7.319855  & 0.525642  &  6.794212       & 7.320491  & 0.526279  \\
+                  c=0.9      &0.2, 0.001         & 6.933674  & 7.476197  & 0.542523     & 6.933674  & 7.476199  & 0.542525   \\
+  Integral &0.1, 0.0005        & 6.966865  & 7.514807  & 0.547941 &  6.966865  & 7.514804  & 0.547939  \\
 	   		\hline
 			\hline 
 		\end{tabular}
-		\caption{ Mass/Integral. *For the case  $\beta=1$, $c=0.9$ and $O(h^2+ \tau^2)$ the time step values $\tau$ differ between methods. The shown values are for the energy save method. For the Taylor method it is $\tau = 0.04, 0.02, 0.01 $. It is the same case as in Table \ref{tableE} because both tables use the same results. Mean value is $ \sum I_i / nE $ where $nE$ is the count of elements in the integral vector. The min, max is simply the minimum and maximum element in the vector. The integral vector is a map from $0:\tau:T \rightarrow D(u(0:\tau:T))$ using formula \rf{int}. }
+		\caption{The Energy/Integral vector is a map from $0:\tau:T \rightarrow D(u(0:\tau:T))$ using formula \rf{int}. The min, max is simply the minimum and maximum element in the vector; diff value is simply max - min. The calculations use $O(h^2 + \tau^ 2)$ approximation.  }
 \label{tableF}
 \end{table}
 Notice that the final time $T=10$  is the same for all tables.
