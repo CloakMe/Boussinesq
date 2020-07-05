@@ -9,16 +9,17 @@ clear;clc;
 % additionalInfo == 2 compare solutions with additional graphs
 % additionalInfo == 3 compare integrals
 % additionalInfo == 4 compare integrals with additional graphs
-
+useSecondOrderOnly = 1;
 for i = 1:50
     figNumber = i;
     if(  ishandle(i) == true )
         close(figure(i));
     end
 end
-additionalInfo = 1;
-domainLen = '40';
-useSecondOrderOnly = 1;
+
+additionalInfo = 4;
+domainLen = '80';
+
 if( true )
     CompareTaylorVsEnergySave('1', '90', '40' ,'2', domainLen, additionalInfo);
     CompareTaylorVsEnergySave('1', '90', '20' ,'2', domainLen, additionalInfo);

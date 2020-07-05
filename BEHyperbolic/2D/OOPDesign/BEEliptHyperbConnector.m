@@ -4,8 +4,8 @@ clear; clc;
 bndCutSize = 0;
 % ChristovIC_40_80_bt1_c090_h010_O(h^6)
 % partialPath = 'BEEliptic\Boussinesq2D\SavedWorkspaces\';
-partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_40_bt1_c090\Oh4\';
-waveFactory = WaveFactory( partialPath, 'ChristovIC_40_ZB1_bt1_c090_h010_O(h^4)', bndCutSize, 0 ); %
+partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_160_bt1_c090\Oh2\';
+waveFactory = WaveFactory( partialPath, 'ChristovIC_160_ZB1_bt1_c090_h040_O(h^2)', bndCutSize, 0 ); %
 %waveFactory = WaveFactory( 'BestFitIC' );
 
 tEnd=10.0;
@@ -13,9 +13,7 @@ SavingTheSolution = 1;
 fprintf('SavingTheSolution = %.1d\n', SavingTheSolution);
 
 tau = waveFactory.h/10;
-if( waveFactory.beta == 3 && waveFactory.order == 2 )
-    tau = waveFactory.h/40;
-elseif( waveFactory.beta == 1 && waveFactory.order == 2 )
+if( waveFactory.order == 2 )
     tau = waveFactory.h/200;
 end
 fprintf('tau = %.6f, h = %.6f, tau/h = %.6f\n', tau, waveFactory.h, waveFactory.h/tau);
@@ -30,6 +28,7 @@ eqParams = BEEquationParameters( waveFactory.alpha, waveFactory.beta1, waveFacto
 ic = BEInitialCondition( waveFactory.u_t0 , waveFactory.dudt_t0, waveFactory.mu, waveFactory.theta );   
 %engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %BEEngineTaylorSoftBnd %BEEngineEnergySaveSoftBnd
 engine = BEEngineTaylor( dscrtParams, eqParams, ic );
+fprintf('Engine Type = %s\n', engine.GetName());
 % _____________________________________
 tic
 
