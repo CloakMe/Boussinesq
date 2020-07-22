@@ -1,6 +1,6 @@
-function PlotBoundary(x,y,zeroX, U, outerTopBoundaryF,c1)
+function PlotBoundary(x,y,zeroX, U, outerTopBoundaryF)
 
-    BND = [U(:,end-7:end) c1*outerTopBoundaryF];
+    BND = [U(:,end-7:end) outerTopBoundaryF];
     hy = y(2)-y(1);
     figure(4);
     mesh(x(zeroX:end),y(end-11:end)+4*hy,BND');

@@ -1,4 +1,8 @@
-function PlotAssymptVsSolu( x, y, h, bigU, muTheta, c)
+function PlotAssymptVsSolu( x, y, h, bigU, muTheta, c, factor)
+
+    if( nargin == 6 )
+        factor = 2;
+    end
 
     shift = ceil(2/h);
     [zeroX,zeroY]=GetZeroNodes(x,y);
@@ -6,17 +10,18 @@ function PlotAssymptVsSolu( x, y, h, bigU, muTheta, c)
     stY = zeroY+shift-1;
     newX = x(stX:end);
     newY = y(stY:end);
+        
+    assymptYeqZero = + muTheta ./ ( (1-c^2) * newX.^factor ); % 
+    assymptXeqZero = - muTheta ./ newY.^factor; % 
     
-    assymptYeqZero = + muTheta ./ ( (1-c^2) * newX.^2 ); % 
-    assymptXeqZero = - muTheta ./ newY.^2; % 
-
+    
     figure(5)
-    plot(newY, (newY.^2).*bigU(zeroX,stY:end), 'b', newY, assymptXeqZero .* newY.^2, 'k' ) %(newY.^2).*
+    plot(newY, (newY.^factor).*bigU(zeroX,stY:end), 'b', newY, assymptXeqZero .* newY.^factor, 'k' ) %(newY.^2).*
     xlabel('y')
     title('x==0 Cross section * y^2');
     
     figure(6)
-    plot(newX, (newX'.^2).*bigU(stX:end,zeroY), 'b', newX, assymptYeqZero .* newX.^2, 'k' ) % (newX'.^2).*
+    plot(newX, (newX'.^factor).*bigU(stX:end,zeroY), 'b', newX, assymptYeqZero .* newX.^factor, 'k' ) % (newX'.^2).*
     xlabel('x')
     title('y==0 Cross section * x^2');
     

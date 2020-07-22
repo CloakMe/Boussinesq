@@ -29,7 +29,7 @@ function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secon
     mesh(xx,yy,(BigUNearCenter)');
     xlabel('x');    ylabel('y');
     title('end solution')
-
+    %{
     Q = 41;
     viewTypeX = 90;
     viewTypeY = 90;
@@ -54,7 +54,7 @@ function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secon
     view( viewTypeX, viewTypeY );
     title('Right domain boundary near x_{end}');
     xlabel('x');            ylabel('y');
-    
+    %}
     Yk = bigU;
     bigZeroMatrix=zeros(size(Yk));
     dyy_yk = bt*c^2*YDer(Yk,secondDerivative);
@@ -70,7 +70,27 @@ function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secon
     figure(15)
     mesh(x,y,residual');
     title('Residual (with all boundary values)')
-    return;
+    
+    figure(18);
+    mesh(x,y,bigU');
+    xlabel('x');    ylabel('y');
+    title('bigU');
+    xlabel('x');    ylabel('y');
+    %axis([x(1) x(end) y(1) y(end) -0.1 0.1]);
+    colorbar;
+    view(90,90);
+    
+    figure(19);
+    mesh(x,y,bigUTimeDer');
+    xlabel('x');    ylabel('y');
+    title('du/dt');
+    xlabel('x');    ylabel('y');
+    %axis([x(1) x(end) y(1) y(end) -0.1 0.1]);
+    colorbar;
+    %caxis([-0.001 0.001]);
+    view(90,90);
+    
+
     figure(5)
     plot(y,bigU(zeroX,:)/theta(end)) %(1+end)/2  
     xlabel('y')
@@ -89,15 +109,6 @@ function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secon
     xlabel('x')
     title('y=y_s_t cross-section');
 
-    figure(19);
-    mesh(x,y,bigUTimeDer');
-    xlabel('x');    ylabel('y');
-    title('du/dt');
-    xlabel('x');    ylabel('y');
-    axis([x(1) x(end) y(1) y(end) -0.1 0.1]);
-    colorbar;
-    caxis([-0.001 0.001]);
-    view(90,90);
 
     %figure(4);
     %mesh(x(ij:end),y(lo:end),dyuu');

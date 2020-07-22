@@ -1,11 +1,11 @@
 function [solutionNorms] = CalculateSolutionNorms(U,Uup,P,Pup,UvsUupInfNorm,...
-    crrntResidual,residualInfNorm,innerBoundaryF,innerBoundaryPF,subCounter,thetaEnd,step,h,c1,c2)
+    crrntResidual,residualInfNorm,innerBoundaryF,innerBoundaryPF,subCounter,thetaEnd,step,h)
     
     %Already multiplied by thetaEnd
     residualInfNorm = residualInfNorm(1:subCounter);
     
     [boundaryFunctionUvsUL2Norm,BoundaryFunctionPvsPL2Norm]=...
-    CompareBoundaryFunctionAndIterSolution(Uup,Pup,c1*innerBoundaryF,c2*innerBoundaryPF,step,h);
+    CompareBoundaryFunctionAndIterSolution(Uup,Pup,innerBoundaryF,innerBoundaryPF,step,h);
     
     residualL2Norm = thetaEnd*h*norm(crrntResidual,2);
     PvsPupInfNorm = thetaEnd*max(max(abs(Pup-P)));

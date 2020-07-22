@@ -1,4 +1,4 @@
-function PrintResults(solutionNorms,c1,c2)
+function PrintResults(solutionNorms,mu)
     
     fprintf('||Residual||_Inf at the start = %.4e \n', solutionNorms.residualInfNorm(1));
     fprintf('At the end:\n');
@@ -15,7 +15,12 @@ function PrintResults(solutionNorms,c1,c2)
 
     fprintf('||PBndAprox - PBnd||_L2 = %.4e \n', solutionNorms.BoundaryFunctionPvsPL2Norm);
     fprintf('||UBndAprox - UBnd||_L2 = %.4e \n\n', solutionNorms.boundaryFunctionUvsUL2Norm);
-    fprintf('c1 = %.4e \n', c1);
-    fprintf('c2 = %.4e \n', c2);
+    
+    fn = fieldnames(mu);
+	for k=1:numel(fn)
+	    if( isnumeric(mystruct.(fn{k})) )
+	        fprintf('%s = %.4e \n', fn{1}, mu.(fn{1}));
+	    end
+	end
 
 end

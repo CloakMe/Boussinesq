@@ -1,4 +1,4 @@
-function [bigU,bigUTimeDerivative] = GetBigSolution(x,y,c,bt,c1,thetaEnd,U,bigZeroMatrix,firstDerivative,outerTopBoundaryF)
+function [bigU,bigUTimeDerivative] = GetBigSolution(x,y,c,bt,thetaEnd,U,bigZeroMatrix,firstDerivative,outerTopBoundaryF)
 
     bigOuterTopBoundaryF = fliplr([flipud(outerTopBoundaryF(2:end,:)); outerTopBoundaryF]);
     bigOuterBottomBoundaryF = [flipud(outerTopBoundaryF(2:end,:)); outerTopBoundaryF];
@@ -6,6 +6,6 @@ function [bigU,bigUTimeDerivative] = GetBigSolution(x,y,c,bt,c1,thetaEnd,U,bigZe
     [zeroX,zeroY] = GetZeroNodes(x,y);
     bigU = thetaEnd*transf2qD(U,x,y,zeroX,zeroY);
     
-    bigUTimeDerivative = -c * YDerivative(bigU,bigZeroMatrix,thetaEnd*c1*bigOuterTopBoundaryF,...
-        thetaEnd*c1*bigOuterBottomBoundaryF,firstDerivative); 
+    bigUTimeDerivative = -c * YDerivative(bigU,bigZeroMatrix,thetaEnd*bigOuterTopBoundaryF,...
+        thetaEnd*bigOuterBottomBoundaryF,firstDerivative); 
 end

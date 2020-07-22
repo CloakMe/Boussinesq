@@ -54,7 +54,7 @@ sy = (length(y)+1)/2
      prmtrs.plotResidual = 0;
      prmtrs.tau = tauVector(end);
      [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,mu,tauVector,angl,sw_div] =...
-     PrepareICForEnlargedDomain(bigU,compBox,prmtrs,al,bt1,bt2,c,mu,theta(end),derivative);
+     PrepareICForEnlargedDomain_v10(bigU,compBox,prmtrs,al,bt1,bt2,c,mu,theta(end),derivative);
      x=x_st2:h:x_end2; y=y_st2:h:y_end2;
   end  
   if(sw_div == 1)
@@ -66,7 +66,7 @@ sy = (length(y)+1)/2
 fprintf('elapsed time = %d \n', toc);
 PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
 PrintResults(solutionNorms,mu);
-PlotAssymptVsSolu( x, y, h, bigU, mu.muU*theta(end), c, 2);
+PlotAssymptVsSolu( x, y, h, bigU, mu.muU2*theta(end), c, 2);
 return;
 
 % Continue from lasth iteration:
@@ -94,7 +94,7 @@ save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'
       '_h0' num2str(h * 100,'%.02d') '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
 PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
 PrintResults(solutionNorms,mu);
-PlotAssymptVsSolu( x, y, h, bigU, mu.muU*theta(end), c);
+PlotAssymptVsSolu( x, y, h, bigU, mu.muU2*theta(end), c);
 return;
 
 % Create smoother solution from existing save:
@@ -108,7 +108,7 @@ save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'
 
 PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
 PrintResults(solutionNorms,mu);
-PlotAssymptVsSolu( x, y, h, bigU, mu.muU*theta(end), c);
+PlotAssymptVsSolu( x, y, h, bigU, mu.muU2*theta(end), c);
 return;
 % Enlarge Domain from existing save:
 %old domain parameters from the save must be the same as define here:
@@ -128,7 +128,7 @@ if(length(tauVector)<iterMax && UseExtendedDomain == 1 && size(bigUTimeDerivativ
     prmtrs.plotResidual = 0;
     prmtrs.tau = tauVector(end);
     [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,c1,c2,tauVector,angl,sw_div] =...
-    PrepareICForEnlargedDomain(bigU,compBox,prmtrs,al,bt1,bt2,c,c1,theta(end),derivative);
+    PrepareICForEnlargedDomain_v10(bigU,compBox,prmtrs,al,bt1,bt2,c,c1,theta(end),derivative);
     x=x_st2:h:x_end2; y=y_st2:h:y_end2;
 end
 if(sw_div == 1)
@@ -140,7 +140,7 @@ save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'
 fprintf('elapsed time = %d \n', toc);
 PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
 PrintResults(solutionNorms,mu);
-PlotAssymptVsSolu( x, y, h, bigU, mu.muU*theta(end), c);
+PlotAssymptVsSolu( x, y, h, bigU, mu.muU2*theta(end), c);
 return;
 
 % Create two waves from one existing wave:
@@ -194,14 +194,14 @@ save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_2W_' num2str(floor(x_end2)) '_
 
 PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
 PrintResults(solutionNorms,mu);
-PlotAssymptVsSolu( x, y, h, bigU, mu.muU*theta(end), c);
+PlotAssymptVsSolu( x, y, h, bigU, mu.muU2*theta(end), c);
 return;
 
 DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDerivative,newBigIC,U,compBox,secondDerivative);
 
 DrawAsymptoticTerms(x,y,h,al,bt,c,theta,bigU,bigUTimeDerivative,bigIC,U,compBox,secondDerivative);
 
-PlotAssymptVsSolu( x, y, h, bigU, mu.muU*theta(end), c/sqrt(bt), 2 );
+PlotAssymptVsSolu( x, y, h, bigU, mu.muU2*theta(end), c/sqrt(bt), 2 );
 PlotAssymptotics(x,y,h,zeroX,zeroY,bigU);
 DrawDerivativesOfSolution(bigU,compBox,x,y,h,zeroX,zeroY,c,derivative);
 return;
