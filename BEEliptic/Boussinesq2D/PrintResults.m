@@ -18,8 +18,8 @@ function PrintResults(solutionNorms,mu)
     
     fn = fieldnames(mu);
 	for k=1:numel(fn)
-	    if( isnumeric(mystruct.(fn{k})) )
-	        fprintf('%s = %.4e \n', fn{1}, mu.(fn{1}));
+	    if( isnumeric(mu.(fn{k})) )
+	        fprintf('%s = %.4e \n', fn{k}, mu.(fn{k}));
 	    end
 	end
 

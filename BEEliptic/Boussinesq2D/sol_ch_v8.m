@@ -168,7 +168,7 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
     tauVector = tauVector(1:iterCounter);
     thetaVector = thetaVector(1:iterCounter);
     angl = angl(1:subCounter);
-    [muU, muP]=FindBoundaryConstantsExtended(Uup,Pup,innerBoundaryUF,innerBoundaryPF,step);
+    [muU, muP]=FindBoundaryConstants(Uup,Pup,innerBoundaryUF,innerBoundaryPF,step);
     mu = struct('muU',{muU},'muP',{muP});
 
     [bigU,bigUTimeDerivative] = GetBigSolution(x,y,c,bt,thetaVector(iterCounter),...
