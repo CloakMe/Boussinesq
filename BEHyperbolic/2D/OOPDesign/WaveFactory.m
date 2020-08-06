@@ -47,7 +47,7 @@ classdef WaveFactory
         this.h = h;
         this.u_t0 = bigU;
         this.theta = theta(end);
-        this.mu = c1;
+        this.mu = mu.muU;
         try
             if(prmtrs.useZeroBoundary == 1)
                 this.mu = 0;
@@ -70,7 +70,7 @@ classdef WaveFactory
         if(twoWaves > 0)
             this.u_t0 = this.u_t0 + fliplr(this.u_t0);
             this.dudt_t0 = this.dudt_t0 + fliplr(this.dudt_t0);
-            this.mu = 2*c1;
+            this.mu = 2*mu.muU;
         end
     end
     
