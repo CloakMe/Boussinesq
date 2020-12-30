@@ -1,4 +1,4 @@
-function [bigU,bigUTimeDerivative,P,U,thetaCont,c1,c2,solutionNormsCont,tauVecCont,anglCont,nx,ny,h] =...
+function [bigU,bigUTimeDerivative,P,U,thetaCont,mu,solutionNormsCont,tauVecCont,anglCont,nx,ny,h] =...
     PreSolverFromExistingSol(x,y,U,compBox,prmtrs,bt1,bt2,al,c,th,derivative,h)
 
     tic
@@ -25,7 +25,7 @@ function [bigU,bigUTimeDerivative,P,U,thetaCont,c1,c2,solutionNormsCont,tauVecCo
     fprintf('new solution (x,y) size = (%d,%d)\n', length(nx)/2, length(ny)/2);
     
     tic
-    [bigU,bigUTimeDerivative,P,U,thetaCont,c1,c2,solutionNormsCont,tauVecCont,anglCont] =...
+    [bigU,bigUTimeDerivative,P,U,thetaCont,mu,solutionNormsCont,tauVecCont,anglCont] =...
        sol_ch_v8(nU,nx,ny,prmtrs,bt1,bt2,al,c,th,derivative);   
     fprintf('elapsed solver time = %d \n', toc);
 end

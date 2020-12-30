@@ -1,33 +1,53 @@
 clear;
-AA = 1;
-for jl = 1:3
-    
-    if(AA ==0)
-        yo(1,:) = '40';
-        yo(2,:) = '20';
-        yo(3,:) = '10';
-    else
-        yo(1,:) = '20';
-        yo(2,:) = '10';
-        yo(3,:) = '05';
-    end
-    
-    yo = cellstr(yo); % ChristovIC_40_ZB1_bt3_c052_h005_O(h^2)
-    ICType = 'Christov'; % Christov  Natali ZeroBoundary SavedWorkspaces
-    strName = strcat('ZeroBoundary\ChristovIC_40_bt3_c052\Oh2\', ICType, 'IC_40_ZB1_bt3_c052_h0', yo(jl), '_O(h^2)' );
-    load (  strName{1} );
+%Eliptic
+bndCutSizeX = 0;
+bndCutSizeY = 0;
+bndDirectory = 'ZeroBoundary\'; % 'ZeroBoundary\' 'WithBoundary\'
+ICType = 'ChristovIC_'; % 'ChristovIC_' 'Natali_'
+domLength = '40_'; %'80_' '40_' '82_'
+paramString = 'bt3_c052'; %'bt3_c052' 'bt1_c090'
+orderString = '2';
+%============================================
+fprintf(paramString);
+fprintf('!\n');
+yo(1,:) = '20';
+yo(2,:) = '10';
+yo(3,:) = '05';
+if( strcmp(paramString, 'bt1_c090') == 1 )
+    yo(1,:) = '40';
+    yo(2,:) = '20';
+    yo(3,:) = '10';
+end
+yo = cellstr(yo);
+bndString = 'ZB0_';
+if( strcmp(bndDirectory, 'ZeroBoundary\') == 1 )
+    bndString = 'ZB1_';
+end
+if( strcmp(ICType, 'EnergySave_') == 1 && strcmp(orderString, '2') == 0 )
+    fprintf('EnergySave solution; setting order = 2!\n');
+    orderString = '2';
+end
+directory = strcat(bndDirectory, ICType, domLength, paramString, '\', 'Oh', orderString, '\');
+
+for jl = 1:3            
+    strName = strcat(directory, ICType, domLength, bndString, paramString, '_h0', yo(jl), '_O(h^', orderString, ').mat' );
+    load (  strName{1}, 'U', 'h' );
     %sum(tauVector)
+    bndPtsRemX = 0;
+    bndPtsRemY = 0;
+    bndPtsRemX = bndCutSizeX/h;
+    bndPtsRemY = bndCutSizeY/h;
     if(jl==1)
-       vb = U(1:end,1:end); hb=h; 
+       vb = U(1:end-bndPtsRemX,1:end-bndPtsRemX); hb=h; 
     end
     if(jl==2)
-       vc = U(1:end,1:end); hc=h;
+       vc = U(1:end-bndPtsRemX,1:end-bndPtsRemX); hc=h;
     end
     if(jl==3)
-       vd = U(1:end,1:end); 
+       vd = U(1:end-bndPtsRemX,1:end-bndPtsRemX); 
     end
     %PlotAssymptotics(x,y,h,zeroX,zeroY,bigU,0);
-    clear('U');clear('cellStr');clear('yo');
+    clear('U');clear('h');clear('strName');
 end
 
 clear('jl');
