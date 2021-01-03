@@ -29,10 +29,10 @@ function CompareTaylorWithBoundaryVsZeroBoundary(btString, cString, hString ,ord
     if( additionalInfo == 1 || additionalInfo == 2 )
         difference = (uEnTaylorZeroBoundary - uEnTaylorWithBoundary);
         normDifference_L2 = h*norm(difference(:),2);
-        fprintf('||v_Taylor_WB - v_Taylor_ZB||_L2  = %.6f \n', normDifference_L2);
+        fprintf('||v_Taylor_WB - v_Taylor_ZB||_L2  = %.3e \n', normDifference_L2);
 
         normDifference_Inf = max(max(abs(difference(:))));
-        fprintf('||v_Taylor_WB - v_Taylor_ZB||_Inf = %.6f \n', normDifference_Inf);
+        fprintf('||v_Taylor_WB - v_Taylor_ZB||_Inf = %.3e \n', normDifference_Inf);
 
         fprintf('||v_Taylor_WB||_Inf            = %.6f \n', max(max(abs(uEnTaylorWithBoundary(:)))));
         fprintf('=========================\n\n');    

@@ -1,35 +1,35 @@
-%return;
+return;
 clear;clc;
 tic
-x_st = -40.0;    y_st = -40.0;
-x_end = 40.0;    y_end = 40.0;
-x_st2 = -160.0;   y_st2 = -160.0;
-x_end2 = 160.0;   y_end2 = 160.0;
+x_st = -24.0;    y_st = -20.0;
+x_end = 24.0;    y_end = 20.0;
+x_st2 = -30.0;   y_st2 = -27.0;
+x_end2 = 30.0;   y_end2 = 27.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
 
 UseExtendedDomain=1;
 
-h = 0.4;
+h = 0.05;
 x=x_st2:h:x_end2; 
 y=y_st2:h:y_end2; 
 %tau = 0.00114425*8;% getTau(h,x_end,y_end)/20;
-tau = getTau(h,x_end,y_end)/5;
+tau = getTau(h,x_end,y_end)/10;
 
 sx = (length(x)+1)/2
 sy = (length(y)+1)/2
    
    al = -1;%99979 izb
    bt1 = 3;bt2 = 1; bt = bt1/bt2;
-   c = 0.52; 
+   c = 0.45; 
    iterMax = 9000000;
    %eps = 1/max(y_end^6,((1-c^2)*x_end^2)^3);
-   eps = 5.0e-09;%5.0e-09;
+   eps = 1.0e-08;%5.0e-09;
    ICSwitch=0;
    % IC_switch = 0 ->christov sech formula
    % IC_switch = 1 ->nat42 formula
-   useZeroBoundary  = 0;
+   useZeroBoundary  = 1;
    plotResidual  = 0;
    plotBoundary  = 0;
    checkBoundary = 0;
@@ -40,8 +40,8 @@ sy = (length(y)+1)/2
        'plotResidual',{plotResidual},'plotBoundary',{plotBoundary},'plotAssympt',{plotAssympt},...
        'checkBoundary',{checkBoundary}, 'useZeroBoundary', {useZeroBoundary});
    
-   firstDerivative = GetFiniteDifferenceCoeff([-2,-1,0,1,2],1)'/h;
-   secondDerivative = GetFiniteDifferenceCoeff([-2,-1,0,1,2],2)'/h^2;
+   firstDerivative = GetFiniteDifferenceCoeff([-1,0,1],1)'/h;
+   secondDerivative = GetFiniteDifferenceCoeff([-1,0,1],2)'/h^2;
    derivative = struct('first',{firstDerivative},'second',{secondDerivative});
    
   [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,mu,tauVector,angl,sw_div]=...
@@ -50,7 +50,7 @@ sy = (length(y)+1)/2
   if(length(tauVector)<iterMax && UseExtendedDomain == 1 && size(bigUTimeDerivative,1)~=1)
      fprintf('\nLarge Domamin Calculations:\n\n');
      prmtrs.checkBoundary = 0;
-     prmtrs.eps = 1.0e-12;
+     prmtrs.eps = 1.0e-13;
      prmtrs.plotResidual = 0;
      prmtrs.tau = tauVector(end);
      [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,mu,tauVector,angl,sw_div] =...
@@ -77,6 +77,13 @@ lastTheta=theta(end); lastU=U; lastP = P;  last_tau = tauVector(end);
 if(sw_div == 1)
     return;
 end
+save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
+      '_h0' num2str(h * 100,'%.02d') '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
+PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
+PrintResults(solutionNorms,mu);
+PlotAssymptVsSolu( x, y, h, bigU, mu.muU*theta(end), c);
+return;
+
 tauVector = [tauVector tauVecCont];
 theta = [ theta thetaCont];
 angl = [angl anglCont];
@@ -99,7 +106,7 @@ return;
 
 % Create smoother solution from existing save:
 nh = h/2;
-[bigU,bigUTimeDerivative,P,U,theta,c1,c2,solutionNorms,tauVector,angl,x,y,h] =...
+[bigU,bigUTimeDerivative,P,U,theta,mu,solutionNorms,tauVector,angl,x,y,h] =...
     PreSolverFromExistingSol(x,y,U,compBox,prmtrs,bt1,bt2,al,c,theta(end),derivative,nh);
 prmtrs.h = nh;
 prmtrs.tau = tauVector(end);
