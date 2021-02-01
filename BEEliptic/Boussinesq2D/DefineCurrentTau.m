@@ -3,7 +3,7 @@ function [tau, tauMax, tauIncreasedIteration, tauDecreasedIteration] =...
     tauDecreasedIteration, rsdlInf, smallUdiffInf, minResidual, angl, stopSwitch, stopFlag, crrntResidual)
 
     oldTau = tau;
-    if( iterCounter >  tauDecreasedIteration && iterCounter >  500)
+    if( iterCounter >  tauDecreasedIteration && iterCounter >  500 && rsdlInf(subCounter) > 2e-8)
         if( (iterCounter > 75 &&  rsdlInf(subCounter)> 50*minResidual) )
             
             tauDecreasedIteration=iterCounter+10;

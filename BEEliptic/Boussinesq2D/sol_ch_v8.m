@@ -148,11 +148,11 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
            
            angl(subCounter) =  Deviation(residualInfNorm,subCounter);
         end
-           
+        
         tauVector(iterCounter) = tau;        
-        %[tau, tauMax, tauIncreasedIteration, tauDecreasedIteration] =...
-        %DefineCurrentTau(prmtrs.tau, subCounter, iterCounter, iterMax, tau,  tauMax, tauIncreasedIteration,...
-        %    tauDecreasedIteration, residualInfNorm,UvsUupInfNorm, minResidual, angl , manualStop, flag, crrntResidual);
+        [tau, tauMax, tauIncreasedIteration, tauDecreasedIteration] =...
+        DefineCurrentTau(prmtrs.tau, subCounter, iterCounter, iterMax, tau,  tauMax, tauIncreasedIteration,...
+           tauDecreasedIteration, residualInfNorm,UvsUupInfNorm, minResidual, angl , manualStop, flag, crrntResidual);
         
         if( flag == 1 )
            afterCounter = afterCounter - 1; 
