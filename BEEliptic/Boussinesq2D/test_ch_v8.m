@@ -1,28 +1,28 @@
 %return;
 clear;clc;
 tic
-x_st = -40.0;    y_st = -40.0;
-x_end = 40.0;    y_end = 40.0;
-x_st2 = -160.0;   y_st2 = -160.0;
-x_end2 = 160.0;   y_end2 = 160.0;
+x_st = -24.0;    y_st = -20.0;
+x_end = 24.0;    y_end = 20.0;
+x_st2 = -30.0;   y_st2 = -30.0;
+x_end2 = 30.0;   y_end2 = 30.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
 
 UseExtendedDomain=1;
 
-h = 0.4;
+h = 0.05;
 x=x_st2:h:x_end2; 
 y=y_st2:h:y_end2; 
 %tau = 0.00114425*8;% getTau(h,x_end,y_end)/20;
-tau = getTau(h,x_end,y_end)/5;
+tau = getTau(h,x_end,y_end)/10;
 
 sx = (length(x)+1)/2
 sy = (length(y)+1)/2
    
    al = -1;%99979 izb
    bt1 = 3;bt2 = 1; bt = bt1/bt2;
-   c = 0.52; 
+   c = 0.45; 
    iterMax = 9000000;
    %eps = 1/max(y_end^6,((1-c^2)*x_end^2)^3);
    eps = 5.0e-09;%5.0e-09;
@@ -40,8 +40,8 @@ sy = (length(y)+1)/2
        'plotResidual',{plotResidual},'plotBoundary',{plotBoundary},'plotAssympt',{plotAssympt},...
        'checkBoundary',{checkBoundary}, 'useZeroBoundary', {useZeroBoundary});
    
-   firstDerivative = GetFiniteDifferenceCoeff([-2,-1,0,1,2],1)'/h;
-   secondDerivative = GetFiniteDifferenceCoeff([-2,-1,0,1,2],2)'/h^2;
+   firstDerivative = GetFiniteDifferenceCoeff([-1,0,1],1)'/h;
+   secondDerivative = GetFiniteDifferenceCoeff([-1,0,1],2)'/h^2;
    derivative = struct('first',{firstDerivative},'second',{secondDerivative});
    
   [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,mu,tauVector,angl,sw_div]=...

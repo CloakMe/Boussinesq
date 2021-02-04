@@ -15,9 +15,9 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
 
         %[d2vz, d3vz, d4vz, d5vz, d6vz] = calc_der2d(this.u_t0,this.dudt_t0,eigenFinDiffMat,IminusDHdiag,s_idh,vdah, this.h, this.sx,this.alpha,this.beta,this.order);
         [d2vz, d3vz, d4vz, d5vz, d6vz] = this.Calc_der2d( this.u_t0, this.dudt_t0, 0 );
-
-        vu = this.u_t0 + this.tau*this.dudt_t0 + (this.tau^2/2)*d2vz + (this.tau^3/6)*d3vz +...
-            (this.tau^4/24)*d4vz + (this.tau^5/120)*d5vz + (this.tau^6/720)*d6vz; %#ok<*CPROP>
+        zerofy = [ this.order >= 3, this.order >= 5 ];
+        vu = this.u_t0 + this.tau*this.dudt_t0 + (this.tau^2/2)*d2vz + zerofy(1) * (this.tau^3/6)*d3vz +...
+            (this.tau^4/24)*d4vz + zerofy(2) * (this.tau^5/120)*d5vz + (this.tau^6/720)*d6vz; %#ok<*CPROP>
         dtv = this.dudt_t0 + this.tau*d2vz + (this.tau^2/2)*d3vz + (this.tau^3/6)*d4vz +...
             (this.tau^4/24)*d5vz + (this.tau^5/120)*d6vz;
         
@@ -97,7 +97,7 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         nonlinTerm = (this.alpha*this.beta*vz.*vz +...
                      (this.beta-1)*vz);
         d2vz = this.GetCurrentDer( nonlinTerm, vz, t, 0 );%, augDhDomainOnly(:,:,1), augDtDomainOnly(:,:,1) );
-        if( this.order == 2) return; end
+        if( this.order + 1 == 2) return; end
         %{
         fd2ndDer = this.GetFd2ndDer();
         boundaryUtils = BEBoundaryUtils( this.x, this.y, this.order, this.alpha, this.beta, this.c, this.mu, this.theta, this.h );
@@ -122,19 +122,19 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         nonlinTerm =(2*this.alpha*this.beta*dvz.*vz +...
                     (this.beta-1)*dvz);
         d3vz = this.GetCurrentDer( nonlinTerm, dvz, t, 1);%, augDhDomainOnly(:,:,2), augDtDomainOnly(:,:,2) );
-        if( this.order == 3) return; end
+        if( this.order + 1 == 3) return; end
 
         %==================  4th  
         nonlinTerm =( 2*this.alpha*this.beta*(dvz.*dvz + vz.*d2vz) +...
                     (this.beta-1)*d2vz );
         d4vz = this.GetCurrentDer( nonlinTerm, d2vz, t, 2);%, augDhDomainOnly(:,:,3), augDtDomainOnly(:,:,3) );
-        if( this.order == 4) return; end
+        if( this.order + 1 == 4) return; end
 
         %==================  5th
         nonlinTerm =( 2*this.alpha*this.beta*(3*dvz.*d2vz + vz.*d3vz) +...
                     (this.beta-1)*d3vz );
         d5vz = this.GetCurrentDer( nonlinTerm, d3vz, t, 3);%, augDhDomainOnly(:,:,4), augDtDomainOnly(:,:,4) );
-        if( this.order == 5)  d6vz = vdah; return; end
+        if( this.order + 1 == 5) return; end
         
         %==================  6th
         nonlinTerm =( 2*this.alpha*this.beta*(3*d2vz.*d2vz + 4*dvz.*d3vz + vz.*d4vz) +...
