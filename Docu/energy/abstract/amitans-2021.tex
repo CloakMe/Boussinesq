@@ -22,14 +22,13 @@ In this paper we evaluate propagating wave solutions to the two dimensional Bous
 \begin{align} 
 &u_{tt} - \Delta u -\beta_1  \Delta u_{tt} +\beta_2 \Delta ^2 u + \Delta f(u)=0,~~     (x,y) \in \RR^2, \, t\in\RR^+, \label{eq1}
 \\ &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y),   (x,y) \in \RR^2,~~\label{eq11}
-%\\  &u(x,y) \rightarrow 0,  \Delta u(x,y) \rightarrow 0 , ~~ \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11}
 \end{align}
 where $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the two-dimensional Laplace operator. 
 
 Two numerical methods are used to obtain solution for equation \rf{eq1}--\rf{eq11}: Energy Saving method, which uses conservative finite difference scheme, and Taylor method, which uses Taylor series (TS) expansions around the time variable $t$. Furthermore, for each method the energy and the mass of the solution are calculated. The results, i.e. the solution, energy and mass, from the two methods are compared.
- The solution and energy are calculated over three nested meshes to examine the convergence of both methods. The energy and mass are  calculated at each iteration step. In the case of Taylor method, the energy is calculated using trapezoidal, Simpson's and Boole's rules with $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$ errors, respectively. In the case of Energy Saving method, the energy is calculated using trapezoidal rule. The main tool for testing the convergence rate $\xi$ of all examined finite difference schemes and TS expansions is the Runge's Method. 
+ The solution and energy are computed over three nested meshes to examine the convergence of both methods. The energy and mass are  found at each iteration step. In the case of Taylor method, the energy is calculated using trapezoidal, Simpson's and Boole's rules with $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$ errors, respectively. In the case of Energy Saving method, the energy is computed using trapezoidal rule. The main tool for testing the convergence rate $\xi$ of all examined finite difference schemes and TS expansions is the Runge's Method. 
 
-The goal is to justify the Taylor series approach by showing that both methods produce similar results in case of $O(h^{2} + \tau^2 )$ approximation order. Furthermore the Taylor method could be used with high approximation order which produces finer results. The outcome of the comparison is very good. The maximum difference between the two approaches (among calculated solutions using different parameter sets) in $L_2$ and Infinity norms is $0.009981$ and $0.004560$ respectively (see Table DI).
+The goal is to justify the Taylor series approach by showing that both methods produce similar results in case of $O(h^{2} + \tau^2 )$ approximation order. Furthermore the Taylor method could be used with higher approximation order to produce finer results. The outcome of the comparison is very good. The maximum difference between the two approaches (among calculated solutions using different parameter sets) in $L_2$ and infinity norms is $0.009981$ and $0.004560$ respectively (see Table DI).
 
 {\bf{Acknowledgment}}
 The work of the second author has been partially supported by
