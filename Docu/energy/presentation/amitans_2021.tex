@@ -1,0 +1,110 @@
+\documentclass{beamer}
+
+
+%\beamertemplateshadingbackground{yellow!100}{white}
+\usepackage[english]{babel}
+\usepackage{amsfonts,amsmath}
+\usepackage{graphicx}
+
+%\usetheme{Warsaw}
+\usetheme[secheader]{Madrid}
+
+\usepackage{multimedia}
+\logo{\includegraphics[height=0.5cm]{imi.jpg}}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\rf}[1]{(\ref{#1})}
+\newcommand{\RR}{\mathbb{R}}
+\newtheorem{thm}{Theorem}
+\newtheorem{lm}{Lemma}
+
+%\def\ra#1\{\renewcommand{\arraystretch}{#1}
+\begin{document}
+ %[propagating wave solutions to the 2D BPE]
+\title{Comparison between two numerical methods for solution of 2D Boussinesq paradigm equation}
+
+\author[K. Angelow]{{\underline{Krassimir Angelow}}, Natalia Kolkovska}
+\institute[IMI -- BAS]{Institute of Mathematics and Informatics\\ Bulgarian Academy of Sciences, Sofia, Bulgaria,\\ e-mail: angelow@math.bas.bg}
+\date[2021]{AMITANS, June 20-25  2021,  Albena, Bulgaria}
+
+
+%---------- frame 01 ----------------
+\begin{frame}
+ \titlepage
+ \begin{center}
+  Supported by Bulgarian National Science Fund Grant K$\Pi$-06-H22/2
+  \end{center}
+\end{frame}
+
+%---------- frame 02 ----------------
+\begin{frame}
+\tableofcontents 
+\setbeamertemplate{table of contents shaded}[default]
+%\tableofcontents 
+\end{frame}
+
+%---------- frame 03 ----------------
+\begin{frame}
+\frametitle{Posing the Problem}
+\section{Posing the Problem}
+
+We study the problem
+
+\be\label{problem}
+\beta(E-\Delta) \frac{\partial^2 u}{\partial t^2}=
+ \beta \Delta u -\Delta^2 u -\alpha \beta \Delta (u^2)
+\ee
+
+\end{frame}
+
+
+%---------- frame 04 ----------------
+\begin{frame}
+\frametitle{Introduction}
+\section{Quadrature Formulas for the Integral and Energy}
+
+The energy of the continuous problem \rf{problem}:
+\end{frame}
+
+
+%Define $Au=-\Delta u$
+%Then
+%\begin{align}\label{ex-en}
+%E(u):=&\int_{R^2} u_t \left((A^{-1}+E)u_t\right) dxdy+
+%\beta \int_{R^2} u^2 dxdy \nonumber\\
+%+& \int_{R^2}u \left(A u\right) dxdy
+%-\frac{2 \alpha \beta}{3} \int_{R^2} u^3 dxdy =const
+%\end{align}
+%Here $E(u)$ is the exact energy of problem \rf{problem}
+
+%Quadrature formulas in 2D case for evaluation of the integral
+
+%\begin{equation}\label{int}
+%D(u)=\int_{a_1}^{b_1} \int_{a_2}^{b_2} u(x,y)dx dy
+%\end{equation}
+
+%$x_i, ~i=0,1,...,N_1$; $x_0=a_1,~x_{N_1}=b_1$, $h_1=(b_1-a_1)/N_1$
+
+
+%$y_j, ~j=0,1,...,N_2$; $y_0=a_2,~y_{N_2}=b_2$,  $h_2=(b_2-a_2)/N_2$
+
+%---------- frame 05 ----------------
+\section{Numerical Methods}
+\subsection{Taylor Series}
+\subsection{Energy Saving Method with Conservative Scheme}
+
+%---------- frame 06 ----------------
+\section{Convergence}
+
+%---------- frame 07 ----------------
+\section{Comparison Between TS and Conservative Scheme}
+
+\begin{frame}
+\frametitle{Introduction}
+
+\end{frame}
+
+
+\end{document}
+
