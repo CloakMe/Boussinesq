@@ -1,0 +1,43 @@
+﻿Common responsibilities
+
+    Performs individual (under supervision) and collaborative research;
+	boussinesq paradigm equation, solitary waves 
+		- elliptic equation 
+		- hyperbolic equation
+		- boundary condition
+    Prepares presentations to communicate research results at national and international level and participates in various dissemination events such as conferences, workshops and seminars;
+	bio informatics,
+	Linz
+	BGSIAM (with paper waiting for revision)
+	AMITANS (June 2021 )	
+    Contributes to high-quality publications
+	- N.Kolkovska, K.Angelow, A Multicomponent Alternating Direction Method for Numerical Solution of Boussinesq Paradigm Equation, CPP, Numerical Analysis and Its Applications, Lozenetz, Bulgaria, June 15-20, 2012
+	- K.Angelow,N.Kolkovska, Numerical Study of Traveling Wave Solutions to 2D Boussinesq Equation, Serdica Journal of Computing, Volume 13, Number 1-2, p. 1-16, (2019)
+        - K.Angelow,N.Kolkovska, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, International Journal of Applied Mathematics, Vol. 32, No 1 (2019)
+    Performs state-of-the-art analyses in the field of Big Data and AI;
+	case:
+		https://dev.datasciencesociety.net/the-vmware-case-organize-the-knowledge-base/
+	repo:
+		https://github.com/CloakMe/sunnystronghold
+	OCR app
+		links with the app
+    
+
+
+One or more of the following responsibilities
+
+    Proposes appropriate (and innovative) data ingestion, preparation, integration and semantic enrichment techniques, optimally addressing data quality requirements;
+    Develops new methods, algorithms and automated solutions for the integration, simulation and visualization of data (including geo-spatial and spatio-temporal data) originated from multiple distributed sources;
+    Participates in the development of Big Data Analysis solutions by designing and implementing advanced Machine Learning, Statistics, information extraction and retrieval techniques;
+    Enhances data quality by validating mappings between existing data sources and new semantic repositories, as well as between data sources and ontologies/data models;
+    Contributes to the development of ontology-based definitions and standard’s extensions;
+
+Skills, Experience and Qualifications
+
+    А minimum of master’s degree in computer science, statistics, applied mathematics, or a related field;
+    They are expected to be motivated and passionate about research. The publication track record will be in advance.
+    Knowledge and skill in data science and/or artificial intelligence areas such as machine learning and natural language processing.
+    Strong programming skills.
+    Experience in data management disciplines such us: data modelling, integration and clearing.
+    Good communication and presentation skills to explain the outcome of the research.
+    Comfortable working as part of a team;
