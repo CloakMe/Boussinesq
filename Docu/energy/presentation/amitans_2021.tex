@@ -43,13 +43,24 @@
 \begin{frame}
 \tableofcontents 
 \setbeamertemplate{table of contents shaded}[default]
+\section{Boussinesq Paradigm Equation}
+\section{Quadrature Formulas}
+\section{Numerical Methods}
+\subsection{Taylor Series (TS) Approach}
+\subsection{Energy Saving Method with Conservative Scheme}
+
+%---------- frame 06 ----------------
+\section{Convergence}
+
+%---------- frame 07 ----------------
+\section{Comparison Between TS and Conservative Scheme}
 %\tableofcontents 
 \end{frame}
 
 %---------- frame 03 ----------------
 \begin{frame}
-\frametitle{Posing the Problem}
-\section{Posing the Problem}
+\frametitle{Boussinesq Paradigm Equation}
+
 
 We study the problem
 
@@ -57,7 +68,7 @@ We study the problem
 \beta(E-\Delta) \frac{\partial^2 u}{\partial t^2}=
  \beta \Delta u -\Delta^2 u -\alpha \beta \Delta (u^2)
 \ee
-
+where $\alpha>0$, $\beta>0$  are dispersion parameters, and $\Delta$ is the Laplace operator.
 \end{frame}
 
 
@@ -179,23 +190,56 @@ and evaluate it at $t=t_0$ for each derivative.
 \frametitle{Numerical Methods}
 \framesubtitle{Taylor Series}
 
-The order $s$ formula for computing $y(t_n)=$ $y(t_{n-1}+h)$ using these functions, evaluated at $t=t_{n-1}$ and $y=y_{n-1}$, is
+The order $s$ formula for computing $y(t_{n+1})=$ $y(t_{n}+h)$ using these functions, evaluated at $t=t_{n}$ and $y=y_{n}$, is
 \begin{eqnarray}
-y_n = y_{n-1} + h f(t_{n-1}, y_{n-1}) + \frac{h^2}{2!} \frac{d^2}{dt^2} f(t_{n-1}, y_{n-1}) + ... + \frac{h^s}{s!} \frac{d^s}{dt^s} f(t_{n-1}, y_{n-1}), &\nonumber\\ 
+y_{n+1} = y_{n} + h f(t_{n}, y_{n}) + \frac{h^2}{2!} \frac{d^2}{dt^2} f(t_{n}, y_{n}) + ... + \frac{h^s}{s!} \frac{d^s}{dt^s} f(t_{n}, y_{n}), &\nonumber\\ 
 f_i(t_l, y_l), y_l(t_l), t_l \in \RR, 1 \leq l \leq n, 1 \leq i \leq s
 \end{eqnarray}
 where we already have the pair $(t_0, y_0)$ from the initial condition of the differential equation.
 
 \end{frame}
 
+\begin{frame}
+\frametitle{Numerical Methods}
+\framesubtitle{Energy Saving Method with Conservative Scheme}
 
-\subsection{Energy Saving Method with Conservative Scheme}
+The approximation of the differential operators is defined as:
+\begin{equation}
+\frac{\partial^2 u}{\partial t^2}(x_i, y_j, t_k ) = \frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} + O(\tau^2) 
+\end{equation}
 
-%---------- frame 06 ----------------
-\section{Convergence}
+\begin{equation}
+\frac{\partial^2 u}{\partial x^2}(x_i, y_j, t_k ) = \frac{ u^{(k)}_{i+1, j} - 2u^{(k)}_{i,j} + u^{(k)}_{i-1,j} }{h_1^2} + O(h_1^2) 
+\end{equation}
 
-%---------- frame 07 ----------------
-\section{Comparison Between TS and Conservative Scheme}
+\begin{equation}
+\frac{\partial^2 u}{\partial y^2}(x_i, y_j, t_k ) = \frac{ u^{(k)}_{i, j+1} - 2u^{(k)}_{i,j} + u^{(k)}_{i,j-1} }{h_2^2} + O(h_2^2) 
+\end{equation}
+
+
+\begin{equation}
+\Delta_h = \frac{ u^{(k)}_{i+1, j} - 2u^{(k)}_{i,j} + u^{(k)}_{i-1,j} }{h_1^2} + \frac{ u^{(k)}_{i, j+1} - 2u^{(k)}_{i,j} + u^{(k)}_{i,j-1} }{h_2^2}
+\end{equation}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Numerical Methods}
+\framesubtitle{Energy Saving Method with Conservative Scheme}
+The grid function is defined as:
+\begin{equation}
+(I-\Delta_h)\frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} = (\Delta_h - \Delta_h^2)u^{(k)}_{i,j} + \Delta_h(g(u^{(k)}_{i,j})).
+\end{equation}
+%
+where the non-linear term $g$ is defined as:
+\begin{align}
+g(u^{(k)}_{i,j})=&\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(k-1)}_{i,j})(u^{(k+1)}_{i,j}) + (u^{(k-1)}_{i,j})^2 \right) + \nonumber\\
++&\frac{ (\beta - 1 )}{ 2 }\left( u^{(k+1)}_{i,j} + u^{(k-1)}_{i,j} \right).
+\end{align}
+
+
+\end{frame}
+
 
 \begin{frame}
 \frametitle{XXXXXXXXXXXX}
