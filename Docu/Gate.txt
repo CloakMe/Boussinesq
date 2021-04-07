@@ -1,19 +1,26 @@
 ﻿Common responsibilities
 
     Performs individual (under supervision) and collaborative research;
-	boussinesq paradigm equation, solitary waves 
-		- elliptic equation 
-		- hyperbolic equation
-		- boundary condition
+	My research topic is numerical methods for differential equations. I have investigated
+	Boussinesq Paradigm Equation and the N-Body Problem (Equations of Motion). The first relates to my Master Thesis and PhD that I am currently doing.
+	The equation is two dimensional, non-linear, hyperbolic and with fourth order spatial derivatives.
+	For its solution I use Iterative Solvers (Simple Iteration Method), Fast Poisson Solvers, band matrices, high order finite differences, etc.
+	The second relates to my Bachelor Thesis and creating a Solar System Model with the Moon, planets and Sun. Here I used Taylor Series approach
+	to predict the position of the space objects and Runge-Kutta method for verification.
+	
     Prepares presentations to communicate research results at national and international level and participates in various dissemination events such as conferences, workshops and seminars;
-	bio informatics,
-	Linz
-	BGSIAM (with paper waiting for revision)
-	AMITANS (June 2021 )	
+	Sofia 27.06.2014 (Biomath), International Conference on Mathematical Methods and Models in Biosciences and Young Scientist School, 
+	Numerical Study of Traveling Wave Solutions to 2D Boussinesq Equation, K. Angelow, N. Kolkovska,
+    Linz 27.09.2015, Workshop on Approximation Theory, CAGD, Numerical Analysis, and Symbolic Computation	BGSIAM (with paper waiting for revision),
+	On the Boundary Condition of a Stationary Boussinesq Type Equation, K. Angelow, N. Kolkovska
+	Sofia 12.2019, Bulgarian Section of Society for Industrial and Applied Mathematics, 
+	Numerical Study of Soliton Solutions to the Two Dimensional Boussinesq Equation, K. Angelow, N. Kolkovska
+	Albena 06.2021 (AMITANS)
+	Comparison between two numerical methods for solution of 2D Boussinesq paradigm equation, K. Angelow, N. Kolkovska
     Contributes to high-quality publications
 	- N.Kolkovska, K.Angelow, A Multicomponent Alternating Direction Method for Numerical Solution of Boussinesq Paradigm Equation, CPP, Numerical Analysis and Its Applications, Lozenetz, Bulgaria, June 15-20, 2012
 	- K.Angelow,N.Kolkovska, Numerical Study of Traveling Wave Solutions to 2D Boussinesq Equation, Serdica Journal of Computing, Volume 13, Number 1-2, p. 1-16, (2019)
-        - K.Angelow,N.Kolkovska, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, International Journal of Applied Mathematics, Vol. 32, No 1 (2019)
+    - K.Angelow,N.Kolkovska, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, International Journal of Applied Mathematics, Vol. 32, No 1 (2019)
     Performs state-of-the-art analyses in the field of Big Data and AI;
 	case:
 		https://dev.datasciencesociety.net/the-vmware-case-organize-the-knowledge-base/
