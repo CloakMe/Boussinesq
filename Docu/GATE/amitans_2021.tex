@@ -60,10 +60,14 @@
 We study the problem
 
 \be\label{problem}
-\beta(E-\Delta) \frac{\partial^2 u}{\partial t^2}=
- \beta \Delta u -\Delta^2 u -\alpha \beta \Delta (u^2)
+\beta(I-\Delta) \frac{\partial^2 u}{\partial t^2}=
+  \Delta u -\Delta^2 u +\Delta(-\alpha \beta u^2 + (\beta - 1 )u)
 \ee
-where $\alpha>0$, $\beta>0$  are dispersion parameters, and $\Delta$ is the Laplace operator.
+where $\alpha>0$, $\beta>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The domain of the unknown function $u$ is defined by:
+\be
+ u:\Omega \times [0 \quad T] \rightarrow R
+\ee
+where $\Omega \in R^2$ and $T>0$.
 \end{frame}
 
 
@@ -79,7 +83,7 @@ D(u)=\int_{R^2} u(x,y)dx dy
 
 and energy:
 \begin{align}\label{ex-en}
-E(u)=&\int_{R^2} u_t \left((A^{-1}+E)u_t\right) dxdy+
+E(u):=&\int_{R^2} u_t \left((A^{-1}+I)u_t\right) dxdy+
 \beta \int_{R^2} u^2 dxdy \nonumber\\
 +& \int_{R^2}u \left(A u\right) dxdy
 -\frac{2 \alpha \beta}{3} \int_{R^2} u^3 dxdy =const
@@ -119,7 +123,7 @@ The approximation of the differential operators is defined as:
 
 
 \begin{equation}
-\Delta_h = \frac{ u^{(k)}_{i+1, j} - 2u^{(k)}_{i,j} + u^{(k)}_{i-1,j} }{h_1^2} + \frac{ u^{(k)}_{i, j+1} - 2u^{(k)}_{i,j} + u^{(k)}_{i,j-1} }{h_2^2}
+\Delta_h u(x_i, y_j, t_k )  = \frac{ u^{(k)}_{i+1, j} - 2u^{(k)}_{i,j} + u^{(k)}_{i-1,j} }{h_1^2} + \frac{ u^{(k)}_{i, j+1} - 2u^{(k)}_{i,j} + u^{(k)}_{i,j-1} }{h_2^2}
 \end{equation}
 
 \end{frame}
@@ -133,7 +137,7 @@ The grid function is defined as:
 %
 where the non-linear term $g$ is defined as:
 \begin{align}
-g(u^{(k)}_{i,j})=&\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(k-1)}_{i,j})(u^{(k+1)}_{i,j}) + (u^{(k-1)}_{i,j})^2 \right) + \nonumber\\
+g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(k-1)}_{i,j})(u^{(k+1)}_{i,j}) + (u^{(k-1)}_{i,j})^2 \right) + \nonumber\\
 +&\frac{ (\beta - 1 )}{ 2 }\left( u^{(k+1)}_{i,j} + u^{(k-1)}_{i,j} \right).
 \end{align}
 
