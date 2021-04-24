@@ -46,8 +46,8 @@
 \section{Boussinesq Paradigm Equation}
 \section{Quadrature Formulas}
 \section{Numerical Methods}
-\subsection{Energy Saving Method with Conservative Scheme}
-\subsection{Taylor Series (TS) Approach}
+\subsection{Conservative Finite Difference Scheme (FDS) }
+\subsection{Taylor Series (TS) Approach with Method of Lines }
 %---------- frame 06 ----------------
 \section{Convergence}
 
@@ -133,12 +133,12 @@ The goal of this talk is to:
 
 \begin{frame}
 \frametitle{Boussinesq Paradigm Equation}
-The following variable change is applied:
+The following variable change
 \begin{align}
 x = \sqrt{\beta_1} \bar{x}, \quad y = \sqrt{\beta_1} \bar{y}, \quad t = \sqrt{\beta_1} \bar{t}
 \end{align}
 
-We study the problem
+transforms (1) into 
 
 \be\label{problem}
 \beta(E-\Delta) \frac{\partial^2 u}{\partial t^2}=
@@ -151,9 +151,8 @@ We study the problem
 
 %---------- frame 05 ----------------
 \begin{frame}
-\frametitle{Quadrature Formulas for the Integral and Energy}
-\framesubtitle{Integral and Energy}
-The integral:
+\frametitle{Conservation of the Energy and Mass}
+The mass:
 
 \begin{equation}\label{int}
 D(u)=\int_{R^2} u(x,y)dx dy
@@ -172,8 +171,7 @@ of the continuous problem \rf{problem}. Here $E(u)$ is the exact energy of probl
 %-----------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Energy Saving Method with Conservative Scheme}
-\framesubtitle{The Grid}
+\frametitle{The Computational Domain $\Omega_h$}
 
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.6\linewidth}
@@ -261,9 +259,7 @@ then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 %------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Numerical Methods}
-\framesubtitle{Energy Saving Method with Conservative Scheme}
-
+\frametitle{Conservative FDS}
 The approximation of the differential operators is defined as:
 \begin{equation}
 \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t_k ) = \frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} + O(\tau^2) 
@@ -287,8 +283,7 @@ The approximation of the differential operators is defined as:
 %------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Numerical Methods}
-\framesubtitle{Energy Saving Method with Conservative Scheme}
+\frametitle{Conservative FDS}
 The grid function is defined as:
 \begin{equation}
 (I-\Delta_h)\frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} = (\Delta_h - \Delta_h^2)u^{(k)}_{i,j} + \Delta_h(g(u^{(k)}_{i,j}))
@@ -303,49 +298,41 @@ g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(
 
 \end{frame}
 
+
 %------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Numerical Methods}
-\framesubtitle{Energy Saving Method with Conservative Scheme}
-The last transforms into an implicit equation system $M v^{(k+1)} = b( v^{(k+1)} ,  v^{(k)} ,  v^{(k-1)}  )$.
+\frametitle{TS Approach with Method of Lines}
 
-Piccardi  Iterations:
-
-Set
-\begin{align}
- v^{(k+1)}_0 =  v^{(k)}
-\end{align}
-Do
-\begin{align}
- v^{(k+1)}_{m+1} =  M^{-1}  b( v^{(k+1)}_{m} ,  v^{(k)} , v^{(k-1)}  ), \quad m=1,2, ...
-\end{align}
-Until $||  v^{(k+1)}_{m+1} -  v^{(k+1)}_{m}|| < \epsilon$. 
+Let $\Delta_h u_{i,j}$ be the approximation of $\Delta u$ with $O(|h|^2)$, $O(|h|^4)$, $O(|h|^6)$.
 \\
-For $\epsilon = 10^{-13}$ the number of iterations $m$ is around 6.
-\end{frame}
+Pattern Picture $x x x + x x x$
+\\
+Let $u_{i,j}(t)$ be the approximation of $u(x_i, y_j, t)$ at grid point $(x_i, y_j)$.
+\\
+%here99
+Then one obtains a system of ODEs:
+$$  (I-\Delta_h) \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t)=
+ (\Delta_h - \Delta_h^2) u_{i, j}(t) + \Delta_h ( g( u_{i, j}(t) ) )$$
+for $i = 0..N_1$ and $j=0..N_2$. For each ODE in the system we do TS expansion:
+\be
+u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_i, y_j, t) + \frac{ \tau^2 }{ 2! } \frac{ \partial u }{ \partial t }(x_i, y_j, t) + ... + O(\tau^p)
+\ee
+%Suppose we have functions $y$ and $f$ with the following properties
+%\begin{equation}
+%y:I \rightarrow \RR, \quad f:I \times \Omega \rightarrow \RR \nonumber
+%\end{equation}
+%where $y \in C^1(I,\RR)$ and $f$ is sufficiently smooth on $I \times \Omega$. Then, $f$ represent the phase space and $y$ is the unknown function to the differential equaiton:
+%\begin{equation}
+%\dot{y}(t) = f(t, y(t)).
+%\end{equation}
+%By repeated differentiation we can find each function
 
-%------------------------------------------------------------------
+%\begin{equation}
+%\frac{d^s}{dt^s}y(t) = \frac{d^{s-1}}{dt^{s-1}}f(t, y(t))
+%\end{equation}
 
-\begin{frame}
-\frametitle{Numerical Methods}
-\framesubtitle{Taylor Series}
-
-Suppose we have functions $y$ and $f$ with the following properties
-\begin{equation}
-y:I \rightarrow \RR, \quad f:I \times \Omega \rightarrow \RR \nonumber
-\end{equation}
-where $y \in C^1(I,\RR)$ and $f$ is sufficiently smooth on $I \times \Omega$. Then, $f$ represent the phase space and $y$ is the unknown function to the differential equaiton:
-\begin{equation}
-\dot{y}(t) = f(t, y(t)).
-\end{equation}
-By repeated differentiation we can find each function
-
-\begin{equation}
-\frac{d^s}{dt^s}y(t) = \frac{d^{s-1}}{dt^{s-1}}f(t, y(t))
-\end{equation}
-
-and evaluate it at $t=t_0$ for each derivative.
+%and evaluate it at $t=t_0$ for each derivative.
 \end{frame}
 
 %------------------------------------------------------------------
