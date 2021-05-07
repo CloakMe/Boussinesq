@@ -48,7 +48,13 @@ function CompareTaylorVsEnergySave(btString, cString, hString ,orderString, doma
         viewTypeX = 0;
         viewTypeY = 90;
         figure(figNumber)
-        mesh(x1,y1,(uEnSave - uEnTaylorZeroBoundary)');
+        [zeroX,zeroY]=GetZeroNodes(x1,y1);
+        magX = floor( (x1(end)-x1(zeroX)) / (3*h) );
+        magY = floor( (y1(end)-y1(zeroY)) / (3*h) );
+        xIndeces = zeroX-magX+1:zeroX+magX-1;
+        yIndeces = zeroY-magY+1:zeroY+magY-1;
+        xx=x1(xIndeces); yy=y1(yIndeces); 
+        mesh(xx,yy,(uEnSave(xIndeces,yIndeces) - uEnTaylorZeroBoundary(xIndeces,yIndeces))');
         view( viewTypeX, viewTypeY );
         colorbar;
         title('solution difference');

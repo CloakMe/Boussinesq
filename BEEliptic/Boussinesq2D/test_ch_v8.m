@@ -3,8 +3,8 @@ clear;clc;
 tic
 x_st = -24.0;    y_st = -20.0;
 x_end = 24.0;    y_end = 20.0;
-x_st2 = -30.0;   y_st2 = -30.0;
-x_end2 = 30.0;   y_end2 = 30.0;
+x_st2 = -30.0;   y_st2 = -27.0;
+x_end2 = 30.0;   y_end2 = 27.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});

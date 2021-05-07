@@ -29,6 +29,16 @@ function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secon
     mesh(xx,yy,(BigUNearCenter)');
     xlabel('x');    ylabel('y');
     title('end solution')
+    
+    figure(33)
+    contour3(xx,yy,(BigUNearCenter)',20)
+    xlabel('x');    ylabel('y');
+    title('end solution')
+    grid off;
+    %hold on; 
+    %surf(xx,yy,(BigUNearCenter)', 'Edgecolor', 'none');
+    %hold off;
+    return
     %{
     Q = 41;
     viewTypeX = 90;

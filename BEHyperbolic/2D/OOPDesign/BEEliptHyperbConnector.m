@@ -4,8 +4,8 @@ clear; clc;
 bndCutSize = 0;
 % ChristovIC_40_80_bt1_c090_h010_O(h^6)
 % partialPath = 'BEEliptic\Boussinesq2D\SavedWorkspaces\';
-partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_160_bt1_c090\Oh2\';
-waveFactory = WaveFactory( partialPath, 'ChristovIC_160_ZB1_bt1_c090_h040_O(h^2)', bndCutSize, 0 ); %
+partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_128_bt1_c090\Oh6\';
+waveFactory = WaveFactory( partialPath, 'ChristovIC_128_ZB1_bt1_c090_h040_O(h^6)', bndCutSize, 0 ); %
 %waveFactory = WaveFactory( 'BestFitIC' );
 
 tEnd=10.0;
@@ -99,50 +99,51 @@ viewTypeY = 90;
 %MovieForBEHyperbolic( viewTypeX, viewTypeY, tt, x, y );
 
 Q = 41;
+i = 10;
 if (false)
-    figure(11)
+    figure(i+1)
     mesh(x, y(1:Q), vl(:,1:Q)');
     view( viewTypeX, viewTypeY );
     title('Bottom domain boundary near y=-40');
     xlabel('x');            ylabel('y');
-    figure(12)
+    figure(i+2)
     mesh(x(1:Q), y, vl(1:Q,:)');
     view( viewTypeX, viewTypeY );    
     title('Left domain boundary near x=-40');
     xlabel('x');            ylabel('y');
 
-    figure(13)
+    figure(i+3)
     mesh(x, y(end-Q:end), vl(:,end-Q:end)');
     view( viewTypeX, viewTypeY );    
     title('Top domain boundary near y=40');
     xlabel('x');            ylabel('y');    
-    figure(14)
+    figure(i+4)
     mesh(x(end-Q:end), y, vl(end-Q:end,:)');
     view( viewTypeX, viewTypeY );
     title('Right domain boundary near x=40');
     xlabel('x');            ylabel('y');
 end
 
-figure(15)
+figure(i+5)
 mesh(x,y,vl')
 view( viewTypeX, viewTypeY );
 title('solution');
 xlabel('x');            ylabel('y');
 colorbar;
-figure(16)
+figure(i+6)
 %hold on;
 plot(t(1:end-1),max_v,'k', t(1), max_v+0.005, 'k', t(1), max_v-0.005, 'k' );
 %hold off;
 title('Evolution of the maximum');
 xlabel('time "t"');  ylabel('max(u_h)');
-figure(17)
+figure(i+7)
 %hold on;
 plot(t(1:end-1),EN,'k',t(1),EN(2)+EN(2)/1000.0,t(end),EN(end)-EN(end)/1000.0 )
 %hold off;
 title('Energy functional');
 xlabel('time "t"');  ylabel('EN');
 
-figure(18)
+figure(i+8)
 %hold on;
 [indeces, shift] = BEUtilities.GetCommonIndexArray( t, II );
 indeces(1) = [];
