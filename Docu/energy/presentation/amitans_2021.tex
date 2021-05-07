@@ -125,7 +125,7 @@ The goal of this talk is to:
 \begin{description}
  \item[-] propose high order numerical method for the solution of BPE,
  \item[-] investigate properties of the resulting wave for velocities $c ~ max(1, \sqrt{ \frac{\beta_2}{\beta_1} } )$, which are close to its maximal existence values,
- \item[-] the wave's maximum is constant
+ \item[-] show that the wave's maximum is constant
 \end{description}
 \end{frame}
 
@@ -312,12 +312,18 @@ Let $u_{i,j}(t)$ be the approximation of $u(x_i, y_j, t)$ at grid point $(x_i, y
 \\
 %here99
 Then one obtains a system of ODEs:
-$$  (I-\Delta_h) \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t)=
- (\Delta_h - \Delta_h^2) u_{i, j}(t) + \Delta_h ( g( u_{i, j}(t) ) )$$
-for $i = 0..N_1$ and $j=0..N_2$. For each ODE in the system we do TS expansion:
-\be
-u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_i, y_j, t) + \frac{ \tau^2 }{ 2! } \frac{ \partial u }{ \partial t }(x_i, y_j, t) + ... + O(\tau^p)
+\be \label{DiscreteEq}
+ (I-\Delta_h) \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t)=
+ (\Delta_h - \Delta_h^2) u_{i, j}(t) + \Delta_h ( g( u_{i, j}(t) ) )
 \ee
+for $i = 0..N_1$ and $j=0..N_2$. For each ODE in the system we do TS expansion:
+\begin{align} \label{TSe}
+u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_i, y_j, t)  + ... 
+%\nonumber
+%\\
++ \frac{ \tau^p }{ p! } \frac{ \partial^p u }{ \partial^p t }(x_i, y_j, t) + O(\tau^p)
+\end{align}
+for some natural number $p \ge 2$.
 %Suppose we have functions $y$ and $f$ with the following properties
 %\begin{equation}
 %y:I \rightarrow \RR, \quad f:I \times \Omega \rightarrow \RR \nonumber
@@ -338,24 +344,42 @@ u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_
 %------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Numerical Methods}
-\framesubtitle{Taylor Series}
+\frametitle{TS Approach with Method of Lines}
+Evaluation for formula [\ref{TSe}]
+\begin{description}
+ \item[-] IC $\rightarrow$ $u(x_i, y_j, 0)$, $\frac{ \partial u }{ \partial t }(x_i, y_j, 0)$ ,
+ \item[-] [\ref{DiscreteEq}] $\rightarrow$ $\frac{ \partial^2 u }{ \partial t^2 }(x_i, y_j, 0)$ ,
+ \item[-] Differentiating equation $\frac{ \partial^{p-2} u }{ \partial^{p-2} t }$ [\ref{DiscreteEq}] $\rightarrow$  $\frac{ \partial^p u }{ \partial^p t }(x_i, y_j, t)$
+\end{description}
 
-The order $s$ formula for computing $y(t_{n+1})=$ $y(t_{n}+h)$ using these functions, evaluated at $t=t_{n}$ and $y=y_{n}$, is
-\begin{eqnarray}
-y_{n+1} = y_{n} + h f(t_{n}, y_{n}) + \frac{h^2}{2!} \frac{d^2}{dt^2} f(t_{n}, y_{n}) + ... + \frac{h^s}{s!} \frac{d^s}{dt^s} f(t_{n}, y_{n}), &\nonumber\\ 
-f_i(t_l, y_l), y_l(t_l), t_l \in \RR, 1 \leq l \leq n, 1 \leq i \leq s
-\end{eqnarray}
-where we already have the pair $(t_0, y_0)$ from the initial condition of the differential equation.
+Thus one gets for
+\begin{description}
+ \item[$p=2$] $O(|h|^2 + \tau^2)$,
+ \item[$p=4$] $O(|h|^4 + \tau^4)$,
+ \item[$p=6$] $O(|h|^6 + \tau^6)$.
+\end{description}
 
 \end{frame}
 
 %------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Convergence}
-%A
+\frametitle{Validation and Results}
+Two parameters sets are used:
+\begin{description}
+ \item[Test 1] $\beta = 3$, $c = 0.45$, $\Omega = [-30, 30] \times [-27, 27]$
+ \item[Test 2] $\beta = 1$, $c = 0.9$, $\Omega = [-128, 128] \times [-58, 58]$
+\end{description}
 
+All methods use zero boundary, i.e. values of the finite difference stencil outside the numerical domain $[L_x, L_y] \times [L_x, L_y]$ are zeros.
+\end{frame}
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Convergence for TS Approach}
+%A
+$T = 10$
 \begin{table}[ht]
 \centering
 \small
@@ -402,21 +426,142 @@ where we already have the pair $(t_0, y_0)$ from the initial condition of the di
 \end{frame}
 %------------------------------------------------------------------
 
+\begin{frame}
+%C
+\frametitle{Convergence for Conservative FDS}
+$T = 10$
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
+   			\hline 
+					\hline 
+  $\beta=3$                &0.2, 0.001         &                    &                &                  &                   \\
+   c=0.45                     &0.1, 0.0005         & 0.989422   &                & 1.043649  &                   \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.00025  &0.344818    & 1.52       & 0.355517   &   1.55   \\
+	   \hline
+			\hline 
+       $\beta=1$           & 0.4, 0.002       &                   &           &                 &   \\
+                  c=0.9       & 0.2, 0.001        & 0.200424   &          &0.072726  &   \\
+  $O(h^2+ \tau^2)$  & 0.1, 0.0005       & 0.047899   & 2.06  &0.021451  & 1.76 \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Convergence tests for the Conservative FDS method with zero boundary and approximation errors $O(h^{2} + \tau^2 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+\label{tableC}
+\end{table}
+
+\end{frame}
 
 \begin{frame}
 \frametitle{Results}
-\framesubtitle{Integral and Energy}
+\framesubtitle{Mass and Energy}
+
 \begin{center}\vspace{0.4cm}
-	\begin{minipage}[b]{0.4\linewidth}
+	\begin{minipage}[b]{0.25\linewidth}
 		 \includegraphics[width=\linewidth]{figures/Integral.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.4\linewidth}
+	\begin{minipage}[b]{0.25\linewidth}
+		\includegraphics[width=\linewidth]{figures/Energy.png}
+		
+	\end{minipage}
+\\
+	\begin{minipage}[b]{0.25\linewidth}
+		 \includegraphics[width=\linewidth]{figures/Integral.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.25\linewidth}
 		\includegraphics[width=\linewidth]{figures/Energy.png}
 		
 	\end{minipage}
 
 \end{center}
-The Integral  (left panel) and Energy (right panel) of the solution for Evolution of the maximum for  $\beta=1$ and $c = 0.9$.
+The Mass (left) and Energy (right) of the solution for $T = 10$ and $\beta=3$, $c = 0.45$ (top) and $\beta=1$, $c = 0.9$ (curr graph) (bottom).
+\end{frame}
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Results}
+\framesubtitle{Wave Comparison}
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h005.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h010.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.30\linewidth}
+		 \includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h020.png}
+	\end{minipage}
+\end{center}
+Difference between TS approach and Conservative Scheme at time $T=10$  for $\beta=3$, $c = 0.45$  and $O(|h|^2 + \tau^2)$. From Left to right $h=0.05, 0.1, 0.2$. The graphics represent only one third of the whole domain $\Omega_h$.
+\end{frame}
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Results}
+\framesubtitle{Wave Comparison}
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h010.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h020.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.30\linewidth}
+		 \includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h040.png}
+	\end{minipage}
+\end{center}
+Difference between TS approach and Conservative Scheme at time $T=10$  for $\beta=1$, $c = 0.9$  and $O(|h|^2 + \tau^2)$. From Left to right $h=0.1, 0.2, 0.4$. The graphics represent only one third of the whole domain $\Omega_h$.
+\end{frame}
+
+\begin{frame}
+\frametitle{Results}
+\framesubtitle{Solution Maximum}
+\begin{figure}[ht]
+	\centering
+	\begin{minipage}[b]{0.4\linewidth}
+		\includegraphics[width=\linewidth]{figures/EvolutionOfMaximum_bt3_t40.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.4\linewidth}
+		 \includegraphics[width=\linewidth]{figures/EvolutionOfMaximum_bt1_t40.png}
+	\end{minipage}
+
+Evolution of the maximum for Test Wave $\beta =3$ (left panel) and $\beta=1$ (right panel).
+\end{figure}
+
+\end{frame}
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Results}
+\framesubtitle{Wave Evolution}
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth]{figures/Solution_bt3_t=0.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth]{figures/Solution_bt3_t=8.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.30\linewidth}
+		 \includegraphics[width=\linewidth]{figures/Solution_bt3_t=16.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth]{figures/Solution_bt3_t=24.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.30\linewidth}
+		 \includegraphics[width=\linewidth]{figures/Solution_bt3_t=32.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.30\linewidth}
+		 \includegraphics[width=\linewidth]{figures/Solution_bt3_t=40.png}
+	\end{minipage}
+\end{center}
+Numerical solution of single wave for $\beta=3$ and $c = 0.45$ at times $t=0,8,16,24,32,40$.
 \end{frame}
 
 %------------------------------------------------------------------
@@ -443,10 +588,6 @@ The Integral  (left panel) and Energy (right panel) of the solution for Evolutio
 	\begin{minipage}[b]{0.30\linewidth}
 		 \includegraphics[width=\linewidth]{figures/Solution1_t=40.png}
 	\end{minipage}
-%\captionof{figure}{\color{Green} Numerical solution of single wave for $\beta=1$ and $c = 0.9$ at times $t=0,8,16,24,32,40$.}
-%	\caption{Numerical solution of single wave for $\beta=1$ and $c = 0.9$ at times $t=0,8,16,24,32,40$.}
-%	\label{fig:oneWaveA}
-%\end{figure}
 \end{center}
 Numerical solution of single wave for $\beta=1$ and $c = 0.9$ at times $t=0,8,16,24,32,40$.
 \end{frame}
