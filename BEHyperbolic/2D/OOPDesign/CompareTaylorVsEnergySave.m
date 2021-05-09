@@ -65,6 +65,8 @@ function CompareTaylorVsEnergySave(btString, cString, hString ,orderString, doma
         title('solution maximums');
         xlabel('t');            %ylabel('solution maximums');
         legend('EnergySave','Taylor');
+        
+
     elseif( additionalInfo == 3 || additionalInfo == 4 )
 
         [minEN1, maxEN1, meanEN1] = GetValues(EN1);
@@ -76,7 +78,7 @@ function CompareTaylorVsEnergySave(btString, cString, hString ,orderString, doma
         fprintf('EnSave %4.6f & %4.6f & %4.6f\n', minEN1, maxEN1, maxEN1 - minEN1 );
         fprintf('Taylor %4.6f & %4.6f & %4.6f\n', minEN2, maxEN2, maxEN2 - minEN2 );
         fprintf('----------------------------------------\n');
-        fprintf('Integral   min        max        |diff|       \n');
+        fprintf('Mass       min        max        |diff|       \n');
         fprintf('EnSave: %4.6f  & %4.6f  & %4.6f  \n', minII1, maxII1, maxII1 - minII1 );
         fprintf('Taylor: %4.6f  & %4.6f  & %4.6f  \n', minII2, maxII2, maxII2 - minII2 );
         fprintf('----------------------------------------\n\n');
@@ -103,12 +105,26 @@ function CompareTaylorVsEnergySave(btString, cString, hString ,orderString, doma
         newt2 = t2(st2:st2:end);
         [indeces2, shift2] = BEUtilities.GetCommonIndexArray( newt2, II2 );
         indeces2(1) = [];
-        
+           
         plot(newt1(indeces1+shift1),II1(indeces1),'r',newt1(1),II1(2)+II1(2)/1000.0,newt1(end),II1(end)-II1(end)/1000.0 , ...
             newt2(indeces2+shift2),II2(indeces2),'b',newt2(1),II2(2)+II2(2)/1000.0,newt2(end),II2(end)-II2(end)/1000.0 )
-        title('Integral EnergySave/Taylor');
-        legend('EnergySave','Taylor');
-        xlabel('time "t"');  ylabel('I');
+        title('Mass');
+        legend('Conservative Scheme','Taylor');
+        xlabel('time "t"');  ylabel('Mass');
+        
+        [indeces1, shift1] = BEUtilities.GetCommonIndexArray( newt1, EN1 );
+        indeces1(1) = [];
+        
+        [indeces2, shift2] = BEUtilities.GetCommonIndexArray( newt2, EN2 );
+        indeces2(1) = [];
+        
+        figure(figNumber+10)
+        
+        plot(newt1(indeces1+shift1),EN1(indeces1),'r',newt1(1),EN1(2)+EN1(2)/1000.0,newt1(end),EN1(end)-EN1(end)/1000.0 , ...
+            newt2(indeces2+shift2),EN2(indeces2),'b',newt2(1),EN2(2)+EN2(2)/1000.0,newt2(end),EN2(end)-EN2(end)/1000.0 )
+        title('Energy');  
+        legend('Conservative Scheme','Taylor');
+        xlabel('time "t"');  ylabel('Energy');
         %hold off;
     end
   
