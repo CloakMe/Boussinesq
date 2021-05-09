@@ -17,10 +17,10 @@ for i = 1:50
     end
 end
 
-additionalInfo = 4;
-domainLen = '80';
+additionalInfo = 2;
+domainLen = '30'; %128, 30
 
-if( true )
+if( false )
     CompareTaylorVsEnergySave('1', '90', '40' ,'2', domainLen, additionalInfo);
     CompareTaylorVsEnergySave('1', '90', '20' ,'2', domainLen, additionalInfo);
     CompareTaylorVsEnergySave('1', '90', '10' ,'2', domainLen, additionalInfo);
@@ -39,21 +39,21 @@ if( true )
     CompareTaylorVsEnergySave('1', '90', '20' ,'6', domainLen, additionalInfo);
     CompareTaylorVsEnergySave('1', '90', '10' ,'6', domainLen, additionalInfo);
 else
-    CompareTaylorVsEnergySave('3', '52', '20' ,'2', domainLen, additionalInfo);
-    CompareTaylorVsEnergySave('3', '52', '10' ,'2', domainLen, additionalInfo);
-    CompareTaylorVsEnergySave('3', '52', '05' ,'2', domainLen, additionalInfo);
+    CompareTaylorVsEnergySave('3', '45', '20' ,'2', domainLen, additionalInfo);
+    CompareTaylorVsEnergySave('3', '45', '10' ,'2', domainLen, additionalInfo);
+    CompareTaylorVsEnergySave('3', '45', '05' ,'2', domainLen, additionalInfo);
     if(useSecondOrderOnly == 1)
         return;
     end
     fprintf('=========================\n'); 
     fprintf('=========================\n\n');
-    CompareTaylorVsEnergySave('3', '52', '20' ,'4', domainLen, additionalInfo);
-    CompareTaylorVsEnergySave('3', '52', '10' ,'4', domainLen, additionalInfo);
-    CompareTaylorVsEnergySave('3', '52', '05' ,'4', domainLen, additionalInfo);
+    CompareTaylorVsEnergySave('3', '45', '20' ,'4', domainLen, additionalInfo);
+    CompareTaylorVsEnergySave('3', '45', '10' ,'4', domainLen, additionalInfo);
+    CompareTaylorVsEnergySave('3', '45', '05' ,'4', domainLen, additionalInfo);
 
     fprintf('=========================\n'); 
     fprintf('=========================\n\n');
-    CompareTaylorVsEnergySave('3', '52', '20' ,'6', domainLen, additionalInfo);
-    CompareTaylorVsEnergySave('3', '52', '10' ,'6', domainLen, additionalInfo);
-    CompareTaylorVsEnergySave('3', '52', '05' ,'6', domainLen, additionalInfo);
+    CompareTaylorVsEnergySave('3', '45', '20' ,'6', domainLen, additionalInfo);
+    CompareTaylorVsEnergySave('3', '45', '10' ,'6', domainLen, additionalInfo);
+    CompareTaylorVsEnergySave('3', '45', '05' ,'6', domainLen, additionalInfo);
 end
