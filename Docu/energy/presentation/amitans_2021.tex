@@ -145,6 +145,8 @@ transforms (1) into
  \beta \Delta u -\Delta^2 u -\alpha \beta \Delta (u^2)
 \ee
 
+where $\beta = \beta_1/\beta_2$.
+
 \end{frame}
 
 
@@ -155,12 +157,12 @@ transforms (1) into
 The mass:
 
 \begin{equation}\label{int}
-D(u)=\int_{R^2} u(x,y)dx dy
+D(u(t))=D(u(0))=\int_{R^2} u(x,y)dx dy
 \end{equation}
 
 and energy:
 \begin{align}\label{ex-en}
-E(u):=&\int_{R^2} u_t \left((A^{-1}+E)u_t\right) dxdy+
+E(u(t)) = E(u(0)) =&\int_{R^2} u_t \left((A^{-1}+E)u_t\right) dxdy+
 \beta \int_{R^2} u^2 dxdy \nonumber\\
 +& \int_{R^2}u \left(A u\right) dxdy
 -\frac{2 \alpha \beta}{3} \int_{R^2} u^3 dxdy =const
@@ -172,7 +174,7 @@ of the continuous problem \rf{problem}. Here $E(u)$ is the exact energy of probl
 
 \begin{frame}
 \frametitle{The Computational Domain $\Omega_h$}
-
+\framesubtitle{Equidistant Grid $h=(h_1, h_2)$}
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.6\linewidth}
 		\includegraphics[width=\linewidth]{Omega_dah.png}
@@ -185,7 +187,7 @@ of the continuous problem \rf{problem}. Here $E(u)$ is the exact energy of probl
 
 \begin{frame}
 \frametitle{Quadrature Formulas for the Integral and Energy}
-\framesubtitle{2D trapezoidal formula (with global $O(h_1^2+h_2^2)$ error)}
+\framesubtitle{\textbf{2D trapezoidal formula} (with global $O(h_1^2+h_2^2)$ error)}
 
 Let's assign the X,Y dimensions of the computational domain with $N_1$ and $N_2$.
 Then the approximation of the integral \eqref{int} with global $O(h_1^2+h_2^2)$ error is
@@ -205,7 +207,7 @@ D_h(u_{i,j}) =& \sum_{i=1}^{N_1-1} \sum_{j=1}^{N_2-1} h_1 h_2 u_{i,j}
 
 \begin{frame}
 \frametitle{Quadrature Formulas for the Integral and Energy}
-\framesubtitle{2D Simpson's rule (with global $O(h_1^4+h_2^4)$ error)}
+\framesubtitle{\textbf{2D Simpson's rule} (with global $O(h_1^4+h_2^4)$ error)}
 Assume that $N_1=2k$, $N_2=2 l$.
 For every $m=0,1,2,\cdots N_2$ we compute 
 
@@ -229,7 +231,7 @@ is the approximation of the integral \eqref{int} with global $O(h_1^4+h_2^4)$ er
 
 \begin{frame}
 \frametitle{Quadrature Formulas for the Integral and Energy}
-\framesubtitle{2D Boole's rule (with global $O(h_1^6+h_2^6)$ error)}
+\framesubtitle{\textbf{2D Boole's rule} (with global $O(h_1^6+h_2^6)$ error)}
 
 Assume that $N_1=4k$, $N_2=4 l$.
 For every $m=0,1,2,\cdots N_2$ we compute
@@ -371,7 +373,28 @@ Two parameters sets are used:
  \item[Test 2] $\beta = 1$, $c = 0.9$, $\Omega = [-128, 128] \times [-58, 58]$
 \end{description}
 
-All methods use zero boundary, i.e. values of the finite difference stencil outside the numerical domain $[L_x, L_y] \times [L_x, L_y]$ are zeros.
+All methods use zero boundary condition, i.e. values of the finite difference stencil outside the numerical domain $\Omega_h$ are zeros.
+\end{frame}
+
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Validation and Results}
+\framesubtitle{The Wave}
+
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.45\linewidth}
+		 \includegraphics[width=\linewidth]{figures/nivoLines_bt3.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.45\linewidth}
+		\includegraphics[width=\linewidth]{figures/nivoLines_bt3.png}
+		
+	\end{minipage}
+
+\end{center}
+The wave at $T=0$ for Test 1 (left) and Test 2 (right) localized in $[-5,5]\times[-5,5]$.
+
 \end{frame}
 
 %------------------------------------------------------------------
@@ -463,23 +486,23 @@ $T = 10$
 
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.25\linewidth}
-		 \includegraphics[width=\linewidth]{figures/Integral.png}
+		 \includegraphics[width=\linewidth]{figures/Mass_bt3_c045_h005.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.25\linewidth}
-		\includegraphics[width=\linewidth]{figures/Energy.png}
+		\includegraphics[width=\linewidth]{figures/Energy_bt3_c045_h005.png}
 		
 	\end{minipage}
 \\
 	\begin{minipage}[b]{0.25\linewidth}
-		 \includegraphics[width=\linewidth]{figures/Integral.png}
+		 \includegraphics[width=\linewidth]{figures/Mass_bt1_c090_h010.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.25\linewidth}
-		\includegraphics[width=\linewidth]{figures/Energy.png}
+		\includegraphics[width=\linewidth]{figures/Energy_bt1_c090_h010.png}
 		
 	\end{minipage}
 
 \end{center}
-The Mass (left) and Energy (right) of the solution for $T = 10$ and $\beta=3$, $c = 0.45$ (top) and $\beta=1$, $c = 0.9$ (curr graph) (bottom).
+The Mass (left) and Energy (right) of the solution for $T = 10$ and $\beta=3$, $c = 0.45$ (top) and $\beta=1$, $c = 0.9$ (bottom).
 \end{frame}
 
 %------------------------------------------------------------------
@@ -520,9 +543,18 @@ Difference between TS approach and Conservative Scheme at time $T=10$  for $\bet
 Difference between TS approach and Conservative Scheme at time $T=10$  for $\beta=1$, $c = 0.9$  and $O(|h|^2 + \tau^2)$. From Left to right $h=0.1, 0.2, 0.4$. The graphics represent only one third of the whole domain $\Omega_h$.
 \end{frame}
 
+%------------------------------------------------------------------
+
 \begin{frame}
 \frametitle{Results}
 \framesubtitle{Solution Maximum}
+
+Two parameters sets are used:
+\begin{description}
+ \item[Test 3] $\beta = 3$, $c = 0.52$, $\Omega = [-40, 40] \times [-40, 40]$
+ \item[Test 4] $\beta = 1$, $c = 0.9$, $\Omega = [-40, 40] \times [-40, 80]$
+\end{description}
+The end time is $T=40$ for both tests.
 \begin{figure}[ht]
 	\centering
 	\begin{minipage}[b]{0.4\linewidth}
@@ -536,6 +568,7 @@ Evolution of the maximum for Test Wave $\beta =3$ (left panel) and $\beta=1$ (ri
 \end{figure}
 
 \end{frame}
+
 %------------------------------------------------------------------
 
 \begin{frame}
@@ -561,7 +594,7 @@ Evolution of the maximum for Test Wave $\beta =3$ (left panel) and $\beta=1$ (ri
 		 \includegraphics[width=\linewidth]{figures/Solution_bt3_t=40.png}
 	\end{minipage}
 \end{center}
-Numerical solution of single wave for $\beta=3$ and $c = 0.45$ at times $t=0,8,16,24,32,40$.
+Numerical solution of single wave for $\beta=3$ and $c = 0.52$ at times $t=0,8,16,24,32,40$.
 \end{frame}
 
 %------------------------------------------------------------------
@@ -595,7 +628,39 @@ Numerical solution of single wave for $\beta=1$ and $c = 0.9$ at times $t=0,8,16
 %------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{XXXXXXXXXXXX}
+\frametitle{Results}
+\framesubtitle{Solution Maximum}
+\begin{figure}[ht]
+	\centering
+	\begin{minipage}[b]{0.4\linewidth}
+		\includegraphics[width=\linewidth]{figures/compare_start_end_bt3_c052.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.4\linewidth}
+		 \includegraphics[width=\linewidth]{figures/compare_start_end_bt1_c09.png}
+	\end{minipage}
+
+Difference between localized solitons at time $T=0$ and $T=40$ for Test 3 $\beta = 3$, $\beta = 0.52$  (left) and Test 4 $\beta=1$, $c=0.9$ (right). 
+\end{figure}
+
+It is obtained that:
+\begin{description}
+ \item[$\beta = 3$, $c = 0.52$] $||u_h(t=40)-u_h(t=0)|_{L_2} = 0.023453$ and $||u_h(t=40)-u_h(t=0)||_{L_{\infty}} = 0.026302$
+ \item[$\beta = 1$, $c = 0.9$] $||u_h(t=40)-u_h(t=0)|_{L_2} = 0.000812$ and $||u_h(t=40)-u_h(t=0)||_{L_{\infty}} = 0.000039$
+\end{description}
+\end{frame}
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Conclusion}
+
+\begin{description}
+ \item[-] 2D BPE is solved using TS method with high approximation orders $O(|h|^k+\tau^k)$, $k=2,4,6$
+ \item[-] the results are compared with a Conservative Scheme for $O(|h|^2+\tau^2)$
+ \item[-] the Energy and Mass of the TS solution are saved with high accuracy over the time interval $[0, 10]$
+ \item[-] the resulting numerical solutions for wave speeds near the upper limit $c_{max} = min(1, \sqrt{\beta_2/\beta_1}$ are stable in form and their maximums are changed with small errors over long period of time $[0, 40]$.
+\item[-] the obtained solutions show soliton behavior!
+\end{description}
 
 \end{frame}
 
