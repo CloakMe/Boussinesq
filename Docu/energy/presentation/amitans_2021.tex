@@ -26,9 +26,11 @@
  %[propagating wave solutions to the 2D BPE]
 \title{Comparison between two numerical methods for solution of 2D Boussinesq paradigm equation}
 
-\author[K. Angelow]{{\underline{Krassimir Angelow}}, Natalia Kolkovska}
+%\author[K. Angelow]{{\underline{Krassimir Angelow}}, Natalia Kolkovska}
+\author[K. Angelow]{{\underline{Krassimir Angelow}} }
 \institute[IMI -- BAS]{Institute of Mathematics and Informatics\\ Bulgarian Academy of Sciences, Sofia, Bulgaria,\\ e-mail: angelow@math.bas.bg}
-\date[2021]{AMITANS, June 20-25  2021,  Albena, Bulgaria}
+%\date[2021]{AMITANS, June 20-25  2021,  Albena, Bulgaria}
+\date[2021]{May 27  2021,  Institute of Mathematics and Informatics, Bulgarian Academy of Sciences}
 
 
 %---------- frame 01 ----------------
@@ -68,7 +70,7 @@ The standard two dimensional BPE formulation is
 \\
 u(x,y,0) = u_0(x,y), \quad \frac{\partial u}{\partial t}(x,y,0)=u_1(x,y), \nonumber
 \\
-u(x,y,t) \rightarrow 0, \quad \Delta u(x,y, t) \rightarrow 0 \quad \text{for} \quad ||(x,y)|| \rightarrow \inf \nonumber
+u(x,y,t) \rightarrow 0, \quad \Delta u(x,y, t) \rightarrow 0 \quad \text{for} \quad \sqrt{x^2+y^2} \rightarrow \infty \nonumber
 \end{align}
 where $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The domain of the unknown function $u$ is defined by:
 \be
@@ -89,7 +91,8 @@ and evaluated in
 \begin{description}
  \item[1] Christou, Christov, Galerkin Spectral Method for the 2D Solitary Waves of Boussinesq Paradigm Equation, 
  \item[2] Christou, Christov, Fourier-Galerkin Method for 2D Solitons of Boussinesq Equation, 
-  \item[3] Christov, Choudhury, The Perturbation Solution for the 2D Boussinesq Equation.
+  \item[3] Christov, Choudhury, The Perturbation Solution for the 2D Boussinesq Equation,
+  \item[4] K. Angelow, N. Kolkovska, Numerical Study of TWS to 2D Boussinesq Equation.
 \end{description}
 
 Remarks:
@@ -110,9 +113,10 @@ Remarks:
 
 Based on the stationary solutions, the 2D hyperbolic equation is solved numerically in 
 \begin{description}
- \item[4] Christov, Vasileva, Kolkovska, Numerical Realization of Unsteady Solutions for the 2D BPE,
- \item[5] Chertock, Christov, Kurganov, Central-Upwind Schemes for the Boussinesq Paradigm Equations, 
-  \item[6] Angelow, Kolkovska, A Multicomponent Alternating Direction Method for Numerical Solving of Boussinesq Paradigm Equation.
+ \item[5] Christov, Vasileva, Kolkovska, Numerical Realization of Unsteady Solutions for the 2D BPE,
+ \item[6] Chertock, Christov, Kurganov, Central-Upwind Schemes for the Boussinesq Paradigm Equations, 
+  \item[7] Angelow, Kolkovska, A Multicomponent Alternating Direction Method for Numerical Solving of Boussinesq Paradigm Equation,
+\item[8] M. Dimova, D. Vasileva, Comparison of Two Numerical Approaches to Boussinesq Paradigm Equation.
 \end{description}
 \end{frame}
 
@@ -122,12 +126,19 @@ Based on the stationary solutions, the 2D hyperbolic equation is solved numerica
 \frametitle{Boussinesq Paradigm Equation}
 
 The goal of this talk is to:
-\begin{description}
- \item[-] propose high order numerical method for the solution of BPE,
- \item[-] investigate properties of the resulting wave for velocities $c ~ max(1, \sqrt{ \frac{\beta_2}{\beta_1} } )$, which are close to its maximal existence values,
- \item[-] show that the wave's maximum is constant
-\end{description}
+\begin{itemize}
+ \item propose numerical method with high order approximation for the solution of BPE,
+ \item investigate properties of the resulting waves for velocities, which are close to the maximum $c \approx c_{max}$, $c < c_{max}$:
+	\begin{itemize}
+	 \item mass,
+	 \item energy,
+	 \item shape,
+	 \item maximum,
+	\end{itemize}
+\end{itemize}
+where $c_{max} = max(1, \sqrt{ \frac{\beta_2}{\beta_1} } )$.
 \end{frame}
+
 
 %---------- frame 07 ----------------
 
@@ -140,9 +151,9 @@ x = \sqrt{\beta_1} \bar{x}, \quad y = \sqrt{\beta_1} \bar{y}, \quad t = \sqrt{\b
 
 transforms (1) into 
 
-\be\label{problem}
-\beta(E-\Delta) \frac{\partial^2 u}{\partial t^2}=
- \beta \Delta u -\Delta^2 u -\alpha \beta \Delta (u^2)
+\be\label{problemVC}
+\beta(I-\Delta) \frac{\partial^2 u}{\partial t^2}=
+  \Delta u -\Delta^2 u +\Delta(-\alpha \beta u^2 + (\beta - 1 )u)
 \ee
 
 where $\beta = \beta_1/\beta_2$.
@@ -286,7 +297,7 @@ The approximation of the differential operators is defined as:
 
 \begin{frame}
 \frametitle{Conservative FDS}
-The grid function is defined as:
+The grid function obtained from [\ref{problemVC}] is defined as:
 \begin{equation}
 (I-\Delta_h)\frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} = (\Delta_h - \Delta_h^2)u^{(k)}_{i,j} + \Delta_h(g(u^{(k)}_{i,j}))
 \end{equation}
@@ -305,15 +316,17 @@ g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(
 
 \begin{frame}
 \frametitle{TS Approach with Method of Lines}
-
+\begin{center}\vspace{0.25cm}
+	\begin{minipage}[b]{0.45\linewidth}
+		 \includegraphics[width=\linewidth]{figures/FDS.png}
+	\end{minipage}	
+\end{center}
 Let $\Delta_h u_{i,j}$ be the approximation of $\Delta u$ with $O(|h|^2)$, $O(|h|^4)$, $O(|h|^6)$.
-\\
-Pattern Picture $x x x + x x x$
 \\
 Let $u_{i,j}(t)$ be the approximation of $u(x_i, y_j, t)$ at grid point $(x_i, y_j)$.
 \\
 %here99
-Then one obtains a system of ODEs:
+From [\ref{problemVC}] one obtains a system of ODEs:
 \be \label{DiscreteEq}
  (I-\Delta_h) \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t)=
  (\Delta_h - \Delta_h^2) u_{i, j}(t) + \Delta_h ( g( u_{i, j}(t) ) )
@@ -347,14 +360,16 @@ for some natural number $p \ge 2$.
 
 \begin{frame}
 \frametitle{TS Approach with Method of Lines}
-Evaluation for formula [\ref{TSe}]
-\begin{description}
- \item[-] IC $\rightarrow$ $u(x_i, y_j, 0)$, $\frac{ \partial u }{ \partial t }(x_i, y_j, 0)$ ,
- \item[-] [\ref{DiscreteEq}] $\rightarrow$ $\frac{ \partial^2 u }{ \partial t^2 }(x_i, y_j, 0)$ ,
- \item[-] Differentiating equation $\frac{ \partial^{p-2} u }{ \partial^{p-2} t }$ [\ref{DiscreteEq}] $\rightarrow$  $\frac{ \partial^p u }{ \partial^p t }(x_i, y_j, t)$
-\end{description}
+Evaluating formula [\ref{TSe}]
+\begin{itemize}
+ \item IC $\rightarrow$ $u(x_i, y_j, t=0)$, $\frac{ \partial u }{ \partial t }(x_i, y_j, t=0)$,
+ \item $[$\ref{DiscreteEq}$]$ $\rightarrow$ $\frac{ \partial^2 u }{ \partial t^2 }(x_i, y_j, t=0)$ ,
+ \item Differentiating equation $\frac{ \partial^{p-2} u }{ \partial t^{p-2} }$ [\ref{DiscreteEq}] $\rightarrow$  $\frac{ \partial^p u }{ \partial t^p }(x_i, y_j, t)$,
+ \item Substitute the evaluated derivatives in formula $[$ \ref{TSe} $]$.
+\end{itemize}
 
-Thus one gets for
+
+Thus one gets the following approximations
 \begin{description}
  \item[$p=2$] $O(|h|^2 + \tau^2)$,
  \item[$p=4$] $O(|h|^4 + \tau^4)$,
@@ -481,28 +496,37 @@ $T = 10$
 \end{frame}
 
 \begin{frame}
-\frametitle{Results}
-\framesubtitle{Mass and Energy}
+\frametitle{Results, Mass and Energy}
+%\framesubtitle{}
 
 \begin{center}\vspace{0.4cm}
-	\begin{minipage}[b]{0.25\linewidth}
+	\begin{minipage}[b]{0.45\linewidth}
 		 \includegraphics[width=\linewidth]{figures/Mass_bt3_c045_h005.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.25\linewidth}
+	\begin{minipage}[b]{0.45\linewidth}
 		\includegraphics[width=\linewidth]{figures/Energy_bt3_c045_h005.png}
 		
 	\end{minipage}
-\\
-	\begin{minipage}[b]{0.25\linewidth}
+\end{center}
+The Mass (left) and Energy (right) of the solution for $O(|h|^2 + \tau^2)$, $T = 10$ and $\beta=3$, $c = 0.45$.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Results, Mass and Energy}
+%\framesubtitle{}
+
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.45\linewidth}
 		 \includegraphics[width=\linewidth]{figures/Mass_bt1_c090_h010.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.25\linewidth}
+	\begin{minipage}[b]{0.45\linewidth}
 		\includegraphics[width=\linewidth]{figures/Energy_bt1_c090_h010.png}
 		
 	\end{minipage}
 
 \end{center}
-The Mass (left) and Energy (right) of the solution for $T = 10$ and $\beta=3$, $c = 0.45$ (top) and $\beta=1$, $c = 0.9$ (bottom).
+The Mass (left) and Energy (right) of the solution for $O(|h|^2 + \tau^2)$, $T = 10$ and $\beta=1$, $c = 0.9$.
 \end{frame}
 
 %------------------------------------------------------------------
@@ -511,13 +535,13 @@ The Mass (left) and Energy (right) of the solution for $T = 10$ and $\beta=3$, $
 \frametitle{Results}
 \framesubtitle{Wave Comparison}
 \begin{center}\vspace{0.4cm}
-	\begin{minipage}[b]{0.30\linewidth}
+	\begin{minipage}[b]{0.32\linewidth}
 		\includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h005.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.30\linewidth}
+	\begin{minipage}[b]{0.32\linewidth}
 		\includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h010.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.30\linewidth}
+	\begin{minipage}[b]{0.32\linewidth}
 		 \includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h020.png}
 	\end{minipage}
 \end{center}
@@ -530,13 +554,13 @@ Difference between TS approach and Conservative Scheme at time $T=10$  for $\bet
 \frametitle{Results}
 \framesubtitle{Wave Comparison}
 \begin{center}\vspace{0.4cm}
-	\begin{minipage}[b]{0.30\linewidth}
+	\begin{minipage}[b]{0.32\linewidth}
 		\includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h010.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.30\linewidth}
+	\begin{minipage}[b]{0.32\linewidth}
 		\includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h020.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.30\linewidth}
+	\begin{minipage}[b]{0.32\linewidth}
 		 \includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h040.png}
 	\end{minipage}
 \end{center}
@@ -632,10 +656,10 @@ Numerical solution of single wave for $\beta=1$ and $c = 0.9$ at times $t=0,8,16
 \framesubtitle{Solution Maximum}
 \begin{figure}[ht]
 	\centering
-	\begin{minipage}[b]{0.4\linewidth}
+	\begin{minipage}[b]{0.49\linewidth}
 		\includegraphics[width=\linewidth]{figures/compare_start_end_bt3_c052.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.4\linewidth}
+	\begin{minipage}[b]{0.49\linewidth}
 		 \includegraphics[width=\linewidth]{figures/compare_start_end_bt1_c09.png}
 	\end{minipage}
 
@@ -644,8 +668,8 @@ Difference between localized solitons at time $T=0$ and $T=40$ for Test 3 $\beta
 
 It is obtained that:
 \begin{description}
- \item[$\beta = 3$, $c = 0.52$] $||u_h(t=40)-u_h(t=0)|_{L_2} = 0.023453$ and $||u_h(t=40)-u_h(t=0)||_{L_{\infty}} = 0.026302$
- \item[$\beta = 1$, $c = 0.9$] $||u_h(t=40)-u_h(t=0)|_{L_2} = 0.000812$ and $||u_h(t=40)-u_h(t=0)||_{L_{\infty}} = 0.000039$
+ \item[$\beta = 3$, $c = 0.52$] $||u_h(t=40)-u_h(t=0)|_{L_2} = 0.023453$
+ \item[$\beta = 1$, $c = 0.9$] $||u_h(t=40)-u_h(t=0)|_{L_2} = 0.000812$
 \end{description}
 \end{frame}
 
