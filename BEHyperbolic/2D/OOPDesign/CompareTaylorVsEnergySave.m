@@ -106,12 +106,35 @@ function CompareTaylorVsEnergySave(btString, cString, hString ,orderString, doma
         [indeces2, shift2] = BEUtilities.GetCommonIndexArray( newt2, II2 );
         indeces2(1) = [];
            
-        plot(newt1(indeces1+shift1),II1(indeces1),'r',newt1(1),II1(2)+II1(2)/1000.0,newt1(end),II1(end)-II1(end)/1000.0 , ...
-            newt2(indeces2+shift2),II2(indeces2),'b',newt2(1),II2(2)+II2(2)/1000.0,newt2(end),II2(end)-II2(end)/1000.0 )
+        plot(newt1(indeces1+shift1),II1(indeces1),'r^',newt2(indeces2+shift2),II2(indeces2),'bv', ...
+            newt1(1),II1(2)+II1(2)/1000.0,newt1(end),II1(end)-II1(end)/1000.0, newt2(1),II2(2)+II2(2)/1000.0,newt2(end),II2(end)-II2(end)/1000.0 )
         title('Mass');
         legend('Conservative Scheme','Taylor');
         xlabel('time "t"');  ylabel('Mass');
         
+        %
+        if( ( h == 0.05 && btString == '3' ) || ( h == 0.1 && btString == '1' ) )
+            colorPalette = 'b';
+            if( orderString == '4' )
+                colorPalette = 'g';
+            elseif( orderString == '6' )
+                colorPalette = 'r';
+            end
+            figure(30)
+            hold on;       
+
+            plot(newt2(indeces2+shift2), II2(indeces2),colorPalette )
+            %, ...
+            %    newt2(1),II2(2)+II2(2)/1000.0,newt2(end),II2(end)-II2(end)/1000.0
+            title('Mass, Taylor');
+            xlabel('time "t"');  ylabel('Mass');
+            if( orderString == '6' )
+                legend('O(h^2 + {\tau}^2', 'O(h^4 + {\tau}^4', 'O(h^6 + {\tau}^6');
+            end
+            hold off;    
+        end
+        
+        %
         [indeces1, shift1] = BEUtilities.GetCommonIndexArray( newt1, EN1 );
         indeces1(1) = [];
         
@@ -119,13 +142,36 @@ function CompareTaylorVsEnergySave(btString, cString, hString ,orderString, doma
         indeces2(1) = [];
         
         figure(figNumber+10)
+        plot(newt1(indeces1+shift1),EN1(indeces1),'r^',newt2(indeces2+shift2),EN2(indeces2),'bv', ...
+            newt1(1),EN1(2)+EN1(2)/1000.0,newt1(end),EN1(end)-EN1(end)/1000.0, newt2(1),EN2(2)+EN2(2)/1000.0,newt2(end),EN2(end)-EN2(end)/1000.0 )
         
-        plot(newt1(indeces1+shift1),EN1(indeces1),'r',newt1(1),EN1(2)+EN1(2)/1000.0,newt1(end),EN1(end)-EN1(end)/1000.0 , ...
-            newt2(indeces2+shift2),EN2(indeces2),'b',newt2(1),EN2(2)+EN2(2)/1000.0,newt2(end),EN2(end)-EN2(end)/1000.0 )
         title('Energy');  
         legend('Conservative Scheme','Taylor');
         xlabel('time "t"');  ylabel('Energy');
         %hold off;
+        %
+        if( ( h == 0.05 && btString == '3' ) || ( h == 0.1 && btString == '1' ) )
+            colorPalette = 'b';
+            if( orderString == '4' )
+                colorPalette = 'g';
+            elseif( orderString == '6' )
+                colorPalette = 'r';
+            end
+            figure(31)
+            hold on;       
+
+            plot(newt2(indeces2+shift2),EN2(indeces2),colorPalette )
+            %, ...
+            %    newt2(1),II2(2)+II2(2)/1000.0,newt2(end),II2(end)-II2(end)/1000.0
+            title('Energy, Taylor');
+            xlabel('time "t"');  ylabel('Energy');
+            if( orderString == '6' )
+                legend('O(h^2 + {\tau}^2', 'O(h^4 + {\tau}^4', 'O(h^6 + {\tau}^6');
+            end
+            hold off;
+        end
+        
+        %
     end
   
 end

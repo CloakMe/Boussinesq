@@ -47,7 +47,12 @@ classdef WaveFactory
         this.h = h;
         this.u_t0 = bigU;
         this.theta = theta(end);
-        this.mu = mu.muU;
+        try
+            this.mu = mu.muU;
+        catch
+            fprintf( 'Using old c1, c2 params!\n' );
+            this.mu = c1;
+        end
         try
             if(prmtrs.useZeroBoundary == 1)
                 this.mu = 0;
@@ -70,7 +75,7 @@ classdef WaveFactory
         if(twoWaves > 0)
             this.u_t0 = this.u_t0 + fliplr(this.u_t0);
             this.dudt_t0 = this.dudt_t0 + fliplr(this.dudt_t0);
-            this.mu = 2*mu.muU;
+            this.mu = 2*this.mu;
         end
     end
     
