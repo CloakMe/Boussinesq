@@ -86,7 +86,7 @@ where $\Omega \in R^2$ and $T>0$.
 
 
 The stationary two dimensional solitary wave is defined by
-$$u(x, y, t) = U(x, y-ct)$$
+$$U(x, y-ct) = u(x, y, t)$$
 and evaluated in 
 \begin{description}
  \item[1] Christou, Christov, Galerkin Spectral Method for the 2D Solitary Waves of Boussinesq Paradigm Equation, 
@@ -97,7 +97,7 @@ and evaluated in
 
 Remarks:
 \begin{description}
- \item[-] [1] and [2] uses FDS with $O(h^2 + \tau^2)$ approximation, 
+ \item[-] [1] and [2] uses FDS with $O(h^2)$ approximation, 
   \item[-] [3] - the" best fit" formulas for small speeds $c$.
 \end{description}
 %Numerical Realization of Unsteady Solutions for the 2D Boussiensq Paradigm Equation, Christov, Kolkovska, Vasileva
@@ -111,7 +111,7 @@ Remarks:
 \frametitle{Boussinesq Paradigm Equation}
 
 
-Based on the stationary solutions, the 2D hyperbolic equation is solved numerically in 
+Based on the solutions of the stationary equation, the 2D hyperbolic equation is solved numerically in 
 \begin{description}
  \item[5] Christov, Vasileva, Kolkovska, Numerical Realization of Unsteady Solutions for the 2D BPE,
  \item[6] Chertock, Christov, Kurganov, Central-Upwind Schemes for the Boussinesq Paradigm Equations, 
@@ -164,7 +164,7 @@ where $\beta = \beta_1/\beta_2$.
 
 %---------- frame 05 ----------------
 \begin{frame}
-\frametitle{Conservation of the Energy and Mass}
+\frametitle{Conservation of the Mass and Energy}
 The mass:
 
 \begin{equation}\label{int}
@@ -197,7 +197,7 @@ of the continuous problem \rf{problem}. Here $E(u)$ is the exact energy of probl
 %---------- frame ----------------
 
 \begin{frame}
-\frametitle{Quadrature Formulas for the Integral and Energy}
+\frametitle{Quadrature Formulas for the Mass and Energy}
 \framesubtitle{\textbf{2D trapezoidal formula} (with global $O(h_1^2+h_2^2)$ error)}
 
 Let's assign the X,Y dimensions of the computational domain with $N_1$ and $N_2$.
@@ -217,7 +217,7 @@ D_h(u_{i,j}) =& \sum_{i=1}^{N_1-1} \sum_{j=1}^{N_2-1} h_1 h_2 u_{i,j}
 \end{frame}
 
 \begin{frame}
-\frametitle{Quadrature Formulas for the Integral and Energy}
+\frametitle{Quadrature Formulas for the Mass and Energy}
 \framesubtitle{\textbf{2D Simpson's rule} (with global $O(h_1^4+h_2^4)$ error)}
 Assume that $N_1=2k$, $N_2=2 l$.
 For every $m=0,1,2,\cdots N_2$ we compute 
@@ -241,7 +241,7 @@ is the approximation of the integral \eqref{int} with global $O(h_1^4+h_2^4)$ er
 %------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Quadrature Formulas for the Integral and Energy}
+\frametitle{Quadrature Formulas for the Mass and Energy}
 \framesubtitle{\textbf{2D Boole's rule} (with global $O(h_1^6+h_2^6)$ error)}
 
 Assume that $N_1=4k$, $N_2=4 l$.
@@ -299,7 +299,7 @@ The approximation of the differential operators is defined as:
 \frametitle{Conservative FDS}
 The grid function obtained from [\ref{problemVC}] is defined as:
 \begin{equation}
-(I-\Delta_h)\frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} = (\Delta_h - \Delta_h^2)u^{(k)}_{i,j} + \Delta_h(g(u^{(k)}_{i,j}))
+\beta (I-\Delta_h)\frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} = (\Delta_h - \Delta_h^2)u^{(k)}_{i,j} + \Delta_h(g(u^{(k)}_{i,j}))
 \end{equation}
 %
 where the non-linear term $g$ is defined as:
@@ -328,7 +328,7 @@ Let $u_{i,j}(t)$ be the approximation of $u(x_i, y_j, t)$ at grid point $(x_i, y
 %here99
 From [\ref{problemVC}] one obtains a system of ODEs:
 \be \label{DiscreteEq}
- (I-\Delta_h) \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t)=
+\beta (I-\Delta_h) \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t)=
  (\Delta_h - \Delta_h^2) u_{i, j}(t) + \Delta_h ( g( u_{i, j}(t) ) )
 \ee
 for $i = 0..N_1$ and $j=0..N_2$. For each ODE in the system we do TS expansion:
@@ -336,7 +336,7 @@ for $i = 0..N_1$ and $j=0..N_2$. For each ODE in the system we do TS expansion:
 u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_i, y_j, t)  + ... 
 %\nonumber
 %\\
-+ \frac{ \tau^p }{ p! } \frac{ \partial^p u }{ \partial^p t }(x_i, y_j, t) + O(\tau^p)
+\frac{ \tau^p }{ p! } \frac{ \partial^p u }{ \partial t^p }(x_i, y_j, t) + O(\tau^{p+1})
 \end{align}
 for some natural number $p \ge 2$.
 %Suppose we have functions $y$ and $f$ with the following properties
@@ -388,7 +388,7 @@ Two parameters sets are used:
  \item[Test 2] $\beta = 1$, $c = 0.9$, $\Omega = [-128, 128] \times [-58, 58]$
 \end{description}
 
-All methods use zero boundary condition, i.e. values of the finite difference stencil outside the numerical domain $\Omega_h$ are zeros.
+The tests use zero boundary condition, i.e. values of the finite difference stencil outside the numerical domain $\Omega_h$ are zeros.
 \end{frame}
 
 
@@ -403,7 +403,7 @@ All methods use zero boundary condition, i.e. values of the finite difference st
 		 \includegraphics[width=\linewidth]{figures/nivoLines_bt3.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.45\linewidth}
-		\includegraphics[width=\linewidth]{figures/nivoLines_bt3.png}
+		\includegraphics[width=\linewidth]{figures/nivoLines_bt1.png}
 		
 	\end{minipage}
 
@@ -496,40 +496,84 @@ $T = 10$
 \end{frame}
 
 \begin{frame}
-\frametitle{Results, Mass and Energy}
-%\framesubtitle{}
+\frametitle{Results}
+\framesubtitle{Mass and Energy for the Conservative scheme and TS method}
 
 \begin{center}\vspace{0.4cm}
-	\begin{minipage}[b]{0.45\linewidth}
+	\begin{minipage}[b]{0.49\linewidth}
 		 \includegraphics[width=\linewidth]{figures/Mass_bt3_c045_h005.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.45\linewidth}
+	\begin{minipage}[b]{0.49\linewidth}
 		\includegraphics[width=\linewidth]{figures/Energy_bt3_c045_h005.png}
 		
 	\end{minipage}
 \end{center}
-The Mass (left) and Energy (right) of the solution for $O(|h|^2 + \tau^2)$, $T = 10$ and $\beta=3$, $c = 0.45$.
+The Mass (left) and Energy (right) of the solution for $\beta=3$, $c = 0.45$, $O(|h|^2 + \tau^2)$ and $T = 10$.
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Results, Mass and Energy}
+\frametitle{Results}
+\framesubtitle{Mass and Energy for the Conservative scheme and TS method}
 %\framesubtitle{}
 
 \begin{center}\vspace{0.4cm}
-	\begin{minipage}[b]{0.45\linewidth}
+	\begin{minipage}[b]{0.49\linewidth}
 		 \includegraphics[width=\linewidth]{figures/Mass_bt1_c090_h010.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.45\linewidth}
+	\begin{minipage}[b]{0.49\linewidth}
 		\includegraphics[width=\linewidth]{figures/Energy_bt1_c090_h010.png}
 		
 	\end{minipage}
 
 \end{center}
-The Mass (left) and Energy (right) of the solution for $O(|h|^2 + \tau^2)$, $T = 10$ and $\beta=1$, $c = 0.9$.
+The Mass (left) and Energy (right) of the solution for $\beta=1$, $c = 0.9$, $O(|h|^2 + \tau^2)$ and $T = 10$.
 \end{frame}
 
 %------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Results}
+\framesubtitle{Mass and Energy for the TS method only}
+%\framesubtitle{}
+
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.49\linewidth}
+		 \includegraphics[width=\linewidth]{figures/Mass_bt1_c090_h010_x3O.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.49\linewidth}
+		\includegraphics[width=\linewidth]{figures/Energy_bt1_c090_h010_x3O.png}
+		
+	\end{minipage}
+
+\end{center}
+The Mass (left) and Energy (right) of the Taylor solution for $\beta=3$, $c = 0.45$, $O(|h|^2 + \tau^2)$, $O(|h|^4 + \tau^4)$, $O(|h|^6 + \tau^6)$ and $T = 10$.
+\end{frame}
+
+%------------------------------------------------------------------
+
+
+\begin{frame}
+\frametitle{Results}
+\framesubtitle{Mass and Energy for the TS method only}
+%\framesubtitle{}
+
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.49\linewidth}
+		 \includegraphics[width=\linewidth]{figures/Mass_bt3_c045_h005_x3O.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.49\linewidth}
+		\includegraphics[width=\linewidth]{figures/Energy_bt1_c090_h010_x3O.png}
+		
+	\end{minipage}
+
+\end{center}
+The Mass (left) and Energy (right) of the Taylor solution for $\beta=1$, $c = 0.9$, $O(|h|^2 + \tau^2)$, $O(|h|^4 + \tau^4)$, $O(|h|^6 + \tau^6)$ and $T = 10$.
+\end{frame}
+
+%------------------------------------------------------------------
+
+
 
 \begin{frame}
 \frametitle{Results}
@@ -545,7 +589,7 @@ The Mass (left) and Energy (right) of the solution for $O(|h|^2 + \tau^2)$, $T =
 		 \includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h020.png}
 	\end{minipage}
 \end{center}
-Difference between TS approach and Conservative Scheme at time $T=10$  for $\beta=3$, $c = 0.45$  and $O(|h|^2 + \tau^2)$. From Left to right $h=0.05, 0.1, 0.2$. The graphics represent only one third of the whole domain $\Omega_h$.
+Difference between TS approach and Conservative Scheme at time $T=10$  for $\beta=3$, $c = 0.45$  and $O(|h|^2 + \tau^2)$. From Left to right $h=0.05, 0.1, 0.2$. The graphics represent only one nineth of the whole domain $\Omega_h$.
 \end{frame}
 
 %------------------------------------------------------------------
@@ -564,7 +608,7 @@ Difference between TS approach and Conservative Scheme at time $T=10$  for $\bet
 		 \includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h040.png}
 	\end{minipage}
 \end{center}
-Difference between TS approach and Conservative Scheme at time $T=10$  for $\beta=1$, $c = 0.9$  and $O(|h|^2 + \tau^2)$. From Left to right $h=0.1, 0.2, 0.4$. The graphics represent only one third of the whole domain $\Omega_h$.
+Difference between TS approach and Conservative Scheme at time $T=10$  for $\beta=1$, $c = 0.9$  and $O(|h|^2 + \tau^2)$. From Left to right $h=0.1, 0.2, 0.4$. The graphics represent only one nineth of the whole domain $\Omega_h$.
 \end{frame}
 
 %------------------------------------------------------------------
@@ -575,7 +619,7 @@ Difference between TS approach and Conservative Scheme at time $T=10$  for $\bet
 
 Two parameters sets are used:
 \begin{description}
- \item[Test 3] $\beta = 3$, $c = 0.52$, $\Omega = [-40, 40] \times [-40, 40]$
+ \item[Test 3] $\beta = 3$, $c = 0.52$, $\Omega = [-40, 40] \times [-40, 60]$
  \item[Test 4] $\beta = 1$, $c = 0.9$, $\Omega = [-40, 40] \times [-40, 80]$
 \end{description}
 The end time is $T=40$ for both tests.
