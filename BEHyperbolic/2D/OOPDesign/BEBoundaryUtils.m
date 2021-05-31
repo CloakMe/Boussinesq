@@ -11,7 +11,7 @@ classdef (ConstructOnLoad) BEBoundaryUtils < BEDomainUtils
   methods (Access = private)
       
 	function [sdah] = AsymptoticFunctionSquare( this, X, Y, t, timeDerOrd)
-       sdah = zeros( length(this.x), length(this.y) );
+       sdah = zeros( size(X) );
         
         c = this.c;
         beta = this.beta;
@@ -70,7 +70,7 @@ classdef (ConstructOnLoad) BEBoundaryUtils < BEDomainUtils
     end
     
 	function [sdah] = FPSOperatorAsymptoticFunction( this, X, Y, t, timeDerOrd)
-       sdah = zeros( length(this.x), length(this.y) );
+       sdah = zeros( size(X) );
         
         c = this.c;
         beta = this.beta;
@@ -129,7 +129,7 @@ classdef (ConstructOnLoad) BEBoundaryUtils < BEDomainUtils
     
     function [sdah] = AsymptoticFunction( this, X, Y, t, timeDerOrd )
         
-        sdah = zeros( length(this.x), length(this.y) );
+        sdah = zeros( size(X) );
         
         c = this.c;
         bt = this.beta;

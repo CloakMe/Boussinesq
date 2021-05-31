@@ -14,12 +14,12 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         vu = this.vdah;
 
         %[d2vz, d3vz, d4vz, d5vz, d6vz] = calc_der2d(this.u_t0,this.dudt_t0,eigenFinDiffMat,IminusDHdiag,s_idh,vdah, this.h, this.sx,this.alpha,this.beta,this.order);
-        [d2vz, d3vz, d4vz, d5vz, d6vz] = this.Calc_der2d( this.u_t0, this.dudt_t0, 0 );
+        [d2vz, d3vz, d4vz, d5vz, d6vz, d7vz] = this.Calc_der2d( this.u_t0, this.dudt_t0, 0 );
         zerofy = [ this.order >= 3, this.order >= 5 ];
         vu = this.u_t0 + this.tau*this.dudt_t0 + (this.tau^2/2)*d2vz + zerofy(1) * (this.tau^3/6)*d3vz +...
             (this.tau^4/24)*d4vz + zerofy(2) * (this.tau^5/120)*d5vz + (this.tau^6/720)*d6vz; %#ok<*CPROP>
         dtv = this.dudt_t0 + this.tau*d2vz + (this.tau^2/2)*d3vz + (this.tau^3/6)*d4vz +...
-            (this.tau^4/24)*d5vz + (this.tau^5/120)*d6vz;
+            (this.tau^4/24)*d5vz + (this.tau^5/120)*d6vz + (this.tau^6/720)*d7vz;
         
         EN_1 = this.GetEnergy( this.u_t0, vu, 0 );
         II_1 = this.GetIntegralOf( this.u_t0 );
@@ -41,11 +41,11 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         II(1) = II_1;
         while( t(k) < this.tEnd )
             %[d2vz, d3vz, d4vz, d5vz, d6vz] = calc_der2d(vu,dtv,eigenFinDiffMat,IminusDHdiag,s_idh,vdah, this.h, this.sx,this.alpha,this.beta,this.order);
-            [d2vz, d3vz, d4vz, d5vz, d6vz] = this.Calc_der2d( vu, dtv, t(k) );
+            [d2vz, d3vz, d4vz, d5vz, d6vz, d7vz] = this.Calc_der2d( vu, dtv, t(k) );
             vu = vu + this.tau*dtv + (this.tau^2/2)*d2vz + (this.tau^3/6)*d3vz +...
-                (this.tau^4/24)*d4vz+ (this.tau^5/120)*d5vz + (this.tau^6/720)*d6vz;
+                (this.tau^4/24)*d4vz + (this.tau^5/120)*d5vz + (this.tau^6/720)*d6vz;
             dtv = dtv + this.tau*d2vz + (this.tau^2/2)*d3vz + (this.tau^3/6)*d4vz +...
-                (this.tau^4/24)*d5vz + (this.tau^5/120)*d6vz;    
+                (this.tau^4/24)*d5vz + (this.tau^5/120)*d6vz + (this.tau^6/720)*d7vz;    
 
             IS_dudt_NaN = max(max(isnan(vu)));
             max_v(k) = max(max(abs(vu)));
@@ -84,14 +84,14 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         name = 'Taylor';
     end
     
-    function [d2vz, d3vz, d4vz, d5vz, d6vz] = Calc_der2d( this, vz,dvz, t )
+    function [d2vz, d3vz, d4vz, d5vz, d6vz, d7vz] = Calc_der2d( this, vz,dvz, t )
         if( this.order > 6 )
             error( 'Max derivative order is 6th!' ); 
         end
         %[ augDhDomainOnly ] = this.GetDhAugDomainOnly( t );
         %[ augDtDomainOnly ] = this.GetDtAugDomainOnly( t );
         %[ augPowDomainOnly ] = this.GetPowAugDomainOnly( t );
-        d2vz = this.vdah; d3vz = this.vdah; d4vz = this.vdah; d5vz = this.vdah; d6vz = this.vdah;
+        d2vz = this.vdah; d3vz = this.vdah; d4vz = this.vdah; d5vz = this.vdah; d6vz = this.vdah; d7vz = this.vdah;
         
         %================== 2nd
         nonlinTerm = (this.alpha*this.beta*vz.*vz +...
@@ -140,7 +140,12 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         nonlinTerm =( 2*this.alpha*this.beta*(3*d2vz.*d2vz + 4*dvz.*d3vz + vz.*d4vz) +...
                     (this.beta-1)*d4vz );
         d6vz = this.GetCurrentDer( nonlinTerm, d4vz, t, 4);% augDhDomainOnly(:,:,5), augDtDomainOnly(:,:,5) );
-    
+        if( this.order + 1 == 6) return; end
+        
+         %==================  7th
+        nonlinTerm =( 2*this.alpha*this.beta*(10*d2vz.*d3vz + 5*dvz.*d4vz + vz.*d5vz) +...
+                    (this.beta-1)*d5vz );
+        d7vz = this.GetCurrentDer( nonlinTerm, d5vz, t, 5);% augDhDomainOnly(:,:,5), augDtDomainOnly(:,:,5) );
     end
     
     function [dnvz] = GetCurrentDer( this,...
