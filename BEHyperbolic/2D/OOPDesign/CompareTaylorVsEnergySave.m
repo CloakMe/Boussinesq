@@ -129,7 +129,7 @@ function CompareTaylorVsEnergySave(btString, cString, hString ,orderString, doma
             title('Mass, Taylor');
             xlabel('time "t"');  ylabel('Mass');
             if( orderString == '6' )
-                legend('O(h^2 + {\tau}^2', 'O(h^4 + {\tau}^4', 'O(h^6 + {\tau}^6');
+                legend('O(h^2 + {\tau}^2)', 'O(h^4 + {\tau}^4)', 'O(h^6 + {\tau}^6)');
             end
             hold off;    
         end
