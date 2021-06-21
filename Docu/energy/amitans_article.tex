@@ -1,0 +1,486 @@
+\documentclass[%
+ aip,
+% jmp,
+% bmf,
+% sd,
+% rsi,
+cp,  % Conference Proceedings
+ amsmath,amssymb,%nobibnotes,
+% preprint,%
+ reprint,%
+%author-year,%
+%author-numerical,%
+]{revtex4-2}
+
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+%\usepackage[mathlines]{lineno}% Enable numbering of text and display math
+%\linenumbers\relax % Commence numbering lines
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%% Loads a Times-like font. You can also load
+%% {newtxtext,newtxtmath}, but not {times}, 
+%% {txfonts} nor {mathtpm} as these packages
+%% are obsolete and have been known to cause problems.
+\usepackage{mathptmx} 
+\usepackage{multirow}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\rf}[1]{(\ref{#1})}
+\newcommand{\RR}{\mathbb{R}}
+\newtheorem{thm}{Theorem}
+\newtheorem{lm}{Lemma}
+
+\begin{document}
+
+\title{Comparison Between Two Numerical Methods for Solution of 2D Boussinesq Paradigm Equation}% Force line breaks with \\
+
+\author{Angelow} % Write as First name Surname
+ \email[Corresponding author: ]{angelow@math.bas.bg}
+\author{Kolkovska}%
+ \email{n.kolkovska@gmail.com}
+\affiliation{
+Institute of Mathematics and Informatics\\
+Bulgarian Academy of Sciences, Acad.\\
+G.~Bonchev Bl.8, 1113, Sofia,
+Bulgaria
+}
+
+\date{\today} % It is always \today, today, but any date may be explicitly specified
+              % Not printed for conference proceedings
+
+\begin{abstract}
+In this paper we evaluate propagating wave solutions to the two dimensional Boussinesq Paradigm Equation (BPE).
+Two numerical methods are used to obtain solution for the equation. The first is a Conservative Finite Difference Scheme (FDS), and the second exploits Taylor Series (TS) expansions around the time variable $t$. Furthermore, for each method the energy and the mass of the solution are calculated. The results, i.e. the solution, energy and mass, from the two methods are compared.
+The solution is computed over three nested meshes to examine the convergence of both approaches. The energy and mass are found at each iteration step. In the case of the Conservative FSD the energy is computed using trapezoidal rule. In the case of TS the energy is calculated using trapezoidal, Simpson's and Boole's rules with $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$ approximation errors, respectively. The main tool for testing the convergence rate $\xi$ of all examined finite difference schemes and TS expansions is the Runge's Method.
+The goal is to justify the TS approach by showing that both methods produce similar results in case of $O(h^{2} + \tau^2 )$ approximation order. Furthermore, the TS method could be used with higher approximation order to produce finer results. The outcome of the comparison is very good. The maximum difference between the two approaches (among calculated solutions using different parameter sets) in $L_2$ and infinity norms is $0.009981$ and $0.004560$ respectively.
+%here99 use percentage notation
+
+\end{abstract}
+
+\maketitle
+
+\section{\label{sec:level1}Introduction}
+%:\protect\\ The line break was forced \lowercase{via} \textbackslash\textbackslash
+%here99 define original problem
+We study the problem
+
+\be\label{problem}
+\beta(E-\Delta) \frac{\partial^2 u}{\partial t^2}=
+ \beta \Delta u -\Delta^2 u -\alpha \beta \Delta (u^2)
+\ee
+
+Define the operator $A$ as $Av=-\Delta_h v=-v_{\bar{x}x} - v_{\bar{y}y}$ and consider the FDS
+
+\be\label{FDS1}
+\beta (E+A)v_{\bar{t}t}^k +\beta Av^k+A^2 v^k -\alpha \beta A\left(\frac{(v^{k+1})^3-(v^{k-1})^3}{3(v^{k+1}-v^{k-1})} \right)=0
+\ee
+
+We multiply \ref{FDS1} by $A^{-1}$ and get 
+\be\label{FDS2}
+\beta (E+A^{-1})v_{\bar{t}t}^k +\beta v^k+A v^k -\alpha \beta \frac{(v^{k+1})^3-(v^{k-1})^3}{3(v^{k+1}-v^{k-1})} =0
+\ee
+
+We substitute $v^{k}=0.5(v^{k+1}+v^{k-1})-\frac{\tau^2}{2}v_{\bar{t}t}^k$ into \rf{FDS2}
+and obtain
+\begin{align*}
+&\left( \beta (E+A^{-1})- \frac{\tau^2}{2}(\beta E+A ) \right)v_{\bar{t}t}^k  + \frac{1}{2} (\beta E +A )(v^{k+1}+v^{k-1}) \\
+&~~~~~-\alpha \beta \frac{(v^{k+1})^3-(v^{k-1})^3}{3(v^{k+1}-v^{k-1})} =0
+\end{align*}
+We multiply the previous equation by $(v^{k+1}-v^{k-1})=\tau (v_{\bar{t}}^k + v_{t}^k)$ and sum over the spatial mesh points.
+We reorganize the expressions and get the following formula 
+\be \label{num_en}
+E_h(v^k) =E_h(v^{k-1}),
+\ee
+where
+\begin{align*}
+E_h(v^k)=\left( \left( \beta (E+A^{-1})- \frac{\tau^2}{4}(\beta E+A ) \right)v_{t}^k ,v_{t}^k \right)+\frac{1}{4} \beta \left(  v^{k+1}+v^{k}, v^{k+1}+v^{k} \right) \\
++\frac{1}{4}  \left(  A(v^{k+1}+v^{k}), v^{k+1}+v^{k} \right)
+-\alpha \beta \frac{((v^{k+1})^3,1)+((v^{k})^3,1)}{3}.
+\end{align*}
+
+In this way we prove the following theorem
+\begin{thm}
+The solution to the FDS \rf{FDS1} conserves the discrete energy
+ $E_h(v^0)$, i.e.  $E_h(v^k) =E_h(v^{0})$ for each $k=1,2,...K$.
+\end{thm}
+
+\begin{thm}
+The linear FDS corresponding to \rf{FDS1} is conditionally stable if
+the following restriction is satisfied
+$\tau^2 < \frac{\beta}{2}(1-\frac{\tau^2}{4}) h^2$.
+
+\end{thm}
+The proof is a consequence of the stability results from the book of
+ Samarskii,  The theory of difference schemes, Marcel Dekker Inc., New York, 2001.
+
+
+\section{Quadrature Formulas for the Mass and Energy}
+The mass of the continuous problem \rf{problem} is defined by
+
+\begin{equation}\label{int}
+D(u(t))=D(u(0))=\int_{R^2} u(x,y)dx dy
+\end{equation}
+
+and the energy 
+
+\begin{align}\label{ex-en}
+E(u):=&\int_{R^2} u_t \left((A^{-1}+E)u_t\right) dxdy+
+\beta \int_{R^2} u^2 dxdy \nonumber\\
++& \int_{R^2}u \left(A u\right) dxdy
+-\frac{2 \alpha \beta}{3} \int_{R^2} u^3 dxdy =const
+\end{align}
+where $Au=-\Delta u$. Here $E(u)$ is the exact energy of problem \rf{problem}.
+
+Let us replace the operator $Au=-
+\Delta u$ with discrete operators $-\Delta_h u$ with different approximation errors - $O(h^2)$, $O(h^4)$, $O(h^6)$. Suppose that the discrete approximation of the derivative $u_t$ is evaluated with approximation errors $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. Then one can apply quadrature formulas to evaluate numerically the energy \rf{ex-en}!
+
+%When the numerical solution is found with $O(h^2+\tau^2)$ error, we apply \rf{quadr2} with $O(h^2)$ error;
+
+%When the numerical solution is found with $O(h^4+\tau^4)$ error, we apply 2D Simpson's rule \rf{quadr4} with $O(h^4)$ error;
+
+%When the numerical solution is found with $O(h^6+\tau^6)$ error, we apply 2D Boole's rule \rf{quadr6-2D} with $O(h^6)$ error;
+
+Quadrature formulas in 2D case for evaluation of 
+
+\begin{equation}\label{int}
+D(u)=\int_{a_1}^{b_1} \int_{a_2}^{b_2} u(x,y)dx dy
+\end{equation}
+
+$x_i, ~i=0,1,...,N_1$; $x_0=a_1,~x_{N_1}=b_1$, $h_1=(b_1-a_1)/N_1$
+
+
+$y_j, ~j=0,1,...,N_2$; $y_0=a_2,~y_{N_2}=b_2$,  $h_2=(b_2-a_2)/N_2$
+
+\subsection{ 2D trapezoidal formula with global $O(h_1^2+h_2^2)$ error }
+
+Let's assign the $X$ and $Y$ dimensions of the computational domain with $N_1$ and $N_2$. Then the approximation of the integral \eqref{int} 
+with global $O(h_1^2+h_2^2)$ error is
+
+\begin{align}\label{quadr2}
+D_h(u_{i,j}) =& \sum_{i=1}^{N_1-1} \sum_{j=1}^{N_2-1} h_1 h_2 u_{i,j}
++\frac{h_1}{2}\sum_{i=0} \sum_{j=1}^{N_2-1} h_2 u_{i,j}
++\frac{h_1}{2}\sum_{i=N_1} \sum_{j=1}^{N_2-1} h_2 u_{i,j} \nonumber\\
++&\frac{h_2}{2}\sum_{j=0} \sum_{i=1}^{N_1-1} h_1 u_{i,j}
++\frac{h_2}{2}\sum_{j=N_2} \sum_{i=1}^{N_1-1} h_1 u_{i,j}
+\nonumber\\
++&\frac{1}{4}h_1 h_2 \left(u_{0,0}+u_{N_1,0}+u_{N_1,N_2}+u_{0,N_2}
+\right)
+\end{align}
+
+\subsection{ 2D Simpson's rule with global $O(h_1^4+h_2^4)$ error}
+
+Here it is assumed that $N_1=2k$, $N_2=2 l$. For every $m=0,1,2,\cdots N_2$ it is computed that 
+$$D_m= \frac{h_1 }{3} 
+\left\{ u_{0,m}+u_{N_1,m}+ 4 \sum_{i=1}^{\frac{N_1}{2}}   u_{2i-1,m}
+ +2 \sum_{i=1}^{\frac{N_1}{2}-1} u_{2i,m} \right\}.$$
+
+
+Then 
+
+\begin{equation}\label{quadr4}
+D_h(u)=\frac{h_2 }{3} 
+\left\{ D_{0}+D_{N_2}+ 4 \sum_{j=1}^{\frac{N_2}{2}}   D_{2j-1}
+ +2 \sum_{j=1}^{{\frac{N_2}{2}}-1} D_{2j} \right\}
+\end{equation}
+is the approximation of the integral \eqref{int} with global $O(h_1^4+h_2^4)$ error
+
+
+\subsection{ 2D Boole's rule with global $O(h_1^6+h_2^6)$ error }
+Here it is assumed that $N_1=4k$, $N_2=4 l$. For every $m=0,1,2,\cdots N_2$ it is computed that
+
+\begin{align*}
+D_m =& \frac{2h_1}{45} 
+\left\{
+7u_{0,m}+7u_{N_1,m}+32 \sum_{i=1}^{\frac{N_1}{2}}u_{2i-1,m}
++12\sum_{i=1}^{\frac{N_1}{4}}u_{4i-2,m}
++14 \sum_{i=1}^{\frac{N_1}{4}-1}u_{4i,m}
+\right\}.
+\end{align*}
+
+
+Then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with global $O(h_1^6+h_2^6)$ error
+
+\begin{align}\label{quadr6-2D}
+&D_h(u) =
+\frac{2h_2}{45} 
+\left\{
+7D_{0}+7D_{N_2}+32 \sum_{j=1}^{\frac{N_2}{2}}D_{2j-1}
++12\sum_{j=1}^{\frac{N_2}{4}}D_{4j-2}
++14 \sum_{j=1}^{\frac{N_2}{4}-1}D_{4j}
+\right\}.
+\end{align}
+
+
+\section{Numerical Methods}
+
+Two numerical methods are used to obtain solution for equation $\rf{problem}$: Method with Conservative Finite Difference Scheme (FDS) and Taylor Series (TS) with Method of lines which uses Taylor series expansions around the time variable $t$. Furthermore, for each method the Mass and Energy of the solution are calculated. The solution and its properties (Mass, Energy and shape) from the two methods are compared. The calculations are done over three nested meshes to examine the convergence of both methods. The goal is to justify the TS approach by showing that both methods exhibit similar results. Furthermore the TS method could be used with high approximation order which produces finer solution.
+
+\subsection{ Initial Condition }
+The stationary two dimensional solitary wave is defined by
+
+$$U(x,y-ct) = u(x,y,t)$$
+
+and evaluated in 
+[Christou, Christov, Galerkin Spectral Method for 2D Solitary Waves of Boussinesq Paradigm Equation],
+[Christou, Christov, Fourier-Galerkin Method for 2D Solutions of Boussinesq Equation],
+[Christov, Choudhury, The Perturbation Solution for the 2D Boussinesq Equation],
+[K. Angelow, N. Kolkovksa, Numercal Study of Traveling Wave Solutions to 2D Boussinesq Equation]. 
+The stationary problem is an elliptic partial differential equation and its solution is used as initial condition for \rf{problem}.
+
+\subsection{ Conservative FDS }
+
+At first convergence rates of the obtained Taylor solutions are calculated, followed by the convergence rate of the energy. Then, the same type of results are displayed for the Conservative scheme. Some additional calculations are made for the mass to assure its proper behavior. At the end, the properties of both methods that are presented here are compared. The energy and mass are vectors of size $[0:\tau:T]$ and are calculated at each iteration step. In the case of Taylor method, the energy is calculated using trapezoidal, Simpson's and Boole's rules for $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$, respectively. In the case of Conservative scheme, the energy is calculated using trapezoidal rule. The main tool for testing the convergence rate $\xi$ of all examined finite difference schemes and TS expansions is the Runge's Method
+\begin{equation}\label{Runge}
+\xi = ln  \frac{\Vert u_{h,\tau} - u_{(h,\tau)/2} \Vert_\kappa } {\Vert  u_{(h,\tau)/2} - u_{(h,\tau)/4} \Vert_\kappa  } | / ln(2),
+\end{equation}
+when no exact solution to the problem is known. It is also used in order to calculate the convergence of the energy. For the last, one obtains three nested vectors of size $[0:\tau:T]$, $[0:\tau/2:T]$ and $[0:\tau/4:T]$. The calculations are done for two parameter sets $\beta = 3$, $c=0.45$ and $\beta = 1$, $c=0.9$:
+
+%0
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|l|l|l|l||}
+			\hline
+			\hline
+                                            &    $\beta$, $c$                              & $O(|h|^p + \tau^p)$                                 & $L_x$,$L_y$                                & $T$      &  Bnd. Cond.   \\
+
+   			\hline 
+					\hline 
+           Test 1                        &      $\beta = 3$, $c=0.45$           &      $p=2, 4, 6$                              & $L_x = 30$,$L_y=27$                &                10    &    Zero  \\
+	   \hline
+			\hline 
+           Test 2                        &      $\beta = 1$, $c=0.9$             &      $p=2, 4, 6$                              & $L_x = 128$,$L_y=58$                &               10    &   Zero  \\
+	   \hline
+			\hline 
+		\end{tabular}
+
+\end{table}
+
+The tests use zero boundary condition, i.e. values of the finite difference stencil outside the numerical domain $[-L_x, L_x] \times [-L_y, L_y]$ are zeros.
+
+%A
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	         &                    &                               & Rate   &                                        & Rate \\
+   			\hline 
+					\hline 
+  $\beta=3$                &0.2, 0.001          &              &              &                     &      \\
+   c=0.45                     &0.1, 0.0005          &0.989414 &            &1.043641    &       \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.00025   & 0.344813 & 1.52    &0.355511    &  1.55      \\
+			\hline 
+  $\beta=3$               &0.2, 0.02       &              &            &                     &      \\
+   c=0.45                    &0.1, 0.01      &0.191224 &            &0.193874    &       \\
+     $O(h^4+ \tau^4)$ &0.05, 0.005&0.013029 & 3.87   &0.013656     &3.82       \\
+			\hline 
+  $\beta=3$               &0.2, 0.02       &                &            &                     &      \\
+     c=0.45                 &0.1, 0.01        &0.032671 &            &  0.033626    &       \\
+     $O(h^6+ \tau^6)$ &0.05, 0.005 &0.000598 &5.77     & 0.000635    & 5.72       \\
+	   \hline
+			\hline 
+       $\beta=1$       &0.4, 0.002        &             &            &           &   \\
+                  c=0.9    &0.2, 0.001       &  0.20366   &            &0.075854 &   \\
+  $O(h^2+ \tau^2)$ &0.1, 0.0005   &0.048320   &2.07  &0.022307  & 1.77 \\
+			\hline
+      $\beta=1$               &0.4, 0.04    &            &               &             &    \\
+       c=0.9                     &0.2, 0.02     & 0.028275   &        &  0.013518   &   \\
+       $O(h^4+ \tau^4)$ &0.1, 0.01   &0.001812 & 3.96  & 0.000971  & 3.80  \\
+    \hline
+  $\beta=1$     &0.4, 0.04   &            &          &                  &      \\
+      c=0.9                    &0.2, 0.02   &0.006734 &           & 0.003338      &       \\
+     $O(h^6+ \tau^6)$ &0.1, 0.01 & 0.000232 &4.86 & 0.000069  & 5.60        \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Convergence tests for Taylor method with zero boundary and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+\label{table:A}
+\end{table}
+
+The convergence results for the Taylor solution are good and correspond to the approximation order that is used. Only in the case of $\beta = 1$, $O(h^6 + \tau^6)$ and $L_2$ norm, the convergence result $4.86$ is far from expected. This could be a result of the zero boundary condition with additionally applying seven point finite difference (for the $O(h^6 + \tau^6)$ approximation). When using zero boundary condition all points on the finite difference stencil that are outside the numerical domain $\Omega_h$ are zeros. This creates a jagged solution surface on the boundary. For the $O(h^2 + \tau^2)$ case ( both $\beta = 1$ and $\beta = 3$ subcases), much smaller time step  $\tau = h/200$ is used. This results in solutions which are similar in shape and form for both subcases. If the step is chosen bigger (e.g. $\tau = h/10$), then the difference in the solution shape between $O(h^2 + \tau^2)$ and the other $O(h^4 + \tau^4)$ and $O(h^6 + \tau^6)$ approximations is much larger. Furthermore, for some cases the solution maximum increases and for other decreases drastically compared to its starting point at $t=0$.
+
+%B
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{ 2 }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
+   			\hline 
+					\hline 
+  $\beta=3$                &0.2, 0.001         &              &            &                     &      \\
+   c=0.45                     &0.1, 0.0005         &0.044442  &            &0.444425 &       \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.00025  & 0.007831 & 2.50      & 0.110750     & 2.00      \\
+			\hline 
+  $\beta=3$               &0.2, 0.02       &                &            &                     &      \\
+   c=0.45                    &0.1, 0.01      &0.018288 &            &0.072718   &       \\
+     $O(h^4+ \tau^4)$ &0.05, 0.005  &0.000945 &4.27    &0.002997   &4.60      \\
+			\hline 
+  $\beta=3$               &0.2, 0.02       &                &            &                      &            \\
+     c=0.45                 &0.1, 0.01        &0.027425 &            &  0.122934    &           \\
+     $O(h^6+ \tau^6)$ &0.05, 0.005 &0.000318 & 6.42     & 0.001467     &6.38   \\
+	   \hline
+			\hline 
+       $\beta=1$       &0.4, 0.002        &             &            &           &   \\
+                  c=0.9    &0.2, 0.001       &  0.046343   &            &0.352955 &   \\
+  $O(h^2+ \tau^2)$ &0.1, 0.0005   &0.007430   &2.64  &0.086470  & 2.02 \\
+			\hline
+      $\beta=1$               &0.4, 0.04    &            &               &             &    \\
+       c=0.9                     &0.2, 0.02     & 0.023067   &        &  0.040550   &   \\
+       $O(h^4+ \tau^4)$ &0.1, 0.01   &0.001411 & 4.03   & 0.003203  & 3.66  \\
+    \hline
+  $\beta=1$     &0.4, 0.04   &            &          &                  &      \\
+      c=0.9                    &0.2, 0.02   &0.010898 &           & 0.032597      &       \\
+     $O(h^6+ \tau^6)$ &0.1, 0.01 & 0.000496 &4.45 & 0.001266  & 4.68        \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Convergence tests for the energy of Taylor solution with zero boundary and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms.}
+\label{table:B}
+\end{table}
+ 
+The convergence results for the energy in case of the Taylor method are good and correspond to the approximation order that is used. Only the case of $\beta = 1$, $O(h^6 + \tau^6)$, the convergence results $4.45$ and $4.68$ ($L_2$ and infinity norms) are far from expected. This could be a result of the zero boundary condition as explained in the previous paragraph about the convergence results for the Taylor method.
+
+%C
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
+   			\hline 
+					\hline 
+  $\beta=3$                &0.2, 0.001         &                    &                &                  &                   \\
+   c=0.45                     &0.1, 0.0005         & 0.989422   &                & 1.043649  &                   \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.00025  &0.344818    & 1.52       & 0.355517   &   1.55   \\
+	   \hline
+			\hline 
+       $\beta=1$           & 0.4, 0.002       &                   &           &                 &   \\
+                  c=0.9       & 0.2, 0.001        & 0.200424   &          &0.072726  &   \\
+  $O(h^2+ \tau^2)$  & 0.1, 0.0005       & 0.047899   & 2.06  &0.021451  & 1.76 \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Convergence tests for the Energy Saving method with zero boundary with approximation errors $O(h^{2} + \tau^2 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+\label{tableC}
+\end{table}
+
+
+%D
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
+   			\hline 
+					\hline 
+  $\beta=3$                &0.2, 0.005         &                    &                &                  &                   \\
+   c=0.45                     &0.1, 0.0025         & 0.044442   &                & 0.444423  &                   \\
+     $O(h^2 + \tau^ 2)$ &0.05, 125e-6  & 0.007831   & 2.50       & 0.110750  & 2.00   \\
+	   \hline
+			\hline 
+       $\beta=1$           & 0.4, 0.002       &                   &           &                 &   \\
+                  c=0.9       & 0.2, 0.001        & 0.051409   &          &0.363515  &   \\
+  $O(h^2+ \tau^2)$  & 0.1, 0.0005       & 0.008939   & 2.52  &0.089393  & 2.02  \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{ Convergence tests for the energy of the Energy Saving method with zero boundary and different approximation errors $O(h^{2} + \tau^2 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms. }
+\label{tableD}
+\end{table}
+
+Another Energy Saving method using conservative scheme is also applied which serves as reference point. The results from the Taylor method are compared to the Energy Saving method. The convergence results for both the method itself and its energy are satisfactory.
+
+%F
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|l|l|l|l|l|l||}
+			\hline
+			\hline
+      FDS                    & $h$, $\tau$      &   \multicolumn{3}{ |c| }{Energy Saving method}   &    \multicolumn{3}{ |c|| }{Taylor method}   \\
+                                 &                         & min &  max   &  diff      & min &  max   &  diff  \\
+   			\hline 
+			\hline 
+  $\beta=3$                   &0.2,  0.001       &23.936863 & 23.936864 & 0.000001 &  23.936860 & 23.936864 & 0.000004      \\
+   c=0.45                        &0.1, 0.0005      &24.381286 & 24.381286 & 0.000000 &  24.381285 & 24.381286 & 0.000001        \\
+     Energy                     &0.05, 0.00025      &24.492035 & 24.492035 & 0.000000   &  24.492035 & 24.492035 & 0.000000       \\
+			\hline 
+  $\beta=3$                   &0.2, 0.001       &6.230968  & 6.252192  & 0.021224 &  6.230968  & 6.252192  & 0.021224      \\
+   c=0.45                        &0.1, 0.0005      & 6.342205  & 6.363959  & 0.021754 & 6.342205  & 6.363959  & 0.021754        \\
+     Integral                     &0.05, 0.00025      &  6.369006  & 6.390928  & 0.021922   & 6.369006  & 6.390928  & 0.021922      \\
+
+	   \hline
+			\hline 
+       $\beta=1$          &0.4, 0.002        & 13.037144 & 13.037144 & 0.000000  &  13.037144 & 13.144258 & 0.107114  \\
+                  c=0.9      &0.2, 0.001         & 13.390099 & 13.390099 & 0.000000 & 13.390099 & 13.440774 & 0.050675   \\
+  Energy&0.1, 0.0005        & 13.476569 & 13.476569 & 0.000000 &  13.476569 & 13.501607 & 0.025037   \\
+			\hline 
+       $\beta=1$          &0.4, 0.002        & 15.803319     & 16.106299  & 0.302981  &  15.803319  & 16.106299  & 0.302981   \\
+                  c=0.9      &0.2, 0.001         & 16.155400  & 16.466173  & 0.310772     & 16.155400  & 16.466173  & 0.310772   \\
+                    Integral &0.1, 0.0005       & 16.247459  & 16.560524  & 0.313065  &  16.247459  & 16.560524  & 0.313065  \\
+	   		\hline
+			\hline 
+		\end{tabular}
+		\caption{The Energy/Integral vector is a map from $0:\tau:T \rightarrow D(u(0:\tau:T))$ using formula \rf{int}. The "min" and "max" columns are simply the minimum and maximum element inside the vector. The calculations use $O(h^2 + \tau^ 2)$ approximation with zero boundary condition.  }
+\label{tableE}
+\end{table}
+The columns in Table \rf{tableE} are as follows: the first column describes the test case and the second is for discretization parameters.
+The "min" column contains a value for time $t=0$, the "max" is for $t=10$ and the "diff" is simply the difference between "max" and "min" values. The rows with energy values show that the conservative scheme in the Energy Saving method keeps the energy constant with very small deviations for both parameter sets. In case of the Taylor method, deviations from the initial energy decrease with decreasing the spatial and time step sizes, as shown in the "diff" columns, and are very small compared to the total energy. The integral increases monotonically with time from 0 to 10. In the case of $\beta = 1$, the difference ("diff" columns) is at maximum $2\%$ for both solution approaches. In the case of $\beta = 3$ it is much less. Furthermore, numerical experiments showed that the difference between the "max" and "min" values for the integral decreases with increasing the domain size.
+
+When comparing the Taylor and Energy Saving methods one could see that they exhibit very near results. The convergence values for the second order approximations are the same up to the first digit after the decimal point (see Tables \rf{table:A} and  \rf{tableC}). The same holds true for the energy convergence of both methods (see Tables \rf{table:B} and  \rf{tableD}) except for the case of $\beta = 1$ and $L_2$ norm but still the difference is less than $0.13$. Also the discrete integral vectors for both solution methods are the same as shown in Table \rf{tableE}. Table \rf{tableF} is a direct comparison in $L_2$ and Infinity norms between Taylor and Energy Saving methods. The results are very good as the obtained differences are very small compared to the solution maximum.
+
+%E
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|l|l|l||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  &   $uT_i - uE_i$  in $L_2$     &  $uT_i - uE_i$ in $L_\infty$ & \multirow{2  }{*}{$max|uE_i|$} \\
+	                                        &                                                     &      difference                     &           difference                  &                                                       \\
+   			\hline 
+					\hline 
+  $\beta=3$                   &0.2, 0.001         &  1.749e-05      &  1.965e-05  & 1.315448     \\
+   c=0.45                        &0.1, 0.0005        &  8.109e-06       & 8.274e-06 &  1.862688     \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.00025     & 2.460e-06         &2.502e-06  &   2.013184   \\
+			\hline 
+			\hline 
+       $\beta=1$          &0.4, 0.002        & 0.009981     & 0.004560 & 0.656747   \\
+                  c=0.9      &0.2, 0.001        & 0.005047      & 0.002373  & 0.673901   \\
+  $O(h^2+ \tau^2)$ &0.1, 0.0005         & 0.002521      &0.001117 & 0.672231   \\
+			\hline
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Difference between obtained solutions with Energy Saving $uE$ and Taylor $uT$ methods using zero boundary condition and approximation errors $O(h^{2} + \tau^2 )$. Differences are measured in $L_2$ and $L_\infty$ norms.}
+\label{tableF}
+\end{table}
+
+Notice that the final time $T=10$  is the same for all tables.
+
+\begin{acknowledgments}
+The work of the second author has been partially supported by
+the Bulgarian Science Fund under grant K$\Pi$-06-H22/2.
+\end{acknowledgments}
+
+\nocite{*}
+\bibliography{aipsamp}% Produces the bibliography via BibTeX.
+
+\end{document}
+%
+% ****** End of file aipsamp.tex ******
