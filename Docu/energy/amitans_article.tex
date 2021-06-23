@@ -224,13 +224,9 @@ The stationary two dimensional solitary wave is defined by
 
 $$U(x,y-ct) = u(x,y,t)$$
 
-and evaluated in 
-[Christou, Christov, Galerkin Spectral Method for 2D Solitary Waves of Boussinesq Paradigm Equation],
-[Christou, Christov, Fourier-Galerkin Method for 2D Solutions of Boussinesq Equation],
-[Christov, Choudhury, The Perturbation Solution for the 2D Boussinesq Equation],
-[K. Angelow, N. Kolkovksa, Numercal Study of Traveling Wave Solutions to 2D Boussinesq Equation]. 
-The stationary problem is an elliptic partial differential equation and its solution is used as initial condition for \rf{problem}.
-
+and evaluated in \cite{ref13}, \cite{ref14}, \cite{ref15} and \cite{ref16}. 
+The stationary problem is an elliptic partial differential equation and its solution is used as initial condition for \rf{problem}. Therefore it is an important aspect of the present work.
+Papers \cite{ref13} and \cite{ref14} develop a numerical method with $O(h^2)$ approximation error while \cite{ref15} uses series expansion around small parameter namely the speed $c$.
 \subsection{ Conservative FDS }
 
 At first convergence rates of the obtained Taylor solutions are calculated, followed by the convergence rate of the energy. Then, the same type of results are displayed for the Conservative scheme. Some additional calculations are made for the mass to assure its proper behavior. At the end, the properties of both methods that are presented here are compared. The energy and mass are vectors of size $[0:\tau:T]$ and are calculated at each iteration step. In the case of Taylor method, the energy is calculated using trapezoidal, Simpson's and Boole's rules for $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$, respectively. In the case of Conservative scheme, the energy is calculated using trapezoidal rule. The main tool for testing the convergence rate $\xi$ of all examined finite difference schemes and TS expansions is the Runge's Method
@@ -478,9 +474,37 @@ The work of the second author has been partially supported by
 the Bulgarian Science Fund under grant K$\Pi$-06-H22/2.
 \end{acknowledgments}
 
-\nocite{*}
-\bibliography{aipsamp}% Produces the bibliography via BibTeX.
+%\nocite{*}
+%\bibliography{aipsamp}% Produces the bibliography via BibTeX.
 
+\begin{thebibliography}{99} \normalsize
+
+\bibitem{ref1} C.I. Christov, An energy-consistent dispersive shallow-water model,  {\it Wave Motion}, \textbf{34} (2001), 161-174.
+
+\bibitem{ref4} I. Christov, C.I. Christov, Physical dynamics of quasi-particles in nonlinear wave equations,
+{\it Physics Letters A}, \textbf{372}, Issue 4 (2008),  841-848.
+
+\bibitem{ref5} J.K. Perring, T.H.R. Skyrme, A model unified field equation, {\it Nuclear Physics},  \textbf{31} (1962), 550-555.
+
+\bibitem{ref13}   M. Christou, C.I. Christov,
+Galerkin spectral method for the 2D solitary waves of Boussinesq paradigm equation,
+In: {\it Applications of Mathematics in Technical and Natural Sciences, Sozopol (Bulgaria)},
+\emph{AIP Conference Proceedings}, \textbf{1186}, Issue 1 (2009), 217-225.
+
+\bibitem{ref14}  M. Christou, C.I. Christov,
+Fourier Galerkin method for 2D solitons of Boussinesq equation,
+{\it Mathematics and Computers in Simulation} \textbf{74} (2007), 82-92.
+
+\bibitem{ref15} C.I. Christov, J. Choudhury, Perturbation solution for the 2D Boussinesq equation, {\it Mech. Res. Commun.}, \textbf{38} (2011), 274-281.
+
+\bibitem{ref16}  K. Angelow, N. Kolkovksa, Numercal Study of Traveling Wave Solutions to 2D Boussinesq Equation, {\it Serdica J. Computing}, \textbf{13} (2019), 1-16.
+
+\bibitem{ref25} N. Kolkovska, Two families of finite difference schemes for multidimensional Boussinesq paradigm equation, In:
+{\it Applications of Mathematics in Technical and Natural Sciences,  Sozopol (Bulgaria)},
+\emph{AIP Conference Proceedings}, \textbf{1301} (2010), 395.
+
+%
+\end{thebibliography}
 \end{document}
 %
 % ****** End of file aipsamp.tex ******
