@@ -220,12 +220,11 @@ Then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with glo
 Two numerical methods are used to obtain solution for equation $\rf{problem}$: Method with Conservative Finite Difference Scheme (FDS) and Taylor Series (TS) with Method of lines which uses Taylor series expansions around the time variable $t$. Furthermore, for each method the Mass and Energy of the solution are calculated. The solution and its properties (Mass, Energy and shape) from the two methods are compared. The calculations are done over three nested meshes to examine the convergence of both methods. The goal is to justify the TS approach by showing that both methods exhibit similar results. Furthermore the TS method could be used with high approximation order which produces finer solution.
 
 \subsection{ Initial Condition }
-The stationary two dimensional solitary wave is defined by
+For the numerical interaction of 2D Boussinesq solitons, one needs the shape of a stationary wave in order to obtain the initial condition. The stationary two dimensional solitary wave is defined by
 
 $$U(x,y-ct) = u(x,y,t)$$
 
-and evaluated in \cite{ref13}, \cite{ref14}, \cite{ref15} and \cite{ref16}. 
-The stationary problem is an elliptic partial differential equation and its solution is used as initial condition for \rf{problem}. Therefore it is an important aspect of the present work.
+and an elliptic partial differential equation comes out after the above substitution is applied in \rf{problem}. It is evaluated in \cite{ref13}, \cite{ref14}, \cite{ref15} and \cite{ref16}. 
 Papers \cite{ref13} and \cite{ref14} develop a numerical method with $O(h^2)$ approximation error while \cite{ref15} uses series expansion around small parameter namely the speed $c$.
 \subsection{ Conservative FDS }
 
