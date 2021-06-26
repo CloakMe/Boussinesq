@@ -47,10 +47,10 @@
 \section{Numerical Methods}
 \subsection{Conservative Finite Difference Scheme (FDS) }
 \subsection{Taylor Series (TS) Approach with Method of Lines }
-%---------- frame 06 ----------------
+
+
 \section{Convergence}
 
-%---------- frame 07 ----------------
 \section{Comparison Between TS and Conservative Scheme}
 %\tableofcontents 
 \end{frame}
@@ -94,7 +94,7 @@ and evaluated in
 
 Remarks:
 \begin{description}
- \item[-] [1] and [2] uses FDS with $O(h^2)$ approximation, 
+ \item[-] [1] and [2] - orthonormal function basis in $L^2(-\infty, \infty)$,
   \item[-] [3] - the" best fit" formulas for small speeds $c$.
 \end{description}
 %Numerical Realization of Unsteady Solutions for the 2D Boussiensq Paradigm Equation, Christov, Kolkovska, Vasileva
@@ -124,7 +124,7 @@ Based on the solutions of the stationary equation, the 2D hyperbolic equation is
 
 The goal of this talk is to:
 \begin{itemize}
- \item propose numerical method with high order approximation for the solution of BPE,
+ \item propose numerical method with high approximation order for the solution of BPE,
  \item investigate properties of the resulting waves for velocities, which are close to the maximum $c \approx c_{max}$, $c < c_{max}$:
 	\begin{itemize}
 	 \item energy,
@@ -132,7 +132,7 @@ The goal of this talk is to:
 	 \item maximum,
 	\end{itemize}
 \end{itemize}
-where $c_{max} = max(1, \sqrt{ \frac{\beta_2}{\beta_1} } )$.
+where $c_{max} = min\{1, \sqrt{ \frac{\beta_2}{\beta_1} } \}$.
 \end{frame}
 
 
@@ -160,7 +160,7 @@ where $\beta = \beta_1/\beta_2$.
 
 %---------- frame 05 ----------------
 \begin{frame}
-\frametitle{Conservation of the Mass and Energy}
+\frametitle{Conservation of the Energy}
 The mass:
 
 \begin{equation}\label{int}
@@ -174,7 +174,7 @@ E(u(t)) = E(u(0)) =&\int_{R^2} u_t \left((A^{-1}+E)u_t\right) dxdy+
 +& \int_{R^2}u \left(A u\right) dxdy
 -\frac{2 \alpha \beta}{3} \int_{R^2} u^3 dxdy =const
 \end{align}
-of the continuous problem \rf{problem}. Here $E(u)$ is the exact energy of problem \rf{problem} and $Au=-\Delta u$.
+of the continuous problem \rf{problemVC}. Here $E(u)$ is the exact energy of problem \rf{problemVC} and $Au=-\Delta u$.
 \end{frame}
 
 %-----------------------------------------------------------------
@@ -281,7 +281,9 @@ Thus one gets the following approximations
  \item[$p=4$] $O(|h|^4 + \tau^4)$,
  \item[$p=6$] $O(|h|^6 + \tau^6)$.
 \end{description}
-
+%The complexity of the algorithm is
+%$$ O( N_1 N_2 N_3 p ) $$
+%where $N_1 N_2$ is the number of points in $\Omega_h$ and $N_3 = T/\tau$.
 \end{frame}
 
 %------------------------------------------------------------------
@@ -414,16 +416,16 @@ The Energy of the solution for approximation $O(|h|^2 + \tau^2)$ and $T = 10$. L
 \framesubtitle{Wave Comparison}
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h005.png}
+		 \includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h020.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.32\linewidth}
 		\includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h010.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.32\linewidth}
-		 \includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h020.png}
+	\begin{minipage}[b]{0.32\linewidth}		
+		\includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h005.png}
 	\end{minipage}
 \end{center}
-Difference between TS approach and Conservative Scheme at time $T=10$  for $\beta=3$, $c = 0.45$  and $O(|h|^2 + \tau^2)$. From Left to right $h=0.05, 0.1, 0.2$. The graphics represent only one nineth of the whole domain $\Omega_h$.
+Difference between solutions from TS approach and Conservative Scheme at time $T=10$, $O(|h|^2 + \tau^2)$ for Test 1. From Left to right $h=0.2, 0.1, 0.05$. The graphics represent only one nineth of the whole domain $\Omega_h$.
 \end{frame}
 
 %------------------------------------------------------------------
@@ -433,40 +435,34 @@ Difference between TS approach and Conservative Scheme at time $T=10$  for $\bet
 \framesubtitle{Wave Comparison}
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h010.png}
+		\includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h040.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.32\linewidth}
 		\includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h020.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.32\linewidth}
-		 \includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h040.png}
+		\includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h010.png}		 
 	\end{minipage}
 \end{center}
-Difference between TS approach and Conservative Scheme at time $T=10$  for $\beta=1$, $c = 0.9$  and $O(|h|^2 + \tau^2)$. From Left to right $h=0.1, 0.2, 0.4$. The graphics represent only one nineth of the whole domain $\Omega_h$.
+Difference between solutions from TS approach and Conservative Scheme at time $T=10$, $O(|h|^2 + \tau^2)$ for Test 2. From Left to right $h=0.4, 0.2, 0.1$. The graphics represent only one nineth of the whole domain $\Omega_h$.
 \end{frame}
 
 %------------------------------------------------------------------
 
 \begin{frame}
 \frametitle{Results}
-\framesubtitle{Solution Maximum, Taylor Series, $O(|h|^6+\tau^6)$}
+\framesubtitle{Solution Maximum, Taylor Series, smallest step sizes}
 
-Two parameters sets are used:
-\begin{description}
- \item[Test 3] $\beta = 3$, $c = 0.52$, $\Omega = [-40, 40] \times [-40, 60]$
- \item[Test 4] $\beta = 1$, $c = 0.9$, $\Omega = [-40, 40] \times [-40, 80]$
-\end{description}
-The end time is $T=40$ for both tests.
 \begin{figure}[ht]
 	\centering
 	\begin{minipage}[b]{0.4\linewidth}
-		\includegraphics[width=\linewidth]{figures/EvolutionOfMaximum_bt3_t40.png}
+		\includegraphics[width=\linewidth]{figures/maximum_30_bt3_c045_h005.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.4\linewidth}
-		 \includegraphics[width=\linewidth]{figures/EvolutionOfMaximum_bt1_t40.png}
+		 \includegraphics[width=\linewidth]{figures/maximum_128_bt1_c090_h010.png}
 	\end{minipage}
 
-Evolution of the maximum for Test Wave $\beta =3$ (left panel) and $\beta=1$ (right panel).
+Evolution of the maximum for Test Wave 1 with $\beta =3$ (left panel) and Test Wave 2 with $\beta=1$ (right panel) for $T=10$.
 \end{figure}
 
 \end{frame}
@@ -475,23 +471,23 @@ Evolution of the maximum for Test Wave $\beta =3$ (left panel) and $\beta=1$ (ri
 
 \begin{frame}
 \frametitle{Results}
-\framesubtitle{Solution Shape, Taylor Series, $O(|h|^6+\tau^6)$}
+\framesubtitle{Solution Shape, Taylor Series, smallest step sizes, $O(|h|^6+\tau^6)$}
 \begin{figure}[ht]
 	\centering
 	\begin{minipage}[b]{0.49\linewidth}
-		\includegraphics[width=\linewidth]{figures/compare_start_end_bt3_c052.png}
+		\includegraphics[width=\linewidth]{figures/compare_start_end_bt3_c045_T10.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.49\linewidth}
-		 \includegraphics[width=\linewidth]{figures/compare_start_end_bt1_c09.png}
+		 \includegraphics[width=\linewidth]{figures/compare_start_end_bt1_c090_T10.png}
 	\end{minipage}
 
-Difference between localized solitons at time $T=0$ and $T=40$ for Test 3 $\beta = 3$, $\beta = 0.52$  (left) and Test 4 $\beta=1$, $c=0.9$ (right). 
+Difference between localized wave at time $T=0$ and $T=10$ for Test Wave 1 with $\beta =3$  (left) and Test Wave 2 with $\beta=1$ (right). 
 \end{figure}
 
 It is obtained that:
 \begin{description}
- \item[$\beta = 3$, $c = 0.52$] $||u_h(t=40)-u_h(t=0)|_{L_2} = 0.023453$
- \item[$\beta = 1$, $c = 0.9$] $||u_h(t=40)-u_h(t=0)|_{L_2} = 0.000812$
+ \item[$\beta = 3$, $c = 0.45$] $||u_h(t=10)-u_h(t=0)|_{L_2} =  0.00000981$
+ \item[$\beta = 1$, $c = 0.9$] $||u_h(t=10)-u_h(t=0)|_{L_2} = 0.00000186$
 \end{description}
 \end{frame}
 
@@ -502,9 +498,9 @@ It is obtained that:
 
 \begin{description}
  \item[-] 2D BPE is solved using TS method with high approximation orders $O(|h|^k+\tau^k)$, $k=2,4,6$
- \item[-] the results are compared with a Conservative Scheme for $O(|h|^2+\tau^2)$
- \item[-] the Energy of the TS solution are saved with high accuracy over the time interval $[0, 10]$
- \item[-] the resulting numerical solutions for wave speeds near the upper limit $c_{max} = min(1, \sqrt{\beta_2/\beta_1}$ are stable in form and their maximums are changed with small errors over long period of time $[0, 40]$.
+ \item[-] the results are compared with the Conservative Scheme for $O(|h|^2+\tau^2)$
+ \item[-] the Energy of the TS solution is saved with high accuracy over the time interval $[0, 10]$
+ \item[-] the numerical solutions for wave speeds near the upper limit $c_{max} = min\{1, \sqrt{\beta_2/\beta_1} \}$ are stable in form and their maximums change with small errors over the time interval $[0, 10]$.
 \item[-] the obtained solutions show soliton behavior!
 \end{description}
 
@@ -513,7 +509,8 @@ It is obtained that:
 %------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Wave Evolution}
+\frametitle{Thank You For Your Attention!}
+\framesubtitle{The Wave Evolution}
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.30\linewidth}
 		\includegraphics[width=\linewidth]{figures/Solution_bt3_t=0.png}
@@ -566,6 +563,56 @@ Numerical solution of single wave for $\beta=1$ and $c = 0.9$ at times $t=0,8,16
 
 %------------------------------------------------------------------
 
+\begin{frame}
+\frametitle{Results}
+\framesubtitle{Solution Maximum, Taylor Series, $O(|h|^6+\tau^6)$}
+
+Two parameters sets are used:
+\begin{description}
+ \item[Test 3] $\beta = 3$, $c = 0.52$, $\Omega = [-40, 40] \times [-40, 60]$
+ \item[Test 4] $\beta = 1$, $c = 0.9$, $\Omega = [-40, 40] \times [-80, 80]$
+\end{description}
+The end time is $T=40$ for both tests.
+\begin{figure}[ht]
+	\centering
+	\begin{minipage}[b]{0.4\linewidth}
+		\includegraphics[width=\linewidth]{figures/EvolutionOfMaximum_bt3_t40.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.4\linewidth}
+		 \includegraphics[width=\linewidth]{figures/EvolutionOfMaximum_bt1_t40.png}
+	\end{minipage}
+
+Evolution of the maximum for Test Wave $\beta =3$ (left panel) and $\beta=1$ (right panel).
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Results}
+\framesubtitle{Solution Shape, Taylor Series, $O(|h|^6+\tau^6)$}
+\begin{figure}[ht]
+	\centering
+	\begin{minipage}[b]{0.49\linewidth}
+		\includegraphics[width=\linewidth]{figures/compare_start_end_bt3_c052.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.49\linewidth}
+		 \includegraphics[width=\linewidth]{figures/compare_start_end_bt1_c09.png}
+	\end{minipage}
+
+Difference between localized solitons at time $T=0$ and $T=40$ for Test 3 $\beta = 3$, $\beta = 0.52$  (left) and Test 4 $\beta=1$, $c=0.9$ (right). 
+\end{figure}
+
+It is obtained that:
+\begin{description}
+ \item[$\beta = 3$, $c = 0.52$] $||u_h(t=40)-u_h(t=0)|_{L_2} = 0.023453$
+ \item[$\beta = 1$, $c = 0.9$] $||u_h(t=40)-u_h(t=0)|_{L_2} = 0.000812$
+\end{description}
+\end{frame}
+
+%------------------------------------------------------------------
+
 
 \begin{frame}
 \frametitle{Mass for the TS method}
@@ -582,6 +629,6 @@ Numerical solution of single wave for $\beta=1$ and $c = 0.9$ at times $t=0,8,16
 The Mass of the solution for approximation $O(|h|^6 + \tau^6)$ and $T = 10$ over three nested domains. Left panel is for Test 1 with $\beta=3$, $c = 0.45$ and right panel is for Test 2 with $\beta=1$, $c = 0.9$.
 \end{frame}
 
-%------------------------------------------------------------------
+
 \end{document}
 

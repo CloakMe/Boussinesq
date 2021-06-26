@@ -1,11 +1,11 @@
 clear
-btString = { '1' };
-cString = { '90' };
-hString = { '10', '20', '40' };
+btString = { '3' };
+cString = { '45' };
+hString = { '05', '10', '20' };
 orderString = { '2' };
-domainLenString = { '40x80' };
+domainLenString = { '30' };
 solTypeString = { 'Taylor' };
-bndString = { 'WithBoundary' };
+bndString = { 'ZeroBoundary' };
 legendString = { 'O(h^2+{\tau}^2)', 'O(h^4+{\tau}^4)', 'O(h^6+{\tau}^6)' };
 additionalInfo = 'maximum';
 
