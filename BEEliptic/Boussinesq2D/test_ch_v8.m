@@ -9,9 +9,9 @@ x_end2 = 30.0;   y_end2 = 27.0;
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
 
-UseExtendedDomain=1;
+UseExtendedDomain=0;
 
-h = 0.05;
+h = 0.25;
 x=x_st2:h:x_end2; 
 y=y_st2:h:y_end2; 
 %tau = 0.00114425*8;% getTau(h,x_end,y_end)/20;
@@ -21,11 +21,11 @@ sx = (length(x)+1)/2
 sy = (length(y)+1)/2
    
    al = -1;%99979 izb
-   bt1 = 3;bt2 = 1; bt = bt1/bt2;
-   c = 0.45; 
+   bt1 = 1;bt2 = 1; bt = bt1/bt2;
+   c = 0.9; 
    iterMax = 9000000;
    %eps = 1/max(y_end^6,((1-c^2)*x_end^2)^3);
-   eps = 5.0e-09;%5.0e-09;
+   eps = 5.0e-04;%5.0e-09;
    ICSwitch=0;
    % IC_switch = 0 ->christov sech formula
    % IC_switch = 1 ->nat42 formula
@@ -50,7 +50,7 @@ sy = (length(y)+1)/2
   if(length(tauVector)<iterMax && UseExtendedDomain == 1 && size(bigUTimeDerivative,1)~=1)
      fprintf('\nLarge Domamin Calculations:\n\n');
      prmtrs.checkBoundary = 0;
-     prmtrs.eps = 1.0e-12;
+     prmtrs.eps = 1.0e-5;
      prmtrs.plotResidual = 0;
      prmtrs.tau = tauVector(end);
      [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,mu,tauVector,angl,sw_div] =...
@@ -236,3 +236,9 @@ return;
             hx*hy/2 * ( sum( bigU(2:end-1, 1 ) ) + sum( bigU(2:end-1, end ) ) )+...
             hx*hy/4 * ( bigU(1, 1) + bigU(1, end) + bigU(end, 1) + bigU(end, end) )
 
+figure(1)
+mesh(x(zeroX:end),y(zeroY:end),UTilda');
+figure(2)
+mesh(x(zeroX:end),y(zeroY:end),Uup');
+figure(3)
+mesh(x(zeroX:end),y(zeroY:end),Uup1');        
