@@ -29,14 +29,15 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         %xlabel('x');            ylabel('y');
         clear('this.dudt_t0'); clear('d2vz');        
         e=2;
-        t = zeros(1,this.tEnd/this.tau);
-        tt = zeros(1,this.tEnd/this.tau);
+        Tsize = int8(this.tEnd/this.tau);
+        t = zeros(1,Tsize);
+        tt = zeros(1,Tsize);
         t(1)=0;t(2)=this.tau;
         k=2;
         vz = vu; vmo = this.u_t0;
         clear('this.u_t0'); clear('v2');
-        EN = zeros(1,this.tEnd/this.tau);
-        II=zeros(1,this.tEnd/this.tau);        
+        EN = zeros(1,Tsize);
+        II=zeros(1,Tsize);        
         EN(1) = EN_1;
         II(1) = II_1;
         while( t(k) < this.tEnd )
