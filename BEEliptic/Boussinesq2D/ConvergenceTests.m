@@ -4,9 +4,9 @@ bndCutSizeX = 0;
 bndCutSizeY = 0;
 bndDirectory = 'ZeroBoundary\'; % 'ZeroBoundary\' 'WithBoundary\'
 ICType = 'ChristovIC_'; % 'ChristovIC_' 'Natali_'
-domLength = '40_'; %'80_' '40_' '82_'
-paramString = 'bt3_c052'; %'bt3_c052' 'bt1_c090'
-orderString = '2';
+domLength = '128_'; %'80_' '40_' '82_'
+paramString = 'bt1_c090'; %'bt3_c052' 'bt1_c090'
+orderString = '6';
 %============================================
 fprintf(paramString);
 fprintf('!\n');
@@ -38,13 +38,13 @@ for jl = 1:3
     bndPtsRemX = bndCutSizeX/h;
     bndPtsRemY = bndCutSizeY/h;
     if(jl==1)
-       vb = U(1:end-bndPtsRemX,1:end-bndPtsRemX); hb=h; 
+       vb = U(1:end-bndPtsRemX,1:end-bndPtsRemY); hb=h; 
     end
     if(jl==2)
-       vc = U(1:end-bndPtsRemX,1:end-bndPtsRemX); hc=h;
+       vc = U(1:end-bndPtsRemX,1:end-bndPtsRemY); hc=h;
     end
     if(jl==3)
-       vd = U(1:end-bndPtsRemX,1:end-bndPtsRemX); 
+       vd = U(1:end-bndPtsRemX,1:end-bndPtsRemY); 
     end
     %PlotAssymptotics(x,y,h,zeroX,zeroY,bigU,0);
     clear('U');clear('h');clear('strName');
