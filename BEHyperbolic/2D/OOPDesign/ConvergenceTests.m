@@ -2,10 +2,10 @@ clear;
 bndCutSizeX = 0;
 bndCutSizeY = 0;
 
-bndDirectory = 'ZeroBoundary\'; % 'ZeroBoundary\' 'WithBoundary\'
+bndDirectory = 'WithBoundary\'; % 'ZeroBoundary\' 'WithBoundary\'
 name = 'Taylor_'; % 'EnergySave_' 'Taylor_'
-domLength = '80_'; %'80_' '40_'
-paramString = 'bt1_c090'; %'bt3_c052' 'bt1_c090'
+domLength = '40_'; %'80_' '40_'
+paramString = 'bt3_c052'; %'bt3_c052' 'bt1_c090'
 orderString = '6';
 
 %=======================================================

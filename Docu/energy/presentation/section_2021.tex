@@ -26,9 +26,11 @@
  %[propagating wave solutions to the 2D BPE]
 \title{Comparison between two numerical methods for solution of 2D Boussinesq paradigm equation}
 
-\author[angelow@math.bas.bg]{{\underline{Krassimir Angelow}}, Natalia Kolkovska}
+%\author[K. Angelow]{{\underline{Krassimir Angelow}}, Natalia Kolkovska}
+\author[K. Angelow]{{\underline{Krassimir Angelow}} }
 \institute[IMI -- BAS]{Institute of Mathematics and Informatics\\ Bulgarian Academy of Sciences, Sofia, Bulgaria,\\ e-mail: angelow@math.bas.bg}
-\date[2021]{AMITANS, June 24-29  2021,  Albena, Bulgaria}
+%\date[2021]{AMITANS, June 20-25  2021,  Albena, Bulgaria}
+\date[2021]{May 27  2021,  Institute of Mathematics and Informatics, Bulgarian Academy of Sciences}
 
 
 %---------- frame 01 ----------------
@@ -44,13 +46,14 @@
 \tableofcontents 
 \setbeamertemplate{table of contents shaded}[default]
 \section{Boussinesq Paradigm Equation}
+\section{Quadrature Formulas}
 \section{Numerical Methods}
 \subsection{Conservative Finite Difference Scheme (FDS) }
 \subsection{Taylor Series (TS) Approach with Method of Lines }
-
-
+%---------- frame 06 ----------------
 \section{Convergence}
 
+%---------- frame 07 ----------------
 \section{Comparison Between TS and Conservative Scheme}
 %\tableofcontents 
 \end{frame}
@@ -69,7 +72,7 @@ u(x,y,0) = u_0(x,y), \quad \frac{\partial u}{\partial t}(x,y,0)=u_1(x,y), \nonum
 \\
 u(x,y,t) \rightarrow 0, \quad \Delta u(x,y, t) \rightarrow 0 \quad \text{for} \quad \sqrt{x^2+y^2} \rightarrow \infty \nonumber
 \end{align}
-where $\alpha>0$ is the amplitude, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The domain of the unknown function $u$ is defined by:
+where $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The domain of the unknown function $u$ is defined by:
 \be
  u:\Omega \times [0, T] \rightarrow R
 \ee
@@ -94,7 +97,7 @@ and evaluated in
 
 Remarks:
 \begin{description}
- \item[-] [1] and [2] - orthonormal function basis in $L^2(-\infty, \infty)$,
+ \item[-] [1] and [2] uses FDS with $O(h^2)$ approximation, 
   \item[-] [3] - the" best fit" formulas for small speeds $c$.
 \end{description}
 %Numerical Realization of Unsteady Solutions for the 2D Boussiensq Paradigm Equation, Christov, Kolkovska, Vasileva
@@ -124,15 +127,16 @@ Based on the solutions of the stationary equation, the 2D hyperbolic equation is
 
 The goal of this talk is to:
 \begin{itemize}
- \item propose numerical method with high approximation order for the solution of BPE,
+ \item propose numerical method with high order approximation for the solution of BPE,
  \item investigate properties of the resulting waves for velocities, which are close to the maximum $c \approx c_{max}$, $c < c_{max}$:
 	\begin{itemize}
+	 \item mass,
 	 \item energy,
 	 \item shape,
 	 \item maximum,
 	\end{itemize}
 \end{itemize}
-where $c_{max} = min\{1, \sqrt{ \frac{\beta_2}{\beta_1} } \}$.
+where $c_{max} = max(1, \sqrt{ \frac{\beta_2}{\beta_1} } )$.
 \end{frame}
 
 
@@ -160,7 +164,7 @@ where $\beta = \beta_1/\beta_2$.
 
 %---------- frame 05 ----------------
 \begin{frame}
-\frametitle{Conservation of the Energy}
+\frametitle{Conservation of the Mass and Energy}
 The mass:
 
 \begin{equation}\label{int}
@@ -174,7 +178,7 @@ E(u(t)) = E(u(0)) =&\int_{R^2} u_t \left((A^{-1}+E)u_t\right) dxdy+
 +& \int_{R^2}u \left(A u\right) dxdy
 -\frac{2 \alpha \beta}{3} \int_{R^2} u^3 dxdy =const
 \end{align}
-of the continuous problem \rf{problemVC}. Here $E(u)$ is the exact energy of problem \rf{problemVC} and $Au=-\Delta u$.
+of the continuous problem \rf{problem}. Here $E(u)$ is the exact energy of problem \rf{problem} and $Au=-\Delta u$.
 \end{frame}
 
 %-----------------------------------------------------------------
@@ -191,6 +195,81 @@ of the continuous problem \rf{problemVC}. Here $E(u)$ is the exact energy of pro
 \end{frame}
 
 %---------- frame ----------------
+
+\begin{frame}
+\frametitle{Quadrature Formulas for the Mass and Energy}
+\framesubtitle{\textbf{2D trapezoidal formula} (with global $O(h_1^2+h_2^2)$ error)}
+
+Let's assign the X,Y dimensions of the computational domain with $N_1$ and $N_2$.
+Then the approximation of the integral \eqref{int} with global $O(h_1^2+h_2^2)$ error is
+
+\begin{align}\label{quadr2}
+D_h(u_{i,j}) =& \sum_{i=1}^{N_1-1} \sum_{j=1}^{N_2-1} h_1 h_2 u_{i,j}
++\frac{h_1}{2}\sum_{i=0} \sum_{j=1}^{N_2-1} h_2 u_{i,j}
++\frac{h_1}{2}\sum_{i=N_1} \sum_{j=1}^{N_2-1} h_2 u_{i,j} \nonumber\\
++&\frac{h_2}{2}\sum_{j=0} \sum_{i=1}^{N_1-1} h_1 u_{i,j}
++\frac{h_2}{2}\sum_{j=N_2} \sum_{i=1}^{N_1-1} h_1 u_{i,j}
+\nonumber\\
++&\frac{1}{4}h_1 h_2 \left(u_{0,0}+u_{N_1,0}+u_{N_1,N_2}+u_{0,N_2}
+\right).
+\end{align}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Quadrature Formulas for the Mass and Energy}
+\framesubtitle{\textbf{2D Simpson's rule} (with global $O(h_1^4+h_2^4)$ error)}
+Assume that $N_1=2k$, $N_2=2 l$.
+For every $m=0,1,2,\cdots N_2$ we compute 
+
+$$D_m= \frac{h_1 }{3} 
+\left\{ u_{0,m}+u_{N_1,m}+ 4 \sum_{i=1}^{\frac{N_1}{2}}   u_{2i-1,m}
+ +2 \sum_{i=1}^{\frac{N_1}{2}-1} u_{2i,m} \right\}$$
+
+
+Then 
+
+\begin{equation}\label{quadr4}
+D_h(u)=\frac{h_2 }{3} 
+\left\{ D_{0}+D_{N_2}+ 4 \sum_{j=1}^{\frac{N_2}{2}}   D_{2j-1}
+ +2 \sum_{j=1}^{{\frac{N_2}{2}}-1} D_{2j} \right\}
+\end{equation}
+is the approximation of the integral \eqref{int} with global $O(h_1^4+h_2^4)$ error
+
+\end{frame}
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Quadrature Formulas for the Mass and Energy}
+\framesubtitle{\textbf{2D Boole's rule} (with global $O(h_1^6+h_2^6)$ error)}
+
+Assume that $N_1=4k$, $N_2=4 l$.
+For every $m=0,1,2,\cdots N_2$ we compute
+
+\begin{align*}
+D_m =& \frac{2h_1}{45} 
+\left\{
+7u_{0,m}+7u_{N_1,m}+32 \sum_{i=1}^{\frac{N_1}{2}}u_{2i-1,m}
++12\sum_{i=1}^{\frac{N_1}{4}}u_{4i-2,m}
++14 \sum_{i=1}^{\frac{N_1}{4}-1}u_{4i,m}
+\right\}
+\end{align*}
+
+then \eqref{quadr6-2D} is the approximation to the integral \eqref{int} with global $O(h_1^6+h_2^6)$ error
+
+\begin{align}\label{quadr6-2D}
+&D_h(u) =
+\frac{2h_2}{45} 
+\left\{
+7D_{0}+7D_{N_2}+32 \sum_{j=1}^{\frac{N_2}{2}}D_{2j-1}
++12\sum_{j=1}^{\frac{N_2}{4}}D_{4j-2}
++14 \sum_{j=1}^{\frac{N_2}{4}-1}D_{4j}
+\right\}
+\end{align}
+\end{frame}
+
+%------------------------------------------------------------------
 
 \begin{frame}
 \frametitle{Conservative FDS}
@@ -260,6 +339,21 @@ u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_
 \frac{ \tau^p }{ p! } \frac{ \partial^p u }{ \partial t^p }(x_i, y_j, t) + O(\tau^{p+1})
 \end{align}
 for some natural number $p \ge 2$.
+%Suppose we have functions $y$ and $f$ with the following properties
+%\begin{equation}
+%y:I \rightarrow \RR, \quad f:I \times \Omega \rightarrow \RR \nonumber
+%\end{equation}
+%where $y \in C^1(I,\RR)$ and $f$ is sufficiently smooth on $I \times \Omega$. Then, $f$ represent the phase space and $y$ is the unknown function to the differential equaiton:
+%\begin{equation}
+%\dot{y}(t) = f(t, y(t)).
+%\end{equation}
+%By repeated differentiation we can find each function
+
+%\begin{equation}
+%\frac{d^s}{dt^s}y(t) = \frac{d^{s-1}}{dt^{s-1}}f(t, y(t))
+%\end{equation}
+
+%and evaluate it at $t=t_0$ for each derivative.
 \end{frame}
 
 %------------------------------------------------------------------
@@ -281,9 +375,7 @@ Thus one gets the following approximations
  \item[$p=4$] $O(|h|^4 + \tau^4)$,
  \item[$p=6$] $O(|h|^6 + \tau^6)$.
 \end{description}
-%The complexity of the algorithm is
-%$$ O( N_1 N_2 N_3 p ) $$
-%where $N_1 N_2$ is the number of points in $\Omega_h$ and $N_3 = T/\tau$.
+
 \end{frame}
 
 %------------------------------------------------------------------
@@ -292,52 +384,33 @@ Thus one gets the following approximations
 \frametitle{Validation and Results}
 Two parameters sets are used:
 \begin{description}
- \item[Test 1] $\beta = 3$, $c = 0.45$, $\Omega = [-30, 30] \times [-27, 27]$, $T = 10$
- \item[Test 2] $\beta = 1$, $c = 0.9$, $\Omega = [-128, 128] \times [-58, 58]$, $T = 10$
+ \item[Test 1] $\beta = 3$, $c = 0.45$, $\Omega = [-30, 30] \times [-27, 27]$
+ \item[Test 2] $\beta = 1$, $c = 0.9$, $\Omega = [-128, 128] \times [-58, 58]$
 \end{description}
 
-Numerical methods applied for each Test:
-\begin{enumerate}
-  \item Conservative FDS with $O(|h|^2 + \tau^2)$
-  \item TS method with $O(|h|^p + \tau^p)$ and $p = 2, 4, 6$
-\end{enumerate}
-
-Test 1 and Test 2 use zero boundary condition, i.e. values of the finite difference stencil outside the numerical domain $\Omega_h$ are zeros.
+The tests use zero boundary condition, i.e. values of the finite difference stencil outside the numerical domain $\Omega_h$ are zeros.
 \end{frame}
+
 
 %------------------------------------------------------------------
 
 \begin{frame}
-%C
-\frametitle{Convergence for Conservative FDS}
-$T = 10$
-\begin{table}[ht]
-\centering
-\small
-		\begin{tabular}{||c|l|ll|ll||}
-			\hline
-			\hline
-      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
-	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
-   			\hline 
-					\hline 
-  $\beta=3$                &0.2, 0.001         &                    &                &                  &                   \\
-   c=0.45                     &0.1, 0.0005         & 0.989422   &                & 1.043649  &                   \\
-     $O(h^2 + \tau^ 2)$ &0.05, 0.00025  &0.344818    & 1.52       & 0.355517   &   1.55   \\
-	   \hline
-			\hline 
-       $\beta=1$           & 0.4, 0.002       &                   &           &                 &   \\
-                  c=0.9       & 0.2, 0.001        & 0.200424   &          &0.072726  &   \\
-  $O(h^2+ \tau^2)$  & 0.1, 0.0005       & 0.047899   & 2.06  &0.021451  & 1.76 \\
-	   \hline
-			\hline 
-		\end{tabular}
-		\caption{Convergence tests for the Conservative FDS method with zero boundary and approximation errors $O(h^{2} + \tau^2 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
-\label{tableC}
-\end{table}
+\frametitle{Validation and Results}
+\framesubtitle{The Wave}
+
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.45\linewidth}
+		 \includegraphics[width=\linewidth]{figures/nivoLines_bt3.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.45\linewidth}
+		\includegraphics[width=\linewidth]{figures/nivoLines_bt1.png}
+		
+	\end{minipage}
+
+\end{center}
+The wave at $T=0$ for Test 1 (left) and Test 2 (right) localized in $[-5,5]\times[-5,5]$.
 
 \end{frame}
-
 
 %------------------------------------------------------------------
 
@@ -389,25 +462,116 @@ $T = 10$
 \end{table}
 
 \end{frame}
-
 %------------------------------------------------------------------
 
 \begin{frame}
+%C
+\frametitle{Convergence for Conservative FDS}
+$T = 10$
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
+   			\hline 
+					\hline 
+  $\beta=3$                &0.2, 0.001         &                    &                &                  &                   \\
+   c=0.45                     &0.1, 0.0005         & 0.989422   &                & 1.043649  &                   \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.00025  &0.344818    & 1.52       & 0.355517   &   1.55   \\
+	   \hline
+			\hline 
+       $\beta=1$           & 0.4, 0.002       &                   &           &                 &   \\
+                  c=0.9       & 0.2, 0.001        & 0.200424   &          &0.072726  &   \\
+  $O(h^2+ \tau^2)$  & 0.1, 0.0005       & 0.047899   & 2.06  &0.021451  & 1.76 \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Convergence tests for the Conservative FDS method with zero boundary and approximation errors $O(h^{2} + \tau^2 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+\label{tableC}
+\end{table}
+
+\end{frame}
+
+\begin{frame}
 \frametitle{Results}
-\framesubtitle{Energy for the Conservative scheme and TS method}
+\framesubtitle{Mass and Energy for the Conservative scheme and TS method}
 
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.49\linewidth}
+		 \includegraphics[width=\linewidth]{figures/Mass_bt3_c045_h005.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.49\linewidth}
 		\includegraphics[width=\linewidth]{figures/Energy_bt3_c045_h005.png}
+		
+	\end{minipage}
+\end{center}
+The Mass (left) and Energy (right) of the solution for $\beta=3$, $c = 0.45$, $O(|h|^2 + \tau^2)$ and $T = 10$.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Results}
+\framesubtitle{Mass and Energy for the Conservative scheme and TS method}
+%\framesubtitle{}
+
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.49\linewidth}
+		 \includegraphics[width=\linewidth]{figures/Mass_bt1_c090_h010.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.49\linewidth}
 		\includegraphics[width=\linewidth]{figures/Energy_bt1_c090_h010.png}
 		
 	\end{minipage}
+
 \end{center}
-The Energy of the solution for approximation $O(|h|^2 + \tau^2)$ and $T = 10$. Left panel is for Test 1 with $\beta=3$, $c = 0.45$ and right panel is for Test 2 with $\beta=1$, $c = 0.9$.
+The Mass (left) and Energy (right) of the solution for $\beta=1$, $c = 0.9$, $O(|h|^2 + \tau^2)$ and $T = 10$.
 \end{frame}
 
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Results}
+\framesubtitle{Mass and Energy for the TS method only}
+%\framesubtitle{}
+
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.49\linewidth}
+		 \includegraphics[width=\linewidth]{figures/Mass_bt1_c090_h010_x3O.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.49\linewidth}
+		\includegraphics[width=\linewidth]{figures/Energy_bt1_c090_h010_x3O.png}
+		
+	\end{minipage}
+
+\end{center}
+The Mass (left) and Energy (right) of the Taylor solution for $\beta=3$, $c = 0.45$, $O(|h|^2 + \tau^2)$, $O(|h|^4 + \tau^4)$, $O(|h|^6 + \tau^6)$ and $T = 10$.
+\end{frame}
+
+%------------------------------------------------------------------
+
+
+\begin{frame}
+\frametitle{Results}
+\framesubtitle{Mass and Energy for the TS method only}
+%\framesubtitle{}
+
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.49\linewidth}
+		 \includegraphics[width=\linewidth]{figures/Mass_bt3_c045_h005_x3O.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.49\linewidth}
+		\includegraphics[width=\linewidth]{figures/Energy_bt1_c090_h010_x3O.png}
+		
+	\end{minipage}
+
+\end{center}
+The Mass (left) and Energy (right) of the Taylor solution for $\beta=1$, $c = 0.9$, $O(|h|^2 + \tau^2)$, $O(|h|^4 + \tau^4)$, $O(|h|^6 + \tau^6)$ and $T = 10$.
+\end{frame}
+
+%------------------------------------------------------------------
 
 
 
@@ -416,16 +580,16 @@ The Energy of the solution for approximation $O(|h|^2 + \tau^2)$ and $T = 10$. L
 \framesubtitle{Wave Comparison}
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.32\linewidth}
-		 \includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h020.png}
+		\includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h005.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.32\linewidth}
 		\includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h010.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.32\linewidth}		
-		\includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h005.png}
+	\begin{minipage}[b]{0.32\linewidth}
+		 \includegraphics[width=\linewidth]{figures/compare_30_bt3_c045_h020.png}
 	\end{minipage}
 \end{center}
-Difference between solutions from TS approach and Conservative Scheme at time $T=10$, $O(|h|^2 + \tau^2)$ for Test 1. From Left to right $h=0.2, 0.1, 0.05$. The graphics represent only one nineth of the whole domain $\Omega_h$.
+Difference between TS approach and Conservative Scheme at time $T=10$  for $\beta=3$, $c = 0.45$  and $O(|h|^2 + \tau^2)$. From Left to right $h=0.05, 0.1, 0.2$. The graphics represent only one nineth of the whole domain $\Omega_h$.
 \end{frame}
 
 %------------------------------------------------------------------
@@ -435,34 +599,40 @@ Difference between solutions from TS approach and Conservative Scheme at time $T
 \framesubtitle{Wave Comparison}
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h040.png}
+		\includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h010.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.32\linewidth}
 		\includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h020.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h010.png}		 
+		 \includegraphics[width=\linewidth]{figures/compare_128_bt1_c09_h040.png}
 	\end{minipage}
 \end{center}
-Difference between solutions from TS approach and Conservative Scheme at time $T=10$, $O(|h|^2 + \tau^2)$ for Test 2. From Left to right $h=0.4, 0.2, 0.1$. The graphics represent only one nineth of the whole domain $\Omega_h$.
+Difference between TS approach and Conservative Scheme at time $T=10$  for $\beta=1$, $c = 0.9$  and $O(|h|^2 + \tau^2)$. From Left to right $h=0.1, 0.2, 0.4$. The graphics represent only one nineth of the whole domain $\Omega_h$.
 \end{frame}
 
 %------------------------------------------------------------------
 
 \begin{frame}
 \frametitle{Results}
-\framesubtitle{Solution Maximum, Taylor Series, smallest step sizes}
+\framesubtitle{Solution Maximum}
 
+Two parameters sets are used:
+\begin{description}
+ \item[Test 3] $\beta = 3$, $c = 0.52$, $\Omega = [-40, 40] \times [-40, 60]$
+ \item[Test 4] $\beta = 1$, $c = 0.9$, $\Omega = [-40, 40] \times [-40, 80]$
+\end{description}
+The end time is $T=40$ for both tests.
 \begin{figure}[ht]
 	\centering
 	\begin{minipage}[b]{0.4\linewidth}
-		\includegraphics[width=\linewidth]{figures/maximum_30_bt3_c045_h005.png}
+		\includegraphics[width=\linewidth]{figures/EvolutionOfMaximum_bt3_t40.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.4\linewidth}
-		 \includegraphics[width=\linewidth]{figures/maximum_128_bt1_c090_h010.png}
+		 \includegraphics[width=\linewidth]{figures/EvolutionOfMaximum_bt1_t40.png}
 	\end{minipage}
 
-Evolution of the maximum for Test Wave 1 with $\beta =3$ (left panel) and Test Wave 2 with $\beta=1$ (right panel) for $T=10$.
+Evolution of the maximum for Test Wave $\beta =3$ (left panel) and $\beta=1$ (right panel).
 \end{figure}
 
 \end{frame}
@@ -471,46 +641,7 @@ Evolution of the maximum for Test Wave 1 with $\beta =3$ (left panel) and Test W
 
 \begin{frame}
 \frametitle{Results}
-\framesubtitle{Solution Shape, Taylor Series, smallest step sizes, $O(|h|^6+\tau^6)$}
-\begin{figure}[ht]
-	\centering
-	\begin{minipage}[b]{0.49\linewidth}
-		\includegraphics[width=\linewidth]{figures/compare_start_end_bt3_c045_T10.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.49\linewidth}
-		 \includegraphics[width=\linewidth]{figures/compare_start_end_bt1_c090_T10.png}
-	\end{minipage}
-
-Difference between localized wave at time $T=0$ and $T=10$ for Test Wave 1 with $\beta =3$  (left) and Test Wave 2 with $\beta=1$ (right). 
-\end{figure}
-
-It is obtained that:
-\begin{description}
- \item[$\beta = 3$, $c = 0.45$] $||u_h(t=10)-u_h(t=0)|_{L_2} =  0.00000981$
- \item[$\beta = 1$, $c = 0.9$] $||u_h(t=10)-u_h(t=0)|_{L_2} = 0.00000186$
-\end{description}
-\end{frame}
-
-%------------------------------------------------------------------
-
-\begin{frame}
-\frametitle{Conclusion}
-
-\begin{description}
- \item[-] 2D BPE is solved using TS method with high approximation orders $O(|h|^k+\tau^k)$, $k=2,4,6$
- \item[-] the results are compared with the Conservative Scheme for $O(|h|^2+\tau^2)$
- \item[-] the Energy of the TS solution is saved with high accuracy over the time interval $[0, 10]$
- \item[-] the numerical solutions for wave speeds near the upper limit $c_{max} = min\{1, \sqrt{\beta_2/\beta_1} \}$ are stable in form and their maximums change with small errors over the time interval $[0, 10]$.
-\item[-] the obtained solutions show soliton behavior!
-\end{description}
-
-\end{frame}
-
-%------------------------------------------------------------------
-
-\begin{frame}
-\frametitle{Thank You For Your Attention!}
-\framesubtitle{The Wave Evolution}
+\framesubtitle{Wave Evolution}
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.30\linewidth}
 		\includegraphics[width=\linewidth]{figures/Solution_bt3_t=0.png}
@@ -537,7 +668,8 @@ Numerical solution of single wave for $\beta=3$ and $c = 0.52$ at times $t=0,8,1
 %------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Wave Evolution}
+\frametitle{Results}
+\framesubtitle{Wave Evolution}
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.30\linewidth}
 		\includegraphics[width=\linewidth]{figures/Solution1_t=0.png}
@@ -565,33 +697,7 @@ Numerical solution of single wave for $\beta=1$ and $c = 0.9$ at times $t=0,8,16
 
 \begin{frame}
 \frametitle{Results}
-\framesubtitle{Solution Maximum, Taylor Series, $O(|h|^6+\tau^6)$}
-
-Two parameters sets are used:
-\begin{description}
- \item[Test 3] $\beta = 3$, $c = 0.52$, $\Omega = [-40, 40] \times [-40, 60]$
- \item[Test 4] $\beta = 1$, $c = 0.9$, $\Omega = [-40, 40] \times [-80, 80]$
-\end{description}
-The end time is $T=40$ for both tests.
-\begin{figure}[ht]
-	\centering
-	\begin{minipage}[b]{0.4\linewidth}
-		\includegraphics[width=\linewidth]{figures/EvolutionOfMaximum_bt3_t40.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.4\linewidth}
-		 \includegraphics[width=\linewidth]{figures/EvolutionOfMaximum_bt1_t40.png}
-	\end{minipage}
-
-Evolution of the maximum for Test Wave $\beta =3$ (left panel) and $\beta=1$ (right panel).
-\end{figure}
-
-\end{frame}
-
-%------------------------------------------------------------------
-
-\begin{frame}
-\frametitle{Results}
-\framesubtitle{Solution Shape, Taylor Series, $O(|h|^6+\tau^6)$}
+\framesubtitle{Solution Maximum}
 \begin{figure}[ht]
 	\centering
 	\begin{minipage}[b]{0.49\linewidth}
@@ -613,20 +719,17 @@ It is obtained that:
 
 %------------------------------------------------------------------
 
-
 \begin{frame}
-\frametitle{Mass for the TS method}
+\frametitle{Conclusion}
 
-\begin{center}\vspace{0.4cm}
-	\begin{minipage}[b]{0.49\linewidth}
-		\includegraphics[width=\linewidth]{figures/MassTaylor_120_60_30_ZB1_bt3_c045_h020_O(h^6).png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.49\linewidth}
-		\includegraphics[width=\linewidth]{figures/MassTaylor_512_256_128_ZB1_bt1_c090_h040_O(h^6).png}
-		
-	\end{minipage}
-\end{center}
-The Mass of the solution for approximation $O(|h|^6 + \tau^6)$ and $T = 10$ over three nested domains. Left panel is for Test 1 with $\beta=3$, $c = 0.45$ and right panel is for Test 2 with $\beta=1$, $c = 0.9$.
+\begin{description}
+ \item[-] 2D BPE is solved using TS method with high approximation orders $O(|h|^k+\tau^k)$, $k=2,4,6$
+ \item[-] the results are compared with a Conservative Scheme for $O(|h|^2+\tau^2)$
+ \item[-] the Energy and Mass of the TS solution are saved with high accuracy over the time interval $[0, 10]$
+ \item[-] the resulting numerical solutions for wave speeds near the upper limit $c_{max} = min(1, \sqrt{\beta_2/\beta_1}$ are stable in form and their maximums are changed with small errors over long period of time $[0, 40]$.
+\item[-] the obtained solutions show soliton behavior!
+\end{description}
+
 \end{frame}
 
 

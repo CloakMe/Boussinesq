@@ -8,7 +8,7 @@ partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_128_bt1_c090\Oh6\'
 waveFactory = WaveFactory( partialPath, 'ChristovIC_128_ZB1_bt1_c090_h040_O(h^6)', bndCutSize, 0 ); %
 %waveFactory = WaveFactory( 'BestFitIC' );
 
-tEnd=10.0;
+tEnd=1.0;
 SavingTheSolution = 1;
 fprintf('SavingTheSolution = %.1d\n', SavingTheSolution);
 
@@ -100,7 +100,7 @@ viewTypeY = 90;
 
 Q = 41;
 i = 10;
-if (false)
+if (true)
     figure(i+1)
     mesh(x, y(1:Q), vl(:,1:Q)');
     view( viewTypeX, viewTypeY );
