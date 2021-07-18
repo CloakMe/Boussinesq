@@ -58,13 +58,17 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
             II(k)= this.GetIntegralOf( vz );
             if(mod(k,this.estep)==0)
                 tt(e)=k*this.tau;
+                if( mod(k*this.tau, 1) == 0 )
+                    dvz = (vmo - 2*vz + vu)/tau^2;
+                    this.SaveSolutionOnIterStep( tt(e), vz, dvz ); 
+                end                
                 %{
                 mesh(this.x, this.y, vu')
                 title('vu , t=this.tau')
                 xlabel('x');            ylabel('y');
                 %==========================================
                 %}               
-                %this.SaveSolutionOnIterStep( tt(e), vu );                
+                               
                 e=e+1;
             end
             if(IS_dudt_NaN == 1)

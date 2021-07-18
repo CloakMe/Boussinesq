@@ -230,17 +230,19 @@ classdef (ConstructOnLoad) BEEngine
            
     end
     
-    function SaveSolutionOnIterStep( this, time, vu, vz, vmo )
+    function SaveSolutionOnIterStep( this, time, vu, dvu, vz, vmo )
         
         str = ['SOL\vu_' num2str( time ) '.mat'];
         save( str, 'vu' );
+        str = ['SOL\dvu_' num2str( time ) '.mat'];
+        save( str, 'dvu' );
         
-        if( nargin > 3 ) 
+        if( nargin > 4 ) 
             str = ['SOL\vz_' num2str( time ) '.mat'];
             save( str, 'vz' );
         end
         
-        if( nargin > 4 )
+        if( nargin > 5 )
             str = ['SOL\vmo_' num2str( time ) '.mat'];
             save( str, 'vmo' ); 
         end        

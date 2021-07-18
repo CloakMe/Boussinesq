@@ -80,7 +80,7 @@ function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secon
     figure(15)
     mesh(x,y,residual');
     title('Residual (with all boundary values)')
-    
+    return
     figure(18);
     mesh(x,y,bigU');
     xlabel('x');    ylabel('y');
