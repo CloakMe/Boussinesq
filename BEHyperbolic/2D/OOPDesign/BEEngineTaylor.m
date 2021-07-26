@@ -54,7 +54,9 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
             II(k)= this.GetIntegralOf( vz );
             if(mod(k,this.estep)==0)
                 tt(e)=k*this.tau;
-                %this.SaveSolutionOnIterStep( tt(e), vu );
+                if( mod(k*this.tau, 1) == 0 )
+                    this.SaveSolutionOnIterStep( tt(e), vu, dtv ); 
+                end 
                 e=e+1;
             end
             if(IS_dudt_NaN == 1)
