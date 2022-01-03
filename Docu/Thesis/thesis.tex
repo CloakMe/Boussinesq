@@ -1,0 +1,56 @@
+\documentclass{article} 
+
+%\usepackage{amsmath,amsthm,amsfonts}
+\usepackage[english]{babel}
+\usepackage[numbers]{natbib}
+\usepackage{rotating}
+\usepackage{amsfonts,amsmath}
+\usepackage{graphicx}
+\usepackage{color} 
+\usepackage[notref,notcite]{showkeys}
+\usepackage{multirow}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\rf}[1]{(\ref{#1})}
+\newcommand{\RR}{\mathbb{R}}
+\newtheorem{thm}{Theorem}
+\newtheorem{lm}{Lemma}
+
+\begin{document}
+\section{Увод}
+Парадигматично уравнение на Бузинеск
+\be\label{problemCh}
+...
+\ee
+\section{Смяна на променливите}
+
+За удобство правим следната смяна на променливите (виж \cite{ref25}):
+
+\begin{align}
+x = \sqrt{\beta_1} \bar{x}, \quad y = \sqrt{\beta_1} \bar{y}, \quad t = \sqrt{\beta_1} \bar{t} \nonumber
+\end{align}
+която променя основното уравнение \rf{problemCh} в
+\be\label{problemVC}
+ \beta (I-\Delta) \frac{\partial^2}{\partial t^2}u= 
+(I-\Delta)\Delta u +\Delta( (\beta - 1 )u - \alpha \beta u^2 )
+\ee
+където $\beta = \beta_1/\beta_2$. 
+
+Неограниченият домейн на уравнението е заменен с достатъчно голяма дискретна област $\Omega$, така че стойностите на неизвестната функция $u$ са достатъчно малки близо до границата $\partial \Omega$. Използвана е равномерна мрежа  $\Omega_h$ дефинирана по следния начин:
+
+$$
+\Omega_h = \{(x_i,y_j): x_i = (i-\frac{N_x-1}{2})h, y_j = (j-\frac{N_y-1}{2})h, i = 0,\cdots, N_x, j = 0 ,\cdots , N_y \},
+$$
+
+където $N_x$ и $N_y$ описват броя на точките по осите $x$ и $y$, а стъпката по пространството $h$ удовлетворява $h =2 L_x/(N_x-1) =2 L_y/(N_y-1)$.
+С $2 L_x$ и $2 L_y$ са означени размерите на $\Omega_h$ по осите $x$ и $y$. Дискретния времеви интервал е дефиниран аналогично чрез
+$$
+T_{\tau} = \{(t_k): t_k = k\tau, k = 0,\cdots ,N_t \},
+$$
+където с $\tau = T/N_t$ сме означили стъпката по времето. Стойността на неизвестната функция $u$ в точка от мрежата $(x_i,y_j,t_k)$ е означена с $u_{i,j}^k$,т.е. долния индекс се използва за пространствената дискретизация, а горния за времева дискретизация.
+
+
+\end{document}
