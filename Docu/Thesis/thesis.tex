@@ -52,5 +52,215 @@ T_{\tau} = \{(t_k): t_k = k\tau, k = 0,\cdots ,N_t \},
 $$
 където с $\tau = T/N_t$ сме означили стъпката по времето. Стойността на неизвестната функция $u$ в точка от мрежата $(x_i,y_j,t_k)$ е означена с $u_{i,j}^k$,т.е. долния индекс се използва за пространствената дискретизация, а горния за времева дискретизация.
 
+\section{Запазване на дискретната енергия}
+Нека да дефинираме оператора $A$, така че да удовлетворява $Av=-\Delta_h v=-v_{\bar{x}x} - v_{\bar{y}y}$. А сега да разгледаме диференчната схема
 
+\be\label{FDS1}
+\beta (E+A)v_{\bar{t}t}^k +\beta Av^k+A^2 v^k -\alpha \beta A\left(\frac{(v^{k+1})^3-(v^{k-1})^3}{3(v^{k+1}-v^{k-1})} \right)=0
+\ee
+Умножаваме \rf{FDS1} с $A^{-1}$ и получаваме
+\be\label{FDS2}
+\beta (E+A^{-1})v_{\bar{t}t}^k +\beta v^k+A v^k -\alpha \beta \frac{(v^{k+1})^3-(v^{k-1})^3}{3(v^{k+1}-v^{k-1})} = 0
+\ee
+Ако заместим $v^{k}=0.5(v^{k+1}+v^{k-1})-\frac{\tau^2}{2}v_{\bar{t}t}^k$ в \rf{FDS2} получаваме
+\begin{align*}
+&\left( \beta (E+A^{-1})- \frac{\tau^2}{2}(\beta E+A ) \right)v_{\bar{t}t}^k  + \frac{1}{2} (\beta E +A )(v^{k+1}+v^{k-1}) \\
+&~~~~~-\alpha \beta \frac{(v^{k+1})^3-(v^{k-1})^3}{3(v^{k+1}-v^{k-1})} =0
+\end{align*}
+Умножаваме последното уравнение с $(v^{k+1}-v^{k-1})=\tau (v_{\bar{t}}^k + v_{t}^k)$, което важи за всяка точка от пространствената мрежа $(x_i,y_j) \in \Omega_h$, и сумираме получените уравнения в спрямо всички точки от мрежата. Така, след допълнителна реорганизация на членовете в уравнението получаваме, че
+\be \label{num_en}
+E_h(v^k) =E_h(v^{k-1}),
+\ee
+където
+\begin{align*}
+E_h(v^k)=\left( \left( \beta (E+A^{-1})- \frac{\tau^2}{4}(\beta E+A ) \right)v_{t}^k ,v_{t}^k \right)+\frac{1}{4} \beta \left(  v^{k+1}+v^{k}, v^{k+1}+v^{k} \right) \\
++\frac{1}{4}  \left(  A(v^{k+1}+v^{k}), v^{k+1}+v^{k} \right)
+-\alpha \beta \frac{((v^{k+1})^3,1)+((v^{k})^3,1)}{3}.
+\end{align*}
+Така доказваме следната теорема
+\begin{thm}
+Решението получено от диференчната схема \rf{FDS1} запазва дискретната енергия $E_h(v^0)$, т.е.  $E_h(v^k) =E_h(v^{0})$ за всяко $k=1,2,...N_t$.
+\end{thm}
+
+\begin{thm}
+Линейната диференчна схема съответстваща на \rf{FDS1} е условно устойчива, когато е изпълнено
+$\tau^2 < \frac{\beta}{2}(1-\frac{\tau^2}{4}) h^2$.
+
+\end{thm}
+Доказателството е следствие от изследване на устойчивост при диференчни схеми в книгата на 
+Samarskii \cite{samarski}.
+
+\section{Quadrature Formulas for the Mass and Energy}
+
+The Mass of the continuous problem \rf{problemVC} is defined by
+\begin{equation}\label{intM}
+D(u(x,y,t))=\int_{\RR^2} u(x,y,t)dx dy
+\end{equation}
+and the Energy
+\begin{align}\label{ex-en}
+E(u(x,y,t)):=&\int_{\RR^2} u_t(x,y,t) \left((A^{-1}+E)u_t(x,y,t)\right) dxdy+
+\beta \int_{\RR^2} u^2(x,y,t) dxdy \nonumber\\
++& \int_{\RR^2}u(x,y,t) \left(A u(x,y,t)\right) dxdy
+-\frac{2 \alpha \beta}{3} \int_{\RR^2} u^3(x,y,t) dxdy
+\end{align}
+where $Au=-\Delta u$. Here $D(u(x,y,t)) = D(u(x,y,0))$ and $E(u(x,y,t)) = E(u(x,y,0))$ are the exact Mass and Energy of problem \rf{problemVC} (see \cite{ref1}). Let us replace the operator $Au=-
+\Delta u$ with discrete operators $-\Delta_h u$ with different approximation errors - $O(|h|^2)$, $O(|h|^4)$, $O(|h|^6)$. Suppose that the discrete approximation of the derivative $u_t$ is evaluated with approximation errors $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. Then one can apply quadrature formulas to evaluate numerically the energy \rf{ex-en}.
+
+%When the numerical solution is found with $O(h^2+\tau^2)$ error, we apply \rf{quadr2} with $O(h^2)$ error;
+
+%When the numerical solution is found with $O(h^4+\tau^4)$ error, we apply 2D Simpson's rule \rf{quadr4} with $O(h^4)$ error;
+
+%When the numerical solution is found with $O(h^6+\tau^6)$ error, we apply 2D Boole's rule \rf{quadr6-2D} with $O(h^6)$ error;
+
+The following integral 
+
+\begin{equation}\label{int}
+D(u(x,y))=\int_{a_1}^{b_1} \int_{a_2}^{b_2} u(x,y)dx dy
+\end{equation}
+
+$x_i, ~i=0,1,...,N_x$; $x_0=a_1,~x_{N_x}=b_1$, $h_1=(b_1-a_1)/(N_x-1)$, 
+
+
+$y_j, ~j=0,1,...,N_y$; $y_0=a_2,~y_{N_y}=b_2$,  $h_2=(b_2-a_2)/(N_y-1)$
+
+could be evaluated by 2D Quadrature formulas as described below.
+
+\subsection{ 2D trapezoidal formula with global $O(|h_1|^2+|h_2|^2)$ error }
+
+The approximation of the integral \eqref{intM} with global $O(|h_1|^2+|h_2|^2)$ error is
+
+\begin{align}\label{quadr2}
+D_h(u_{i,j}) =& \sum_{i=1}^{N_x-1} \sum_{j=1}^{N_y-1} h_1 h_2 u_{i,j}
++\frac{h_1}{2}\sum_{i=0} \sum_{j=1}^{N_y-1} h_2 u_{i,j}
++\frac{h_1}{2}\sum_{i=N_x} \sum_{j=1}^{N_y-1} h_2 u_{i,j} \nonumber\\
++&\frac{h_2}{2}\sum_{j=0} \sum_{i=1}^{N_x-1} h_1 u_{i,j}
++\frac{h_2}{2}\sum_{j=N_y} \sum_{i=1}^{N_x-1} h_1 u_{i,j}
+\nonumber\\
++&\frac{1}{4}h_1 h_2 \left(u_{0,0}+u_{N_x,0}+u_{N_x,N_y}+u_{0,N_y}
+\right)
+\end{align}
+
+\subsection{ 2D Simpson's rule with global $O(|h_1|^4+|h_2|^4)$ error}
+
+Here it is assumed that $N_x=2k$, $N_y=2 l$. For every $m=0,1,2,\cdots N_y$ it is computed that 
+$$D_m= \frac{h_1 }{3} 
+\left\{ u_{0,m}+u_{N_x,m}+ 4 \sum_{i=1}^{\frac{N_x}{2}}   u_{2i-1,m}
+ +2 \sum_{i=1}^{\frac{N_x}{2}-1} u_{2i,m} \right\}.$$
+
+
+Then 
+
+\begin{equation}\label{quadr4}
+D_h(u_{i,j}) =\frac{h_2 }{3} 
+\left\{ D_{0}+D_{N_y}+ 4 \sum_{j=1}^{\frac{N_y}{2}}   D_{2j-1}
+ +2 \sum_{j=1}^{{\frac{N_y}{2}}-1} D_{2j} \right\}
+\end{equation}
+is the approximation of the integral \eqref{intM} with global $O(|h_1|^4+|h_2|^4)$ error
+
+
+\subsection{ 2D Boole's rule with global $O(|h_1|^6+|h_2|^6)$ error }
+Here it is assumed that $N_x=4k$, $N_y=4 l$. For every $m=0,1,2,\cdots N_y$ it is computed that
+
+\begin{align*}
+D_m =& \frac{2h_1}{45} 
+\left\{
+7u_{0,m}+7u_{N_x,m}+32 \sum_{i=1}^{\frac{N_x}{2}}u_{2i-1,m}
++12\sum_{i=1}^{\frac{N_x}{4}}u_{4i-2,m}
++14 \sum_{i=1}^{\frac{N_x}{4}-1}u_{4i,m}
+\right\}.
+\end{align*}
+
+
+Then \eqref{quadr6-2D} is the approximation to the integral \eqref{intM} with global $O(|h_1|^6+|h_2|^6)$ error
+
+\begin{align}\label{quadr6-2D}
+&D_h(u_{i,j})  =
+\frac{2h_2}{45} 
+\left\{
+7D_{0}+7D_{N_y}+32 \sum_{j=1}^{\frac{N_y}{2}}D_{2j-1}
++12\sum_{j=1}^{\frac{N_y}{4}}D_{4j-2}
++14 \sum_{j=1}^{\frac{N_y}{4}-1}D_{4j}
+\right\}.
+\end{align}
+
+
+\section{Numerical Methods}
+
+Two numerical methods are used to obtain solution for equation \rf{problemVC}: Method with Conservative FDS and Taylor Method which uses TS expansions around the time variable $t$. Furthermore, for each method the Mass and Energy of the solution are calculated. The solution and its properties (Mass, Energy and shape) from the two methods are compared. The calculations are done over three nested meshes to examine the convergence of both methods. The goal is to justify the TS approach by showing that both methods exhibit similar results. Furthermore the TS method could be used with higher approximation order which produces finer solution.
+
+\subsection{ Conservative Finite Difference Scheme }
+
+The approximation of the time derivative and the Laplace operator is defined as:
+\be\label{difft}
+\frac{\partial^2 u}{\partial t^2}(x_i, y_j, t_k ) = \frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} + O(\tau^2) 
+\ee
+
+\be\label{diffD}
+\Delta u(x_i, y_j, t_k )  = \frac{ u^{(k)}_{i+1, j} - 2u^{(k)}_{i,j} + u^{(k)}_{i-1,j} }{h_1^2} + \frac{ u^{(k)}_{i, j+1} - 2u^{(k)}_{i,j} + u^{(k)}_{i,j-1} }{h_2^2} + O(h_1^2 + h_2^2) 
+\ee
+Substitute the discrete differential operators \rf{difft} and \rf{diffD} in \rf{problemVC} to obtain the grid function
+\be\label{consFDS}
+\beta (I-\Delta_h)\frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} = (\Delta_h - \Delta_h^2)u^{(k)}_{i,j} + \Delta_h(g(u^{(k)}_{i,j}))
+\ee
+%
+where the non-linear term $g$ is defined as:
+\begin{align}
+g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(k-1)}_{i,j})(u^{(k+1)}_{i,j}) + (u^{(k-1)}_{i,j})^2 \right) + \nonumber\\
++&\frac{ (\beta - 1 )}{ 2 }\left( u^{(k+1)}_{i,j} + u^{(k-1)}_{i,j} \right).
+\end{align}
+This is a non-trivial approximation of $g$ so that the discrete Energy is a constant function of the time variable $t$ (see \cite{ref20}). Note that the Conservative FDS \rf{consFDS} is implicit as the non-linear term depends on the solution on the upper time layer. Thus on each time layer Picard Iteration is used to resolve the discrete unknown function $u^{(k+1)}_{i,j}$.
+
+\subsection{ Taylor Series Approach with Method of Lines }
+The finite differences along space and the time discretization require TS expansions of $u(x,y,t)$. Therefore it is assumed that the solution is $p+1$ times infinitely differentiable with respect to $x$, $y$ and $t$, i.e. $u \in C^{p+1,p+1,p+1}(\Omega \times T)$.
+For the Taylor method three different approximations of the Laplace operator are used. The following central finite differences along the $x$ asis are used:
+\begin{equation}\label{fd}
+u_{\widehat{xx},p}(x,y) :=  \frac{1}{h^2} \sum\limits_{i=-p/2}^{p/2} d_i u(x+ih, y_j).
+\end{equation}
+The weights $d_i$ taken from  \cite{forn} are described in Table \ref{table:A00}. 
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|l|l|l|l|l|l||}
+			\hline
+			\hline
+            $p=2$          &          &                                 &     1      &   -2   &    1    &    &        \\
+   			\hline 
+			\hline 
+           $p=4$          &                            &   $-\frac{1}{12}$     &     $\frac{4}{3}$      &   $-\frac{5}{2} $     &    $\frac{4}{3}$    &  $-\frac{1}{12}$   &        \\
+	   \hline
+			\hline 
+            $p=6$        &   $\frac{1}{90}$       &     $-\frac{3}{20}$     &    $\frac{3}{2}$      &    $-\frac{49}{18}$   &    $\frac{3}{2}$    & $-\frac{3}{20}$    &    $\frac{1}{90}$       \\
+	   \hline
+			\hline 
+		\end{tabular}
+	\caption{ Finite differences used for the approximation of the Laplace operator.}
+	\label{table:A00}
+\end{table}
+The same finite difference stencil is used along the $y$ axis. The approximation error of  formulas \rf{fd} is $O(h^p)$. Let $u_{i,j}(t)$ be the approximation of the unknown function $u$ at mesh point $(x_i, y_j)$ for arbitrary time $t$. Substitute the $\Delta_{h,p} = u_{\widehat{xx},p} + u_{\widehat{yy},p}$ operator in equaiton \rf{problemVC}. Then one obtains a system of ODEs:
+\be \label{DiscreteEq}
+\beta (I-\Delta_{h,p}) \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t)=
+ (I - \Delta_{h,p})\Delta_{h,p} u_{i, j}(t) + \Delta_{h,p} ( g( u_{i, j}(t) ) )
+\ee
+for all mesh points $i = 0..N_x$ and $j=0..N_y$. For each ODE in the system we do TS expansion along the time variable:
+\begin{align} \label{TSe}
+u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_i, y_j, t)  + ... 
+%\nonumber
+%\\
+\frac{ \tau^p }{ p! } \frac{ \partial^p u }{ \partial t^p }(x_i, y_j, t) + O(\tau^{p+1})
+\end{align}
+for some natural number $p \ge 2$. The approximation order of the time discretization depends on p, i.e. the number of terms included in the TS expansion. Each point on the mesh represents a starting point of a line and the line itself is described by the TS expansion \rf{TSe}. Evaluation of formula \rf{TSe} is done by evaluating each term separately. E.g. for $t=0$ the first two terms are known from the IC ($u_0$, $u_1$). The third term is evaluated from the discrete equation \rf{DiscreteEq}. This includes the use of Fast Poisson Solvers for the inversion of $I-\Delta_{h,p}$ operator on the left side. With subsequent differentiaton of equation \rf{DiscreteEq} one could obtain higher time derivatives $\frac{\partial^3 u}{\partial t^3}$, $\frac{\partial^4 u}{\partial t^4}$, $\frac{\partial^5 u}{\partial t^5}$, etc. This is an iterative procedure where e.g. the fifth time derivative requires 3rd, 2nd, 1st and 0th derivatives, 3rd time derivative requires 1st and 0th derivatives. After all necessary time derivatives are calculated one could substitute those in \rf{TSe} and gets the following approximations: for $p=2$ it is $O(|h|^2 + \tau^2)$, for $p=4$ it is $O(|h|^4 + \tau^4)$ and for $p=6$ it is $O(|h|^6 + \tau^6)$. Note that another TS expansion must be calculated for the first time derivative $u_t(x_i, y_j, t+\tau)$ which is analogous to \rf{TSe} with the same approximation order. The last is required in order to calculate the solution on the next time layer because the pair ($u$, $u_t$) serve as basis and all higher time derivatives could be expressed only by that pair.
+
+The complexity of the algorithm is
+$$ O( N_x N_y N_t ) $$
+where $N_x N_y$ is the number of points in $\Omega_h$ and $N_t = T/\tau$. Most of the computational time goes for inversion of the $I-\Delta_{h,p}$ operator in \rf{DiscreteEq} which results to $N_x N_t$ inversions of a $p+1$ band matrix of size ($N_y \times N_y$). Current choices of $p$ affect complexity by a constant which resutls in a linear time graph depending on the number of points in the discrete domain.
+
+\begin{thebibliography}{99}
+
+\bibitem{samarski} Samarskii, A., The Theory of Difference Schemes, Marcel Dekker Inc., New York, 2001.
+
+\bibitem{ref25} Kolkovska N., Two families of finite difference schemes for multidimensional Boussinesq paradigm equation, In:
+{\it Applications of Mathematics in Technical and Natural Sciences,  Sozopol (Bulgaria)},
+\emph{AIP Conference Proceedings}, \textbf{1301} (2010), 395.
+
+\end{thebibliography}
 \end{document}
