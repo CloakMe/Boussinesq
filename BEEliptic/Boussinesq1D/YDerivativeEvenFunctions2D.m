@@ -8,13 +8,13 @@ function zeroMatrix=YDerivativeEvenFunctions2D(M,zeroMatrix,finiteDiff)   %dh op
     mid = (len+1)/2;
 
     for j = 1:mid-1
-        zeroMatrix(:,j) =  M(:,1:mid-1+j)*finiteDiff(mid+1-j:end)'  + M(:,2:mid+1-j)*finiteDiff(mid+j:end)';
+        zeroMatrix(:,j) =  M(:,1:mid-1+j)*finiteDiff(mid+1-j:end)'  + M(:,2:mid+1-j)*finiteDiff(mid-j:-1:1)';
     end
     for j=mid:size(M,2)-mid+1
         zeroMatrix(:,j) = M(:,j-mid+1:j+mid-1)*finiteDiff';
     end
     for j = 0:mid-2
-        zeroMatrix(:,end-j) =  M(:,end-mid+1-j:end)*finiteDiff(1:end-mid+1+j)' +  M(:,end-mid+1+j:end-1)*finiteDiff(1:end-mid-j)';
+        zeroMatrix(:,end-j) =  M(:,end-mid+1-j:end)*finiteDiff(1:mid+j)' +  M(:,end-mid+1+j:end-1)*finiteDiff(mid+1+j:end)';
     end
 end
 
