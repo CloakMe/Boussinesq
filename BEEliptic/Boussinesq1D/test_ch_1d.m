@@ -34,13 +34,17 @@ secondDerivative = GetFiniteDifferenceCoeff([-1,0,1],2)'/h^2;
 derivative = struct('first',{firstDerivative},'second',{secondDerivative});
 
 [X,Y]=Domain(x,y);
-IC = 3/80 * (c^2 - 1) * sech(sqrt(bt1 * (c ^ 2 - 1) / (bt1 * c ^ 2 - bt2)) * X / 3) .^ 2 / al +...
-     3/80 * (c^2 - 1) * sech(sqrt(bt1 * (c ^ 2 - 1) / (bt1 * c ^ 2 - bt2)) * Y / 3) .^ 2 / al;
+%IC = 3/2 * (c^2 - 1) * sech(sqrt(bt1 * (c ^ 2 - 1) / (bt1 * c ^ 2 - bt2)) * X / 2) .^ 2 / al +...
+%     3/2 * (c^2 - 1) * sech(sqrt(bt1 * (c ^ 2 - 1) / (bt1 * c ^ 2 - bt2)) * Y / 2) .^ 2 / al;
+k = 1.25; % k1 = -.3; k2 = .3; 
+%b1 := 4; b2 := 4;
+a1 = .5; a2 = .5; a12 = .25;
+IC = GetApproximateSolution(X,Y,k,a1,a2,a12);
 figure(10)
 mesh(x,y,IC');
 xlabel('s');    ylabel('r');
 title('start solution');
-
+return;
 [zeroX,zeroY]=GetZeroNodes(x,y);
 th = abs(IC(zeroX,zeroY));
 IC = IC/th;
@@ -49,6 +53,9 @@ IC = IC/th;
 [Phi,Psi,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     sol_ch_1d_v2(IC,x,y,prmtrs,bt1,bt2,al,c,th,derivative);
 
+        figure(20)
+        plot(x,Phi(1,:));
+        
 fprintf('elapsed time = %d \n', toc);
 
 figure(1)

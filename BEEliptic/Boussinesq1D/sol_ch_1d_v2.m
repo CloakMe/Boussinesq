@@ -56,8 +56,8 @@ function [PhiUp,PsiUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     set(gcf,'currentcharacter','T');
     flag = 0; ax = 1; ay = 1; 
     while( 1 > 0 ) %~( residualInfNorm(subCounter) < eps )
-        Psi = PsiUp;
-        Phi = PhiUp;
+        Psi(2:end-1,2:end-1) = PsiUp(2:end-1,2:end-1);
+        Phi(2:end-1,2:end-1) = PhiUp(2:end-1,2:end-1);
         iterCounter=iterCounter+1;
 
         PhiSquare = Phi .^2;
