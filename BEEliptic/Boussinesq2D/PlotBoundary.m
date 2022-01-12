@@ -1,9 +1,16 @@
 function PlotBoundary(x,y,zeroX, U, outerTopBoundaryF)
-
-    BND = [U(:,end-7:end) outerTopBoundaryF];
+    
+    augBoundarySize = 0;
+    if(nargin == 4)
+        BND = U(:,end-7:end);
+        augBoundarySize = 4;
+    else
+        BND = [U(:,end-7:end) outerTopBoundaryF];
+    end
+    
     hy = y(2)-y(1);
     figure(4);
-    mesh(x(zeroX:end),y(end-11:end)+4*hy,BND');
+    mesh(x(zeroX:end),y(end-11+augBoundarySize:end)+(4-augBoundarySize)*hy,BND');
     xlabel('x');    ylabel('y');
     view(-13,16);
     title('Boundary Smoothness');

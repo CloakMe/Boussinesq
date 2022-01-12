@@ -1,5 +1,5 @@
-function [PhiUp,PsiUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
-    sol_ch_1d_v2(Phi,x,y,prmtrs,bt1,bt2,al,c,theta,derivative,Psi)
+function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
+    sol_ch_1d_v5(U,x,t,prmtrs,bt1,bt2,al,c,theta,derivative,P)
 
     sw = 0;  
     if (nargin == 11) 
@@ -17,7 +17,7 @@ function [PhiUp,PsiUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     bt = bt1/bt2;
     autoStop = 0;
     afterCounter = 5000;
-    [zeroX,zeroY]=GetZeroNodes(x,y);
+    [zeroX,zeroT]=GetZeroNodes(x,t);
     
     manualStop=0;
     boundaryHit = 0;
@@ -30,27 +30,26 @@ function [PhiUp,PsiUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     residualInfNorm = ones(1,iterMax/10);
     angl = zeros(1,iterMax/10);
     step = Step(h);
-    zeroMatrix = zeros(size(Phi));
-
-    Phix = XDerivative(Phi, zeroMatrix, derivative.first);
-    Phixy = YDerivative(Phix, zeroMatrix, derivative.first);
-    deltaPhi = XDerivative(Phi, zeroMatrix, derivative.second) + YDerivative(Phi, zeroMatrix, derivative.second);
+    zeroMatrix = zeros(size(U));
+    
+    Utt = YDerivative(U, zeroMatrix, derivative.second);
+    Uxx = XDerivative(U, zeroMatrix, derivative.second);
     if(sw == 0)
-        Psi = (bt*c^2-1)*deltaPhi - 2*(bt*c^2+1)*Phixy + theta*al*bt*Phi.^2;        
+        P = theta*al*bt*U.^2 - Uxx + bt * Utt;        
     end
      
 	iterCounter=1;
 	subCounter=1;
-	PhiSquare = Phi .^2;
+	USquare = U .^2;
     % check that 2*(bt*c^2+1)*Phixy(1,1) == 0
-	thetaVector(iterCounter) = ( Psi(zeroX,zeroY) - (bt*c^2-1)*deltaPhi(zeroX,zeroY) + 2*(bt*c^2+1)*Phixy(zeroX,zeroY) )/(al*bt*PhiSquare(zeroX,zeroY));
-	residual = -GetResidual(bt, c, Phi, al*bt*thetaVector(iterCounter)*PhiSquare, deltaPhi, zeroMatrix, derivative);
-    figure(11)
-    mesh(x,y,residual*thetaVector(iterCounter));
-    title('residual');
+	thetaVector(iterCounter) = ( P(zeroX,zeroT) + Uxx(zeroX,zeroT) - bt * Utt(zeroX,zeroT))/(al*bt*USquare(zeroX,zeroT));
+	residual = GetResidual(prmtrs.type, bt, c, U, al*thetaVector(iterCounter), USquare, zeroMatrix, derivative);
+%     figure(11)
+%     mesh(x,t,residual*thetaVector(iterCounter));
+%     title('residual');
     residualInfNorm(1) = abs( thetaVector(iterCounter) ) * max(max(abs(residual)));
-	PsiUp = Psi;
-	PhiUp = Phi;
+	PUp = P;
+	UUp = U;
     minResidual = min(1000,residualInfNorm(subCounter));
     crrntResidual = 0;
     fig9=figure(9);
@@ -60,34 +59,35 @@ function [PhiUp,PsiUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     while( 1 > 0 ) %~( residualInfNorm(subCounter) < eps )
         iterCounter=iterCounter+1;
 
-        PhiSquare = Phi .^2;
-        deltaPhi = XDerivative(Phi, zeroMatrix, derivative.second) + YDerivative(Phi, zeroMatrix, derivative.second);
+        USquare = U .^2;        
+        Utt = YDerivative(U, zeroMatrix, derivative.second);
+        Uxx = XDerivative(U, zeroMatrix, derivative.second);
          % TIME CONSumable       |
          %                      \|/
          %                       '         
-        thetaVector(iterCounter) = ( Psi(zeroX,zeroY) - (bt*c^2-1)*deltaPhi(zeroX,zeroY) + 2*(bt*c^2+1)*Phixy(zeroX,zeroY) )/(al*bt*PhiSquare(zeroX,zeroY));
-        PsiUp = Psi + tau * ( XDerivative(Psi - bt*(c^2-1)*Phi, zeroMatrix,derivative.second) + YDerivative(Psi - bt*(c^2-1)*Phi, zeroMatrix,derivative.second) +...
-            XDerivative( YDerivative( 2*Psi + 2*bt*(c^2+1)*Phi, zeroMatrix, derivative.first), zeroMatrix, derivative.first) );  
+        thetaVector(iterCounter) = ( P(zeroX,zeroT) + Uxx(zeroX,zeroT) - bt * Utt(zeroX,zeroT))/(al*bt*USquare(zeroX,zeroT));
+        PUp = P + tau * (bt * YDerivative(U, zeroMatrix, derivative.second) - bt * XDerivative(U, zeroMatrix,derivative.second) -...
+            XDerivative( P, zeroMatrix, derivative.first) );  
 
-        PhiUp = Phi + tau * ( (bt*c^2 - 1) * deltaPhi - PsiUp + al*bt*thetaVector(iterCounter) * PhiSquare -...
-            2*(bt*c^2 + 1) * XDerivative( YDerivative( Phi, zeroMatrix, derivative.first), zeroMatrix, derivative.first) );
+        UUp = U + tau * (PUp + XDerivative(U, zeroMatrix, derivative.second) -...
+            bt * YDerivative(U, zeroMatrix, derivative.second) - al*bt*thetaVector(iterCounter) * U .^2);
                 
-        UvsUupInfNorm(iterCounter) = max(max(abs(Phi-PhiUp)));
+        UvsUupInfNorm(iterCounter) = max(max(abs(U-UUp)));
         
         if(mod(iterCounter,10) ==0)        
            
-           crrntResidual = GetResidual(bt, c, Phi, al*bt*thetaVector(iterCounter)*PhiSquare, deltaPhi, zeroMatrix, derivative);
+           crrntResidual = GetResidual(prmtrs.type, bt, c, U, al*thetaVector(iterCounter), 0, zeroMatrix, derivative);
            
            subCounter=subCounter+1;
            [residualInfNorm(subCounter)]=abs(thetaVector(iterCounter))*max(max(abs(crrntResidual)));
            minResidual = min(minResidual,residualInfNorm(subCounter));
 
-           %[flag, Px, Py] = StopCriteria(x, y, zeroX, zeroY, Phi, ax, ay, minResidual, eps);
+           %[flag, Px, Py] = StopCriteria(x, y, zeroX, zeroY, U, ax, ay, minResidual, eps);
            
-%            figure(20)
-%            plot(x,Psi(1,:),'b', x, Psi(crossSect,:), 'r', x, Psi(crossSect*2,:), 'k');
-%            xlabel('x');    ylabel('psi');
-%            title('Boundary (Psi)');
+%          figure(20)
+%          plot(x,Psi(1,:),'b', x, Psi(crossSect,:), 'r', x, U(crossSect*2,:), 'k');
+%          xlabel('x');    ylabel('psi');
+%          title('Boundary (Psi)');
            if(mod(iterCounter,500) ==0)
                fprintf('%d \n',iterCounter);
                fprintf('||R||_Inf = %.4e \n', residualInfNorm(subCounter));
@@ -95,13 +95,13 @@ function [PhiUp,PsiUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
                %fprintf('|ax - axNew| = %.15e \n|ay - ayNew| = %.15e\n eps = %.15e\n', abs( ax-Px(1) ), abs( ay-Py(1) ), eps );
                 
                if(prmtrs.plotResidual)
-                   PlotResidual(x, y, crrntResidual*thetaVector(iterCounter));
+                   PlotResidual(x, t, crrntResidual*thetaVector(iterCounter));
                end
                if(prmtrs.plotBoundary)
-                   PlotBoundary(x, y, 1, Phi);
+                   PlotBoundary(x, t, 1, U);
                end
                if(prmtrs.plotAssympt)
-                   PlotAssymptVsSolu( x(zeroX:end), y(zeroY:end), h, 1, 1, Phi, thetaVector(iterCounter), c);
+                   PlotAssymptVsSolu( x(zeroX:end), t(zeroT:end), h, 1, 1, U, thetaVector(iterCounter), c);
                end
                
                manualStop = Stop(fig9,manualStop);
@@ -126,8 +126,8 @@ function [PhiUp,PsiUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
             break;
         end
         
-        Psi = PsiUp;
-        Phi = PhiUp;        
+        P = PUp;
+        U = UUp;        
     end
     UvsUupInfNorm = thetaVector(iterCounter)*UvsUupInfNorm(1:iterCounter);
     tauVector = tauVector(1:iterCounter);
