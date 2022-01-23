@@ -88,23 +88,22 @@ $\tau^2 < \frac{\beta}{2}(1-\frac{\tau^2}{4}) h^2$.
 
 \end{thm}
 Доказателството е следствие от изследване на устойчивост при диференчни схеми в книгата на 
-Samarskii \cite{samarski}.
+Самарский \cite{samarski}.
 
-\section{Quadrature Formulas for the Mass and Energy}
+\section{Квадратурни формули за дискретните маса и енергия}
 
-The Mass of the continuous problem \rf{problemVC} is defined by
+Масата при непрекъснатата задача \rf{problemVC} се дефинира като
 \begin{equation}\label{intM}
 D(u(x,y,t))=\int_{\RR^2} u(x,y,t)dx dy
 \end{equation}
-and the Energy
+а енергията 
 \begin{align}\label{ex-en}
 E(u(x,y,t)):=&\int_{\RR^2} u_t(x,y,t) \left((A^{-1}+E)u_t(x,y,t)\right) dxdy+
 \beta \int_{\RR^2} u^2(x,y,t) dxdy \nonumber\\
 +& \int_{\RR^2}u(x,y,t) \left(A u(x,y,t)\right) dxdy
--\frac{2 \alpha \beta}{3} \int_{\RR^2} u^3(x,y,t) dxdy
+-\frac{2 \alpha \beta}{3} \int_{\RR^2} u^3(x,y,t) dxdy,
 \end{align}
-where $Au=-\Delta u$. Here $D(u(x,y,t)) = D(u(x,y,0))$ and $E(u(x,y,t)) = E(u(x,y,0))$ are the exact Mass and Energy of problem \rf{problemVC} (see \cite{ref1}). Let us replace the operator $Au=-
-\Delta u$ with discrete operators $-\Delta_h u$ with different approximation errors - $O(|h|^2)$, $O(|h|^4)$, $O(|h|^6)$. Suppose that the discrete approximation of the derivative $u_t$ is evaluated with approximation errors $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$. Then one can apply quadrature formulas to evaluate numerically the energy \rf{ex-en}.
+където $Au=-\Delta u$, а $D(u(x,y,t)) = D(u(x,y,0))$ and $E(u(x,y,t)) = E(u(x,y,0))$ са непрекъснатите маса и енергия за задачата \rf{problemVC} (виж \cite{ref1}). Нека да заменим оператора $Au=-\Delta u$ с неговата дискретна версия $-\Delta_h u$ като използваме апроксимаций от различен ред - $O(|h|^2)$, $O(|h|^4)$, $O(|h|^6)$. Ако имаме дискретната производната $u_t$ изчислена с апроксимации също от втори, четвърти и шести ред - $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$ - то тогава може да приложим квадратурни формули за численото пресмятане на енергията \rf{ex-en}.
 
 %When the numerical solution is found with $O(h^2+\tau^2)$ error, we apply \rf{quadr2} with $O(h^2)$ error;
 
@@ -113,7 +112,7 @@ where $Au=-\Delta u$. Here $D(u(x,y,t)) = D(u(x,y,0))$ and $E(u(x,y,t)) = E(u(x,
 %When the numerical solution is found with $O(h^6+\tau^6)$ error, we apply 2D Boole's rule \rf{quadr6-2D} with $O(h^6)$ error;
 
 The following integral 
-
+Следният интеграл
 \begin{equation}\label{int}
 D(u(x,y))=\int_{a_1}^{b_1} \int_{a_2}^{b_2} u(x,y)dx dy
 \end{equation}
@@ -123,11 +122,11 @@ $x_i, ~i=0,1,...,N_x$; $x_0=a_1,~x_{N_x}=b_1$, $h_1=(b_1-a_1)/(N_x-1)$,
 
 $y_j, ~j=0,1,...,N_y$; $y_0=a_2,~y_{N_y}=b_2$,  $h_2=(b_2-a_2)/(N_y-1)$
 
-could be evaluated by 2D Quadrature formulas as described below.
+може да се изчисли посредством двумерни квадратурни формули както е описано по-долу.
 
-\subsection{ 2D trapezoidal formula with global $O(|h_1|^2+|h_2|^2)$ error }
+\subsection{ 2Д формула на трапците с глобална грешка $O(|h_1|^2+|h_2|^2)$ }
 
-The approximation of the integral \eqref{intM} with global $O(|h_1|^2+|h_2|^2)$ error is
+Апроксимацията на интеграла \eqref{intM} с глобална грешка $O(|h_1|^2+|h_2|^2)$ е
 
 \begin{align}\label{quadr2}
 D_h(u_{i,j}) =& \sum_{i=1}^{N_x-1} \sum_{j=1}^{N_y-1} h_1 h_2 u_{i,j}
@@ -137,29 +136,31 @@ D_h(u_{i,j}) =& \sum_{i=1}^{N_x-1} \sum_{j=1}^{N_y-1} h_1 h_2 u_{i,j}
 +\frac{h_2}{2}\sum_{j=N_y} \sum_{i=1}^{N_x-1} h_1 u_{i,j}
 \nonumber\\
 +&\frac{1}{4}h_1 h_2 \left(u_{0,0}+u_{N_x,0}+u_{N_x,N_y}+u_{0,N_y}
-\right)
+\right).
 \end{align}
 
-\subsection{ 2D Simpson's rule with global $O(|h_1|^4+|h_2|^4)$ error}
+\subsection{ 2Д правило на Симпсън с глобална грешка $O(|h_1|^4+|h_2|^4)$ error}
 
-Here it is assumed that $N_x=2k$, $N_y=2 l$. For every $m=0,1,2,\cdots N_y$ it is computed that 
+Нека да приемем, че $N_x=2k$, $N_y=2 l$. Така, за всяко $m=0,1,2,\cdots N_y$ пресмятаме, че
+
 $$D_m= \frac{h_1 }{3} 
 \left\{ u_{0,m}+u_{N_x,m}+ 4 \sum_{i=1}^{\frac{N_x}{2}}   u_{2i-1,m}
  +2 \sum_{i=1}^{\frac{N_x}{2}-1} u_{2i,m} \right\}.$$
 
 
-Then 
+От последната формула получаваме
 
 \begin{equation}\label{quadr4}
 D_h(u_{i,j}) =\frac{h_2 }{3} 
 \left\{ D_{0}+D_{N_y}+ 4 \sum_{j=1}^{\frac{N_y}{2}}   D_{2j-1}
  +2 \sum_{j=1}^{{\frac{N_y}{2}}-1} D_{2j} \right\}
 \end{equation}
-is the approximation of the integral \eqref{intM} with global $O(|h_1|^4+|h_2|^4)$ error
+апроксимацията на интеграла \eqref{intM} с глобална грешка $O(|h_1|^4+|h_2|^4)$.
 
 
-\subsection{ 2D Boole's rule with global $O(|h_1|^6+|h_2|^6)$ error }
-Here it is assumed that $N_x=4k$, $N_y=4 l$. For every $m=0,1,2,\cdots N_y$ it is computed that
+\subsection{ 2D правило на Буул с глобална грешка $O(|h_1|^6+|h_2|^6)$}
+
+Нека да приемем, че $N_x=4k$, $N_y=4 l$. Така, за всяко $m=0,1,2,\cdots N_y$ пресмятаме, че
 
 \begin{align*}
 D_m =& \frac{2h_1}{45} 
@@ -170,8 +171,7 @@ D_m =& \frac{2h_1}{45}
 \right\}.
 \end{align*}
 
-
-Then \eqref{quadr6-2D} is the approximation to the integral \eqref{intM} with global $O(|h_1|^6+|h_2|^6)$ error
+Тогава формула \eqref{quadr6-2D} е апроксимацията на интеграла \eqref{intM} с глобална грешка $O(|h_1|^6+|h_2|^6)$.
 
 \begin{align}\label{quadr6-2D}
 &D_h(u_{i,j})  =
@@ -183,14 +183,15 @@ Then \eqref{quadr6-2D} is the approximation to the integral \eqref{intM} with gl
 \right\}.
 \end{align}
 
-
 \section{Numerical Methods}
 
-Two numerical methods are used to obtain solution for equation \rf{problemVC}: Method with Conservative FDS and Taylor Method which uses TS expansions around the time variable $t$. Furthermore, for each method the Mass and Energy of the solution are calculated. The solution and its properties (Mass, Energy and shape) from the two methods are compared. The calculations are done over three nested meshes to examine the convergence of both methods. The goal is to justify the TS approach by showing that both methods exhibit similar results. Furthermore the TS method could be used with higher approximation order which produces finer solution.
+За всеки от разработените методи са изчислени масата и енергията върху полученото решение. То, заедно с неговите свойства като маса, енергия и форма са сравнени. Изчисленията са направени върху три вложени мрежи, за да се изследва сходимостта на методите. Показано е, че решенията получени с метода на Тейлор и Консервативната схема са доста близки. Една от целите на статията е да покаже, че метода на Тейлор приложен към уравнението \rf{problemVC} също води до достатъчно добри резултати, а също така може да се приложи с по-висок ред на апроксимация, което води и до по-фино решение.
 
-\subsection{ Conservative Finite Difference Scheme }
+\subsection{ Консервативна схема с крайни разлики }
 
-The approximation of the time derivative and the Laplace operator is defined as:
+
+Апроксимациите на производните по времето и оператора на лаплас са дефинирани както следва:
+
 \be\label{difft}
 \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t_k ) = \frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} + O(\tau^2) 
 \ee
@@ -198,17 +199,18 @@ The approximation of the time derivative and the Laplace operator is defined as:
 \be\label{diffD}
 \Delta u(x_i, y_j, t_k )  = \frac{ u^{(k)}_{i+1, j} - 2u^{(k)}_{i,j} + u^{(k)}_{i-1,j} }{h_1^2} + \frac{ u^{(k)}_{i, j+1} - 2u^{(k)}_{i,j} + u^{(k)}_{i,j-1} }{h_2^2} + O(h_1^2 + h_2^2) 
 \ee
-Substitute the discrete differential operators \rf{difft} and \rf{diffD} in \rf{problemVC} to obtain the grid function
+Като заместим дискретните диференциални оператори \rf{difft} и \rf{diffD} в \rf{problemVC} получаваме следното диференчно уравнение
 \be\label{consFDS}
-\beta (I-\Delta_h)\frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} = (\Delta_h - \Delta_h^2)u^{(k)}_{i,j} + \Delta_h(g(u^{(k)}_{i,j}))
+\beta (I-\Delta_h)\frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} = (\Delta_h - \Delta_h^2)u^{(k)}_{i,j} + \Delta_h(g(u^{(k)}_{i,j})),
 \ee
 %
-where the non-linear term $g$ is defined as:
+където нелинейният член $g$ е дефиниран както следва:
 \begin{align}
 g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(k-1)}_{i,j})(u^{(k+1)}_{i,j}) + (u^{(k-1)}_{i,j})^2 \right) + \nonumber\\
 +&\frac{ (\beta - 1 )}{ 2 }\left( u^{(k+1)}_{i,j} + u^{(k-1)}_{i,j} \right).
 \end{align}
-This is a non-trivial approximation of $g$ so that the discrete Energy is a constant function of the time variable $t$ (see \cite{ref20}). Note that the Conservative FDS \rf{consFDS} is implicit as the non-linear term depends on the solution on the upper time layer. Thus on each time layer Picard Iteration is used to resolve the discrete unknown function $u^{(k+1)}_{i,j}$.
+
+Това не е тривиална апроксимация на $g$, а такава с която дискретната енергия се запазва, т.е. е константна функция по отношение на времевата променлива $t$ (виж \cite{ref20}). Да отбележим, че Консервативната схема \rf{consFDS} е имплицитна тъй като нелинейният член зависи от горния слой по времето. Така на всеки слой по времето се правят итераций на Пикард, за да разрешим неизвестната дискретна функция $u^{(k+1)}_{i,j}$.
 
 \subsection{ Taylor Series Approach with Method of Lines }
 The finite differences along space and the time discretization require TS expansions of $u(x,y,t)$. Therefore it is assumed that the solution is $p+1$ times infinitely differentiable with respect to $x$, $y$ and $t$, i.e. $u \in C^{p+1,p+1,p+1}(\Omega \times T)$.
