@@ -47,8 +47,22 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     for jt=2:st-1
         for ix = 2:sx-1
             dU1l = -bt/h^2;
+            dU1c = (-2*bt/tau^2 + 2*bt/h^2 );
+            dU1r = -bt/h^2;
+            dU1d = bt/tau^2;
+            dU1u = bt/tau^2;
+            dP1l = -1/h^2;
+            dP1c = 2/h^2;
+            dP1r = -1/h^2;
             dF1(ix,jt) = dU1l * U(ix-1,jt) + dU1c * U(ix,jt) + dU1r * U(ix+1,jt) +...
                 dU1d * U(ix,jt-1) + dU1u * U(ix,jt+1) + dP1l * P(ix-1,jt) + dP1c * P(ix,jt) + dP1r * P(ix+1,jt);
+            
+            dU2l = -1/h^2;
+            dU2c = (-2*bt/tau^2 + 2/h^2 + 2*al*bt*U(ix,jt) );
+            dU2r = -1/h^2;
+            dU2d = dU1d;
+            dU2u = dU1u;
+            dP2c = -1;
             dF2(ix,jt) = dU2l * U(ix-1,jt) + dU2c * U(ix,jt) + dU2r * U(ix+1,jt) +...
                 dU2d * U(ix,jt-1) + dU2u * U(ix,jt+1) + dP2c * P(ix,jt);
         end
