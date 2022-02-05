@@ -189,8 +189,7 @@ D_m =& \frac{2h_1}{45}
 
 \subsection{ Консервативна схема с крайни разлики }
 
-
-Апроксимациите на производните по времето и оператора на лаплас са дефинирани както следва:
+Консервативната схема използва крайни разлики с втори ред на апроксимация, затова се предполага, че третите производни на непрекъснатото решение по времето и пространстово съществуват.  Тези апроксимациите са дефинирани както следва:
 
 \be\label{difft}
 \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t_k ) = \frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} + O(\tau^2) 
@@ -213,12 +212,13 @@ g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(
 Това не е тривиална апроксимация на $g$, а такава с която дискретната енергия се запазва, т.е. е константна функция по отношение на времевата променлива $t$ (виж \cite{ref20}). Да отбележим, че Консервативната схема \rf{consFDS} е имплицитна тъй като нелинейният член зависи от горния слой по времето. Така на всеки слой по времето се правят итераций на Пикард, за да разрешим неизвестната дискретна функция $u^{(k+1)}_{i,j}$.
 
 \subsection{ Taylor Series Approach with Method of Lines }
-The finite differences along space and the time discretization require TS expansions of $u(x,y,t)$. Therefore it is assumed that the solution is $p+1$ times infinitely differentiable with respect to $x$, $y$ and $t$, i.e. $u \in C^{p+1,p+1,p+1}(\Omega \times T)$.
-For the Taylor method three different approximations of the Laplace operator are used. The following central finite differences along the $x$ asis are used:
+
+Методът на Тейлор използва развитие в ред спрямо времевата променлива на търсената функция $u(x,y,t)$. Но за извеждането на крайните разлики за пресмятане на производните по пространството също се използва развитие в ред на Тейлор. Затова се предполага, че решението е $p+1$ кратна гладка функция спрямо всички аргументи $x$, $y$ and $t$, т.е. $u \in C^{p+1,p+1,p+1}(\Omega \times T)$ като при следващите изчисления описани по долу са използвани стойностите $p=2,4,6$.
+За дискретизацията на оператора на Лаплас са използвани централни крайни разлики с различна степен на апроксимация:
 \begin{equation}\label{fd}
 u_{\widehat{xx},p}(x,y) :=  \frac{1}{h^2} \sum\limits_{i=-p/2}^{p/2} d_i u(x+ih, y_j).
 \end{equation}
-The weights $d_i$ taken from  \cite{forn} are described in Table \ref{table:A00}. 
+като теглата $d_i$ са взети от \cite{forn} и са описани в Таблица \ref{table:A00}. Производните по $y$ са дефинирани аналогично със същия шаблон.
 \begin{table}[ht]
 \centering
 \small
@@ -238,23 +238,24 @@ The weights $d_i$ taken from  \cite{forn} are described in Table \ref{table:A00}
 	\caption{ Finite differences used for the approximation of the Laplace operator.}
 	\label{table:A00}
 \end{table}
-The same finite difference stencil is used along the $y$ axis. The approximation error of  formulas \rf{fd} is $O(h^p)$. Let $u_{i,j}(t)$ be the approximation of the unknown function $u$ at mesh point $(x_i, y_j)$ for arbitrary time $t$. Substitute the $\Delta_{h,p} = u_{\widehat{xx},p} + u_{\widehat{yy},p}$ operator in equaiton \rf{problemVC}. Then one obtains a system of ODEs:
+
+Грешката от апроксимациите \rf{fd} са $O(h^p)$ в зависимост от избора на $p$. Нека да означим с $u_{i,j}(t)$ апроксимацията на неизвестната функция $u$ в точка от мрежата $(x_i, y_j)$ за произволно време $t$. Непрекъснатият оператор на Лаплас в уравнение \rf{problemVC} се заменя с дискретния $\Delta_{h,p} = u_{\widehat{xx},p} + u_{\widehat{yy},p}$, което води до следната система от ОДУ:
 \be \label{DiscreteEq}
 \beta (I-\Delta_{h,p}) \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t)=
  (I - \Delta_{h,p})\Delta_{h,p} u_{i, j}(t) + \Delta_{h,p} ( g( u_{i, j}(t) ) )
 \ee
-for all mesh points $i = 0..N_x$ and $j=0..N_y$. For each ODE in the system we do TS expansion along the time variable:
+за всяка точка от мрежата $(x_i, y_j)$, където $i = 0..N_x$, $j=0..N_y$. За всяко едно ОДУ от системата се прави развитие в ред на Тейлор спрямо времевата променлива:
 \begin{align} \label{TSe}
 u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_i, y_j, t)  + ... 
 %\nonumber
 %\\
 \frac{ \tau^p }{ p! } \frac{ \partial^p u }{ \partial t^p }(x_i, y_j, t) + O(\tau^{p+1})
 \end{align}
-for some natural number $p \ge 2$. The approximation order of the time discretization depends on p, i.e. the number of terms included in the TS expansion. Each point on the mesh represents a starting point of a line and the line itself is described by the TS expansion \rf{TSe}. Evaluation of formula \rf{TSe} is done by evaluating each term separately. E.g. for $t=0$ the first two terms are known from the IC ($u_0$, $u_1$). The third term is evaluated from the discrete equation \rf{DiscreteEq}. This includes the use of Fast Poisson Solvers for the inversion of $I-\Delta_{h,p}$ operator on the left side. With subsequent differentiaton of equation \rf{DiscreteEq} one could obtain higher time derivatives $\frac{\partial^3 u}{\partial t^3}$, $\frac{\partial^4 u}{\partial t^4}$, $\frac{\partial^5 u}{\partial t^5}$, etc. This is an iterative procedure where e.g. the fifth time derivative requires 3rd, 2nd, 1st and 0th derivatives, 3rd time derivative requires 1st and 0th derivatives. After all necessary time derivatives are calculated one could substitute those in \rf{TSe} and gets the following approximations: for $p=2$ it is $O(|h|^2 + \tau^2)$, for $p=4$ it is $O(|h|^4 + \tau^4)$ and for $p=6$ it is $O(|h|^6 + \tau^6)$. Note that another TS expansion must be calculated for the first time derivative $u_t(x_i, y_j, t+\tau)$ which is analogous to \rf{TSe} with the same approximation order. The last is required in order to calculate the solution on the next time layer because the pair ($u$, $u_t$) serve as basis and all higher time derivatives could be expressed only by that pair.
+при $p \ge 2$. Реда на апроксимация по времето зависи от броя на членовете $p+1$, които участват в реда на Тейлор. По този начин реда на апроксимация по времето и пространството е еднакъв и зависи от избора на $p$, което по-късно спомага за тестването на сходимостта. Всяка точка от мрежата представлява начало на крива, чиято траектория се описва с развитието на Тейлор \rf{TSe}. Изчисляването на формула \rf{TSe} е рекурсивен процес като всеки член от сумата се пресмята отделно. Например, при $t=0$ първите два члена са известни от началното условие ($u_0$, $u_1$), а третият се получава чрез дискретното уравнение \rf{DiscreteEq}. За намиране на последното се използват Fast Poisson Solvers за обръщане на оператора $I-\Delta_{h,p}$ представен от дясната страна на уравнението. Чрез диференциране на уравнение \rf{DiscreteEq} по времето се получават зависимости за по-високи производни $\frac{\partial^3 u}{\partial t^3}$, $\frac{\partial^4 u}{\partial t^4}$, $\frac{\partial^5 u}{\partial t^5}$ и т.н.  Това е итеративен процес, където например петата производна зависи от третата, втората, първата и нулевата, третата зависи от първата и нулевата. След като всички необходими производни са пресметнати се заместват в уравнение \rf{TSe} и така се получават следните апроксимации: за $p=2$ имаме $O(|h|^2 + \tau^2)$, за $p=4$ - $O(|h|^4 + \tau^4)$ и за $p=6$ - $O(|h|^6 + \tau^6)$. Тук е важно да се отбележи, че е необходимо да се пресметне и развитието в ред на Тейлор за първата производна по времето $u_t(x_i, y_j, t+\tau)$, която е сходна с \rf{TSe} и има същия ред на апроксимация. Това е необходимо тъй като решението на следващия слой по времето зависи от двойката ($u$, $u_t$), която служи като базис и всички по-високи производни могат да се изразят единствено чрез нея.
 
-The complexity of the algorithm is
-$$ O( N_x N_y N_t ) $$
-where $N_x N_y$ is the number of points in $\Omega_h$ and $N_t = T/\tau$. Most of the computational time goes for inversion of the $I-\Delta_{h,p}$ operator in \rf{DiscreteEq} which results to $N_x N_t$ inversions of a $p+1$ band matrix of size ($N_y \times N_y$). Current choices of $p$ affect complexity by a constant which resutls in a linear time graph depending on the number of points in the discrete domain.
+Сложността на алгоритъма зависи от големината на областа в която се разглежда числената задача
+$$ O( N_x N_y N_t ) $$,
+където $N_x N_y$ е броя на точките в $\Omega_h$ и $N_t = T/\tau$. Повечето от изчислителното време се отделя за обръщане на оператора $I-\Delta_{h,p}$ в уравнение \rf{DiscreteEq}, което е необходимо за $N_x N_t$ обръщания на $p+1$ лентова матрица с размери ($N_y \times N_y$). Избора на $p$, който е направен тук увеличава сложността с константа, което води до линейна зависимост на времето за изчисление спрямо броя на точките в областта. 
 
 \begin{thebibliography}{99}
 
