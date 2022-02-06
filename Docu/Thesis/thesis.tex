@@ -105,13 +105,6 @@ E(u(x,y,t)):=&\int_{\RR^2} u_t(x,y,t) \left((A^{-1}+E)u_t(x,y,t)\right) dxdy+
 \end{align}
 където $Au=-\Delta u$, а $D(u(x,y,t)) = D(u(x,y,0))$ and $E(u(x,y,t)) = E(u(x,y,0))$ са непрекъснатите маса и енергия за задачата \rf{problemVC} (виж \cite{ref1}). Нека да заменим оператора $Au=-\Delta u$ с неговата дискретна версия $-\Delta_h u$ като използваме апроксимаций от различен ред - $O(|h|^2)$, $O(|h|^4)$, $O(|h|^6)$. Ако имаме дискретната производната $u_t$ изчислена с апроксимации също от втори, четвърти и шести ред - $O(\tau^2)$, $O(\tau^4)$, $O(\tau^6)$ - то тогава може да приложим квадратурни формули за численото пресмятане на енергията \rf{ex-en}.
 
-%When the numerical solution is found with $O(h^2+\tau^2)$ error, we apply \rf{quadr2} with $O(h^2)$ error;
-
-%When the numerical solution is found with $O(h^4+\tau^4)$ error, we apply 2D Simpson's rule \rf{quadr4} with $O(h^4)$ error;
-
-%When the numerical solution is found with $O(h^6+\tau^6)$ error, we apply 2D Boole's rule \rf{quadr6-2D} with $O(h^6)$ error;
-
-The following integral 
 Следният интеграл
 \begin{equation}\label{int}
 D(u(x,y))=\int_{a_1}^{b_1} \int_{a_2}^{b_2} u(x,y)dx dy
@@ -183,7 +176,7 @@ D_m =& \frac{2h_1}{45}
 \right\}.
 \end{align}
 
-\section{Numerical Methods}
+\section{Числени методи}
 
 За всеки от разработените методи са изчислени масата и енергията върху полученото решение. То, заедно с неговите свойства като маса, енергия и форма са сравнени. Изчисленията са направени върху три вложени мрежи, за да се изследва сходимостта на методите. Показано е, че решенията получени с метода на Тейлор и Консервативната схема са доста близки. Една от целите на статията е да покаже, че метода на Тейлор приложен към уравнението \rf{problemVC} също води до достатъчно добри резултати, а също така може да се приложи с по-висок ред на апроксимация, което води и до по-фино решение.
 
@@ -211,7 +204,7 @@ g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(
 
 Това не е тривиална апроксимация на $g$, а такава с която дискретната енергия се запазва, т.е. е константна функция по отношение на времевата променлива $t$ (виж \cite{ref20}). Да отбележим, че Консервативната схема \rf{consFDS} е имплицитна тъй като нелинейният член зависи от горния слой по времето. Така на всеки слой по времето се правят итераций на Пикард, за да разрешим неизвестната дискретна функция $u^{(k+1)}_{i,j}$.
 
-\subsection{ Taylor Series Approach with Method of Lines }
+\subsection{ Метод на Тейлор }
 
 Методът на Тейлор използва развитие в ред спрямо времевата променлива на търсената функция $u(x,y,t)$. Но за извеждането на крайните разлики за пресмятане на производните по пространството също се използва развитие в ред на Тейлор. Затова се предполага, че решението е $p+1$ кратна гладка функция спрямо всички аргументи $x$, $y$ and $t$, т.е. $u \in C^{p+1,p+1,p+1}(\Omega \times T)$ като при следващите изчисления описани по долу са използвани стойностите $p=2,4,6$.
 За дискретизацията на оператора на Лаплас са използвани централни крайни разлики с различна степен на апроксимация:
@@ -251,51 +244,43 @@ u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_
 %\\
 \frac{ \tau^p }{ p! } \frac{ \partial^p u }{ \partial t^p }(x_i, y_j, t) + O(\tau^{p+1})
 \end{align}
-при $p \ge 2$. Реда на апроксимация по времето зависи от броя на членовете $p+1$, които участват в реда на Тейлор. По този начин реда на апроксимация по времето и пространството е еднакъв и зависи от избора на $p$, което по-късно спомага за тестването на сходимостта. Всяка точка от мрежата представлява начало на крива, чиято траектория се описва с развитието на Тейлор \rf{TSe}. Изчисляването на формула \rf{TSe} е рекурсивен процес като всеки член от сумата се пресмята отделно. Например, при $t=0$ първите два члена са известни от началното условие ($u_0$, $u_1$), а третият се получава чрез дискретното уравнение \rf{DiscreteEq}. За намиране на последното се използват Fast Poisson Solvers за обръщане на оператора $I-\Delta_{h,p}$ представен от дясната страна на уравнението. Чрез диференциране на уравнение \rf{DiscreteEq} по времето се получават зависимости за по-високи производни $\frac{\partial^3 u}{\partial t^3}$, $\frac{\partial^4 u}{\partial t^4}$, $\frac{\partial^5 u}{\partial t^5}$ и т.н.  Това е итеративен процес, където например петата производна зависи от третата, втората, първата и нулевата, третата зависи от първата и нулевата. След като всички необходими производни са пресметнати се заместват в уравнение \rf{TSe} и така се получават следните апроксимации: за $p=2$ имаме $O(|h|^2 + \tau^2)$, за $p=4$ - $O(|h|^4 + \tau^4)$ и за $p=6$ - $O(|h|^6 + \tau^6)$. Тук е важно да се отбележи, че е необходимо да се пресметне и развитието в ред на Тейлор за първата производна по времето $u_t(x_i, y_j, t+\tau)$, която е сходна с \rf{TSe} и има същия ред на апроксимация. Това е необходимо тъй като решението на следващия слой по времето зависи от двойката ($u$, $u_t$), която служи като базис и всички по-високи производни могат да се изразят единствено чрез нея.
+при $p \ge 2$. Редът на апроксимация по времето зависи от броя на членовете $p+1$, които участват в реда на Тейлор. По този начин реда на апроксимация по времето и пространството е еднакъв и зависи от избора на $p$, което по-късно спомага за тестването на сходимостта. Всяка точка от мрежата представлява начало на крива, чиято траектория се описва с развитието на Тейлор \rf{TSe}. Изчисляването на формула \rf{TSe} е рекурсивен процес като всеки член от сумата се пресмята отделно. Например, при $t=0$ първите два члена са известни от началното условие ($u_0$, $u_1$), а третият се получава чрез дискретното уравнение \rf{DiscreteEq}. За намиране на последното се използват Fast Poisson Solvers за обръщане на оператора $I-\Delta_{h,p}$ представен от дясната страна на уравнението. Чрез диференциране на уравнение \rf{DiscreteEq} по времето се получават зависимости за по-високи производни $\frac{\partial^3 u}{\partial t^3}$, $\frac{\partial^4 u}{\partial t^4}$, $\frac{\partial^5 u}{\partial t^5}$ и т.н.  Това е итеративен процес, където например петата производна зависи от третата, втората, първата и нулевата, третата зависи от първата и нулевата. След като всички необходими производни са пресметнати се заместват в уравнение \rf{TSe} и така се получават следните апроксимации: за $p=2$ имаме $O(|h|^2 + \tau^2)$, за $p=4$ - $O(|h|^4 + \tau^4)$ и за $p=6$ - $O(|h|^6 + \tau^6)$. Тук е важно да се отбележи, че е необходимо да се пресметне и развитието в ред на Тейлор за първата производна по времето $u_t(x_i, y_j, t+\tau)$, която е сходна с \rf{TSe} и има същия ред на апроксимация. Това е необходимо тъй като решението на следващия слой по времето зависи от двойката ($u$, $u_t$), която служи като базис и всички по-високи производни могат да се изразят единствено чрез нея.
 
-Сложността на алгоритъма зависи от големината на областа в която се разглежда числената задача
-$$ O( N_x N_y N_t ) $$,
+Сложността на алгоритъма зависи от големината на областа в която се разглежда числената задача,
+$$ O( N_x N_y N_t ) $$
 където $N_x N_y$ е броя на точките в $\Omega_h$ и $N_t = T/\tau$. Повечето от изчислителното време се отделя за обръщане на оператора $I-\Delta_{h,p}$ в уравнение \rf{DiscreteEq}, което е необходимо за $N_x N_t$ обръщания на $p+1$ лентова матрица с размери ($N_y \times N_y$). Избора на $p$, който е направен тук увеличава сложността с константа, което води до линейна зависимост на времето за изчисление спрямо броя на точките в областта. 
 
-\section{Numerical Results}
+\section{Числени резултати}
 
-Първоначално е представен редът на сходимост при Консервативната схема за дискретните решение и енергия. Впоследствие, същото е направено и за метода на Тейлор. При валидация на масата на решението са направени допълнителни изчисления, за да се обясни нейното поведение. Най-накрая са сравнени решенията между двата различни подхода. Дискретните енергия и маса се пресмятат на всяка стъпка по времето и са с дължина $N_t$. При Консервативната схема, енергията се пресмята с правилото на трапците, а при метода на Тейлор с правилата на трапците, Симпсън и Буул съответно с грешка от апроксимациите $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ и $O(h^{6} + \tau^6 )$. Сходимостта на изследваните крайни разлики и развития в ред на Тейлор е получена послредством правилото на Рунге:
+Първоначално е представен редът на сходимост при Консервативната схема за дискретните решение и енергия. Впоследствие, същото е направено и за метода на Тейлор. При валидацията на масата са направени допълнителни изчисления, за да се обясни нейното поведение. Най-накрая са сравнени решенията между двата различни подхода. Дискретните енергия и маса се пресмятат на всяка стъпка по времето и са вектори с дължина $N_t$. При Консервативната схема, енергията се пресмята с правилото на трапците, а при метода на Тейлор с правилата на трапците, Симпсън и Буул съответно с грешка от апроксимациите $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ и $O(h^{6} + \tau^6 )$. Сходимостта на изследваните крайни разлики и развития в ред на Тейлор е получена послредством правилото на Рунге:
 \begin{equation}\label{Runge}
 \xi = ln  \frac{\Vert u_{h,\tau} - u_{(h,\tau)/2} \Vert_\kappa } {\Vert  u_{(h,\tau)/2} - u_{(h,\tau)/4} \Vert_\kappa  } | / ln(2),
 \end{equation}
-когато не е известно аналитично решение на уравнението. Формула \rf{Runge} е използванa и при изчислението на сходимостта на дискретната енергията върху три вложени мрежи с размери $[0:\tau:T]$, $[0:\tau/2:T]$ and $[0:\tau/4:T]$. Числените резултати са извършени при следните два случая: $\beta = 3$, $c=0.45$ и $\beta = 1$, $c=0.9$ с последващите уточнения. Първо, Консервативната схема е приложена само с втори ред на апроксимация  $p=2$. Второ, при $p=2$ дискретната стъпка по времето е 
- $\tau=h/200$,иначе при $p=4, 6$ е $\tau = h/10$. Трето, всички изчисления използват нулево гранично условие, т.е. стойностите на нейзвестната функция използвани от шаблона на крайните разлики, които се намират извън числената област $[-L_x, L_x] \times [-L_y, L_y]$ са нули.
-
-At first, convergence rates for the Conservative FDS are calculated, followed by the convergence rate of the discrete Energy. The same is done for the Taylor method. Additional calculations are made for the Mass to assure its proper behavior. At the end, the properties of the solution that are obtained numerically by the two different mechanisms are compared. The Energy and Mass are vectors of size $N_t$ and are calculated for each iteration step. In case of the Conservative FDS, the energy is calculated using trapezoidal rule. In case of the Taylor method, the Energy is calculated using trapezoidal, Simpson's and Boole's rules with $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$ approximations, respectively. The tool for testing the convergence rate $\xi$ of all examined finite difference schemes and TS expansions is the Runge's Method
-\begin{equation}\label{Runge}
-\xi = ln  \frac{\Vert u_{h,\tau} - u_{(h,\tau)/2} \Vert_\kappa } {\Vert  u_{(h,\tau)/2} - u_{(h,\tau)/4} \Vert_\kappa  } | / ln(2),
-\end{equation}
-when no exact solution to the problem is known. It is also used in order to calculate the convergence of the discrete Energy. For the last, one obtains three nested vectors of size $[0:\tau:T]$, $[0:\tau/2:T]$ and $[0:\tau/4:T]$. The numerical calculations focus on two parameter sets $\beta = 3$, $c=0.45$ and $\beta = 1$, $c=0.9$:
-
-%0
-\begin{table}
+когато не е известно аналитично решение на уравнението. Формула \rf{Runge} е използванa и при изчислението на сходимостта на дискретната енергията върху три вложени мрежи с размери $[0:\tau:T]$, $[0:\tau/2:T]$ and $[0:\tau/4:T]$. Числените резултати са извършени при следните два случая (виж Таблица \rf{tableP}) $\beta = 3$, $c=0.45$ и $\beta = 1$, $c=0.9$ \begin{table}
 \centering
 \small
 		\begin{tabular}{||c|l|l|l|l|l|l|l||}
 			\hline
 			\hline
-                                            &    $\beta$, $c$                              & $O(|h|^p + \tau^p)$   &      $h$                                & $L_x$,$L_y$                              &  Methods & $T$      &  Bnd. Cond.   \\
+                                            &    $\beta$, $c$                              & $O(|h|^p+\tau^p)$   &      $h$                                & $L_x$,$L_y$                              &  Методи & $T$      & Гр. Усл.  \\
    			\hline 
 					\hline
-           Test 1                        &      $\beta = 3$, $c=0.45$           &      $p=2, 4, 6$             &    $h=0.2, 0.1, 0.05$      & $L_x = 30$,$L_y=27$                & Taylor, Cons. FDS &                10    &    Zero  \\
+           Test 1                        &      $\beta = 3$     &      $p=2, 4, 6$    &    $h=0.2,$       & $L_x = 30$                & Тейлор &                10    &    нула  \\
+                                             &      $c=0.45$         &                             &    $ 0.1, 0.05$   & $L_y=27$                  &  Конс. сх. &                &            \\
 	   \hline
 			\hline 
-           Test 2                        &      $\beta = 1$, $c=0.9$             &      $p=2, 4, 6$             &     $h=0.4, 0.2, 0.1$       & $L_x = 128$,$L_y=58$              & Taylor, Cons. FDS  &               10    &   Zero  \\
+           Test 2                        &      $\beta = 1$     &      $p=2, 4, 6$    &     $h=0.4,$       & $L_x = 128$         & Тейлор  &               10    &   нула  \\
+                                             &      $c=0.9$           &                             &      $0.2, 0.1$     & $L_y=58$              & Конс. сх.  &                   &     \\
 	   \hline
 			\hline 
 		\end{tabular}
-\caption{Parameter table for the numerical tests}
+\caption{Параметрична таблица с описание на числените тестове}
 \label{tableP}
 \end{table}
+с последващите уточнения. Първо, Консервативната схема е приложена само с втори ред на апроксимация  $p=2$. Второ, при $p=2$ дискретната стъпка по времето е 
+ $\tau=h/200$, иначе при $p=4, 6$ тя е $\tau = h/10$. Трето, всички изчисления използват нулево гранично условие, т.е. стойностите на нейзвестната функция в шаблона от крайните разлики, които се намират извън числената област $[-L_x, L_x] \times [-L_y, L_y]$ са нули.
 
-Here are some important remarks on the parameters used for the numerical calculations. First, the Conservative FDS applies only second approximation order $p=2$. Second, for $p=2$ the discrete time step is $\tau=h/200$, otherwise for $p=4, 6$ it is $\tau = h/10$. Third, the tests use zero boundary conditions, i.e. values of the finite difference stencil outside the numerical domain $[-L_x, L_x] \times [-L_y, L_y]$ are zeros.
-
-\subsection{Convergence Rate for the Conservative FDS}
+\subsection{Ред на сходимост при Консервативната схема}
 
 Table \ref{tableC} measures the convergence speed based on the results of the numerical solution $u_h$. The Conservative FDS applies only second approximation order, thus $p=2$ for Test 1 and Test 2 in the first column. Three nested meshes are used with different step sizes which are present in the second column. The next two columns show the errors $\Vert u_{h,\tau} - u_{(h,\tau)/2} \Vert_\kappa$, $\Vert  u_{(h,\tau)/2} - u_{(h,\tau)/4} \Vert_\kappa$ and convergence speed $\xi$ from \rf{Runge} which are measured in $L_2$ and infinity norms. 
 %C
@@ -448,10 +433,10 @@ For the $O(h^2 + \tau^2)$ case ( both Test 1 and Test 2), much smaller time step
 Figure \ref{Test1En} shows the discrete Mass and Energy for Test 1 calculated using solutions from the Conservative FDS and Taylor method. Figure \ref{Test2En} shows analogous results for Test 2. In case of $O(|h|^2 +\tau^2)$ the Mass and Energy realized by both methods for Test 1 and Test 2 overlap (dark line and blue circles). The Energy graphs are constant functions over the time interval.
 \begin{figure}[ht]\vspace{0.2cm}
 	\begin{minipage}[b]{0.4\linewidth}
-		 \includegraphics[width=\linewidth]{figuresAmitans/Mass_bt3_c045_h005_Taylor_Conservative.png}
+		 \includegraphics[width=\linewidth]{../amitans/figures/Mass_bt3_c045_h005_Taylor_Conservative.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.4\linewidth}
-		\includegraphics[width=\linewidth]{figuresAmitans/Energy_bt3_c045_h005_Taylor_Conservative.png}	
+		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt3_c045_h005_Taylor_Conservative.png}	
 	\end{minipage}
 \caption{The Mass (left) and Energy (right) of the solution for Test 1, $O(|h|^2 + \tau^2)$ and $T=10$.}
 \label{Test1En}
@@ -461,10 +446,10 @@ The Mass increases slightly over the time interval but the gain is neglectable c
 
 \begin{figure}[ht]\vspace{0.2cm}
 	\begin{minipage}[b]{0.4\linewidth}
-		 \includegraphics[width=\linewidth]{figuresAmitans/Mass_bt1_c090_h010_Taylor_Conservative.png}
+		 \includegraphics[width=\linewidth]{../amitans/figures/Mass_bt1_c090_h010_Taylor_Conservative.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.4\linewidth}
-		\includegraphics[width=\linewidth]{figuresAmitans/Energy_bt1_c090_h010_Taylor_Conservative.png}
+		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt1_c090_h010_Taylor_Conservative.png}
 		
 	\end{minipage}
 \caption{The Mass (left) and Energy (right) of the solution for Test 2, $O(|h|^2 + \tau^2)$ and $T=10$.}
@@ -476,10 +461,10 @@ For the Taylor Method, the discrete Mass and Energy in Figure \ref{Test1En} and 
 \iffalse
 \begin{figure}[ht]\vspace{0.4cm}
 	\begin{minipage}[b]{0.33\linewidth}
-		 \includegraphics[width=\linewidth]{figuresAmitans/Mass_bt1_c090_h010_x3O.png}
+		 \includegraphics[width=\linewidth]{../amitans/figures/Mass_bt1_c090_h010_x3O.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.33\linewidth}
-		\includegraphics[width=\linewidth]{figuresAmitans/Energy_bt1_c090_h010_x3O.png}
+		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt1_c090_h010_x3O.png}
 		
 	\end{minipage}
 \caption{The Mass (left) and Energy (right) of the Taylor solution for Test 1, $O(|h|^2 + \tau^2)$, $O(|h|^4 + \tau^4)$, $O(|h|^6 + \tau^6)$ and $T=10$.}
@@ -487,10 +472,10 @@ For the Taylor Method, the discrete Mass and Energy in Figure \ref{Test1En} and 
 \end{figure}
 \begin{figure}[ht]\vspace{0.4cm}
 	\begin{minipage}[b]{0.33\linewidth}
-		 \includegraphics[width=\linewidth]{figuresAmitans/Mass_bt3_c045_h005_x3O.png}
+		 \includegraphics[width=\linewidth]{../amitans/figures/Mass_bt3_c045_h005_x3O.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.33\linewidth}
-		\includegraphics[width=\linewidth]{figuresAmitans/Energy_bt1_c090_h010_x3O.png}
+		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt1_c090_h010_x3O.png}
 		
 	\end{minipage}
 \caption{The Mass (left) and Energy (right) of the Taylor solution for Test 2, $O(|h|^2 + \tau^2)$, $O(|h|^4 + \tau^4)$, $O(|h|^6 + \tau^6)$ and $T=10$.}
@@ -501,10 +486,10 @@ For the Taylor Method, the discrete Mass and Energy in Figure \ref{Test1En} and 
 If $D$ denotes the discrete Mass, then the percentage gain for the Mass is defined by $100 \times |D(t=0) - D(t=T)|/D(t=0)$. On Figure \ref{Test1_2Mass} one could see that by increasing the size of the domain $\Omega_h$ the gain for the Mass decreases. Taylor method with sixth approximation order and largest step sizes is applied to create the graphs. On the left panel three different domains of size $[-30, 30] \times [-27, 27]$, $[-60, 60] \times [-54, 54]$ and $[-120, 120] \times [-108, 108]$ are used. Furthermore, the used parameter set is $\beta =  3$, $c = 0.45$ (Test 1) and $h=0.2$. The percentage gain for the Mass when increasing the domain is $0.33\%$, $0.11\%$ and $0.06\%$. Analogously, on the right panel, the domains are $[-128, 128] \times [-58, 58]$, $[-256, 256] \times [-116, 116]$ and $[-512, 512] \times [-232, 232]$. The parameter set is $\beta =  1$, $c = 0.9$ (Test 2) and $h=0.4$. Here, the percentage gain for the Mass when increasing the domain is $1.80\%$, $0.70\%$ and $0.18\%$.
 \begin{figure}[ht]\vspace{0.2cm}
 	\begin{minipage}[b]{0.4\linewidth}
-		\includegraphics[width=\linewidth]{figuresAmitans/MassTaylor_120_60_30_ZB1_bt3_c045_h020_O(h^6).png}
+		\includegraphics[width=\linewidth]{../amitans/figures/MassTaylor_120_60_30_ZB1_bt3_c045_h020_O(h^6).png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.4\linewidth}
-		\includegraphics[width=\linewidth]{figuresAmitans/MassTaylor_512_256_128_ZB1_bt1_c090_h040_O(h^6).png}
+		\includegraphics[width=\linewidth]{../amitans/figures/MassTaylor_512_256_128_ZB1_bt1_c090_h040_O(h^6).png}
 		
 	\end{minipage}
 \caption{The Mass of the Taylor solution for approximation $O(|h|^6 + \tau^6)$ and $T=10$ over three nested domains. Left panel is for $\beta =  3$, $c = 0.45$ and right panel is for $\beta =  1$, $c = 0.9$.}
@@ -516,13 +501,13 @@ If $D$ denotes the discrete Mass, then the percentage gain for the Mass is defin
 The following paragraph discusses the shape of the solution obtained by the Conservative FDS and Taylor method. The set up for the calculations is described in Table \ref{tableP} when $p=2$, i.e. both Test 1 and Test 2 are done on three nested meshes. For each Test and mesh both solution techniques are applied with second approximation order. Let us denote with $uC$ and $uT$ the solutions obtained by the Conservative scheme \rf{consFDS} and the TS expansion \rf{TSe}. Figures \ref{Test1_Diff} and \ref{Test2_Diff} show the solution difference for Test 1 and Test 2 respectively. The pictures cover only the center of the domain $\Omega_h$ where the values of the difference are higher. This is one nineth of all mesh points.
 \begin{figure}[ht]\vspace{0.4cm}
 	\begin{minipage}[b]{0.32\linewidth}
-		 \includegraphics[width=\linewidth]{figuresAmitans/compare_30_bt3_c045_h020.png}
+		 \includegraphics[width=\linewidth]{../amitans/figures/compare_30_bt3_c045_h020.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{figuresAmitans/compare_30_bt3_c045_h010.png}
+		\includegraphics[width=\linewidth]{../amitans/figures/compare_30_bt3_c045_h010.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.32\linewidth}		
-		\includegraphics[width=\linewidth]{figuresAmitans/compare_30_bt3_c045_h005.png}
+		\includegraphics[width=\linewidth]{../amitans/figures/compare_30_bt3_c045_h005.png}
 	\end{minipage}
 \caption{Difference $uC - uT$ between solutions from Conservative Scheme and TS approach at time $t=10$, $O(|h|^2 + \tau^2)$ for Test 1. From Left to right $h=0.2, 0.1, 0.05$.}
 \label{Test1_Diff}
@@ -530,65 +515,65 @@ The following paragraph discusses the shape of the solution obtained by the Cons
 
 \begin{figure}[ht]\vspace{0.4cm}
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{figuresAmitans/compare_128_bt1_c09_h040.png}
+		\includegraphics[width=\linewidth]{../amitans/figures/compare_128_bt1_c09_h040.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{figuresAmitans/compare_128_bt1_c09_h020.png}
+		\includegraphics[width=\linewidth]{../amitans/figures/compare_128_bt1_c09_h020.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.32\linewidth}
-		\includegraphics[width=\linewidth]{figuresAmitans/compare_128_bt1_c09_h010.png}
+		\includegraphics[width=\linewidth]{../amitans/figures/compare_128_bt1_c09_h010.png}
 	\end{minipage}
 \caption{Difference $uC - uT$ between solutions from Conservative Scheme and TS approach at time $t=10$, $O(|h|^2 + \tau^2)$ for Test 2. From Left to right $h=0.4, 0.2, 0.1$.}
 \label{Test2_Diff}
 \end{figure}
-%
-%\begin{figure}[ht]\vspace{0.2cm}
-%\centering
-%	\begin{minipage}[b]{0.30\linewidth}
-%		\includegraphics[width=\linewidth]{figuresAmitans/solution_30x45_bt3_c045_T0.png}
-%	\end{minipage}	
-%	\begin{minipage}[b]{0.30\linewidth}
-%		\includegraphics[width=\linewidth]{figuresAmitans/solution_30x45_bt3_c045_T6.png}
-%	\end{minipage}	
-%	\begin{minipage}[b]{0.30\linewidth}
-%		 \includegraphics[width=\linewidth]{figuresAmitans/solution_30x45_bt3_c045_T12.png}
-%	\end{minipage}
-%	\begin{minipage}[b]{0.30\linewidth}
-%		\includegraphics[width=\linewidth]{figuresAmitans/solution_30x45_bt3_c045_T18.png}
-%	\end{minipage}	
-%	\begin{minipage}[b]{0.30\linewidth}
-%		 \includegraphics[width=\linewidth]{figuresAmitans/solution_30x45_bt3_c045_T24.png}
-%	\end{minipage}
-%	\begin{minipage}[b]{0.30\linewidth}
-%		 \includegraphics[width=\linewidth]{figuresAmitans/solution_30x45_bt3_c045_T30.png}
-%	\end{minipage}
-%\caption{Numerical solution of single wave for $\beta=3$ and $c = 0.45$ at times $t=0,6,12,18,24,30$.}
-%\label{Wave1}
-%\end{figure}
 
-%\begin{figure}[ht]\vspace{0.2cm}
-%\centering
-%	\begin{minipage}[b]{0.30\linewidth}
-%		\includegraphics[width=\linewidth]{figuresAmitans/solution_128x90_bt1_c090_T0.png}
-%	\end{minipage}	
-%	\begin{minipage}[b]{0.30\linewidth}
-%		\includegraphics[width=\linewidth]{figuresAmitans/solution_128x90_bt1_c090_T6.png}
-%	\end{minipage}	
-%	\begin{minipage}[b]{0.30\linewidth}
-%		 \includegraphics[width=\linewidth]{figuresAmitans/solution_128x90_bt1_c090_T12.png}
-%	\end{minipage}
-%	\begin{minipage}[b]{0.30\linewidth}
-%		\includegraphics[width=\linewidth]{figuresAmitans/solution_128x90_bt1_c090_T18.png}
-%	\end{minipage}	
-%	\begin{minipage}[b]{0.30\linewidth}
-%		 \includegraphics[width=\linewidth]{figuresAmitans/solution_128x90_bt1_c090_T24.png}
-%	\end{minipage}
-%	\begin{minipage}[b]{0.30\linewidth}
-%		 \includegraphics[width=\linewidth]{figuresAmitans/solution_128x90_bt1_c090_T30.png}
-%	\end{minipage}
-%\caption{Numerical solution of single wave for $\beta=1$ and $c = 0.9$ at times $t=0,6,12,18,24,30$.}
-%\label{Wave2}
-%\end{figure}
+\begin{figure}[ht]\vspace{0.2cm}
+\centering
+	\begin{minipage}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T0.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T6.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.30\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T12.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T18.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.30\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T24.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.30\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T30.png}
+	\end{minipage}
+\caption{Numerical solution of single wave for $\beta=3$ and $c = 0.45$ at times $t=0,6,12,18,24,30$.}
+\label{Wave1}
+\end{figure}
+
+\begin{figure}[ht]\vspace{0.2cm}
+\centering
+	\begin{minipage}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T0.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T6.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.30\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T12.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T18.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.30\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T24.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.30\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T30.png}
+	\end{minipage}
+\caption{Numerical solution of single wave for $\beta=1$ and $c = 0.9$ at times $t=0,6,12,18,24,30$.}
+\label{Wave2}
+\end{figure}
 The figures are for visual representation. On the contrary, Table \ref{tableF} shows the difference $||uC - uT||_\kappa$ using $L_2$ and infinity norms. The last column of the Table is for the infinity norm of the solution $||uC||_{L_\infty}$ (which is the wave maximum) measured by the Conservative FDS. It is observed that decreasing the step sizes $h$ and $\tau$ results in a smaller difference.  Furthermore the percentage difference when using the infinity norm
 $$\frac{ ||uC - uT||_{L_\infty}} { ||uC||_{L_\infty} } \times 100$$
 varies in the inteval $[0.0001\%, 0.69\%]$ for all rows in the table. Analogous results are obtained for the percentage difference when using the $L_2$ norm and thus are omitted. The difference between the wave shapes obtained by Conservative FDS and the Taylor Series approach with Method of lines is negligible. It is expected that $||uC - uT||_\kappa$ goes to zero when $h$ and $\tau$ are infinitely small.
@@ -666,17 +651,17 @@ where $0 < i < N_x$ and $0 < j < N_y - cT/h$.
 
 Table \ref{tableG} shows that if the step size $h$ (and $\tau$ respectively) decreases, then the difference also decreases. Furthermore, the shape of the wave is preserved better while the approximation order $p$ increases. Thus, it is expected that $||u^{(0)} - u^{(N_t)}||_\kappa$ goes to zero when $h$ and $\tau$ are infinitely small. 
 
-%\begin{figure}[H]\vspace{0.2cm}
-%	\centering
-%	\begin{minipage}[b]{0.40\linewidth}
-%		\includegraphics[width=\linewidth]{figuresAmitans/maximum_30_T30_bt3_c045_h005.png}
-%	\end{minipage}	
-%	\begin{minipage}[b]{0.40\linewidth}
-%		 \includegraphics[width=\linewidth]{figuresAmitans/maximum_30_T30_bt1_c090_h020.png}
-%	\end{minipage}
-%\caption{Evolution of the maximum over a larger time interval $[0, 30]$ for Test 1 (left panel) and Test 2 (right panel).}
-%\label{Maximum}
-%\end{figure}
+\begin{figure}\vspace{0.2cm}
+	\centering
+	\begin{minipage}[b]{0.40\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/maximum_30_T30_bt3_c045_h005.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.40\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/maximum_30_T30_bt1_c090_h020.png}
+	\end{minipage}
+\caption{Evolution of the maximum over a larger time interval $[0, 30]$ for Test 1 (left panel) and Test 2 (right panel).}
+\label{Maximum}
+\end{figure}
 
 The following paragraph discusses the maximum of the solution over a larger time interval $[0, 30]$. The set up for the two calculations is described in Table \ref{tableP} where 
 $p=6$, $T=30$ and Taylor method is applied with $h=0.05$ and $\tau = 0.001$ for Test 1 and $h=0.2$ and $\tau=0.02$ for Test 2. Also the size of the computational box $\Omega_h$ is extended appropriately along the $y$ axis to compensate for the wave shift. Figure \ref{Maximum} shows that the maximum is stable for both tests over a larger time interval $[0, 30]$. For each iteration step, the exact position of the maximum is not always located on a mesh point in $\Omega_h$. This produces a jagged graph which is well expressed on the right panel and also present on the left panel in Figure \ref{Maximum}. Solution shapes are shown in Figures \ref{Wave1} and \ref{Wave2}.
