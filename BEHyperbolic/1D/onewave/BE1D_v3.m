@@ -1,16 +1,20 @@
-function [vu,tt,v,E,II] = BE1D_v3(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,alpha,estep,u_t0,dudt_t0)
+function [vz,tt,v,E,II,vmo] = BE1D_v3(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,alpha,estep,u_t0,dudt_t0,uUp)
 %A solution using five diagonal matrices
 % The approximation of the nonlinear term has the following presentation (IM):
 % g_1=inline('(bt*al/3)*(v_up^2 + v_up*v_down +v_down^2) +
 % ((bt-1)/2)*(v_up+v_down)','v_up','v_down','al','bt');
 % The approximation inlcudes the unknown layer v_up which is found
-% through some iterative procedure.
+% through Picardi iterative procedure.
 %The function returns the solution "v" and the times "tt" for which the
 %solution "v" has been saved
 % dE = max(E) - min(E);
 % dII = max(II) - min(II);
 % Here E stands for the energy values and II stands for the integral values along
 % different time layers "tt".
+useUup = 0;
+if(nargin == 13)
+    useUup = 1;
+end
 beta = beta1/beta2;
 x = start_x:h:end_x;
 sx = size(x,2);
@@ -45,10 +49,13 @@ Idh=(h^2*eye(7)-dh);
     sIdh11 = Idh(1,1);
     clear A;clear B; clear dhs; clear dh; clear Idh;
     
-    [d2v1, d3v1, d4v1, d5v1] = calc_der(v1,dv1,O4sdh,O4sIdh,O4sdh11,O4sIdh11,h,alpha,beta);
-        
-    v2  = v1  + tau*dv1  + tau^2*d2v1/2 + tau^3*d3v1/6 + tau^4*d4v1/24; 
     
+    if(useUup == 0)
+        [d2v1, d3v1, d4v1, d5v1] = calc_der(v1,dv1,O4sdh,O4sIdh,O4sdh11,O4sIdh11,h,alpha,beta);
+        v2  = v1  + tau*dv1  + tau^2*d2v1/2 + tau^3*d3v1/6 + tau^4*d4v1/24; 
+    else
+        v2 = uUp';
+    end
     %------------------------------------------------------
     
     %ggv0 = beta*alpha*v1.^2 + (beta-1)*v1;
@@ -99,7 +106,7 @@ Idh=(h^2*eye(7)-dh);
            
             t(k)=(k-1)*tau;
             if((t(k)-floor(t(k)))==0)
-                yoyo=t(k)
+                fprintf('time = %f\n', t(k));
             end
             vmo = vz;
             vz  = vu;

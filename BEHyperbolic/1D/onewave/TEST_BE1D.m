@@ -1,14 +1,14 @@
 clear;clc;
 % constants
 
-start_x=-60; end_x = 100;
+start_x=-60; end_x = 60;
 pw = 0;
-h = 0.1;  tau = 0.1;  x = start_x:h:end_x;  t_end=20;
-beta1=3;   beta2=1;  alpha=-3; beta=beta1/beta2;
+h = 0.1;  tau = 0.01;  x = start_x:h:end_x;  t_end=5;
+beta1=3;   beta2=1;  alpha=-1; beta=beta1/beta2;
 sgm = 1/2;
 %sgm=(1-h^2/tau^2)/12;
 
-c=2;   shift = 20;
+c=3;   shift = 30;
 vers = 3;
 estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
 
@@ -16,10 +16,12 @@ estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
     
     %Tochno reshenie u_ex(x,t,c,alpha,beta1,beta2)
     % t == 0
-    u_t0 = u_ex(x+shift,0,c,alpha,beta1,beta2);% u_ex(x+shift,0,c,alpha,beta1,beta2)+u_ex(x-shift,0,-c,alpha,beta1,beta2); 
+    % u_t0 = u_ex(x+shift,0,c,alpha,beta1,beta2);
+    u_t0 = u_ex(x+shift,0,c,alpha,beta1,beta2)+u_ex(x-shift,0,-c,alpha,beta1,beta2); 
     %Tochno reshenie - proizwodna - dudt_ex(x,t,c,beta1,beta2,alpha)
     % t == 0
-    dudt_t0 =dudt_ex(x+shift,0,c,alpha,beta1,beta2); %dudt_ex(x+shift,0,c,alpha,beta1,beta2)+dudt_ex(x-shift,0,-c,alpha,beta1,beta2)
+    % dudt_t0 =dudt_ex(x+shift,0,c,alpha,beta1,beta2); 
+    dudt_t0 = dudt_ex(x+shift,0,c,alpha,beta1,beta2)+dudt_ex(x-shift,0,-c,alpha,beta1,beta2);
     figure(1);plot(x,u_t0,'g',x,dudt_t0,'b');
     title('Initial Condition - u,dudt');
     pause(.1);

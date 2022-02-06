@@ -28,7 +28,7 @@ function [niv] = SIT_v3(sA,sB,sdh,a11,b11,vz,vmo,h,al,bt)
     while(max(abs(niv0 - niv))>eps*mmax)
         niv0=niv;
         mmax=max(abs(niv));
-        if(cnt>25)
+        if(cnt>75)
             error('ERROR; too much iterations in SIT! ');
         end
         cnt=cnt+1; %5
