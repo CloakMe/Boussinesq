@@ -1,6 +1,6 @@
 %return;
 clear;clc;
-addpath('..\Boussinesq2D');
+%addpath('..\2D\OOPDesign');
 tic
 x_st = -50.0;
 x_end = 50.0;
@@ -23,7 +23,7 @@ c = 0.2862;
 iterMax = 9000000;
 %eps = 1/max(y_end^6,((1-c^2)*x_end^2)^3);
 eps = 5.0e-04;%5.0e-09;
-tau = getTau(h,x_end,y_end)/500;
+tau = 1; %getTau(h,x_end,y_end)/500;
 plotResidual  = 1;
 plotBoundary  = 0;
 plotAssympt   = 0;

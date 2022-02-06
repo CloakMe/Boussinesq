@@ -34,7 +34,7 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     tauVector(1) = tau;
     residualInfNorm = ones(1,iterMax/10);
     angl = zeros(1,iterMax/10);
-    step = Step(h);
+    %step = Step(h);
     zeroMatrix = zeros(size(U));
     
     Utt = YDerivative(U, zeroMatrix, derivatived2T);
