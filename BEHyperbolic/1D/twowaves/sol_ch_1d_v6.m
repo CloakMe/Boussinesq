@@ -80,8 +80,8 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     end  
     toc
       
-    L=-GenerateBandDiagMatrix(derivatived2X, sx);
-    M=bt*GenerateBandDiagMatrix(derivatived2T, st);
+    L=-GenerateBandDiagMatrix(derivatived2X, sx, 'dudxZero', 'Identity');
+    M=bt*GenerateBandDiagMatrix(derivatived2T, st, 'Identity', 'Identity');
     
     P = btExt * U * M' + L * U + theta*al*bt*U.^2; %
     
