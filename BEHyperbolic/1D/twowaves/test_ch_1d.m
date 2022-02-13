@@ -2,13 +2,13 @@
 clear;clc;
 %addpath('..\2D\OOPDesign');
 tic
-x_st = -50.0;
-x_end = 50.0;
-y_st =  20.0;
-y_end = 30.0;
+x_st =  0.0;
+x_end = 40.0;
+y_st =  15.0;
+y_end = 20.0;
 
 h = 0.1;
-tTau = 0.2;
+tTau = 0.1;
 x=x_st:h:x_end; 
 y=y_st:tTau:y_end;
 
@@ -19,6 +19,7 @@ fprintf('y size = %d\n', sy);
 
 al = 3;%99979 izb
 bt1 = 1;bt2 = 1; bt = bt1/bt2;
+btExt = 0;
 c = 0.2862; 
 iterMax = 9000000;
 %eps = 1/max(y_end^6,((1-c^2)*x_end^2)^3);
@@ -29,11 +30,13 @@ plotBoundary  = 0;
 plotAssympt   = 0;
 type = 'xte';
 prmtrs = struct('h',{h},'tTau',{tTau},'tau',{tau},'iterMax',{iterMax},'eps',{eps}, 'type', {type}, ...
-    'plotResidual',{plotResidual},'plotBoundary',{plotBoundary},'plotAssympt',{plotAssympt});
+    'plotResidual',{plotResidual},'plotBoundary',{plotBoundary},'plotAssympt',{plotAssympt},'btExt',{btExt});
 
-firstDerivative = GetFiniteDifferenceCoeff([-1,0,1],1)';
-secondDerivative = GetFiniteDifferenceCoeff([-1,0,1],2)';
-derivative = struct('first',{firstDerivative},'second',{secondDerivative});
+firstXDerivative = GetFiniteDifferenceCoeff([-1,0,1],1)'/h;
+secondXDerivative = GetFiniteDifferenceCoeff([-1,0,1],2)'/h^2;
+firstTDerivative = GetFiniteDifferenceCoeff([-1,0,1],1)'/tTau;
+secondTDerivative = GetFiniteDifferenceCoeff([-1,0,1],2)'/tTau^2;
+derivative = struct('firstX',{firstXDerivative},'secondX',{secondXDerivative},'firstT',{firstTDerivative},'secondT',{secondTDerivative});
 % firstDerivative = firstDerivative
 % secondDerivative = secondDerivative
 % return;
@@ -43,11 +46,11 @@ derivative = struct('first',{firstDerivative},'second',{secondDerivative});
 k = sqrt(.5 - sqrt(1-4*c^2)/2); % k1 = -.3; k2 = .3; 
 %b1 := 4; b2 := 4;
 a1 = 0.5; a2 = 0.5; a12 = 0.25;
-IC = GetApproximateSolution(type,X,Y,k,a1,a2,a12);
-figure(1)
-mesh(x,y,IC');
-xlabel('x');    ylabel('t');
-title('start solution');
+IC = 1*GetApproximateSolution('xt',X,Y,k,a1,a2,a12);
+% figure(1)
+% mesh(x,y,IC');
+% xlabel('x');    ylabel('t');
+% title('start solution');
 % return;
 zeroMatrix = zeros(size(IC));
 
@@ -55,11 +58,12 @@ zeroMatrix = zeros(size(IC));
 % th = abs(IC(zeroX,zeroY));
 % IC = IC/th;
 th = 1;
-crrntResidual = th*GetResidual(type, bt, c, IC, al*th, 0, zeroMatrix, derivative);
-figure(2)
-mesh(x,y,crrntResidual');
+crrntResidual = th*GetResidual(type, bt, btExt, c, IC, al*th, 0, zeroMatrix, derivative);
+figure(1)
+%mesh(x,y,crrntResidual');
+mesh(x(3:end-2), y(5:end-4), crrntResidual(3:end-2,5:end-4)');
 xlabel('x');    ylabel('t');
-title('residual');
+title('start residual');
 % return;
 
 [Phi,Psi,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
@@ -67,24 +71,24 @@ title('residual');
 
 fprintf('elapsed time = %d \n', toc);
 
-figure(10)
-%mesh(x, y, Phi');
-mesh(x(1:end), y(2:end-1), Phi(1:end,2:end-1)');
-xlabel('x');    ylabel('t');
-title('end solution');
-figure(11)
-mesh(x, y, (Phi-IC)');
-title('diff end solution - IC');
-figure(12)
-%mesh(x, y, Psi');
-mesh(x(1:end), y(3:end-2), Psi(1:end,3:end-2)')
-xlabel('x');    ylabel('t');
-title('end supplementary function');
-figure(13)
+% figure(10)
+% %mesh(x, y, Phi');
+% mesh(x(1:end), y(2:end-1), Phi(1:end,2:end-1)');
+% xlabel('x');    ylabel('t');
+% title('end solution');
+% figure(11)
+% mesh(x, y, (Phi-IC)');
+% title('diff end solution - IC');
+% figure(12)
+% %mesh(x, y, Psi');
+% mesh(x(1:end), y(3:end-2), Psi(1:end,3:end-2)')
+% xlabel('x');    ylabel('t');
+% title('end supplementary function');
+figure(2)
 %deltaPhi = XDerivative(Phi, zeroMatrix,derivative.second) + YDerivative(Phi, zeroMatrix,derivative.second);
-crrntResidual = thetaVector(end)*GetResidual(type, bt, c, Phi, al*bt*thetaVector(end), 0, zeroMatrix, derivative);
-mesh(x(1:end), y(3:end-2), crrntResidual(1:end,3:end-2)');
-title('resiudal');
+crrntResidual = th*GetResidual(type, bt, btExt, c, Phi, al*th, 0, zeroMatrix, derivative);
+mesh(x(3:end-2), y(5:end-4), crrntResidual(3:end-2,5:end-4)');
+title('end resiudal');
 return;
 figure(5);
 resEnd = ceil(length(tauVector)/10);

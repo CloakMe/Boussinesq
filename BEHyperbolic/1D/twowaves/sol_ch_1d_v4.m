@@ -7,6 +7,7 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     end
 
     % constants
+    btExt  = 1;
     tau = prmtrs.tau;
     h=prmtrs.h;
     eps = prmtrs.eps;
@@ -43,7 +44,7 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
 	USquare = U .^2;
     % check that 2*(bt*c^2+1)*Phixy(1,1) == 0
 	thetaVector(iterCounter) = ( P(zeroX,zeroT) + Uxx(zeroX,zeroT))/(al*bt*USquare(zeroX,zeroT));
-	residual = GetResidual(prmtrs.type, bt, c, U, al*thetaVector(iterCounter), hypU, zeroMatrix, derivative);
+	residual = GetResidual(prmtrs.type, bt, btExt, c, U, al*thetaVector(iterCounter), hypU, zeroMatrix, derivative);
 %     figure(11)
 %     mesh(x,t,residual*thetaVector(iterCounter));
 %     title('residual');
@@ -74,7 +75,7 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
         
         if(mod(iterCounter,10) ==0)        
            
-           crrntResidual = GetResidual(prmtrs.type, bt, c, U, al*thetaVector(iterCounter), 0, zeroMatrix, derivative);
+           crrntResidual = GetResidual(prmtrs.type, bt, 1, c, U, al*thetaVector(iterCounter), 0, zeroMatrix, derivative);
            
            subCounter=subCounter+1;
            [residualInfNorm(subCounter)]=abs(thetaVector(iterCounter))*max(max(abs(crrntResidual)));

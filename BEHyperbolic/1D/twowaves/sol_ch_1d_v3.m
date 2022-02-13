@@ -1,12 +1,20 @@
 function [PhiUp,PsiUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     sol_ch_1d_v3(Phi,x,y,prmtrs,bt1,bt2,al,c,theta,derivative,Psi)
 
+    %equation system after VC s = x-ct, r = x+ct and removing u_xxtt (btExt = 0) transforms to
+    % pSi = (btExt*bt*c^2-1) * Delta(phi) - 2*(btExt*bt*c^2+1) * phi_sr + al*bt*phi^2
+    % bt(c^2-1) * Delta(phi) - 2*bt*(c^2+1) * phi_sr = Delta(pSi) + 2 * pSi_sr
+    % which transforms to (btExt = 0):
+    % pSi = (-1) * Delta(phi) - 2*(+1) * phi_sr + al*bt*phi^2
+    % bt(c^2-1) * Delta(phi) - 2*bt*(c^2+1) * phi_sr = Delta(pSi) + 2 * pSi_sr    
+    
     sw = 0;  
     if (nargin == 11) 
         sw=1; 
     end
 
     % constants
+    btExt = 0;
     tau = prmtrs.tau;
     h=prmtrs.h;
     eps = prmtrs.eps;
@@ -44,7 +52,7 @@ function [PhiUp,PsiUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
 	PhiSquare = Phi .^2;
     % check that 2*(bt*c^2+1)*Phixy(1,1) == 0
 	thetaVector(iterCounter) = ( Psi(zeroX,zeroY) - (-1)*deltaPhi(zeroX,zeroY) + 2*(+1)*Phixy(zeroX,zeroY) )/(al*bt*PhiSquare(zeroX,zeroY));
-	residual = GetResidual(bt, c, Phi, al*bt*thetaVector(iterCounter)*PhiSquare, deltaPhi, zeroMatrix, derivative);
+	residual = GetResidual(prmtrs.type, bt, btExt, c, Phi, al*bt*thetaVector(iterCounter)*PhiSquare, deltaPhi, zeroMatrix, derivative);
     figure(11)
     mesh(x,y,residual*thetaVector(iterCounter));
     title('residual');
@@ -76,7 +84,7 @@ function [PhiUp,PsiUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
         
         if(mod(iterCounter,10) ==0)        
            
-           crrntResidual = GetResidual(bt, c, Phi, al*bt*thetaVector(iterCounter)*PhiSquare, deltaPhi, zeroMatrix, derivative);
+           crrntResidual = GetResidual(prtmrs.type, bt, btExt, c, Phi, al*bt*thetaVector(iterCounter)*PhiSquare, deltaPhi, zeroMatrix, derivative);
            
            subCounter=subCounter+1;
            [residualInfNorm(subCounter)]=abs(thetaVector(iterCounter))*max(max(abs(crrntResidual)));

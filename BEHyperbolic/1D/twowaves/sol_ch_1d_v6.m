@@ -8,9 +8,10 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
         sw=1; 
     end
     
-    derivatived2T = finiteDiff.second / prmtrs.tTau^2;
-    derivatived2X = finiteDiff.second / prmtrs.h^2;
+    derivatived2T = finiteDiff.secondT;
+    derivatived2X = finiteDiff.secondX;
     % constants
+    btExt = prmtrs.btExt;
     tau = prmtrs.tau;
     h=prmtrs.h;
     tTau = prmtrs.tTau;
@@ -37,10 +38,10 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     %step = Step(h);
     zeroMatrix = zeros(size(U));
     
-    Utt = YDerivative(U, zeroMatrix, derivatived2T);
-    Uxx = XDerivative(U, zeroMatrix, finiteDiff.second / h^2);
+    Utt = YDerivativeEvenFunctions2D(U, zeroMatrix, derivatived2T);
+    Uxx = XDerivativeEvenFunctions2D(U, zeroMatrix, derivatived2X);
     if(sw == 0)
-        P = theta*al*bt*U.^2 - Uxx + bt * Utt;        
+        P = theta*al*bt*U.^2 - Uxx + bt * Utt; %      
     end
     
     sx = length(x);
@@ -62,8 +63,8 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
 
     dU2l = -1/h^2;
     dU2r = -1/h^2;
-    dU2d = dU1d;
-    dU2u = dU1u;
+    dU2d = dU1d*btExt;
+    dU2u = dU1u*btExt;
 
     dP2c = -1;
     tic
@@ -72,9 +73,9 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
             dF1(jx,it) = dU1l * changeU(jx-1,it) + dU1c * changeU(jx,it) + dU1r * changeU(jx+1,it) +...
                 dU1d * changeU(jx,it-1) + dU1u * changeU(jx,it+1) + dP1l * changeP(jx-1,it) + dP1c * changeP(jx,it) + dP1r * changeP(jx+1,it);
             
-            dU2c = (-2*bt/tTau^2 + 2/h^2 + 2*theta*al*bt*U(jx,it) );            
+            dU2c = ( -2*bt*btExt/tTau^2 + 2/h^2 + theta*al*bt*U(jx,it) );    %        
             dF2(jx,it) = dU2l * changeU(jx-1,it) + dU2c * changeU(jx,it) + dU2r * changeU(jx+1,it) +...
-                dU2d * changeU(jx,it-1) + dU2u * changeU(jx,it+1) + dP2c * changeP(jx,it);
+                 dU2d * changeU(jx,it-1) + dU2u * changeU(jx,it+1) + dP2c * changeP(jx,it); % 
         end
     end  
     toc
@@ -82,41 +83,46 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     L=-GenerateBandDiagMatrix(derivatived2X, sx);
     M=bt*GenerateBandDiagMatrix(derivatived2T, st);
     
-    P = U * M' + L * U + theta*al*bt*U.^2;
+    P = btExt * U * M' + L * U + theta*al*bt*U.^2; %
     
     tic
-    dFF1 = U * M' + L * (bt * U + P);
-    dFF2 = U * M' + L * U - P + ( theta*al*bt*U ) .* U; %-2*bt/tTau^2 + 2/h^2 + 
+    FF1 =          U * M' +  L * (bt * U + P);
+    FF2 =  btExt * U * M' +  L * U - P + theta*al*bt*U .^ 2; %  
     toc
     
+%     figure(5);
+%     mesh( x(3:end-2), t(3:end-2), FF1(3:end-2,3:end-2)' );
+%     xlabel('x');    ylabel('t');
+%     title('FF1');
+    
     tic
-    dG1 = bt * YDerivativeEvenFunctions2D(U, zeroMatrix, finiteDiff.second/tTau^2) - XDerivativeEvenFunctions2D( bt * U + P, zeroMatrix, finiteDiff.second/h^2);
-    dG2 = bt * YDerivativeEvenFunctions2D(U, zeroMatrix, finiteDiff.second/tTau^2) - XDerivativeEvenFunctions2D(U, zeroMatrix, finiteDiff.second/h^2) + ...
+    dG1 =         bt * YDerivativeEvenFunctions2D(U, zeroMatrix, finiteDiff.secondT) - XDerivativeEvenFunctions2D( bt * U + P, zeroMatrix, finiteDiff.secondX);
+    dG2 = btExt * bt * YDerivativeEvenFunctions2D(U, zeroMatrix, finiteDiff.secondT) - XDerivativeEvenFunctions2D(U, zeroMatrix, finiteDiff.secondX) + ...
         2*theta*al*bt*U .* U - P;
     toc
     [X,D] = eig(M);
     Lstar = zeros( sx, sx, st );
     subU = U;
-    shiftU = U;
+    
     Isx = diag( ones(1,sx) );
-    b = ( - dFF1 ) * X;
+    b = ( - FF1 ) * X;
     tic
     for it=1:st
         Ln = 2*theta*al*bt*diag(U(:,it));
-        Lstar(:,:,it) = L * ( (bt - D(it,it)) * Isx - L - Ln) + D(it,it) *Isx ;
+        Lstar(:,:,it) = L * ( ( bt - btExt * D(it,it) ) * Isx - L - Ln) + D(it,it) *Isx ; %
         subU(:,it) = Lstar(:,:,it)\b(:,it);
     end
     shiftU = subU/X;
     toc
-    shiftP = - dFF2 - L * shiftU - shiftU * M' - 2*theta*al*bt*U .* shiftU;
+    shiftP = - FF2 - L * shiftU - btExt * shiftU * M' - 2*theta*al*bt*U .* shiftU; % 
     figure(4);
     mesh(x(2:end-1),t(2:end-1),shiftU(2:end-1,2:end-1)');
     xlabel('x');    ylabel('t');
     title('shift U');
-    figure(5);
-    mesh(x(2:end-1),t(3:end-2),shiftP(2:end-1,3:end-2)');
-	xlabel('x');    ylabel('t');
-	title('shift P');
+%     figure(5);
+%     mesh(x(2:end-1),t(3:end-2),shiftP(2:end-1,3:end-2)');
+% 	  xlabel('x');    ylabel('t');
+% 	  title('shift P');
 %     figure(1)
 %     mesh(x,t,dF1');
 %     xlabel('x');    ylabel('t');
@@ -125,7 +131,7 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
 %     xlabel('x');    ylabel('t');
 %     title('dF1-dG1');
 %     figure(3)
-%     mesh(x(2:end-1),t(2:end-1),(dF1(2:end-1,2:end-1)-dFF1(2:end-1,2:end-1))');
+%     mesh(x(3:end-2),t(2:end-1),(dF1(3:end-2,2:end-1)-dFF1(3:end-2,2:end-1))');
 %     xlabel('x');    ylabel('t');
 %     title('dF1-dFF1');
 %     figure(3)

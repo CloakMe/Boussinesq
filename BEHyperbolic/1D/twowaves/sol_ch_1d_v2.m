@@ -1,6 +1,10 @@
 function [PhiUp,PsiUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     sol_ch_1d_v2(Phi,x,y,prmtrs,bt1,bt2,al,c,theta,derivative,Psi)
 
+    %equation system after VC s = x-ct, r = x+ct transforms to
+    % pSi = (bt*c^2-1) * Delta(phi) - 2*(bt*c^2+1) * phi_sr + al*bt*phi^2
+    % bt(c^2-1) * Delta(phi) - 2*bt*(c^2+1) * phi_sr = Delta(pSi) + 2 * pSi_sr
+    %
     sw = 0;  
     if (nargin == 11) 
         sw=1; 
@@ -76,7 +80,7 @@ function [PhiUp,PsiUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
         
         if(mod(iterCounter,10) ==0)        
            
-           crrntResidual = GetResidual(bt, c, Phi, al*bt*thetaVector(iterCounter)*PhiSquare, deltaPhi, zeroMatrix, derivative);
+           crrntResidual = GetResidual(prtmrs.type, bt, btExt, c, Phi, al*bt*thetaVector(iterCounter)*PhiSquare, deltaPhi, zeroMatrix, derivative);
            
            subCounter=subCounter+1;
            [residualInfNorm(subCounter)]=abs(thetaVector(iterCounter))*max(max(abs(crrntResidual)));
