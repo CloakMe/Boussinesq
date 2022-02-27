@@ -3,7 +3,7 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
     
-    sw = 0;  
+    sw = 0;
     if (nargin == 11) 
         sw=1; 
     end
@@ -41,7 +41,7 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
     Utt = YDerivativeEvenFunctions2D(U, zeroMatrix, derivatived2T);
     Uxx = XDerivativeEvenFunctions2D(U, zeroMatrix, derivatived2X);
     if(sw == 0)
-        P = theta*al*bt*U.^2 - Uxx + bt * Utt; %      
+        P = theta*al*bt*U.^2 - Uxx + btExt * bt * Utt; %      
     end
     
     sx = length(x);
@@ -79,46 +79,60 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
         end
     end  
     toc
-      
+    
     L=-GenerateBandDiagMatrix(derivatived2X, sx, 'dudxZero', 'Identity');
     M=bt*GenerateBandDiagMatrix(derivatived2T, st, 'Identity', 'Identity');
+    [X,D] = eig(M);
+    Isx = diag( ones(1,sx) );
+    Lstar = zeros( sx, sx, st );
     
     P = btExt * U * M' + L * U + theta*al*bt*U.^2; %
-    
-    tic
-    FF1 =          U * M' +  L * (bt * U + P);
-    FF2 =  btExt * U * M' +  L * U - P + theta*al*bt*U .^ 2; %  
-    toc
-    
-%     figure(5);
-%     mesh( x(3:end-2), t(3:end-2), FF1(3:end-2,3:end-2)' );
-%     xlabel('x');    ylabel('t');
-%     title('FF1');
-    
-    tic
-    dG1 =         bt * YDerivativeEvenFunctions2D(U, zeroMatrix, finiteDiff.secondT) - XDerivativeEvenFunctions2D( bt * U + P, zeroMatrix, finiteDiff.secondX);
-    dG2 = btExt * bt * YDerivativeEvenFunctions2D(U, zeroMatrix, finiteDiff.secondT) - XDerivativeEvenFunctions2D(U, zeroMatrix, finiteDiff.secondX) + ...
-        2*theta*al*bt*U .* U - P;
-    toc
-    [X,D] = eig(M);
-    Lstar = zeros( sx, sx, st );
-    subU = U;
-    
-    Isx = diag( ones(1,sx) );
-    b = ( - FF1 ) * X;
-    tic
-    for it=1:st
-        Ln = 2*theta*al*bt*diag(U(:,it));
-        Lstar(:,:,it) = L * ( ( bt - btExt * D(it,it) ) * Isx - L - Ln) + D(it,it) *Isx ; %
-        subU(:,it) = Lstar(:,:,it)\b(:,it);
+    iter = 0;
+    while( iter < 2 )   
+        iter = iter + 1;
+        tic
+        FF1 =          U * M' +  L * (bt * U + P);
+        FF2 =  btExt * U * M' +  L * U - P + theta*al*bt*U .^ 2; %  
+        toc
+
+    %     figure(5);
+    %     mesh( x(3:end-2), t(3:end-2), FF1(3:end-2,3:end-2)' );
+    %     xlabel('x');    ylabel('t');
+    %     title('FF1');
+    %     
+    %     tic
+    %     dG1 =         bt * YDerivativeEvenFunctions2D(U, zeroMatrix, finiteDiff.secondT) - XDerivativeEvenFunctions2D( bt * U + P, zeroMatrix, finiteDiff.secondX);
+    %     dG2 = btExt * bt * YDerivativeEvenFunctions2D(U, zeroMatrix, finiteDiff.secondT) - XDerivativeEvenFunctions2D(U, zeroMatrix, finiteDiff.secondX) + ...
+    %         2*theta*al*bt*U .* U - P;
+    %     toc
+                
+        subU = U;        
+        b = ( - FF1 ) * X;
+        
+        tic
+        for it=1:st
+            Ln = 2*theta*al*bt*diag(U(:,it));
+            Lstar(:,:,it) = L * ( ( bt - btExt * D(it,it) ) * Isx - L - Ln) + D(it,it) *Isx ; %
+            subU(:,it) = Lstar(:,:,it)\b(:,it);
+        end
+        shiftU = subU/X;
+        toc
+        shiftP = - FF2 - L * shiftU - btExt * shiftU * M' - 2*theta*al*bt*U .* shiftU; % 
+        U = U + shiftU;
+        P = P + shiftP;
+        
+        figure(20);
+        mesh(x(2:end-1),t(2:end-1),shiftU(2:end-1,2:end-1)');
+        xlabel('x');    ylabel('t');
+        title('shift U');
+        
+        figure(21);
+        mesh(x(2:end-1),t(2:end-1),shiftP(2:end-1,2:end-1)');
+        xlabel('x');    ylabel('t');
+        title('shift P');
     end
-    shiftU = subU/X;
-    toc
-    shiftP = - FF2 - L * shiftU - btExt * shiftU * M' - 2*theta*al*bt*U .* shiftU; % 
-    figure(4);
-    mesh(x(2:end-1),t(2:end-1),shiftU(2:end-1,2:end-1)');
-    xlabel('x');    ylabel('t');
-    title('shift U');
+    UUp = U;
+    PUp = P;
 %     figure(5);
 %     mesh(x(2:end-1),t(3:end-2),shiftP(2:end-1,3:end-2)');
 % 	  xlabel('x');    ylabel('t');
@@ -149,8 +163,7 @@ function [UUp,PUp,thetaVector,solutionNorms,tauVector,angl,sw_div]=...
 %     figure(6)
 %     mesh(x,t,(dF2- dFF2)');
 %     xlabel('x');    ylabel('t');
-     UUp = U + shiftU;
-     PUp = P + shiftP;
+     
      thetaVector = theta;
      solutionNorms = 1;
      tauVector =1; 
