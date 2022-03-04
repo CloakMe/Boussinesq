@@ -73,8 +73,8 @@ Idh=(h^2*eye(7)-dh);
     k=2;
     s=1; e=1;
     vmo=v1; vz = v2;
-    v = zeros(sx,20*t_end-1);
-    
+    v = zeros(sx, estep*t_end-1);
+    tt = zeros(1, estep*t_end-1);
     tic
     while(t(k)<t_end)
         %picardi g1:
