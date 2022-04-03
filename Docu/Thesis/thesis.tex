@@ -282,7 +282,8 @@ $$ O( N_x N_y N_t ) $$
 
 \subsection{Ред на сходимост при Консервативната схема}
 
-Table \ref{tableC} measures the convergence speed based on the results of the numerical solution $u_h$. The Conservative FDS applies only second approximation order, thus $p=2$ for Test 1 and Test 2 in the first column. Three nested meshes are used with different step sizes which are present in the second column. The next two columns show the errors $\Vert u_{h,\tau} - u_{(h,\tau)/2} \Vert_\kappa$, $\Vert  u_{(h,\tau)/2} - u_{(h,\tau)/4} \Vert_\kappa$ and convergence speed $\xi$ from \rf{Runge} which are measured in $L_2$ and infinity norms. 
+Таблица \ref{tableC} показва скоростта на сходимост на численото решение по правилото на Рунге \rf{Runge} върху три вложени мрежи. При Консервативната схема са приложени крайни разлики само от втори порядък на апроксимация, т.е. $p=2$ при Тест 1 и Тест 2 представени в първата колона от таблицата. Стъпките по времето и пространството са описани във втората колона. В следващите две колони са представени апроксимационните грешки  $\Vert u_{h,\tau} - u_{(h,\tau)/2} \Vert_\kappa$, $\Vert  u_{(h,\tau)/2} - u_{(h,\tau)/4} \Vert_\kappa$ в $L_2$ и $L_{\infty}$ норми както и скоростта на сходимост.
+
 %C
 \begin{table}[ht]
 \centering
@@ -290,8 +291,8 @@ Table \ref{tableC} measures the convergence speed based on the results of the nu
 		\begin{tabular}{||c|l|ll|ll||}
 			\hline
 			\hline
-      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
-	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & Ап. грешки      &Ред на& Ап. грешки        &Ред на   \\
+	                                        &                                                     &  $E_i$в$L_2$ &  сход. & $E_i$в$L_\infty$  & сход. \\
    			\hline 
 					\hline 
   $\beta=3$                &0.2, 0.001         &                    &                &                  &                   \\
@@ -305,7 +306,7 @@ Table \ref{tableC} measures the convergence speed based on the results of the nu
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Convergence speed for the solution obtained by the Conservative FDS with zero boundary conditions and approximation errors $O(h^{2} + \tau^2 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+		\caption{Скорост на сходимост на численото решение при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми}
 \label{tableC}
 \end{table}
 
@@ -316,8 +317,8 @@ Table \ref{tableC} measures the convergence speed based on the results of the nu
 		\begin{tabular}{||c|l|ll|ll||}
 			\hline
 			\hline
-      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
-	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & Ап. грешки      &Ред на& Ап. грешки        &Ред на   \\
+	                                        &                                                     &  $E_i$в$L_2$ &  сход. & $E_i$в$L_\infty$  & сход. \\
    			\hline 
 					\hline 
   $\beta=3$                &0.2, 0.005         &                    &                &                  &                   \\
@@ -331,15 +332,15 @@ Table \ref{tableC} measures the convergence speed based on the results of the nu
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{ Convergence speed for the discrete Energy using the Conservative FDS with zero boundary conditions and approximation errors $O(h^{2} + \tau^2 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms. }
+		\caption{Скорост на сходимост на дискретната Енергия при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми}
 \label{tableD}
 \end{table}
 
-Table \ref{tableD} is analogous to Table \ref{tableC} and measures the convergence speed based on the results of the discrete Energy \rf{ex-en}. The convergence rate of both solution and Energy is found to be in correspondence with the second order approximation that is used.
+Таблица \ref{tableD} е аналогична с Таблица \ref{tableC}, но показва скоростта на сходимостта на дискретната Енергия \rf{ex-en}. Вижда се, че резултатите от двете таблици са близки и съизмерими с използвания втори ред на апроксимация.
 
-\subsection{Convergence Rate for the TS Approach with Method of Lines}
+\subsection{Ред на сходимост при метода на Тейлор (метод на Линиите)}
 
-Table \ref{tableA} measures the convergence speed based on the results of the numerical solution $u_h$. The Taylor method applies second, fourth and sixth approximation order, thus $p=2,4,6$ for Test 1 and Test 2 in the first column. Three nested meshes are used with different step sizes which are present in the second column. The next two columns show the errors $\Vert u_{h,\tau} - u_{(h,\tau)/2} \Vert_\kappa$, $\Vert  u_{(h,\tau)/2} - u_{(h,\tau)/4} \Vert_\kappa$ and convergence speed $\xi$ from \rf{Runge} which are measured in $L_2$ and infinity norms. The convergence results for the Taylor solution correspond to the approximation order that is used. Only in the case of Test 2, $O(h^6 + \tau^6)$ and $L_2$ norm, the convergence result $4.86$ is slightly lower than expected. This is a result of the zero boundary conditions with additionally applying seven point finite difference (for the $O(h^6 + \tau^6)$ approximation).
+В таблица \ref{tableA} е представен редът на сходимост от численото решение. При методът на Тейлор са използвани апроксимации от втори, четвърти и шести ред, т.е. $p=2,4,6$ за Тест 1 и Тест 2 от първата колона в таблицата. Тук отново са направени изчисления върху три вложени мрежи с различни стъпки по времето и пространстово, които са показани във втората колона. В следващите две колони са представени апроксимационните грешки  $\Vert u_{h,\tau} - u_{(h,\tau)/2} \Vert_\kappa$, $\Vert  u_{(h,\tau)/2} - u_{(h,\tau)/4} \Vert_\kappa$ в $L_2$ и $L_{\infty}$ норми както и редът на сходимост. Стойностите на сходимост отговарят на приложения ред на апроксимация. Само при Тест 2, $O(h^6 + \tau^6)$ и $L_2$ норма, сходимостта $4.86$ е малко по-ниска от очакваното. Този резултат се отдава на нулевото гранично условие заедно с използвания седем точков шаблон по границата при апроксимация $O(h^6 + \tau^6)$.
 %A
 \begin{table}[ht]
 \centering
@@ -378,7 +379,7 @@ Table \ref{tableA} measures the convergence speed based on the results of the nu
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Convergence speed for the solution obtained by Taylor method with zero boundary conditions and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+		\caption{Скорост на сходимост на численото решение при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми}
 \label{tableA}
 \end{table}
 
