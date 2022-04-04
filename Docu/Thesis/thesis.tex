@@ -306,7 +306,7 @@ $$ O( N_x N_y N_t ) $$
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Скорост на сходимост на численото решение при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми}
+		\caption{Скорост на сходимост на численото решение при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми.}
 \label{tableC}
 \end{table}
 
@@ -332,7 +332,7 @@ $$ O( N_x N_y N_t ) $$
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Скорост на сходимост на дискретната Енергия при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми}
+		\caption{Скорост на сходимост на дискретната Енергия при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми.}
 \label{tableD}
 \end{table}
 
@@ -348,8 +348,9 @@ $$ O( N_x N_y N_t ) $$
 		\begin{tabular}{||c|l|ll|ll||}
 			\hline
 			\hline
-      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
-	         &                    &                               & Rate   &                                        & Rate \\
+
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & Ап. грешки      &Ред на& Ап. грешки        &Ред на   \\
+	                                        &                                                     &  $E_i$в$L_2$ &  сход. & $E_i$в$L_\infty$  & сход. \\
    			\hline 
 					\hline 
   $\beta=3$                &0.2, 0.001          &              &              &                     &      \\
@@ -379,13 +380,13 @@ $$ O( N_x N_y N_t ) $$
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Скорост на сходимост на численото решение при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми}
+		\caption{Скорост на сходимост на численото решение при метода на Тейлор с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми.}
 \label{tableA}
 \end{table}
 
-Table \ref{tableB} has analogous structure as Table \ref{tableA} and measures the convergence rate based on the results of the discrete Energy \rf{ex-en}. The convergence rate of the Energy corresponds to the approximation order that is used. Only for Test 2 and $O(h^6 + \tau^6)$ the convergence results $4.45$ and $4.68$ for $L_2$ and infinity norms are slightly less than expected. Analogously to the previous Table \ref{tableA} where the $L_2$ is out of expected order, this result could be due to the zero boundary conditions. The evaluation of the Energy functional \rf{ex-en} involves quadrature formulas which implies similar behavour to the $L_2$ norm. Thus, the infinity norm results in a similar convergence rate $4.68$ for the problematic case.
+Таблица \ref{tableB} е аналогична с Таблица \ref{tableA}, но показва скоростта на сходимост на дискретната Енергия \rf{ex-en}. Резултатите от двете таблици са близки и съизмерими с използвания (втори, четвърти и шести) ред на апроксимация. Само при  Тест 2 и апроксимация $O(h^6 + \tau^6)$ стойностите за сходимостта $4.45$ и $4.68$ при $L_2$ и $L_{\infty}$ норми са по-малко от очакваното. Това поведение е аналогично с предишната Таблица \ref{tableA}, където само резулатът от $L_2$ нормата се отклонява и се отдава на нулевото гранично условие. Тъй като изчислението на Енергийния функционал \rf{ex-en} включва квадратурни формули, то неговото поведение изначало е сходно с това на $L_2$ нормата още преди да е приложена каквато и да е норма върху него. В случая на $O(h^2 + \tau^2)$  апроксимация и при двата теста е използвана по-малка стъпка $\tau = h/200$, което води до сходни по форма решения не само при трите вложени мрежи, но и при различните апроксимации. Ако се избере по-голяма стъпка (например $\tau = h/10$), разликите в решенията при $O(h^2 + \tau^2)$ и другите две апроксимации $O(h^4 + \tau^4)$ и $O(h^6 + \tau^6)$ са доста големи.
+
 % When using zero boundary conditions all points on the finite difference stencil that are outside the numerical domain $\Omega_h$ are zeros. This creates a jagged solution surface on the boundary.
-For the $O(h^2 + \tau^2)$ case ( both Test 1 and Test 2), much smaller time step  $\tau = h/200$ is used. This results in solutions which are similar in shape and form for the three nested meshes. If the step is chosen bigger (e.g. $\tau = h/10$), then the difference in the solution shape between $O(h^2 + \tau^2)$ and the other $O(h^4 + \tau^4)$ and $O(h^6 + \tau^6)$ approximations is much larger. 
 
 %B
 \begin{table}[ht]
@@ -394,8 +395,8 @@ For the $O(h^2 + \tau^2)$ case ( both Test 1 and Test 2), much smaller time step
 		\begin{tabular}{||c|l|ll|ll||}
 			\hline
 			\hline
-      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{ 2 }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
-	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & Ап. грешки      &Ред на& Ап. грешки        &Ред на   \\
+	                                        &                                                     &  $E_i$в$L_2$ &  сход. & $E_i$в$L_\infty$  & сход. \\
    			\hline 
 					\hline 
   $\beta=3$                &0.2, 0.001         &              &            &                     &      \\
@@ -425,7 +426,7 @@ For the $O(h^2 + \tau^2)$ case ( both Test 1 and Test 2), much smaller time step
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Convergence speed for the Energy using Taylor method with zero boundary conditions and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms.}
+		\caption{Скорост на сходимост на дискретната Енергия при метода на Тейлор с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми.}
 \label{tableB}
 \end{table}
 
