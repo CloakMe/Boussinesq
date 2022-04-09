@@ -601,6 +601,7 @@ $$ O( N_x N_y N_t ) $$
 \caption{Numerical solution of single wave for $\beta=1$ and $c = 0.9$ at times $t=0,6,12,18,24,30$.}
 \label{Wave2}
 \end{figure}
+
 Фигурите показват, че най-големите различия се проявяват около и в максимума на вълната. В допълнение към последните резултати е Таблица \ref{tableF}, която отново показва разликите $||uC - uT||_\kappa$ в  $L_2$ и ${L_\infty}$ норми. Последната колона от таблицата е за безкрайната норма (което е максимума на решението) The last column of the Table is for the infinity norm of the solution $||uC||_{L_\infty}$ (which is the wave maximum) measured by the Conservative FDS. It is observed that decreasing the step sizes $h$ and $\tau$ results in a smaller difference.  Furthermore the percentage difference when using the infinity norm
 $$\frac{ ||uC - uT||_{L_\infty}} { ||uC||_{L_\infty} } \times 100$$
 varies in the inteval $[0.0001\%, 0.69\%]$ for all rows in the table. Analogous results are obtained for the percentage difference when using the $L_2$ norm and thus are omitted. The difference between the wave shapes obtained by Conservative FDS and the Taylor Series approach with Method of lines is negligible. It is expected that $||uC - uT||_\kappa$ goes to zero when $h$ and $\tau$ are infinitely small.
