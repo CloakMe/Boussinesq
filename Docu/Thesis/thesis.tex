@@ -151,7 +151,7 @@ D_h(u_{i,j}) =\frac{h_2 }{3}
 апроксимацията на интеграла \eqref{intM} с глобална грешка $O(|h_1|^4+|h_2|^4)$.
 
 
-\subsection{ 2D правило на Буул с глобална грешка $O(|h_1|^6+|h_2|^6)$}
+\subsection{ 2Д правило на Буул с глобална грешка $O(|h_1|^6+|h_2|^6)$}
 
 Нека да приемем, че $N_x=4k$, $N_y=4 l$. Така, за всяко $m=0,1,2,\cdots N_y$ пресмятаме, че
 
@@ -306,7 +306,7 @@ $$ O( N_x N_y N_t ) $$
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Скорост на сходимост на численото решение при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми}
+		\caption{Скорост на сходимост на численото решение при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми.}
 \label{tableC}
 \end{table}
 
@@ -332,7 +332,7 @@ $$ O( N_x N_y N_t ) $$
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Скорост на сходимост на дискретната Енергия при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми}
+		\caption{Скорост на сходимост на дискретната Енергия при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми.}
 \label{tableD}
 \end{table}
 
@@ -348,8 +348,9 @@ $$ O( N_x N_y N_t ) $$
 		\begin{tabular}{||c|l|ll|ll||}
 			\hline
 			\hline
-      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
-	         &                    &                               & Rate   &                                        & Rate \\
+
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & Ап. грешки      &Ред на& Ап. грешки        &Ред на   \\
+	                                        &                                                     &  $E_i$в$L_2$ &  сход. & $E_i$в$L_\infty$  & сход. \\
    			\hline 
 					\hline 
   $\beta=3$                &0.2, 0.001          &              &              &                     &      \\
@@ -379,13 +380,13 @@ $$ O( N_x N_y N_t ) $$
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Скорост на сходимост на численото решение при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми}
+		\caption{Скорост на сходимост на численото решение при метода на Тейлор с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми.}
 \label{tableA}
 \end{table}
 
-Table \ref{tableB} has analogous structure as Table \ref{tableA} and measures the convergence rate based on the results of the discrete Energy \rf{ex-en}. The convergence rate of the Energy corresponds to the approximation order that is used. Only for Test 2 and $O(h^6 + \tau^6)$ the convergence results $4.45$ and $4.68$ for $L_2$ and infinity norms are slightly less than expected. Analogously to the previous Table \ref{tableA} where the $L_2$ is out of expected order, this result could be due to the zero boundary conditions. The evaluation of the Energy functional \rf{ex-en} involves quadrature formulas which implies similar behavour to the $L_2$ norm. Thus, the infinity norm results in a similar convergence rate $4.68$ for the problematic case.
+Таблица \ref{tableB} е аналогична с Таблица \ref{tableA}, но показва скоростта на сходимост на дискретната Енергия \rf{ex-en}. Резултатите от двете таблици са близки и съизмерими с използвания (втори, четвърти и шести) ред на апроксимация. Само при  Тест 2 и апроксимация $O(h^6 + \tau^6)$ стойностите за сходимостта $4.45$ и $4.68$ при $L_2$ и $L_{\infty}$ норми са по-малко от очакваното. Това поведение е аналогично с предишната Таблица \ref{tableA}, където само резулатът от $L_2$ нормата се отклонява и се отдава на нулевото гранично условие. Тъй като изчислението на Енергийния функционал \rf{ex-en} включва квадратурни формули, то неговото поведение изначало е сходно с това на $L_2$ нормата още преди да е приложена каквато и да е норма върху него. В случая на $O(h^2 + \tau^2)$  апроксимация и при двата теста е използвана по-малка стъпка $\tau = h/200$, което води до сходни по форма решения не само при трите вложени мрежи, но и при различните апроксимации. Ако се избере по-голяма стъпка (например $\tau = h/10$), разликите в решенията при $O(h^2 + \tau^2)$ и другите две апроксимации $O(h^4 + \tau^4)$ и $O(h^6 + \tau^6)$ са доста големи.
+
 % When using zero boundary conditions all points on the finite difference stencil that are outside the numerical domain $\Omega_h$ are zeros. This creates a jagged solution surface on the boundary.
-For the $O(h^2 + \tau^2)$ case ( both Test 1 and Test 2), much smaller time step  $\tau = h/200$ is used. This results in solutions which are similar in shape and form for the three nested meshes. If the step is chosen bigger (e.g. $\tau = h/10$), then the difference in the solution shape between $O(h^2 + \tau^2)$ and the other $O(h^4 + \tau^4)$ and $O(h^6 + \tau^6)$ approximations is much larger. 
 
 %B
 \begin{table}[ht]
@@ -394,8 +395,8 @@ For the $O(h^2 + \tau^2)$ case ( both Test 1 and Test 2), much smaller time step
 		\begin{tabular}{||c|l|ll|ll||}
 			\hline
 			\hline
-      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{ 2 }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
-	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & Ап. грешки      &Ред на& Ап. грешки        &Ред на   \\
+	                                        &                                                     &  $E_i$в$L_2$ &  сход. & $E_i$в$L_\infty$  & сход. \\
    			\hline 
 					\hline 
   $\beta=3$                &0.2, 0.001         &              &            &                     &      \\
@@ -425,13 +426,14 @@ For the $O(h^2 + \tau^2)$ case ( both Test 1 and Test 2), much smaller time step
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Convergence speed for the Energy using Taylor method with zero boundary conditions and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms.}
+		\caption{Скорост на сходимост на дискретната Енергия при метода на Тейлор с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Грешките $E_i$ са измерени в $L_2$ и $L_\infty$ норми.}
 \label{tableB}
 \end{table}
 
-\subsection{Numerical Results for the Mass and Energy}
+\subsection{Числени резултати за Масата и Енергията}
 
-Figure \ref{Test1En} shows the discrete Mass and Energy for Test 1 calculated using solutions from the Conservative FDS and Taylor method. Figure \ref{Test2En} shows analogous results for Test 2. In case of $O(|h|^2 +\tau^2)$ the Mass and Energy realized by both methods for Test 1 and Test 2 overlap (dark line and blue circles). The Energy graphs are constant functions over the time interval.
+Фигура \ref{Test1En} показва дискретните Маса и Енергия при Тест 1 изчислени посредством решенията от Консервативната схема и метода на Тейлор. 
+Фигура \rf{Test2En} показва аналогични резултати, но при Тест 2. В случая на $O(|h|^2 +\tau^2)$ апроксимация, графиките на Масата и Енергията получени от двата метода както при Тест 1 така и при Тест 2 се припокриват (черната линия и сините кръгчета). Енергията е константна величина спрямо времевата променлива. 
 \begin{figure}[ht]\vspace{0.2cm}
 	\begin{minipage}[b]{0.4\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/Mass_bt3_c045_h005_Taylor_Conservative.png}
@@ -439,11 +441,12 @@ Figure \ref{Test1En} shows the discrete Mass and Energy for Test 1 calculated us
 	\begin{minipage}[b]{0.4\linewidth}
 		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt3_c045_h005_Taylor_Conservative.png}	
 	\end{minipage}
-\caption{The Mass (left) and Energy (right) of the solution for Test 1, $O(|h|^2 + \tau^2)$ and $T=10$.}
+\caption{Масата (ляво) и Енергията (дясно) на решението при Тест 1, $O(|h|^2 + \tau^2)$ и $T=10$.}
 \label{Test1En}
 \end{figure}
+При Масата се забелязва леко покачване за целия времеви интервал $[0, T]$, но то е пренебрежимо малко спрямо началната стойност. 
 
-The Mass increases slightly over the time interval but the gain is neglectable compared to the initial value. For Test 1 the increase with respect to the initial Mass is $0.33\%$ and for Test 2 is $1.8\%$.
+При Тест 1 увеличението спрямо Масата в началния момент е $0.33\%$, а при Тест 2 е $1.8\%$.
 
 \begin{figure}[ht]\vspace{0.2cm}
 	\begin{minipage}[b]{0.4\linewidth}
@@ -453,11 +456,12 @@ The Mass increases slightly over the time interval but the gain is neglectable c
 		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt1_c090_h010_Taylor_Conservative.png}
 		
 	\end{minipage}
-\caption{The Mass (left) and Energy (right) of the solution for Test 2, $O(|h|^2 + \tau^2)$ and $T=10$.}
+\caption{Масата (ляво) и Енергията (дясно) на решението при Тест 2, $O(|h|^2 + \tau^2)$ и $T=10$.}
 \label{Test2En}
 \end{figure}
 
-For the Taylor Method, the discrete Mass and Energy in Figure \ref{Test1En} and \ref{Test2En} are calculated with three different approximations, namely, trapezoidal formula \rf{quadr2} with $O(h^2)$, Simpson's Rule \rf{quadr4} with $O(h^4)$ and Boole's Rule \rf{quadr6-2D} with $O(h^6)$. It is observed that increasing the order of approximation does not affect the gain for the Mass. It is also confirmed that decreasing the step size $h$ produces similar result, i.e. the graph is slightly shifted upwards or downwards. In the next computations, in order to validate the proper behaviour of the Mass, only the size of the domain is changed whereas the approximation order and discrete steps are fixed.
+При метода на Тейлор, дискретната Маса и Енергия показани на Фигура \ref{Test1En} са пресметнати с три различни апроксимации - правило на трапците \rf{quadr2}, правило на Симпсън \rf{quadr4} и правило на Буул \rf{quadr6-2D}, съответно с грешка от апроксимацийте $O(h^2)$, $O(h^4)$ и $O(h^6)$.  
+Вижда се че с увеличаване степента на апроксимация, нарастването на масата остава непроменено. Направени са допълнителни изчисления с по-малки стъпки $h$ по пространството (графиките са изпуснати, за да не се претрупва съдържанието), което също не води до съществена промяна във функцията на Масата. Затова в по-следващите изчисления, за да се обясни нейното поведението, се използва една и съща апроксимация - $O(h^6)$ с правилото на Буул - с фиксирана стъпка по пространството $h$, а размерите на изчислителната област се увеличават.
 %----------------------------------------------------------------------------------------------------------------------------------------------
 \iffalse
 \begin{figure}[ht]\vspace{0.4cm}
@@ -468,7 +472,7 @@ For the Taylor Method, the discrete Mass and Energy in Figure \ref{Test1En} and 
 		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt1_c090_h010_x3O.png}
 		
 	\end{minipage}
-\caption{The Mass (left) and Energy (right) of the Taylor solution for Test 1, $O(|h|^2 + \tau^2)$, $O(|h|^4 + \tau^4)$, $O(|h|^6 + \tau^6)$ and $T=10$.}
+\caption{Масата (ляво) и Енергията (дясно) на решението при метода на Тейлор за Тест 1, $O(|h|^2 + \tau^2)$, $O(|h|^4 + \tau^4)$, $O(|h|^6 + \tau^6)$ и $T=10$.}
 \label{Test1TEn}
 \end{figure}
 \begin{figure}[ht]\vspace{0.4cm}
@@ -479,12 +483,32 @@ For the Taylor Method, the discrete Mass and Energy in Figure \ref{Test1En} and 
 		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt1_c090_h010_x3O.png}
 		
 	\end{minipage}
-\caption{The Mass (left) and Energy (right) of the Taylor solution for Test 2, $O(|h|^2 + \tau^2)$, $O(|h|^4 + \tau^4)$, $O(|h|^6 + \tau^6)$ and $T=10$.}
+\caption{Масата (ляво) и Енергията (дясно) на решението при метода на Тейлор за Тест 2, $O(|h|^2 + \tau^2)$, $O(|h|^4 + \tau^4)$, $O(|h|^6 + \tau^6)$ и $T=10$.}
 \label{Test2TEn}
 \end{figure}
 \fi
 %----------------------------------------------------------------------------------------------------------------------------------------------
-If $D$ denotes the discrete Mass, then the percentage gain for the Mass is defined by $100 \times |D(t=0) - D(t=T)|/D(t=0)$. On Figure \ref{Test1_2Mass} one could see that by increasing the size of the domain $\Omega_h$ the gain for the Mass decreases. Taylor method with sixth approximation order and largest step sizes is applied to create the graphs. On the left panel three different domains of size $[-30, 30] \times [-27, 27]$, $[-60, 60] \times [-54, 54]$ and $[-120, 120] \times [-108, 108]$ are used. Furthermore, the used parameter set is $\beta =  3$, $c = 0.45$ (Test 1) and $h=0.2$. The percentage gain for the Mass when increasing the domain is $0.33\%$, $0.11\%$ and $0.06\%$. Analogously, on the right panel, the domains are $[-128, 128] \times [-58, 58]$, $[-256, 256] \times [-116, 116]$ and $[-512, 512] \times [-232, 232]$. The parameter set is $\beta =  1$, $c = 0.9$ (Test 2) and $h=0.4$. Here, the percentage gain for the Mass when increasing the domain is $1.80\%$, $0.70\%$ and $0.18\%$.
+Ако с $D$ означим дискретната Маса то процентното увеличение на Масата се дефинира чрез $$100 \times |D(t=0) - D(t=T)|/D(t=0).$$ На Фигура \rf{Test1_2Mass} се вижда, че при увеличение на размерите на областта $\Omega_h$, увеличението на Масата намалява. При този числен експеримент, за генерирането на графиките, е използван метод на Тейлор с апроксимация от шести ред и най-големите стъпки по време и пространство ($h=0.2$ както при Тест 1 и $h=0.4$ както при Тест 2, а $\tau =  h/10$). На левия панел се вижда дискретната Маса изчислена върху три дискретни области съответно с големини 
+\noindent 
+\begin{equation*}
+\begin{split}
+& [-30, 30] \times [-27, 27], \nonumber\\
+& [-60, 60] \times [-54, 54], \nonumber\\
+& [-120, 120] \times [-108, 108] \nonumber\\
+\end{split}
+\end{equation*} 
+\noindent 
+при $\beta =  3$ и $c = 0.45$. Процентното увеличение на Масата спрямо увеличението на областта е измерено както следва $0.33\%$, $0.11\%$ и $0.06\%$. Аналогично, на десния панел, се вижда дискретната Маса изчислена върху три дискретни области с големини 
+\noindent 
+\begin{equation*}
+\begin{split}
+& [-128, 128] \times [-58, 58], \nonumber\\
+& [-256, 256] \times [-116, 116], \nonumber\\
+& [-512, 512] \times [-232, 232] \nonumber\\
+\end{split}
+\end{equation*} 
+\noindent 
+при $\beta =  1$ и $c = 0.9$. Тук процентното увеличение на Масата спрямо увеличението на областта е измерено както следва $1.80\%$, $0.70\%$ и $0.18\%$.
 \begin{figure}[ht]\vspace{0.2cm}
 	\begin{minipage}[b]{0.4\linewidth}
 		\includegraphics[width=\linewidth]{../amitans/figures/MassTaylor_120_60_30_ZB1_bt3_c045_h020_O(h^6).png}
@@ -493,13 +517,15 @@ If $D$ denotes the discrete Mass, then the percentage gain for the Mass is defin
 		\includegraphics[width=\linewidth]{../amitans/figures/MassTaylor_512_256_128_ZB1_bt1_c090_h040_O(h^6).png}
 		
 	\end{minipage}
-\caption{The Mass of the Taylor solution for approximation $O(|h|^6 + \tau^6)$ and $T=10$ over three nested domains. Left panel is for $\beta =  3$, $c = 0.45$ and right panel is for $\beta =  1$, $c = 0.9$.}
+\caption{Масата от решението на Тейлор при $O(|h|^6 + \tau^6)$ апроксимация и време $T=10$ върху три различни по големина области. Левия панел е при $\beta =  3$, $c = 0.45$, а десния панел е при $\beta =  1$, $c = 0.9$.}
 \label{Test1_2Mass}
 \end{figure}
+Тези резултати и разсъждения не доказват, че Масата е константна величина спрямо времевата променлива в непрекъсната област $\Omega$. Но въпреки това се вижда, че те не противоречат на последното твърдение, а точно обратното - подкрепят го. 
 
-\subsection{Numerical Results for the shape and maximum of the solution}
+\subsection{Числени резултати за формата и максимума на решението}
 
-The following paragraph discusses the shape of the solution obtained by the Conservative FDS and Taylor method. The set up for the calculations is described in Table \ref{tableP} when $p=2$, i.e. both Test 1 and Test 2 are done on three nested meshes. For each Test and mesh both solution techniques are applied with second approximation order. Let us denote with $uC$ and $uT$ the solutions obtained by the Conservative scheme \rf{consFDS} and the TS expansion \rf{TSe}. Figures \ref{Test1_Diff} and \ref{Test2_Diff} show the solution difference for Test 1 and Test 2 respectively. The pictures cover only the center of the domain $\Omega_h$ where the values of the difference are higher. This is one nineth of all mesh points.
+В този параграф се обръща внимание на формата на решението получена както с Консервативната схема и така и с метода на Тейлор. Стойностите на използваните параметри са описани в Таблица \ref{tableP}, когато $p=2$. Накратко, това са числени резултати от Тест 1 и Тест 2, при двата метода на решение, върху три вложени мрежи и с апроксимационни формули само от втори ред. Нека да означим с $uC$ и $uT$ двата класа от решения получени съответно с Консервативната схема \rf{consFDS} и метода на Тейлор \rf{TSe}. 
+Фигури \ref{Test1_Diff} и \ref{Test2_Diff} илюстрират разликите между двата класа от решения получени съответно при Тест 1 и Тест 2. Графиките обхващат само централната (1/9) част от числената област $\Omega_h$, където отклоненията са по-големи. Ако разделим мислено $\Omega_h$ на по три равни по площ части, първо по дължина, а после и по ширина се получават девет еднакви правоъгълника като в картинките се разглежда средният.
 \begin{figure}[ht]\vspace{0.4cm}
 	\begin{minipage}[b]{0.32\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/compare_30_bt3_c045_h020.png}
@@ -510,7 +536,7 @@ The following paragraph discusses the shape of the solution obtained by the Cons
 	\begin{minipage}[b]{0.32\linewidth}		
 		\includegraphics[width=\linewidth]{../amitans/figures/compare_30_bt3_c045_h005.png}
 	\end{minipage}
-\caption{Difference $uC - uT$ between solutions from Conservative Scheme and TS approach at time $t=10$, $O(|h|^2 + \tau^2)$ for Test 1. From Left to right $h=0.2, 0.1, 0.05$.}
+\caption{Разликите $uC - uT$ между класовете от решения получени при Консервативната схема и метода на Тейлор при време $t=10$ и апроксимация $O(|h|^2 + \tau^2)$ при Тест 1. От ляво на дясно се променят стъпките както следва $h=0.2, 0.1, 0.05$.}
 \label{Test1_Diff}
 \end{figure}
 
@@ -524,7 +550,7 @@ The following paragraph discusses the shape of the solution obtained by the Cons
 	\begin{minipage}[b]{0.32\linewidth}
 		\includegraphics[width=\linewidth]{../amitans/figures/compare_128_bt1_c09_h010.png}
 	\end{minipage}
-\caption{Difference $uC - uT$ between solutions from Conservative Scheme and TS approach at time $t=10$, $O(|h|^2 + \tau^2)$ for Test 2. From Left to right $h=0.4, 0.2, 0.1$.}
+\caption{Разликите $uC - uT$  между класовете от решения получени при Консервативната схема и метода на Тейлор при време $t=10$ и апроксимация $O(|h|^2 + \tau^2)$ при Тест 2. От ляво на дясно се променят стъпките както следва $h=0.4, 0.2, 0.1$.}
 \label{Test2_Diff}
 \end{figure}
 
@@ -575,7 +601,7 @@ The following paragraph discusses the shape of the solution obtained by the Cons
 \caption{Numerical solution of single wave for $\beta=1$ and $c = 0.9$ at times $t=0,6,12,18,24,30$.}
 \label{Wave2}
 \end{figure}
-The figures are for visual representation. On the contrary, Table \ref{tableF} shows the difference $||uC - uT||_\kappa$ using $L_2$ and infinity norms. The last column of the Table is for the infinity norm of the solution $||uC||_{L_\infty}$ (which is the wave maximum) measured by the Conservative FDS. It is observed that decreasing the step sizes $h$ and $\tau$ results in a smaller difference.  Furthermore the percentage difference when using the infinity norm
+Фигурите показват, че най-големите различия се проявяват около и в максимума на вълната. В допълнение към последните резултати е Таблица \ref{tableF}, която отново показва разликите $||uC - uT||_\kappa$ в  $L_2$ и ${L_\infty}$ норми. Последната колона от таблицата е за безкрайната норма (което е максимума на решението) The last column of the Table is for the infinity norm of the solution $||uC||_{L_\infty}$ (which is the wave maximum) measured by the Conservative FDS. It is observed that decreasing the step sizes $h$ and $\tau$ results in a smaller difference.  Furthermore the percentage difference when using the infinity norm
 $$\frac{ ||uC - uT||_{L_\infty}} { ||uC||_{L_\infty} } \times 100$$
 varies in the inteval $[0.0001\%, 0.69\%]$ for all rows in the table. Analogous results are obtained for the percentage difference when using the $L_2$ norm and thus are omitted. The difference between the wave shapes obtained by Conservative FDS and the Taylor Series approach with Method of lines is negligible. It is expected that $||uC - uT||_\kappa$ goes to zero when $h$ and $\tau$ are infinitely small.
 
