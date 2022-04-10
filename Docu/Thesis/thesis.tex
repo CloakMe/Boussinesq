@@ -524,7 +524,7 @@ $$ O( N_x N_y N_t ) $$
 
 \subsection{Числени резултати за формата и максимума на решението}
 
-В този параграф се обръща внимание на формата на решението получена както с Консервативната схема и така и с метода на Тейлор. Стойностите на използваните параметри са описани в Таблица \ref{tableP}, когато $p=2$. Накратко, това са числени резултати от Тест 1 и Тест 2, при двата метода на решение, върху три вложени мрежи и с апроксимационни формули само от втори ред. Нека да означим с $uC$ и $uT$ двата класа от решения получени съответно с Консервативната схема \rf{consFDS} и метода на Тейлор \rf{TSe}. 
+В този параграф се разглежда формата на решението получена както с Консервативната схема и така и с метода на Тейлор. Стойностите на използваните параметри са описани в Таблица \ref{tableP}, когато $p=2$. Накратко, това са числени резултати от Тест 1 и Тест 2, при двата метода на решение, върху три вложени мрежи и с апроксимационни формули само от втори ред. Нека да означим с $uC$ и $uT$ двата класа от решения получени съответно с Консервативната схема \rf{consFDS} и метода на Тейлор \rf{TSe}. 
 Фигури \ref{Test1_Diff} и \ref{Test2_Diff} илюстрират разликите между двата класа от решения получени съответно при Тест 1 и Тест 2. Графиките обхващат само централната (1/9) част от числената област $\Omega_h$, където отклоненията са по-големи. Ако разделим мислено $\Omega_h$ на по три равни по площ части, първо по дължина, а после и по ширина се получават девет еднакви правоъгълника като в картинките се разглежда средният.
 \begin{figure}[ht]\vspace{0.4cm}
 	\begin{minipage}[b]{0.32\linewidth}
@@ -574,7 +574,7 @@ $$ O( N_x N_y N_t ) $$
 	\begin{minipage}[b]{0.30\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T30.png}
 	\end{minipage}
-\caption{Numerical solution of single wave for $\beta=3$ and $c = 0.45$ at times $t=0,6,12,18,24,30$.}
+\caption{Числени резултати за една вълна при $\beta=3$ и $c = 0.45$ за времена $t=0,6,12,18,24,30$.}
 \label{Wave1}
 \end{figure}
 
@@ -598,13 +598,13 @@ $$ O( N_x N_y N_t ) $$
 	\begin{minipage}[b]{0.30\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T30.png}
 	\end{minipage}
-\caption{Numerical solution of single wave for $\beta=1$ and $c = 0.9$ at times $t=0,6,12,18,24,30$.}
+\caption{Числени резултати за една вълна при $\beta=1$ and $c = 0.9$ за времена $t=0,6,12,18,24,30$.}
 \label{Wave2}
 \end{figure}
 
-Фигурите показват, че най-големите различия се проявяват около и в максимума на вълната. В допълнение към последните резултати е Таблица \ref{tableF}, която отново показва разликите $||uC - uT||_\kappa$ в  $L_2$ и ${L_\infty}$ норми. Последната колона от таблицата е за безкрайната норма (което е максимума на решението) The last column of the Table is for the infinity norm of the solution $||uC||_{L_\infty}$ (which is the wave maximum) measured by the Conservative FDS. It is observed that decreasing the step sizes $h$ and $\tau$ results in a smaller difference.  Furthermore the percentage difference when using the infinity norm
+Фигурите показват, че най-големите различия се проявяват около и в максимума на вълната. В допълнение към последните резултати е Таблица \ref{tableF}, която отново показва разликите $||uC - uT||_\kappa$ в  $L_2$ и ${L_\infty}$ норми. Първата колона от таблицата е за числения тест, който е направен. Във втората колона са описани стъпките по пространството и времето. В третата и четвъртата са разликите от решенията между двата метода в $L_2$ и ${L_\infty}$ норми. Последната колона от таблицата е безкрайната норма на решението (което е максимума) при Консервативната схема. Наблюдава се, че при намаляване на дискретните стъпки $h$ и $\tau$ различията стават по-малки. Също така процентната разлика между двете решения дефинирана с безкайната норма
 $$\frac{ ||uC - uT||_{L_\infty}} { ||uC||_{L_\infty} } \times 100$$
-varies in the inteval $[0.0001\%, 0.69\%]$ for all rows in the table. Analogous results are obtained for the percentage difference when using the $L_2$ norm and thus are omitted. The difference between the wave shapes obtained by Conservative FDS and the Taylor Series approach with Method of lines is negligible. It is expected that $||uC - uT||_\kappa$ goes to zero when $h$ and $\tau$ are infinitely small.
+варира в интервала $[0.0001\%, 0.69\%]$ за всички случаи описани в таблицата. Аналогични резултати са получени и при процентната разлика дефинирана с $L_2$ нормата и затова те са пропуснати. Формите на решенията получени с Консервативната схема и метода на Тейлор са доста близки и от числените резултати се забелязва тенденцията, че разликата $||uC - uT||_\kappa$ клони към нула когато стъпките $h$ и $\tau$ са безкрайно малки.
 
 %F
 \begin{table}[ht]
@@ -628,11 +628,11 @@ varies in the inteval $[0.0001\%, 0.69\%]$ for all rows in the table. Analogous 
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Difference $uC - uT$ between solutions from Conservative Scheme and TS approach at time $t=10$ with $O(|h|^2 + \tau^2)$ approximation errors. Differences are measured in $L_2$ and $L_\infty$ norms.}
+		\caption{Разлики $uC - uT$ между двата класа от решения получени от Консервативната схема и метода на Тейлор при време $t=10$ а апроксимация $O(|h|^2 + \tau^2)$. Разликите са измерени в $L_2$ и $L_\infty$ норми.}
 \label{tableF}
 \end{table}
 
-The following paragraph discusses the preservation of the solution's shape over the time interval $[0, 10]$. The set up for the calculations is described in Table \ref{tableP} when using the Taylor method, i.e. $p=2, 4, 6$ and for each approximation order, three nested meshes are used. For more details refer to Table \ref{tableG}. Here, the first column is for the Test case. The second describes the spatial step size $h$. The third and fourth columns present the solution difference at times $t=0$ and $t=10$ in $L_2$ and $L_\infty$ norms. The wave travels a distance which is equal to the speed $c$ multiplied by the end time $T$. Thus, the maximum of the solution at time $t=10$ is located on $(0, 10 c) \in \Omega$. The maximum at time $t=0$ is located on $(0, 0) \in \Omega$. Unfortunately, for Test 1, $h=0.2$ and Test 2, $h=0.4$ the maximum for $t=10$ is not inside the mesh. Further calculations are done to shift the wave along the $y$ axis so that the maximum fall under the closest available meshpoint. For Test 1 ($c=0.45$) the wave travels additional distance of 0.1 for time 2/9 which shifts the maximum to a position of $(0, 4.6) \in \Omega_h$. For Test 2 ($c=0.9$) the wave travels additional distance of 0.2 for time 2/9 which shifts the maximum to a position of $(0, 9.2) \in \Omega_h$. The subtraction of two solutions $u^{(0)} - u^{(N_t)}$ results in a matrix with the following coefficients:
+В този параграф се разглежда запазването на формата на решението във времевия интервал $[0, 10]$. Направените числени експерименти се описват с Таблица \ref{tableP} The set up for the calculations is described in Table \ref{tableP} when using the Taylor method, i.e. $p=2, 4, 6$ and for each approximation order, three nested meshes are used. For more details refer to Table \ref{tableG}. Here, the first column is for the Test case. The second describes the spatial step size $h$. The third and fourth columns present the solution difference at times $t=0$ and $t=10$ in $L_2$ and $L_\infty$ norms. The wave travels a distance which is equal to the speed $c$ multiplied by the end time $T$. Thus, the maximum of the solution at time $t=10$ is located on $(0, 10 c) \in \Omega$. The maximum at time $t=0$ is located on $(0, 0) \in \Omega$. Unfortunately, for Test 1, $h=0.2$ and Test 2, $h=0.4$ the maximum for $t=10$ is not inside the mesh. Further calculations are done to shift the wave along the $y$ axis so that the maximum fall under the closest available meshpoint. For Test 1 ($c=0.45$) the wave travels additional distance of 0.1 for time 2/9 which shifts the maximum to a position of $(0, 4.6) \in \Omega_h$. For Test 2 ($c=0.9$) the wave travels additional distance of 0.2 for time 2/9 which shifts the maximum to a position of $(0, 9.2) \in \Omega_h$. The subtraction of two solutions $u^{(0)} - u^{(N_t)}$ results in a matrix with the following coefficients:
 $$ \delta_{i,j} = u_{i,j}^{(0)} - u_{i,j+cT/h}^{(N_t)},$$
 where $0 < i < N_x$ and $0 < j < N_y - cT/h$. 
 
