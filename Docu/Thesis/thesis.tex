@@ -27,45 +27,23 @@
 
 \section{1.~Introduction.}\label{introduction}
 
-In this paper we  consider the two dimensional Boussinesq  Equation (BE)
+Тук се разглежда двумерното уравнение на Бузинеск (УБ)
 \begin{align}
 &u_{tt} - \Delta u -\beta_1  \Delta u_{tt} +\beta_2 \Delta ^2 u + \Delta f(u)=0   \quad \text{for}  (x,y) \in \RR^2, \, t\in\RR^+,\label{eq1}
 \\ \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)   \quad\text{for} \, (x,y) \in \RR^2,
 \\  &u(x,y) \rightarrow 0,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{for}  \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11}
 \end{align}
-where   $f(u)=\alpha u^2$,  $\alpha>0$, $\beta_1>0$, $\beta_2>0$  are dispersion parameters, and $\Delta$ is the Laplace operator. The BE is famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics etc. A derivation of the BE from the original Boussinesq system can be found in \cite{ChChr}.
+където $f(u)=\alpha u^2$, $\beta_1>0$, $\beta_2>0$ са дисперсионни параметри,  $\alpha>0$ е амплитудата, а $\Delta$ е оператора на Лаплас. Извеждането на уравнението от оригиналната система е направено в \cite{ChChr}. Целта на настоящия труд е да потърси решения на \rf{eq1} от вида $u(x,y,t)=U(x,y-ct)$, който са стационарни солитонни вълни (ССВ) движещи се по $y$ оста със скорост $c$. В последствие тези вълни ще служат за начално условие на хиперболичното (УБ) \rf{eq1} -- \rf{eq11}. Важно е да получим начално условие с добра точност чрез един гъвкав и устойчив процес, който ще позволи тестването на повече и различни сценарии. Предисторията на изчисляването на ССВ за уравнение \rf{eq1} е свързана с няколко числени техники, както следва. Спектрален метод на Галеркин е изполван в \cite{chr-chr-07,chr-chr}. Шаблони с крайни разлики от втори порядък са приложени в \cite{Ch2012}. Пертурбационно решение с развитие в ред около малък параметър (скоростта) $c$ е представено в  \cite{Ch2011}, а в последствие полученият числен резултат е апроксимиран с подходящи формули в \cite{Ch2011}. Последните алгебрични изрази са използвани като начално условие за числени симулации на нестабилното УБ \rf{eq1} -- \rf{eq11}, (виж  \cite{cher,dani}). Всички тези статии показват, че при стойности на скоростта $c<0.3$, ССВ се разсейват във формата на разширяваща се пръстеновидна вълна или избухват след кратък период от време. Вижда се, че баланса между дисперсията и нелинейността в УБ \rf{eq1} е много крехък, което изисква повече усилия при запазването му. Също така е добре известно, че в едномерния случай солитонните вълни са нестабилни за малки скорости $c$ около нулата и стабилни за по-големи скорости близки до допустимия максимум $min\{1, 1/\sqrt{\beta_1/\beta_2}\}$.
+Тези наблюдения изместват фокуса към изчисляване на ССВ $U$ от \rf{eq1} с по-голяма точност и при скорости $c > 0.7$, тъй като това е от съществено значение за конструирането на началните данни при нестабилното УБ \rf{eq1}. 
+След полагане на $U(x,y-ct)=u(x,y,t)$ в \rf{eq1}, ССВ удовлетворяват следното нелинейно елиптично диференциално уравнение от четвърти ред
 
-The goal of the article is to seek for solutions to (\ref{eq1}) of the type $u(x,y,t)=U(x,y-ct)$, which 
-are stationary solitary waves (SSW) traveling  in $y$ direction with velocity $c$. In a forthcoming paper the SSW will be applied as initial condition (IC) of the hyperbolic BE \rf{eq1} -- \rf{eq11}. Thus it is useful to have accurate, flexible 
-and robust IC in order to test various scenarios with two or more traveling waves colliding with each other.
-
-The SSWs to \rf{eq1} are computed by a Galerkin spectral method in \cite{chr-chr-07,chr-chr}.
-In \cite{Ch2012} a second order  finite difference scheme is used, while in \cite{Ch2011} 
-the perturbation series method with respect to the small parameter $c$ is applied.  Moreover in \cite{Ch2011} 
-the resulting numerical solution is approximated by best--fit formulae. These exact expressions are used further as initial conditions in 
-numerical simulations of the unsteady BE \rf{eq1} -- \rf{eq11}, see  \cite{cher,dani}. These papers show, 
-that for velocities $c<0.3$ the resulting SSW disperse in the form of ring wave expanding to infinity or blow up after some period in time. 
-Thus the traveling wave solutions of the hyperbolic equation  \rf{eq1} are very fragile, i.e. the wave easily blow up or fall apart with time. 
-The relationship between the dispersion and nonlinearity in \rf{eq1} is very sensitive  and the balance between them is easily destroyed.
-Moreover it is well known  that in the one dimensional case the solitary waves are unstable  
-for small wave speeds $c$ while they are stable in form for  velocities $c$ close to $1$. 
-
-Having in mind these  observations, we focus on the more accurate evaluation of SSW $U$ to \rf{eq1}, especially for  velocities $c > 0.7$, since it is fundamental for the construction of initial data of the unsteady BE \rf{eq1}. 
-
-Note that the stationary solitary waves $U(x,y-ct)=u(x,y,t)$
- satisfy the following nonlinear fourth order elliptic equation
 \begin{equation}\label{eq2}
 c^2 (E-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 \end{equation}
-where $E$ is the identity operator. 
+където $E$ е тъждествения оператор. Решението на \rf{eq2} се изчислява с помощта на стъпките описани в \cite{Ch2012,chd-chr}, но са използвани допълнителни техники, които да гарантират за по-високите изисквания, който са изложени по-горе.
+Първо, за численото решение на \rf{eq2} е използвана равномерна мрежа с еднаква стъпка $h_x$ = $h_y$ = $h$ в числената област $\Omega_h$ вместо неравномерна мрежа. Решението от \rf{eq2} се използва за начално условие в хиперболичната задача \rf{eq1} и е необходима по-гъста мрежа по цялото протежение на областта през която максимумът на вълната преминава. Това дава достатъчно мотивация да се използва равномерна стъпка навсякъде в областта като в допълнение ще получим повече инфомрация по границата $\delta \Omega_h$. Числените експерименти показват, че допълнителните апроксимации върху вече съществуващо решение от елиптичната задача (напр. при неравномерна мрежа с помощта на интерполация да получа точките в равномерна мрежа) не водят до добър резултат. Мрежата и при двете задачи трябва да е една и съща.
 
-The evaluation of the solution to \rf{eq2} described here follows the steps presented in \cite{Ch2012,chd-chr},
-but new modifications are introduced to meet the higher requirements reported above.
-
-First, for the numerical solution of \rf{eq2} we choose to apply an uniform grid with equal step size $h_x$ = $h_y$ = $h$ in the computational domain $\Omega_h$ instead of a nonuniform grid. The reason for this is that  
-%
-%because of the following circumstances. 
- the computed solutions to \rf{eq2} will be used as initial conditions in the hyperbolic problem \rf{eq1} and these solutions will travel in time, thus we have to have more mesh points not only close to the peak of the waves, but everywhere in   the  computational domain. 
+First, for the numerical solution of \rf{eq2} we choose to apply an uniform grid with equal step size $h_x$ = $h_y$ = $h$ in the computational domain $\Omega_h$ instead of a nonuniform grid.
 
 In order to increase the precision of the numerical method, we apply finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order, i.e. we  approximate second order spatial derivatives with high order finite differences. These  FDS allow one to evaluate the numerical solution with high accuracy on relatively coarse grid. 
 
