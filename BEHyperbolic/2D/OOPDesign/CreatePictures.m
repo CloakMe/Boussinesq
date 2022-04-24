@@ -3,10 +3,10 @@ function CreatePictures( viewTypeX, viewTypeY, tt, x, y )
     %mag2=mag;
     h = x(2) - x(1);
     N = 200;
-    M = 500;
+    M = 750;
     if(h > 0.15)
         N = 150;
-        M = 300;
+        M = 400;
     end
     if(h > 0.35)
         N = 100;
@@ -40,7 +40,7 @@ function CreatePictures( viewTypeX, viewTypeY, tt, x, y )
 
     %tt = 1:0.1:20;    
     %j = 1:3:size(tt,2)  
-    for j = 0:8:40   
+    for j = 0:6:30   
 
         xxx = x(x_st_idx:x_end_idx);
         lenX = length( xxx );

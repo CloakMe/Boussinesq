@@ -23,6 +23,7 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         
         EN_1 = this.GetEnergy( this.u_t0, vu, 0 );
         II_1 = this.GetIntegralOf( this.u_t0 );
+        this.SaveSolutionOnIterStep( 0, this.u_t0, this.dudt_t0 ); 
         %figure(2)
         %mesh(x,y,(this.tau^2/2)*d2vz')
         %title('(this.tau^2/2)*d^2v/dt^2 , t=this.tau')
