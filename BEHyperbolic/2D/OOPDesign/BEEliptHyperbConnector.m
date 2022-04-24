@@ -4,11 +4,11 @@ clear; clc;
 bndCutSize = 0;
 % ChristovIC_40_80_bt1_c090_h010_O(h^6)
 % partialPath = 'BEEliptic\Boussinesq2D\SavedWorkspaces\';
-partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_128_bt1_c090\Oh6\';
-waveFactory = WaveFactory( partialPath, 'ChristovIC_128_ZB1_bt1_c090_h040_O(h^6)', bndCutSize, 0 ); %
+partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_30_bt3_c045\Oh6\';
+waveFactory = WaveFactory( partialPath, 'ChristovIC_30_ZB1_bt3_c045_h020_O(h^6)', bndCutSize, 0 ); %
 %waveFactory = WaveFactory( 'BestFitIC' );
 
-tEnd=1.0;
+tEnd=0.1;
 SavingTheSolution = 1;
 fprintf('SavingTheSolution = %.1d\n', SavingTheSolution);
 
@@ -16,7 +16,8 @@ tau = waveFactory.h/10;
 if( waveFactory.order == 2 )
     tau = waveFactory.h/200;
 end
-fprintf('tau = %.6f, h = %.6f, tau/h = %.6f\n', tau, waveFactory.h, waveFactory.h/tau);
+%tau = 2/180;
+%fprintf('tau = %.6f, h = %.6f, h/tau = %.6f\n', tau, waveFactory.h, waveFactory.h/tau);
 
 %turnOnCaxis = 0;
 %waveFactory.PlotSingleWave( turnOnCaxis );
@@ -26,6 +27,7 @@ dscrtParams = BEDiscretizationParameters( waveFactory.x, waveFactory.y ,waveFact
                                          tau, tEnd, estep );
 eqParams = BEEquationParameters( waveFactory.alpha, waveFactory.beta1, waveFactory.beta2, waveFactory.c );
 ic = BEInitialCondition( waveFactory.u_t0 , waveFactory.dudt_t0, waveFactory.mu, waveFactory.theta );   
+%ic = BEInitialCondition( vl , dvl, waveFactory.mu, waveFactory.theta );   
 %engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %BEEngineTaylorSoftBnd %BEEngineEnergySaveSoftBnd
 engine = BEEngineTaylor( dscrtParams, eqParams, ic );
 fprintf('Engine Type = %s\n', engine.GetName());
@@ -100,7 +102,7 @@ viewTypeY = 90;
 
 Q = 41;
 i = 10;
-if (true)
+if (false)
     figure(i+1)
     mesh(x, y(1:Q), vl(:,1:Q)');
     view( viewTypeX, viewTypeY );
@@ -190,9 +192,3 @@ waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^4)', 5 );
     xlabel('x');            ylabel('y');
 
    
-    figure(17)
-%hold on;
-plot(tt,EN,'k',tt(1),EN(2)+EN(2)/1000.0,tt(end),EN(end)-EN(end)/1000.0 )
-%hold off;
-title('Energy functional');
-xlabel('time "t"');  ylabel('EN');
