@@ -41,41 +41,34 @@
 c^2 (E-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 \end{equation}
 където $E$ е тъждествения оператор. Решението на \rf{eq2} се изчислява с помощта на стъпките описани в \cite{Ch2012,chd-chr}, но са използвани допълнителни техники, които да гарантират за по-високите изисквания, който са изложени по-горе.
-Първо, за численото решение на \rf{eq2} е използвана равномерна мрежа с еднаква стъпка $h_x$ = $h_y$ = $h$ в числената област $\Omega_h$ вместо неравномерна мрежа. Решението от \rf{eq2} се използва за начално условие в хиперболичната задача \rf{eq1} и е необходима по-гъста мрежа по цялото протежение на областта през която максимумът на вълната преминава. Това дава достатъчно мотивация да се използва равномерна стъпка навсякъде в областта като в допълнение ще получим повече инфомрация по границата $\delta \Omega_h$. Числените експерименти показват, че допълнителните апроксимации върху вече съществуващо решение от елиптичната задача (напр. при неравномерна мрежа с помощта на интерполация да получа точките в равномерна мрежа) не водят до добър резултат. Мрежата и при двете задачи трябва да е една и съща.
+Първо, за численото решение на \rf{eq2} е използвана равномерна мрежа с еднаква стъпка $h_x$ = $h_y$ = $h$ в числената област $\Omega_h$ вместо неравномерна мрежа. Решението от \rf{eq2} се използва за начално условие в хиперболичната задача \rf{eq1} и е необходима по-гъста мрежа по цялото протежение на областта през която максимумът на вълната преминава. Това дава достатъчно мотивация да се използва равномерна стъпка навсякъде в областта като в допълнение ще получим повече инфомрация по границата $\partial \Omega_h$. Числените експерименти показват, че допълнителните апроксимации върху вече съществуващо решение от елиптичната задача (напр. при неравномерна мрежа с помощта на интерполация да получа точките в равномерна мрежа) не водят до добър резултат. Мрежата и при двете задачи трябва да е една и съща.
 
-First, for the numerical solution of \rf{eq2} we choose to apply an uniform grid with equal step size $h_x$ = $h_y$ = $h$ in the computational domain $\Omega_h$ instead of a nonuniform grid.
-
-In order to increase the precision of the numerical method, we apply finite difference schemes (FDS) with local approximation of forth $O(h^4)$ and sixth $O(h^6)$ order, i.e. we  approximate second order spatial derivatives with high order finite differences. These  FDS allow one to evaluate the numerical solution with high accuracy on relatively coarse grid. 
+Приложени са крайни разлики с локална апроксимация от втори $O(h^2)$, четвърти $O(h^4)$ и шести $O(h^6)$ порядък, които апроксимират вторите производни по пространството. Това спомага за изчисляване на решението с по - голяма точност и дава възможност за използване на по - рехава мрежа в определени сценарии.
 
 A new boundary condition on the computational boundary is also used \cite{bnd}, together with uniform grid and local approximation order of $O(h^4)$ and $O(h^6)$. The numerical solution of the fourth order elliptic problem \rf{eq2} is replaced with an iterative procedure, which involves solution  of an appropriate  parabolic type problem at every iteration step. %until this solution converges. 
+Добавен е стоп критерии, които отчита първо, резидуала от дискретното уравнение, дефиниран в \rf{residual}, второ, разликата между две решения получени от последователни итерации и трето, промяната в поведението на търсената функция в пограничните области близо до $\partial \Omega_h$.
+Най-накрая решенията получени от елиптичната задача са сравнени с числените резултати от \cite{Ch2012,Ch2011} при различни скорости $c$ и дисперсионни параметри $\beta =\beta_1  / \beta_2$ и е показано, че формата на решението се изменя по сходен начин и в двата случая в зависимост от входните параметри. Получените резултати от елиптичната задача са сравнени с "best-fit" апроксимационните формули изведени в \cite{Ch2011}. Показано е че последните не удовлетворяват уравнението в околност на нулата $(0,0)$ в класическия смисъл, защото четвъртите производни от решението са сингулярни. Разликата (измерена в $L_2$ и $L_\infty$ норми) между полученото тук решение и при апроксимационните формули от \cite{Ch2011} са достатъчно големи особено при по високи скорости $c$.
 
-At the end of each iteration procedure the residual defined in \rf{residual}  of the discrete equation, approximating (4) is of order $10^{-5}$, $10^{-6}$ and the distance between two consecutive iterations of the solution is of order $10^{-7}$, which is much smaller than the discretization step size $h$.
- 
-In the last section we examine the solution shape and the dependence of the solution on the input  parameters -- the velocity $c$ and the relative dispersion $\beta =\beta_1  / \beta_2$. It is shown that these qualitative properties of the numerical solution are very similar to those given for the  numerical solution in \cite{Ch2012,Ch2011}. 
-The results here are compared with the best--fit formulae given in \cite{Ch2011}, which approximate the numerical solution in \cite{Ch2012,Ch2011}. 
-The analysis  shows that  these best--fit formulae do not satisfy the equations in the neighborhood of the origin in the classical sense because their fourth order derivatives have singularities at the origin.  The  difference (measured in the maximal norm and in $L_2$ norms)  between our numerical solution and the corresponding best--fit formulae is also high, especially  for large velocities $c$. 
 
-The paper is organized as follows. In Section~2 we formulate the  problem. The numerical method is given in Section~3 and validated in Section~4.  Various numerical  experiments are reported in Section~5 and a comparison with the best--fit formulae from \cite{Ch2011} is given in Section~6.
-
-\section{2.~General Formulation.}
-By the change of variables $x=\sqrt\beta_1 { \overline x}$, $y=\sqrt\beta_1 { \overline y}$, $U(x,y)= v({ \overline x},{ \overline y} )$ 
- equation \rf{eq2} is rewritten in the form 
+\section{Формулировка на елиптичната задача.}
+Посредством смяната на променливите $x=\sqrt\beta_1 { \overline x}$, $y=\sqrt\beta_1 { \overline y}$, $U(x,y)= v({ \overline x},{ \overline y} )$ уравнение 
+\rf{eq2} добива следната форма
  \begin{equation}\label{eq3}
 c^2 \beta (E- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2 v - \beta \Delta f(v)
 \end{equation}
-with   $\beta = \beta_1 / \beta_2$.
-The solution $v$ to \rf{eq3} and its derivatives  tend to zero as $|x^2 +y^2|\rightarrow \infty$.
-In the following we use notations $x,y$ instead of ${\overline x},{\overline y}$.
+като $\beta = \beta_1 / \beta_2$.
+Решението $v$ на \rf{eq3} заедно с неговите производни клони към нула, когато $|{\overline x}^2 +{\overline y}^2|\rightarrow \infty$.
+Навсякъде по - надолу в текста ще се използват отново старите означения $x,y$ вместо ${\overline x},{\overline y}$.
 
-If the condition $c^2 < \min (1/ \beta,1)$ holds then  \rf{eq3} is an elliptic equation of fourth order and the linear second order derivatives in \rf{eq3} form  a second order elliptic equation. In this paper we consider velocities $c$ which fulfill this inequality.
-
-Problem \rf{eq3} can be rewritten  as a  system of two elliptic equations of second order in different ways. We expect that  the derivatives $v_{xx}$ in $x $ direction  will be smaller than the derivative $v_{yy}$ in $y$ direction (since the solution travels in $y$ direction). Therefore the equality $v_{yy} = \Delta v- v_{xx}$ is substituted in \rf{eq3} and, after  introducing an auxiliary  function $w$, we obtain the equivalent to \rf{eq3} system
+Уравнението \rf{eq3} е елиптично от четвърти ред, (а линейните втори производни в \rf{eq3} образуват елиптично уравнение от втори ред) когато е изпълнено условието $c^2 < \min (1/ \beta,1)$. В настоящата работа се разглеждат единствено такива параметри $\beta$ и $c$, които удовлетворяват последното изискване.
+Равенството \rf{eq3} може да се преобразува в система от две елиптични уравнения от втори ред по различни начини. Очакваме че производните $v_{xx}$ по оста $x$ ще са по - малки от производните $v_{yy}$ по $y$ оста (тъй като решението се движи по $y$). Затова заместваме $v_{yy} = \Delta v- v_{xx}$ в \rf{eq3} и след като добавяме допълнителна функция $w$, получаваме система еквивалентна на \rf{eq3}
 \begin{equation}\label{eq4}
-- (1- c^2 \beta) \Delta v + \beta (1-c^2) v - \alpha \beta v^2 = w, 
+- (1- c^2 \beta) v_{yy} - v_{xx} + \beta (1-c^2) v - \alpha \beta v^2 = w, 
 \end{equation}
 \begin{equation}\label{eq44}
- - \Delta w = c^2 \beta (E- \Delta) v_{xx}. 
+ - \Delta w = c^2 \beta v_{xx}. 
 \end{equation}
+Търсят се ненулеви решения на \rf{eq4},\rf{eq44} както е описано в \cite{Ch2012,chd-chr}: фиксира се стойността на нейзвестната функция $v$ в нулата, $v(0,0)=\theta$ и въвеждайки две нови функции: $\widehat{v}=v/{\theta} $ и $\widehat{w}=w/{\theta} $. Т
 We  seek  non--trivial solutions to \rf{eq4},\rf{eq44}. To avoid the trivial solution we proceed as in \cite{Ch2012,chd-chr}: we fix the value of the solution $v$ at the point $(0,0)$,    $v(0,0)=\theta $ and introduce  new  functions: $\widehat{v}=v/{\theta} $ and $\widehat{w}=w/{\theta} $. Thus  
 $ \widehat{v}(0,0)=1$ and 
 \begin{equation}\label{eq45}
