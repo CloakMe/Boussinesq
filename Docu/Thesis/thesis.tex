@@ -1,7 +1,7 @@
 \documentclass{article} 
 
 %\usepackage{amsmath,amsthm,amsfonts}
-\usepackage[english]{babel}
+\usepackage[bulgarian]{babel}
 \usepackage[numbers]{natbib}
 \usepackage{rotating}
 \usepackage{amsfonts,amsmath}
@@ -25,7 +25,7 @@
 
 \begin{document}
 
-\section{1.~Introduction.}\label{introduction}
+\section{Въведение.}\label{introduction}
 
 Тук се разглежда двумерното уравнение на Бузинеск (УБ)
 \begin{align}
@@ -41,14 +41,14 @@
 c^2 (E-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 \end{equation}
 където $E$ е тъждествения оператор. Решението на \rf{eq2} се изчислява с помощта на стъпките описани в \cite{Ch2012,chd-chr}, но са използвани допълнителни техники, които да гарантират за по-високите изисквания, който са изложени по-горе.
-Първо, за численото решение на \rf{eq2} е използвана равномерна мрежа с еднаква стъпка $h_x$ = $h_y$ = $h$ в числената област $\Omega_h$ вместо неравномерна мрежа. Решението от \rf{eq2} се използва за начално условие в хиперболичната задача \rf{eq1} и е необходима по-гъста мрежа по цялото протежение на областта през която максимумът на вълната преминава. Това дава достатъчно мотивация да се използва равномерна стъпка навсякъде в областта като в допълнение ще получим повече инфомрация по границата $\partial \Omega_h$. Числените експерименти показват, че допълнителните апроксимации върху вече съществуващо решение от елиптичната задача (напр. при неравномерна мрежа с помощта на интерполация да получа точките в равномерна мрежа) не водят до добър резултат. Мрежата и при двете задачи трябва да е една и съща.
+Първо, за численото решение на \rf{eq2} е използвана равномерна мрежа с еднаква стъпка $h_x$ = $h_y$ = $h$ в числената област $\Omega_h$ вместо неравномерна мрежа. Решението от \rf{eq2} се използва за начално условие в хиперболичната задача \rf{eq1} и е необходима по-гъста мрежа по цялото протежение на областта през която максимумът на вълната преминава. Това дава достатъчно мотивация да се използва равномерна стъпка навсякъде в областта като в допълнение ще получим повече инфомрация по границата $\partial \Omega_h$. Числените експерименти показват, че допълнителните апроксимации върху вече съществуващо решение от елиптичната задача (напр. при неравномерна мрежа с помощта на интерполация да се получат точките в равномерна мрежа) не водят до добър резултат. Мрежата и при двете задачи трябва да е една и съща.
+Второ, приложени са крайни разлики с локална апроксимация от втори $O(h^2)$, четвърти $O(h^4)$ и шести $O(h^6)$ порядък, които апроксимират вторите производни по пространството. Това спомага за изчисляване на решението с по - голяма точност и дава възможност за използване на по - рехава мрежа в определени сценарии.
 
-Приложени са крайни разлики с локална апроксимация от втори $O(h^2)$, четвърти $O(h^4)$ и шести $O(h^6)$ порядък, които апроксимират вторите производни по пространството. Това спомага за изчисляване на решението с по - голяма точност и дава възможност за използване на по - рехава мрежа в определени сценарии.
-
-A new boundary condition on the computational boundary is also used \cite{bnd}, together with uniform grid and local approximation order of $O(h^4)$ and $O(h^6)$. The numerical solution of the fourth order elliptic problem \rf{eq2} is replaced with an iterative procedure, which involves solution  of an appropriate  parabolic type problem at every iteration step. %until this solution converges. 
-Добавен е стоп критерии, които отчита първо, резидуала от дискретното уравнение, дефиниран в \rf{residual}, второ, разликата между две решения получени от последователни итерации и трето, промяната в поведението на търсената функция в пограничните области близо до $\partial \Omega_h$.
+%A new boundary condition on the computational boundary is also used \cite{bnd}, together with uniform grid and local approximation order of $O(h^4)$ and $O(h^6)$. The numerical solution %of the fourth order elliptic problem \rf{eq2} is replaced with an iterative procedure, which involves solution  of an appropriate  parabolic type problem at every iteration step.
+ %until this solution converges. 
+Трето, добавен е стоп критерии, които отчита първо, резидуала от дискретното уравнение, дефиниран в \rf{residual}, второ, разликата между две решения получени от последователни итерации и трето, промяната в поведението на търсената функция в пограничните области близо до $\partial \Omega_h$.
+Четвърто, разгледани са две гранични условия: нулево и ненулево като последното е описано в \cite{bnd}.
 Най-накрая решенията получени от елиптичната задача са сравнени с числените резултати от \cite{Ch2012,Ch2011} при различни скорости $c$ и дисперсионни параметри $\beta =\beta_1  / \beta_2$ и е показано, че формата на решението се изменя по сходен начин и в двата случая в зависимост от входните параметри. Получените резултати от елиптичната задача са сравнени с "best-fit" апроксимационните формули изведени в \cite{Ch2011}. Показано е че последните не удовлетворяват уравнението в околност на нулата $(0,0)$ в класическия смисъл, защото четвъртите производни от решението са сингулярни. Разликата (измерена в $L_2$ и $L_\infty$ норми) между полученото тук решение и при апроксимационните формули от \cite{Ch2011} са достатъчно големи особено при по високи скорости $c$.
-
 
 \section{Формулировка на елиптичната задача.}
 Посредством смяната на променливите $x=\sqrt\beta_1 { \overline x}$, $y=\sqrt\beta_1 { \overline y}$, $U(x,y)= v({ \overline x},{ \overline y} )$ уравнение 
@@ -68,80 +68,66 @@ c^2 \beta (E- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2
 \begin{equation}\label{eq44}
  - \Delta w = c^2 \beta v_{xx}. 
 \end{equation}
-Търсят се ненулеви решения на \rf{eq4},\rf{eq44} както е описано в \cite{Ch2012,chd-chr}: фиксира се стойността на нейзвестната функция $v$ в нулата, $v(0,0)=\theta$ и въвеждайки две нови функции: $\widehat{v}=v/{\theta} $ и $\widehat{w}=w/{\theta} $. Т
-We  seek  non--trivial solutions to \rf{eq4},\rf{eq44}. To avoid the trivial solution we proceed as in \cite{Ch2012,chd-chr}: we fix the value of the solution $v$ at the point $(0,0)$,    $v(0,0)=\theta $ and introduce  new  functions: $\widehat{v}=v/{\theta} $ and $\widehat{w}=w/{\theta} $. Thus  
-$ \widehat{v}(0,0)=1$ and 
+Търсят се ненулеви решения на \rf{eq4},\rf{eq44} както е описано в \cite{Ch2012,chd-chr}: фиксира се стойността на нейзвестната функция $v$ в нулата, $v(0,0)=\theta$ и се въвеждат две нови функции: $\widehat{v}=v/{\theta} $ и $\widehat{w}=w/{\theta} $. Следователно $\widehat{v}(0,0)=1$ и 
 \begin{equation}\label{eq45}
 \begin{split}
- - (1 - c^2 \beta) \Delta \widehat{v} + \beta (1-c^2) \widehat{v} - \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
- - \Delta \widehat{w} =  c^2 \beta (E- \Delta) \widehat{v}_{xx}.\;\;\;\; \;\;\;\;  \;\;\;\;  \;\;\;\; 
+ &- (1 - c^2 \beta) \widehat{v}_{yy} -\widehat{v}_{xx} + \beta (1-c^2) \widehat{v} - \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
+ &- \Delta \widehat{w} =  c^2 \beta \widehat{v}_{xx}.
 \end{split}
 \end{equation}
-The value of $\theta $ is found from the  equation 
+Стойността на $\theta$ се намира използвайки следната зависимост
 \begin{equation}\label{eqtheta}
-\theta = \frac{ (1-c^2 \beta) \Delta \widehat{v} - \beta (1-c^2) \widehat{v} +\widehat{w}}{\alpha \beta \widehat{v}^2 } |_{x=0,y=0} .
+\theta = \frac{ (1-c^2 \beta) \widehat{v}_{yy} + \widehat{v}_{xx} - \beta (1-c^2) \widehat{v} +\widehat{w}}{\alpha \beta \widehat{v}^2 } |_{x=0,y=0}.
 \end{equation}
-In order to evaluate numerically the solution to \rf{eq45} we introduce artificial time, add false  time derivatives and  get
+Численото решение на уравнение \rf{eq45} се намира чрез метода на простата итерация като изкуствено се добавят производни по времето както следва:
 \begin{align}\label{eq5}
 \begin{split}
- \frac {\partial \widehat{v}}{\partial t} - (1-c^2 \beta) \Delta \widehat{v} + \beta (1-c^2) \widehat{v} - \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
- \frac {\partial \widehat{w}}{\partial t} - \Delta \widehat{w} =  c^2 \beta (E- \Delta) \widehat{v}_{xx}. \;\;\;\;  \;\;\;\;  \;\;\;\;  \;\;\;\;
+ &\frac {\partial \widehat{v}}{\partial t} - (1 - c^2 \beta) \widehat{v}_{yy} -\widehat{v}_{xx} + \beta (1-c^2) \widehat{v} - \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
+ &\frac {\partial \widehat{w}}{\partial t} - \Delta \widehat{w} =  c^2 \beta \widehat{v}_{xx}. 
 \end{split}
 \end{align}
-Thus the solution to the steady coupled elliptic system \rf{eq45} is replaced by   solving the  pertinent transient equations \rf{eq5} until their solutions $\widehat{v}$ and $\widehat{w}$ cease to change significantly in time. 
-
-\section{3.~Numerical Method.}
-First we replace the unbounded domain by a sufficiently large computational domain $\Omega$. Due to the obvious symmetry of the problem, we can look for the solution only in the first quadrant $\Omega = [0,L_x] \times[0,L_y]$. Then a uniform grid $\Omega_h$ is defined in the following way
+По този начин стационарната системата от двете уравнения \rf{eq45} се заменя с преходните във времето уравнения дефинирани в \rf{eq5} с условието, че решенията $\widehat{v}$ и $\widehat{w}$ схождат линейно спрямо времето към решенията на \rf{eq45}.
+ 
+\section{Числен метод.}
+Първо заменяме неограничената пространствена двумерна област $R^2$ с достатъчно голям изчислителен правоъгълник, чийто център е в нулата $(0,0)$. Поради симетрията на проблема ще се разглеждат решенията получени само в първи квадрант $\Omega = [0,L_x] \times[0,L_y]$. След това се дефинира мрежа $\Omega_h$ по следния начин:
 $$
 \Omega_h = \{(x_i,y_j): x_i = ih, y_j = jh, i = 0,\cdots ,N_x, j = 0,\cdots , N_y \},
 $$
-where the discretization step $h$ satisfies
-$ h = L_x/N_x = L_y/N_y$. 
- In the  implementation of the numerical method
-the  step size $\tau$ may vary according to the residual of the computed solution. This is a crucial point because it permits  to automatize the control of the error.
-The value of the function $v$ at mesh point $x_i,y_j,t_k$ is denoted by $v_{i,j}^k$.
-
-We discretize the spatial  derivatives in \rf{eq5} using centered finite differences  
-and extending the stencil:
+където дискретната стъпка $h$ удовлетворява условието
+$ h = L_x/N_x = L_y/N_y$.  Времевия домейн е дефиниран чрез интервала $[0, T]$ или просто $Т$, където стъпката по времето $\tau$ варира в зависимост от големината на резидуала на решението. Това спомага за автоматизиране контрола върху грешката (от апроксимацията и изчисленията, но с условието че итеративният метод на простата итерация е сходящ). Стойността на функцията $v$ в точка от мрежата $x_i,y_j,t_k$ е означена с $v_{i,j}^k$.
+Дискретизацията на пространствените производни в \rf{eq5} е направена с централни крайни разлики с различен по големина шаблон:
 \begin{equation}\label{fd}
 v_{\widehat{xx},p}(x) :=  \frac{1}{h^2} \sum\limits_{i=-p/2}^{p/2} d_i v(x+ih),
 \end{equation}
- Here $p$ is equal to $2$, $4$ or $6$.  The weights $d_i$ taken from  \cite{forn} are  
- $ 1,-2,1$ for $p=2$, $-\frac{1}{12}, \frac{4}{3}, -\frac{5}{2}, \frac{4}{3}, -\frac{1}{12}$ - for $p=4$ and  $\frac{1}{90}, -\frac{3}{20}, \frac{3}{2}, -\frac{49}{18}, \frac{3}{2}, -\frac{3}{20}, \frac{1}{90}$ - for $p=6$. The approximation error of  formulae \rf{fd} is $O(h^p)$. Replacing the Laplace operator in \rf{eq5} by the discrete Laplacian $$ \Delta_{h,p} v_{i,j} := (v_{i,j})_{\widehat{xx},p} + (v_{i,j})_{\widehat{yy},p}$$ we obtain finite difference schemes with high order of approximation $O(h^4)$ for $p=4$ and  $O(h^6)$ for $p=6 $.  The application of FDS with high order of approximation leads to a high rate of convergence of the method for   sufficiently smooth solutions.
-In this way more accurate solutions can be produced on a coarse grid.
-
-Symmetry conditions are used to impose the values of the discrete Laplacian at mesh points close to ${(0,y)}$, and $(x,0)$. 
-Near  the computational boundaries $(x,y):x=L_x$ and $(x,y):y=L_y$ we do not change the stencil. The discrete Laplacian
-is defined  there by using the values of the discrete solution given in \rf{bFunV}, \rf{bFunW} below at  points outside the computational domain.
+Тук, $p \in {2, 4, 6}$, а теглата $d_i$ описани в \cite{forn} са 
+ $[1,-2,1]$ за $p=2$, $[-\frac{1}{12}, \frac{4}{3}, -\frac{5}{2}, \frac{4}{3}, -\frac{1}{12}]$ за $p=4$ и  $[\frac{1}{90}, -\frac{3}{20}, \frac{3}{2}, -\frac{49}{18}, \frac{3}{2}, -\frac{3}{20}, \frac{1}{90}]$ за $p=6$. Грешките от апроксимациите при формула \rf{fd} е $O(h^p)$. Замествайки оператора на Лаплас в \rf{eq5} с дискретния Лапласиан $\Delta_{h,p} v_{i,j} := (v_{i,j})_{\widehat{xx},p} + (v_{i,j})_{\widehat{yy},p}$ се получават крайни разлики с до шести ред на апроксимация. Това води до по-висок ред на сходимост за използваните методи при достатъчно гладки решения. По този начин се получават по-точни решения върху по-едра мрежа.
+Симетрията на решението $u$ по осите $x$ и $y$ се използва при изчисляване на дискретния Лапласиан в точките по и близо до границата ${(0,y)}$, and $(x,0)$. 
+В точките по и близо до границата $(x,y):x=L_x$ и $(x,y):y=L_y$ шаблона не се променя, а се използва гранична функция. Единият вариант е нулева гранична функция, т.е. точките от шаблона, които попадат отвъд границата на областта $\partial \Omega_h$ са нули. Другият вариант е да се използва ненулева гранична функция зададена чрез \rf{bFunV}, \rf{bFunW}. Aпроксимацията с несиметричен шаблон при границата $(x,y):x=L_x$ и $(x,y):y=L_y$ води до непълен ранг на матрицата $\Delta_{h,p}$, което след поредица от преобразования води до непълна линейна система от уравнения и затова е избегната.
 
 \par
-The Euler explicit rule is applied for approximation of  time derivatives. The nonlinear terms in \rf{eq3} are computed on    time level $t^k$. Thus, the numerical solutions at time level $t^{k+1}$ are evaluated directly by the values of the numerical solution at time level $t^k$:  
- \begin{equation}\label{eq55}
- \begin{split}
-   \frac {\widehat{v}_{i,j}^{k+1}-\widehat{v}_{i,j}^{k}}{\tau}- (1-c^2 \beta) \Delta_{h,p} \widehat{v} _{i,j}^{k}+ \beta (1-c^2     ) \widehat{v}_{i,j}^{k} - \alpha \beta \theta (\widehat{v}_{i,j}^{k})^2 = \widehat{w}_{i,j}^{k}, \\
-  \frac  {\widehat{w}_{i,j}^{k+1} -\widehat{w}_{i,j}^{k}} {\tau} - \Delta_{h,p} \widehat{w}_{i,j}^{k} =  c^2 \beta (E- \Delta_{h,p})       
-    \widehat{v}_{i,j,{\widehat{xx},p}}^{k}. \;\;\;\; \;\;\;\;\;\;\;\;\;\;\;\;
+Явното правилото на Ойлер е използвано за апроксимацията на нововъведените производни по времето. Нелинейните членове в \rf{eq3} се пресмятат на $t^{(k)}$ слой по времето. Така, численото решение в $t^{(k+1)}$ слой по времето е пресметнато директно чрез численото решение от предходния слой $t^{(k)}$:
+\begin{equation}\label{eq55}
+\begin{split}
+&\frac {\widehat{v}_{i,j}^{k+1}-\widehat{v}_{i,j}^{k}}{\tau}- (1-c^2 \beta) \widehat{v}_{i,j,{\widehat{yy},p}}^{k} - \widehat{v}_{i,j,{\widehat{xx},p}}^{k} + \beta (1-c^2 ) \widehat{v}_{i,j}^{k} - \alpha \beta \theta (\widehat{v}_{i,j}^{k})^2 = \widehat{w}_{i,j}^{k}, \\
+&\frac  {\widehat{w}_{i,j}^{k+1} -\widehat{w}_{i,j}^{k}} {\tau} - \Delta_{h,p} \widehat{w}_{i,j}^{k} =  c^2 \beta \widehat{v}_{i,j,{\widehat{xx},p}}^{k}.
 \end{split}
 \end{equation}
-This method for solving equations 
-\rf{eq45} can be considered also as ``the simple iteration method'' for solving linear and nonlinear equations (see \cite{sam}).
-Last but not least, in order to start the procedure we need initial values for functions $\widehat{v},\widehat{w}$. These initial values are taken from the formulae in \cite{Ch2011}.
+Този метод за решаване на уравненията \rf{eq45} е известен в литературата още като "метод на простата итерация" при линейни и нелинейни уравнения \cite{sam}. Най - накрая, но не и на последно място,  цикличната процедура описана в \rf{eq55} се нуждае от начални стойности за функиите $\widehat{v},\widehat{w}$, които са взети от "best-fit" формулите в \cite{Ch2011}.
 
-\subsection{3.1~Time Step Control.}
-It is possible to use varying time step $\tau$ to optimize and speed up the algorithm. When the time step becomes too big the solution starts to diverge and becomes jagged. Fortunately these signs appear first in the residual $R$,  i.e. it starts to grow and jag simultaneously while the solution is still fine. 
-When this happens, an arbitrary cross--section of it looks like a discrete function which alternates positive with negative values on the grid.
-This is a clear sign that the time step has to be lowered, otherwise it is increased. Changing the artificial time is done automatically at each iteration by a factor $f_{\tau}\tau =: \tau_{new}$, where $f_{\tau} \in (0.72, 1.015)$. 
+\subsection{Контрол на стъпката по времето.}
+Възможно е да се използва нефиксирана стъпка по времето $\tau$ за оптимизиране скоростта на сходимост. Когато $\tau > \tau_{stab}$ премине условието за устойчивост, решението започва да разхожда и става назъбено. Тези знаци се проявяват първоначално при резидуала \rf{residual}, докато численото решение $u$ е все още монотонно и разликите между две последователни итерации не са големи. Когато последното се случи, произволно сечение на резидуала $R$ се описва с дискретна функция сменяща положителни с отрицателни стойности върху мрежата. Това е ясен знак, че стъпката $\tau$ трябва да се намали, в противен случай се увеличава. Промяната се случва на всяка итерация с фактор $f_{\tau} \in \{0.72, 1.015\}$, където $\tau_{new} := f_{\tau}\tau$.
 
-The residual $R^k_{i,j}$ of the discrete approximation to \rf{eq3} at the mesh point $(x_i,y_j,t^k)$ is defined as:
+Самият резидуал $R^k_{i,j}$ от дискретната апроксимация на \rf{eq3} в произволна точка от мрежата $(x_i,y_j,t^k)$ е дефиниран чрез:
 \begin{equation}\label{residual}
 R_{i,j}^k := 
 c^2\beta (\widehat{v}^k_{i,j})_{\widehat{yy},p} + \Delta_{h,p}(-\beta \widehat{v}^k_{i,j} - c^2\beta (\widehat{v}^k_{i,j})_{\widehat{yy},p} + \Delta_{h,p} \widehat{v}^k_{i,j} 
 + \alpha \beta \theta (\widehat{v}^k_{i,j})^2  ).
 \end{equation}
  
-\subsection{3.2~Asymptotic conditions on the  boundaries $x=L_x$ and $y=L_y$.}
+\subsection{Асимптотични условия по границата $x=L_x$ and $y=L_y$.}
 
 The behavior of the solutions $v$ and $w$  as $r =\sqrt{x^2 +y^2} \rightarrow \infty$ is studied in details in \cite{Ch2012,Ch2011,bnd}. The following formulae
+Поведението на решението $v$ и $w$, когато $r =\sqrt{x^2 +y^2} \rightarrow \infty$ е изследвано в детайли в \cite{Ch2012,Ch2011,bnd}. Следните формули
 \begin{equation}\label{bFunV}
 \bar{v}(x,y) = \mu \frac{( (1-c^2)x^2-y^2 )}{((1-c^2)x^2 + y^2)^2 }
 \end{equation}
