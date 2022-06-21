@@ -13,9 +13,35 @@ function zeroMatrix=YDerivativeEvenFunctions(M,zeroMatrix,augFunctionPoints,fini
     for j=mid:size(M,2)-mid+1
         zeroMatrix(:,j) = M(:,j-mid+1:j+mid-1)*finiteDiff';
     end
-    for j = 0:mid-2
-        zeroMatrix(:,end-j) =  M(:,end-mid+1-j:end)*finiteDiff(1:end-mid+1+j)' +  augFunctionPoints(:,1:mid-1-j)*finiteDiff(end-mid+2+j:end)';
+    
+    h_square = sum(GetFiniteDifferenceCoeff(-(mid-1):(mid-1),2)'./finiteDiff)/len;
+    if(sum(sum(augFunctionPoints)) == 0 && len == 5)
+        c_i = GetFiniteDifferenceCoeff(-len:0,2)';
+        d_i = GetFiniteDifferenceCoeff(-len+1:1,2)';
+        d0_c0 = d_i(1)/c_i(1);
+        customFiniteDiff = (d_i(2:end-1)-d0_c0*c_i(2:end-1))/h_square;
+        j = 0;
+        zeroMatrix(:,end-j) =  M(:,end-len+2:end)*customFiniteDiff';
+        
+        j = 1;
+        zeroMatrix(:,end-j) =  M(:,end-mid+1-j:end)*finiteDiff(1:end-mid+1+j)';
+        
+    elseif(sum(sum(augFunctionPoints)) == 0 && len == 7)
+        c_i = GetFiniteDifferenceCoeff(-10:0,4)'/h_square^2;
+        j = 0;
+        zeroMatrix(:,end-j) =  M(:,end-9:end)*c_i(1:end-1)';
+        
+        c_i = GetFiniteDifferenceCoeff(-len:0,2)'/h_square;
+        j = 1;
+        zeroMatrix(:,end-j) =  M(:,end-len+1:end)*c_i(1:end-1)';
+                
+        j = 2;
+        zeroMatrix(:,end-j) =  M(:,end-mid+1-j:end)*finiteDiff(1:end-mid+1+j)';
+        
+    else
+        for j = 0:mid-2
+            zeroMatrix(:,end-j) =  M(:,end-mid+1-j:end)*finiteDiff(1:end-mid+1+j)' +  augFunctionPoints(:,1:mid-1-j)*finiteDiff(end-mid+2+j:end)';
+        end
     end
-
 end
 

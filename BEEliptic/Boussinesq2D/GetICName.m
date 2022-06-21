@@ -8,7 +8,7 @@ function [ name ] = GetICName( ICSwitch )
        return;
     end
     
-    if(ICSwitch == 0)
+    if(ICSwitch ~= 1)
        name = 'Christov'; 
        return;
     end
