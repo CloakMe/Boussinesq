@@ -24,7 +24,7 @@ function zeroMatrix=YDerivativeEvenFunctions(M,zeroMatrix,augFunctionPoints,fini
         zeroMatrix(:,end-j) =  M(:,end-len+2:end)*customFiniteDiff';
         
         j = 1;
-        zeroMatrix(:,end-j) =  M(:,end-mid+1-j:end)*finiteDiff(1:end-mid+1+j)';
+        zeroMatrix(:,end-j) =  M(:,end-mid+1-j:end)*finiteDiff(1:end-1)';
         
     elseif(sum(sum(augFunctionPoints)) == 0 && len == 7)
         c_i = GetFiniteDifferenceCoeff(-len:0,2)';
@@ -42,7 +42,7 @@ function zeroMatrix=YDerivativeEvenFunctions(M,zeroMatrix,augFunctionPoints,fini
         zeroMatrix(:,end-j) =  M(:,end-len+2:end)*customFiniteDiff';
                 
         j = 2;
-        zeroMatrix(:,end-j) =  M(:,end-mid+1-j:end)*finiteDiff(1:end-mid+1+j)';
+        zeroMatrix(:,end-j) =  M(:,end-mid+1-j:end)*finiteDiff(1:end-1)';
         
     else
         for j = 0:mid-2
