@@ -3,8 +3,11 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
   
   methods
     
-    function this = BEEngineTaylor( dscrtParams, eqParams, ic )
-        this = this@BEEngine( dscrtParams, eqParams, ic );
+    function this = BEEngineTaylor( dscrtParams, eqParams, ic, flag )
+        if(nargin == 3)
+            flag = 0;
+        end
+        this = this@BEEngine( dscrtParams, eqParams, ic, flag );
     end
     
     function [ this, tt, max_v, t, EN, II, vu, dtv ]= BESolver( this )

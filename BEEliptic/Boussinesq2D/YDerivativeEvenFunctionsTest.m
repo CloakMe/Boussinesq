@@ -1,5 +1,5 @@
 clear;
-sx = 12;
+sx = 10;
 %AD = zeros(4,8);
 stencil = -3:3;
 fdsize = length(GetFiniteDifferenceCoeff( stencil, 2));
@@ -52,4 +52,4 @@ for i=2:-1:-2
     AB(j,end-fdsize+1:end) = fliplr(coeffs);
     j = j - 1;
 end
-
+AB(2:end-1,2:end-1)
