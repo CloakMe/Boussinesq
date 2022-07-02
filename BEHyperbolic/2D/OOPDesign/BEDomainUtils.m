@@ -9,6 +9,7 @@ classdef (ConstructOnLoad) BEDomainUtils
         order
         x
         y
+        mFiniteDiff
     end
     
     properties (SetAccess = private, GetAccess = public)
@@ -48,8 +49,9 @@ classdef (ConstructOnLoad) BEDomainUtils
         [ this.X, this.Y ] = this.GetNet(x,y);
         [ this.X_xAugDomain, this.Y_xAugDomain ] = this.GetNet(extendedX,y);
         [ this.X_yAugDomain, this.Y_yAugDomain ] = this.GetNet(x,extendedY); 
-        %this = SetBoundingBox( this, x, y, numberOfExtPoints );
-
+        
+        this.mFiniteDiff = BEUtilities.GetFinDiffMatZeroBnd(order+1,order);
+        boolbreak = 1;
     end
     
     function [ zeroMatrix ] = DeltaH( this,...
@@ -121,6 +123,54 @@ classdef (ConstructOnLoad) BEDomainUtils
 
     end
     
+    function [ zeroMatrix ] = DeltaHZeroBnd( this, M)
+        zeroMatrix = this.YDerivativeZeroBnd( M ) + this.YDerivativeZeroBnd(M')';
+    end
+                                         
+    function [ zeroMatrix ] = YDerivativeZeroBnd( this, M ) 
+
+        zeroMatrix = zeros( size( M ) );
+        
+        mid = (this.order+2)/2;
+        sizeFD = size( this.mFiniteDiff, 2 ) - 1;
+        for j = 1:mid-1
+            zeroMatrix(:,j) = M(:,1:sizeFD)*this.mFiniteDiff(j,1:end-1)';
+        end
+        
+        [ zeroMatrix ] = YDerivativeZeroRightBnd( this, M, zeroMatrix, mid, sizeFD );
+
+    end
+    
+    function [ zeroMatrix ] = XDerivativeZeroBnd( this, M ) 
+
+        zeroMatrix = this.YDerivativeZeroBnd(M')';
+
+    end
+    
+    function [ zeroMatrix ] = DeltaHEvenFunZeroBnd( this, M)
+        zeroMatrix = this.YDerivativeEvenFunZeroBnd( M ) + this.YDerivativeEvenFunZeroBnd(M')';
+    end
+    
+    function [ zeroMatrix ] = YDerivativeEvenFunZeroBnd( this, M ) 
+
+        zeroMatrix = zeros( size( M ) );
+        
+        mid = (this.order+2)/2;
+        sizeFD = size( this.mFiniteDiff, 2 ) - 1;
+        for j = 1:mid-1
+            zeroMatrix(:,j) =  M(:,1:mid-1+j)*this.mFiniteDiff(mid,mid+1-j:end)'  + M(:,2:mid+1-j)*this.mFiniteDiff(mid,mid+j:end)';
+        end
+        
+        [ zeroMatrix ] = YDerivativeZeroRightBnd( this, M, zeroMatrix, mid, sizeFD );
+
+    end
+    
+    function [ zeroMatrix ] = XDerivativeEvenFunZeroBnd( this, M ) 
+
+        zeroMatrix = this.YDerivativeEvenFunZeroBnd(M')';
+
+    end
+    
     function [X,Y]=GetNet(this,x,y)
         
         sx = length(x);
@@ -139,6 +189,19 @@ classdef (ConstructOnLoad) BEDomainUtils
   
   methods( Access = protected )
       
+    function [ zeroMatrix ] = YDerivativeZeroRightBnd( this, M, zeroMatrix, mid, sizeFD ) 
+       
+        for j=mid:size(M,2)-mid+1
+            zeroMatrix(:,j) = M(:,j-mid+1:j+mid-1)*this.mFiniteDiff(mid,:)';
+        end
+        jfd = mid+1;
+        for j=size(M,2)-mid+2:size(M,2)
+            zeroMatrix(:,j) = M(:,end-sizeFD+1:end)*this.mFiniteDiff(jfd,2:end)';
+            jfd = jfd+1;
+        end
+
+    end
+    
     function [ this ] = SetBoundingBox( this, x, y, numberOfExtPoints )
         %================= left ======================
         startAugleftY = y( 1 ) - numberOfExtPoints*this.hy;

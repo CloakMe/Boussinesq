@@ -7,10 +7,12 @@ classdef (ConstructOnLoad) BEEngineTaylorZeroBnd < BEEngineTaylor
     function this = BEEngineTaylorZeroBnd( dscrtParams, eqParams, ic )
         this = this@BEEngineTaylor( dscrtParams, eqParams, ic, 1 );
         this.Delta_hx = BEUtilities.GetFinDiffMatZeroBnd( this.sx, this.order, this.h );
-        this.Delta_hy = BEUtilities.GetFinDiffMatZeroBnd( this.sy, this.order, this.h );
+        this.Delta_hy = BEUtilities.GetFinDiffMatZeroBnd( this.sy, this.order, this.h )';
 
-        [ this.eigenFinDiffMat_x, this.w_x ] = eig( -this.Delta_hx );
-        [ this.eigenFinDiffMat_y, this.w_y ] = eig( -this.Delta_hy );
+        [ this.eigenFinDiffMat_x, this.D_x ] = eig( -this.Delta_hx );
+        [ this.eigenFinDiffMat_y, this.D_y ] = eig( -this.Delta_hy );
+        this.invEigenFinDiffMat_x = inv(this.eigenFinDiffMat_x);
+        this.invEigenFinDiffMat_y = inv(this.eigenFinDiffMat_y);
         [this.Lambda_X, this.Lambda_Y] = this.SetLambdaNet();
     end
     
@@ -30,10 +32,15 @@ classdef (ConstructOnLoad) BEEngineTaylorZeroBnd < BEEngineTaylor
         if( this.order > 6 )
             error( 'Not yet implemented for order = 8!' );
         end
-      
-        deltab = this.eigenFinDiffMat_x' * ( this.Delta_hx * nonlinTerm + nonlinTerm * this.Delta_hy ) * this.eigenFinDiffMat_y;    
+        
+        deltab = this.eigenFinDiffMat_x' * ( this.Delta_hx * nonlinTerm + nonlinTerm * this.Delta_hy' ) * this.eigenFinDiffMat_y;
         X = deltab ./ (this.Lambda_X + this.Lambda_Y + this.h^2);
-        dnvz = ( this.eigenFinDiffMat_x * X * this.eigenFinDiffMat_y' + this.Delta_hx / this.h^2 * dnU_dtn + dnU_dtn * this.Delta_hy / this.h^2 )/this.beta;
+        dnvz = ( this.invEigenFinDiffMat_x' * X * this.invEigenFinDiffMat_y + this.Delta_hx / this.h^2 * dnU_dtn + dnU_dtn * this.Delta_hy' / this.h^2 )/this.beta;
+        
+        %intermediate = this.invEigenFinDiffMat_x * nonlinTerm * this.invEigenFinDiffMat_y';
+        %X = (this.D_x * intermediate + intermediate * this.D_y) ./ (this.Lambda_X + this.Lambda_Y + this.h^2);
+        %dnvz = ( this.eigenFinDiffMat_x * X * this.eigenFinDiffMat_y' + this.Delta_hx / this.h^2 * dnU_dtn + dnU_dtn * this.Delta_hy' / this.h^2 )/this.beta;
+        
         %{
         Q = 21;
         dnvz2 =  ( deltab )/this.beta;
@@ -54,11 +61,11 @@ classdef (ConstructOnLoad) BEEngineTaylorZeroBnd < BEEngineTaylor
 
         wvt = this.eigenFinDiffMat_x' * vt * this.eigenFinDiffMat_y;
 
-        idhv = this.beta * (vz+vpo) - ( this.Delta_hx * ( vz+vpo ) + ( vz+vpo ) * this.Delta_hy )/this.h^2;
+        idhv = this.beta * (vz+vpo) - ( this.Delta_hx * ( vz+vpo ) + ( vz+vpo ) * this.Delta_hy' )/this.h^2;
         X = wvt ./ (this.Lambda_X + this.Lambda_Y);
         vec1 = this.eigenFinDiffMat_x * X * this.eigenFinDiffMat_y';  %/h^2
         sigma = 0;  
-        IDhvt = this.beta*vt - ( this.Delta_hx * vt + vt * this.Delta_hy )/this.h^2;
+        IDhvt = this.beta*vt - ( this.Delta_hx * vt + vt * this.Delta_hy' )/this.h^2;
         Le= this.beta * ( vec1 + vt ) .* vt  +...
             this.tau^2 * ( sigma - 1/4 ) *  IDhvt.*vt + idhv .* ( vz+vpo ) / 4 ;
 
@@ -74,13 +81,13 @@ classdef (ConstructOnLoad) BEEngineTaylorZeroBnd < BEEngineTaylor
         sy = size(this.Delta_hy,1);
         
         ox1 = ones(1,sy);
-        lambda_X = diag(this.w_x)*ox1;
+        lambda_X = diag(this.D_x)*ox1;
         
         if(sx~=sy )
             oy1 = ones(1,sx);
-            lambda_Y = (diag(this.w_y)*oy1)';
+            lambda_Y = (diag(this.D_y)*oy1)';
         else
-            lambda_Y = (diag(this.w_y)*ox1)';
+            lambda_Y = (diag(this.D_y)*ox1)';
         end
     end
       
@@ -91,9 +98,11 @@ classdef (ConstructOnLoad) BEEngineTaylorZeroBnd < BEEngineTaylor
     Delta_hx
     Delta_hy    
     eigenFinDiffMat_x
-    w_x
+    invEigenFinDiffMat_x
+    D_x
     eigenFinDiffMat_y
-    w_y
+    invEigenFinDiffMat_y
+    D_y
     Lambda_X
     Lambda_Y
   end 

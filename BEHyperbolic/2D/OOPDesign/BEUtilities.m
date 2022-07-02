@@ -389,6 +389,18 @@ classdef BEUtilities
                 Ysx = ma3x(1:2)*X(end-1:end,:);
 
                 Y = [Y(1,:); Yc; Ysx];
+            elseif(sm == 7)
+                Y1 = m11*X(1,:) + ma3x(5:7)*X(2:4,:);
+                Y2 = ma3x(3:7)*X(1:5,:);
+                Y3 = ma3x(2:7)*X(1:6,:);
+                %for l=4:sx-3
+                    Yc  =ma3x(1)*X(1:end-6,:) + ma3x(2) * X(2:end-5,:) + ma3x(3) * X(3:end-4,:)+ ma3x(4) * X(4:end-3,:) + ...
+                        ma3x(5) * X(5:end-2,:) + ma3x(6) * X(6:end-1,:) + ma3x(7) * X(7:end,:);
+                %end
+                Ysx2 = ma3x(1:6)*X(sx-5:sx,:);
+                Ysx1 = ma3x(1:5)*X(sx-4:sx,:);
+                Ysx =  ma3x(1:3)*X(sx-3:sx-1,:) + m11*X(sx,:);
+                Y = [Y1; Y2; Y3; Yc; Ysx2; Ysx1; Ysx];
             else
                 error('ERROR; size(ma3x) must equal [1,3] ... not ready yet for 5 or 7 diag matrices! ');
             end
@@ -435,6 +447,7 @@ classdef BEUtilities
         %
         % Input:
         % sx - size of the matrix 
+        % order - approx order O(h^order)
         % h - discretization step size
         % Output:
         % First matrix is second order finite diff matrix
