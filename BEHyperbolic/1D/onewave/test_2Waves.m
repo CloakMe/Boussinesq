@@ -1,15 +1,15 @@
 clear;clc;
 % constants
 addpath('..\twowaves');
-start_x=-100; end_x = 100;
+start_x=-200; end_x = 200;
 pw = 0;
-h = 0.1;  tau = 0.01;  x = start_x:h:end_x;  t_end=110;
+h = 0.2;  tau = -0.02;  x = start_x:h:end_x;  t_end=-80;
 k = .3;
 a1 = .5;
 a2 = .5;
 a12 = .5;
 b = 0;
-t_init = -50;
+t_init = 90;
 beta1=1/(2-k^2);   beta2=1;  alpha=3; beta=beta1/beta2;
 sgm = 1/2;
 %sgm=(1-h^2/tau^2)/12;
