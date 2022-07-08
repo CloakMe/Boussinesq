@@ -42,7 +42,11 @@ classdef (ConstructOnLoad) BEEngine
   
   methods ( Access = protected )
     % BEEngie internal
-    function this = BEEngine( dscrtParams, eqParams, ic )
+    function this = BEEngine( dscrtParams, eqParams, ic, flag )
+        if(nargin == 3)
+            flag = 0;
+        end
+            
         % Method help here
         delete SOL\*
         if( dscrtParams.order ~= 2 && dscrtParams.order ~= 4 && dscrtParams.order ~= 6 )
@@ -69,13 +73,15 @@ classdef (ConstructOnLoad) BEEngine
         
         this.sy = length(this.y);
         this.sx = length(this.x);
-        
-        dhb = BEUtilities.GetFinDiffMat( this.sx, this.order, this.h );
-        [ this.eigenFinDiffMat, w ] = eig( -dhb );
-        [ this.IminusDHdiag, this.minusDHdiag ] = this.GetEigenMatrices();
         this.vdah = zeros( this.sx, this.sy );
         numberOfBndPnts = this.order/2;
-        this.maximumOnBnd = this.GetBndMax( this.u_t0, numberOfBndPnts );
+        if(flag == 0)
+            dhb = BEUtilities.GetFinDiffMat( this.sx, this.order, this.h );
+            [ this.eigenFinDiffMat, w ] = eig( -dhb );
+            [ this.IminusDHdiag, this.minusDHdiag ] = this.GetEigenMatrices();       
+            this.maximumOnBnd = this.GetBndMax( this.u_t0, numberOfBndPnts );
+        end
+        
     end
     
     % GetFd2ndDer internal
@@ -291,7 +297,7 @@ classdef (ConstructOnLoad) BEEngine
         for j=1:this.sx
             diag = [ -fd2ndDer(1:mid-1) this.minusDHdiag(j) -fd2ndDer(mid+1:end) ]/this.h^2;
             %diag = [(1/12) (-16/12) this.IminusDHdiag(j) (-16/12) 1/12];
-            if( this.order == 2 )      
+            if( this.order == 2 )
                 VV(j,:) = BEUtilities.TridiagSolv( diag, wvt(j,:) );
             end
             if( this.order == 4 )   

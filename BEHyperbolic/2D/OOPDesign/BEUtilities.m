@@ -389,6 +389,18 @@ classdef BEUtilities
                 Ysx = ma3x(1:2)*X(end-1:end,:);
 
                 Y = [Y(1,:); Yc; Ysx];
+            elseif(sm == 7)
+                Y1 = m11*X(1,:) + ma3x(5:7)*X(2:4,:);
+                Y2 = ma3x(3:7)*X(1:5,:);
+                Y3 = ma3x(2:7)*X(1:6,:);
+                %for l=4:sx-3
+                    Yc  =ma3x(1)*X(1:end-6,:) + ma3x(2) * X(2:end-5,:) + ma3x(3) * X(3:end-4,:)+ ma3x(4) * X(4:end-3,:) + ...
+                        ma3x(5) * X(5:end-2,:) + ma3x(6) * X(6:end-1,:) + ma3x(7) * X(7:end,:);
+                %end
+                Ysx2 = ma3x(1:6)*X(sx-5:sx,:);
+                Ysx1 = ma3x(1:5)*X(sx-4:sx,:);
+                Ysx =  ma3x(1:3)*X(sx-3:sx-1,:) + m11*X(sx,:);
+                Y = [Y1; Y2; Y3; Yc; Ysx2; Ysx1; Ysx];
             else
                 error('ERROR; size(ma3x) must equal [1,3] ... not ready yet for 5 or 7 diag matrices! ');
             end
@@ -435,6 +447,7 @@ classdef BEUtilities
         %
         % Input:
         % sx - size of the matrix 
+        % order - approx order O(h^order)
         % h - discretization step size
         % Output:
         % First matrix is second order finite diff matrix
@@ -477,6 +490,58 @@ classdef BEUtilities
             dxMat(sx-2,sx-5)=1/90;  dxMat(sx-2,sx-4)=-3/20; dxMat(sx-2,sx-3)=3/2;                         dxMat(sx-2,sx-1)=3/2; dxMat(sx-2,sx)=-3/20;  
                                     dxMat(sx-1,sx-4)= 1/90; dxMat(sx-1,sx-3)=-3/20; dxMat(sx-1,sx-2)=3/2;                       dxMat(sx-1,sx)=3/2;    
                                                             dxMat(sx,sx-3)=1/90; dxMat(sx,sx-2)=-3/20;    dxMat(sx,sx-1)=3/2;   dxMat(sx,sx)=-49/18;
+        else
+            error('No such order %d!', order);
+        end
+        return;
+    end
+    
+    function [dxMat]=GetFinDiffMatZeroBnd(sx,order,h)
+        %
+        % Input:
+        % sx - size of the matrix 
+        % h - discretization step size
+        % Output:
+        % First matrix is second order finite diff matrix
+        % Second matrix is fourth order finite diff matrix
+        %               %
+        if(order == 2)
+            dxMat=-2*diag(ones(sx,1));
+            dxMat(1,2)=1;
+            for l=2:sx-1
+                dxMat(l,l-1)=1;
+                dxMat(l,l+1)=1;
+            end
+            dxMat(sx,sx-1)=1;
+            %dx2 = dx2/h^2;
+        elseif(order == 4)
+            dxMat=-2.5*diag(ones(sx,1));
+            dxMat(1,1:4)=[-38/15    29/20    -2/15   1/120];
+            dxMat(2,1:4)=  [4/3       -5/2      4/3    -1/12];
+            for l=3:sx-2
+                dxMat(l,l-2)=-1/12;
+                dxMat(l,l+2)=-1/12;
+                dxMat(l,l-1)=16/12;
+                dxMat(l,l+1)=16/12;
+            end
+            dxMat(sx-1,sx-3:sx)=[-1/12    4/3     -5/2     4/3];    
+            dxMat(sx,sx-3:sx)  =[1/120    -2/15  29/20   -38/15];
+        elseif(order == 6)
+            dxMat=-49/18*diag(ones(sx,1));
+            dxMat(1,1:6)= [-327/140        191/168        167/1134        -1/7           19/420        -77/13331];
+            dxMat(2,1:6)= [54/35           -235/84        884/567         -5/28           2/105        -11/11340];
+            dxMat(3,1:6)=   [-3/20           3/2            -49/18           3/2           -3/20           1/90];
+            for l=4:sx-3
+                dxMat(l,l-3)=1/90;
+                dxMat(l,l+3)=1/90;
+                dxMat(l,l-2)=-3/20;
+                dxMat(l,l+2)=-3/20;
+                dxMat(l,l-1)=3/2;
+                dxMat(l,l+1)=3/2;
+            end
+            dxMat(sx-2,sx-5:sx)=[1/90          -3/20           3/2          -49/18           3/2           -3/20];  
+            dxMat(sx-1,sx-5:sx)=[ -11/11340        2/105         -5/28         884/567       -235/84          54/35];    
+            dxMat(sx,sx-5:sx)=  [-77/13331       19/420         -1/7          167/1134       191/168       -327/140];
         else
             error('No such order %d!', order);
         end

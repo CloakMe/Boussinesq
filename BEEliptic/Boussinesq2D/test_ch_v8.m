@@ -1,35 +1,35 @@
 %return;
 clear;clc;
 tic
-x_st = -24.0;    y_st = -20.0;
-x_end = 24.0;    y_end = 20.0;
-x_st2 = -30.0;   y_st2 = -27.0;
-x_end2 = 30.0;   y_end2 = 27.0;
+x_st = -24.0;    y_st = -24.0;
+x_end = 24.0;    y_end = 24.0;
+x_st2 = -30.0;   y_st2 = -30.0;
+x_end2 = 30.0;   y_end2 = 30.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
 
-UseExtendedDomain=0;
+UseExtendedDomain=1;
 
-h = 0.25;
+h = 0.4;
 x=x_st2:h:x_end2; 
 y=y_st2:h:y_end2; 
 %tau = 0.00114425*8;% getTau(h,x_end,y_end)/20;
-tau = getTau(h,x_end,y_end)/10;
+tau = getTau(h,x_end,y_end)/20;
 
 sx = (length(x)+1)/2
 sy = (length(y)+1)/2
    
    al = -1;%99979 izb
    bt1 = 1;bt2 = 1; bt = bt1/bt2;
-   c = 0.9; 
+   c = 0.9;
    iterMax = 9000000;
    %eps = 1/max(y_end^6,((1-c^2)*x_end^2)^3);
    eps = 5.0e-04;%5.0e-09;
-   ICSwitch=0;
+   ICSwitch=3;
    % IC_switch = 0 ->christov sech formula
    % IC_switch = 1 ->nat42 formula
-   useZeroBoundary  = 0;
+   useZeroBoundary  = 1;
    plotResidual  = 0;
    plotBoundary  = 0;
    checkBoundary = 0;
@@ -40,8 +40,8 @@ sy = (length(y)+1)/2
        'plotResidual',{plotResidual},'plotBoundary',{plotBoundary},'plotAssympt',{plotAssympt},...
        'checkBoundary',{checkBoundary}, 'useZeroBoundary', {useZeroBoundary});
    
-   firstDerivative = GetFiniteDifferenceCoeff([-1,0,1],1)'/h;
-   secondDerivative = GetFiniteDifferenceCoeff([-1,0,1],2)'/h^2;
+   firstDerivative = GetFiniteDifferenceCoeff([-3,-2,-1,0,1,2,3],1)'/h;
+   secondDerivative = GetFiniteDifferenceCoeff([-3,-2,-1,0,1,2,3],2)'/h^2;
    derivative = struct('first',{firstDerivative},'second',{secondDerivative});
    
   [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,mu,tauVector,angl,sw_div]=...
@@ -197,7 +197,7 @@ PrintResults(solutionNorms,mu);
 PlotAssymptVsSolu( x, y, h, bigU, mu.muU*theta(end), c);
 return;
 
-DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDerivative,newBigIC,U,compBox,secondDerivative);
+DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDerivative,bigIC,U,compBox,secondDerivative);
 
 DrawAsymptoticTerms(x,y,h,al,bt,c,theta,bigU,bigUTimeDerivative,bigIC,U,compBox,secondDerivative);
 
