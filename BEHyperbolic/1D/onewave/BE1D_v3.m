@@ -76,7 +76,7 @@ Idh=(h^2*eye(7)-dh);
     v = zeros(sx, estep*t_end-1);
     tt = zeros(1, estep*t_end-1);
     tic
-    while(t(k)<t_end)
+    while(abs(t(k))<abs(t_end))
         %picardi g1:
         vu = SIT_v3(sA,sB,sdh,a11,b11,vz,vmo,h,alpha,beta);
         
