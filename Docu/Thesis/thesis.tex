@@ -149,42 +149,7 @@ $$\Delta_{h,2}u(x_i, y_j, t_k) :=  u_{\bar{x}x}(x_i, y_j, t_k) + u_{\bar{y}y}(x_
 \]
 като тук първите три и последни три реда от матрицата са все още предмет на дефиниране, т.е. в хоризонталните многоточия на горепосочените матрици $\Delta_{h,p,n}$ трябва да се дефинира граничното условие заложено в ПУБ по подходящ начин.
 
-\section{Инструменти използвани при числените резултати}
-
-Реда на сходимост на изследваните крайни разлики и развития в ред на Тейлор е получена послредством правилото на Рунге:
-\begin{equation}\label{Runge}
-\xi = ln  \frac{\Vert u_{h,\tau} - u_{(h,\tau)} \Vert_\kappa } {\Vert  u_{(h/2,\tau/2)} - u_{(h/4,\tau/4)} \Vert_\kappa  } / ln(2),
-\end{equation}
-когато не е известно аналитично решение на уравнението, а нормата $\kappa$ е подходящо подбрана. В настоящата работа за $\kappa$ са използвани $L_2$ и $L_\infty$. Формула \rf{Runge} е приложена и при изчислението на сходимостта на дискретната енергията върху три вложени мрежи с размери $[0:\tau:T]$, $[0:\tau/2:T]$ и $[0:\tau/4:T]$. За леснота в долните Tаблици \rf{tableC} и \rf{tableA} се използва следното означение за грешката в решението:
-$$\Vert \bar E_i \Vert_\kappa =  \Vert u_{h,\tau} - u_{(h/2,\tau/2)} \Vert_\kappa.$$ 
-При Енергията съответно в Таблици \rf{tableD} и \rf{tableB} се използва следния запис
-$$\Vert \bar{\bar{ E_i}} \Vert_\kappa=  \Vert E(u_{h,\tau}) - E(u_{(h/2,\tau/2)}) \Vert_\kappa.$$ 
-Числените резултати са извършени при следните два случая (виж Таблица \rf{tableP}) $\beta = 3$, $c=0.45$ и $\beta = 1$, $c=0.9$ \begin{table}
-\centering
-\small
-		\begin{tabular}{||c|l|l|l|l|l|l|l||}
-			\hline
-			\hline
-                                            &    $\beta$, $c$                              & $O(|h|^p+\tau^p)$   &      $h$                                & $L_x$,$L_y$                              &  Методи & $T$      & Гр. Усл.  \\
-   			\hline 
-					\hline
-           Test 1                        &      $\beta = 3$     &      $p=2, 4, 6$    &    $h=0.2,$       & $L_x = 30$                & Тейлор &                10    &    нула  \\
-                                             &      $c=0.45$         &                             &    $ 0.1, 0.05$   & $L_y=27$                  &  Конс. сх. &                &            \\
-	   \hline
-			\hline 
-           Test 2                        &      $\beta = 1$     &      $p=2, 4, 6$    &     $h=0.4,$       & $L_x = 128$         & Тейлор  &               10    &   нула  \\
-                                             &      $c=0.9$           &                             &      $0.2, 0.1$     & $L_y=58$              & Конс. сх.  &                   &     \\
-	   \hline
-			\hline 
-		\end{tabular}
-\caption{Параметрична таблица с описание на числените тестове}
-\label{tableP}
-\end{table}
-с последващите уточнения при хиперболичната задача. Първо, Консервативната схема е приложена само с втори ред на апроксимация  $p=2$. Второ, при $p=2$ дискретната стъпка по времето е 
- $\tau=h/200$, иначе при $p=4, 6$ тя е $\tau = h/10$. Трето, всички изчисления използват граничните условия, както са описани в секцията "Нулево гранично условие".
-
 \section{Нулево гранично условие}
-
 Пространството от функции, за които е изпълнено $f_b(x) = 0$ и $\Delta f_b(x) = 0$ по границата $\partial\Omega$ се дефинира чрез
 \be\label{funSpace}
 J_\infty:=\{ f_b : \Omega \rightarrow R | f_b(x) = 0, \Delta f_b(x) = 0, x \in \partial\Omega\}
@@ -283,15 +248,17 @@ J_\infty:=\{ f_b : \Omega \rightarrow R | f_b(x) = 0, \Delta f_b(x) = 0, x \in \
 \end{align}
 За да се построи долната дясна част на матрцата се подхожда както до сега при горната лява част. Аналогични разсъждения се прилагат за горната и долната граници на областта при другата матрица $\Delta_{h,6,y}$, която се използва за изчисляването на втората производна по $y$, където отново се получава същата структура.
 
-
 \section{Симетрично гранично условие по абцисата и ординатата при елиптичната задача}
-
 Нейзвестната функция $u$ клони към нула на безкрайност, но е показано, че решенията от стационарната задача са симетрични по $x$ и $y$ осите. Това позволява да се търси решение само в първи квадрант. Симетричното условие може да се построи посредством следния запис
 \begin{align}\label{funSpaceSym}
 J_s:=\{ f_s : \Omega \rightarrow \RR  \; | \; f_s(x_i,y_j) = f_s(x_i,-y_j), f_s(x_i,y_j) = f_s(-x_i,y_j),\nonumber\\
 (x_i,y_j) \in \omega_h, \; (x_i,-y_j), (-x_i,y_j) \in \Omega_h\}.
 \end{align}
-Търсената функция изпълнява условието, че $u(x_i,y_j) \in J_\infty \cap J_s$, но ще разгледаме уравнението само в $\omega_h \in \Omega_h$. При $p=2$ имаме, че 
+Търсената функция изпълнява условието, че $u(x_i,y_j) \in J_\infty \cap J_s$, но ще разгледаме уравнението само в $\omega_h \in \Omega_h$. Дискретните оператори $\Delta_{h,p,x} \in \RR^{(N_x-2) \times (N_x-2)}$ и $\Delta_{h,p,y} \in \RR^{(N_y-2)\times(N_y-2)}$ дефинирани в ``Нулево гранично условие''  ще бъдат от помощ при построяването на $\Delta_{h,p,s,x} \in \RR^{(N_x-1)/2 \times (N_x-1)/2}$ и $\Delta_{h,p,s,y} \in \RR^{(N_y-1)/2\times(N_y-1)/2}$ описващи симетричното условие по абцисата и ординатата в $\omega_h$:
+\be\label{PsnDiscretSym}
+\Delta_{h,p,s}(v^{(k)}) := \Delta_{h,p,s,x} *  v^{(k)} + v^{(k)} * (\Delta_{h,p,s,y})^T.
+\ee
+Структурата на матриците $\Delta_{h,p,s,x}$ и $\Delta_{h,p,s,y}$ се различава от $\Delta_{h,p,x}$ и $\Delta_{h,p,y}$ само в първите $i$ редове (при $p=2$ и $i=0$, при $p=4$ и $i=0,1$, при $p=6$ и $i=0,1,2$), където е приложено условието за симетрия. Останалите редове и ненулевите елементи спрямо главните им диагонали, са едни и същи, защото апроксимират втора производна с един и същи ред на апроксимация $p$ и нулево гранично условие по границите $x=L_x$ и $y=L_y$. Така, при $p=2$ се получава, че 
 \[
 \Delta_{h,2,s,x} = \frac{1}{h^2}
 \begin{bmatrix}
@@ -358,8 +325,41 @@ $u(x_1, y_j) = u(x_{-1}, y_j), u(x_2, y_j) = u(x_{-2}, y_j),$
 -\frac{3}{20}u(x_{-2}, y_j) - \frac{3}{20}u(x_2, y_j) = -\frac{3}{10}u(x_2, y_j) \nonumber\\
 \frac{3}{2}u(x_{-1}, y_j) + \frac{3}{2}u(x_1, y_j) = \frac{3}{1}u(x_1, y_j). \nonumber
 \end{align}
-Аналогични разсъждения се прилагат за границата разположена върху ординатата при $\omega_h$ за другата матрица $\Delta_{h,6,s,y} \in \RR^{(N_y-1)/2 \times (N_y-1)/2}$, която се използва за изчисляването на втората производна по $y$ и затова нейната структура е същата както при $\Delta_{h,6,s,x}$, но размерът ѝ е друг. Матриците $\Delta_{h,p,s,x}$ и $\Delta_{h,p,s,y}$ се различават от $\Delta_{h,p,x}$ и $\Delta_{h,p,y}$ само в първите редове, където е приложено условието за симетрия. Сравнявайки останалите редове (при $p=2$ и $i>0$, при $p=4$ и $i>1$, при $p=6$ и $i>2$) матриците са едни и същи.
+Аналогични разсъждения се прилагат за границата разположена върху ординатата при $\omega_h$ за другата матрица $\Delta_{h,6,s,y} \in \RR^{(N_y-1)/2 \times (N_y-1)/2}$, която се използва за изчисляването на втората производна по $y$ и затова нейната структура е същата както при $\Delta_{h,6,s,x}$, но размерът ѝ е друг. 
 
+\section{Инструменти използвани при числените резултати}
+
+Реда на сходимост на изследваните крайни разлики и развития в ред на Тейлор е получена послредством правилото на Рунге:
+\begin{equation}\label{Runge}
+\xi = ln  \frac{\Vert u_{h,\tau} - u_{(h,\tau)} \Vert_\kappa } {\Vert  u_{(h/2,\tau/2)} - u_{(h/4,\tau/4)} \Vert_\kappa  } / ln(2),
+\end{equation}
+когато не е известно аналитично решение на уравнението, а нормата $\kappa$ е подходящо подбрана. В настоящата работа за $\kappa$ са използвани $L_2$ и $L_\infty$. Формула \rf{Runge} е приложена и при изчислението на сходимостта на дискретната енергията върху три вложени мрежи с размери $[0:\tau:T]$, $[0:\tau/2:T]$ и $[0:\tau/4:T]$. За леснота в долните Tаблици \rf{tableC} и \rf{tableA} се използва следното означение за грешката в решението:
+$$\Vert \bar E_i \Vert_\kappa =  \Vert u_{h,\tau} - u_{(h/2,\tau/2)} \Vert_\kappa.$$ 
+При Енергията съответно в Таблици \rf{tableD} и \rf{tableB} се използва следния запис
+$$\Vert \bar{\bar{ E_i}} \Vert_\kappa=  \Vert E(u_{h,\tau}) - E(u_{(h/2,\tau/2)}) \Vert_\kappa.$$ 
+Числените резултати са извършени при следните два случая (виж Таблица \rf{tableP}) $\beta = 3$, $c=0.45$ и $\beta = 1$, $c=0.9$ \begin{table}
+\centering
+\small
+		\begin{tabular}{||c|l|l|l|l|l|l|l||}
+			\hline
+			\hline
+                                            &    $\beta$, $c$                              & $O(|h|^p+\tau^p)$   &      $h$                                & $L_x$,$L_y$                              &  Методи & $T$      & Гр. Усл.  \\
+   			\hline 
+					\hline
+           Test 1                        &      $\beta = 3$     &      $p=2, 4, 6$    &    $h=0.2,$       & $L_x = 30$                & Тейлор &                10    &    нула  \\
+                                             &      $c=0.45$         &                             &    $ 0.1, 0.05$   & $L_y=27$                  &  Конс. сх. &                &            \\
+	   \hline
+			\hline 
+           Test 2                        &      $\beta = 1$     &      $p=2, 4, 6$    &     $h=0.4,$       & $L_x = 128$         & Тейлор  &               10    &   нула  \\
+                                             &      $c=0.9$           &                             &      $0.2, 0.1$     & $L_y=58$              & Конс. сх.  &                   &     \\
+	   \hline
+			\hline 
+		\end{tabular}
+\caption{Параметрична таблица с описание на числените тестове}
+\label{tableP}
+\end{table}
+с последващите уточнения при хиперболичната задача. Първо, Консервативната схема е приложена само с втори ред на апроксимация  $p=2$. Второ, при $p=2$ дискретната стъпка по времето е 
+ $\tau=h/200$, иначе при $p=4, 6$ тя е $\tau = h/10$. Трето, всички изчисления използват граничните условия, както са описани в секцията "Нулево гранично условие".
 \section{Метод за обръщане на двумерния дискретен оператор на Лаплас с по-ниска алгоритмична сложност (Fast Poisson Solvers) }
 
 Нека е дадена следната задача:
@@ -495,111 +495,98 @@ c^2 \beta (E- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2
 $$
 \omega_h = \{(x_i,y_j): x_i = ih, y_j = jh, i = 0,\cdots ,(N_x-1)/2, j = 0,\cdots , (N_y-1)/2 \},
 $$
-където дискретната стъпка $h$ е същата както при $\Omega_h$ и $\omega_h \in \Omega_h$. Времевата област е дефинирана чрез интервала $[0, T]$ или просто $T$, където стъпката по времето $\tau$ варира в зависимост от големината на резидуала на решението. Това спомага за автоматизиране контрола върху грешката (от апроксимацията и изчисленията, но с условието че итеративният метод на простата итерация е сходящ). Стойността на функцията $v$ в точка от мрежата $x_i,y_j,t_k$ е означена с $v_{i,j}^k$.
-Дискретизацията на пространствените производни в \rf{eq5} е направена с централни крайни разлики с различен по големина шаблон:
-\begin{equation}\label{fd}
-v_{\widehat{xx},p}(x) :=  \frac{1}{h^2} \sum\limits_{i=-p/2}^{p/2} d_i v(x+ih),
-\end{equation}
-Тук, $p \in {2, 4, 6}$, а теглата $d_i$ описани в \cite{forn} са 
- $[1,-2,1]$ за $p=2$, $[-\frac{1}{12}, \frac{4}{3}, -\frac{5}{2}, \frac{4}{3}, -\frac{1}{12}]$ за $p=4$ и  $[\frac{1}{90}, -\frac{3}{20}, \frac{3}{2}, -\frac{49}{18}, \frac{3}{2}, -\frac{3}{20}, \frac{1}{90}]$ за $p=6$. Грешките от апроксимациите при формула \rf{fd} е $O(h^p)$. Замествайки оператора на Лаплас в \rf{eq5} с дискретния Лапласиан $\Delta_{h,p} v_{i,j} := (v_{i,j})_{\widehat{xx},p} + (v_{i,j})_{\widehat{yy},p}$ се получават крайни разлики с до шести ред на апроксимация. Това води до по-висок ред на сходимост за използваните методи при достатъчно гладки решения. По този начин се получават по-точни решения върху по-едра мрежа.
-Симетрията на решението $u$ по осите $x$ и $y$ се използва при изчисляване на дискретния Лапласиан в точките по и близо до границата ${(0,y)}$, и $(x,0)$. 
-В точките по и близо до границата $(x,y):x=L_x$ и $(x,y):y=L_y$ шаблона не се променя, а се използва гранична функция. Единият вариант е нулева гранична функция, т.е. точките от шаблона, които попадат отвъд границата на областта $\partial \Omega_h$ са нули. Другият вариант е да се използва ненулева гранична функция зададена чрез \rf{bFunV}, \rf{bFunW}. Aпроксимацията с несиметричен шаблон при границата $(x,y):x=L_x$ и $(x,y):y=L_y$ води до непълен ранг на матрицата $\Delta_{h,p}$, което след поредица от преобразования води до непълна линейна система от уравнения и затова е избегната.
-
+където дискретната стъпка $h$ е същата както при $\Omega_h$ и $\omega_h \in \Omega_h$. Времевата област е дефинирана чрез интервала $[0, T]$ или просто $T$, където стъпката по времето $\tau$ варира в зависимост от големината на резидуала на решението. Това спомага за автоматизиране контрола върху грешката (от апроксимацията и изчисленията, но с условието че итеративният метод на простата итерация е сходящ). Стойността на функцията $v$ в точка от мрежата $x_i,y_j,t_k$ е означена с $v_{i,j}^{(k)}$. 
+Дискретизацията на пространствените производни в \rf{eq5} е направена посредством централните крайни разлики дефинирани в \rf{fdx}, \rf{fdy} и описани в \rf{table:A00}. Грешката от апроксимацията при формули \rf{fdx} и \rf{fdy} е $O(h^p)$. Замествайки оператора на Лаплас в \rf{eq5} с дискретния Лапласиан $\Delta_{h,p} (v_{i,j}) = (v_{i,j})_{\widehat{xx},p} + (v_{i,j})_{\widehat{yy},p}$ се получават крайни разлики с до шести ред на апроксимация (във вътрешността на областта $\omega_h$). Това води до по-висок ред на сходимост за използваните методи при достатъчно гладки решения. По този начин се получават по-точни решения върху по-едра мрежа. 
 \par
 Явното правилото на Ойлер е използвано за апроксимацията на нововъведените производни по времето. Нелинейните членове в \rf{eq3} се пресмятат на $t^{(k)}$ слой по времето. Така, численото решение в $t^{(k+1)}$ слой по времето е пресметнато директно чрез численото решение от предходния слой $t^{(k)}$:
 \begin{equation}\label{eq55}
 \begin{split}
-&\frac {\widehat{v}_{i,j}^{k+1}-\widehat{v}_{i,j}^{k}}{\tau}- (1-c^2 \beta) \widehat{v}_{i,j,{\widehat{yy},p}}^{k} - \widehat{v}_{i,j,{\widehat{xx},p}}^{k} + \beta (1-c^2 ) \widehat{v}_{i,j}^{k} - \alpha \beta \theta (\widehat{v}_{i,j}^{k})^2 = \widehat{w}_{i,j}^{k}, \\
-&\frac  {\widehat{w}_{i,j}^{k+1} -\widehat{w}_{i,j}^{k}} {\tau} - \Delta_{h,p} \widehat{w}_{i,j}^{k} =  c^2 \beta \widehat{v}_{i,j,{\widehat{xx},p}}^{k}.
+&\frac {\widehat{v}_{i,j}^{(k+1)}-\widehat{v}_{i,j}^{(k)}}{\tau}- (1-c^2 \beta) \widehat{v}_{i,j,{\widehat{yy},p}}^{(k)} - \widehat{v}_{i,j,{\widehat{xx},p}}^{(k)} + \beta (1-c^2 ) \widehat{v}_{i,j}^{(k)} - \alpha \beta \theta (\widehat{v}_{i,j}^{(k)})^2 = \widehat{w}_{i,j}^{(k)}, \\
+&\frac  {\widehat{w}_{i,j}^{(k+1)} -\widehat{w}_{i,j}^{(k)}} {\tau} - \Delta_{h,p} \widehat{w}_{i,j}^{(k)} =  c^2 \beta \widehat{v}_{i,j,{\widehat{xx},p}}^{(k)}.
 \end{split}
 \end{equation}
-Този метод за решаване на уравненията \rf{eq45} е известен в литературата още като "метод на простата итерация" при линейни и нелинейни уравнения \cite{sam}. Най - накрая, но не и на последно място,  цикличната процедура описана в \rf{eq55} се нуждае от начални стойности за функиите $\widehat{v},\widehat{w}$, които са взети от "best-fit" формулите в \cite{Ch2011}.
-
+Този метод за решаване на уравненията \rf{eq45} е известен в литературата още като "метод на простата итерация" при линейни и нелинейни уравнения \cite{sam}. С помощта на матриците $\Delta_{h,p,s,x}$ и $\Delta_{h,p,s,y}$ прилагаме нулево и симетрично гранични условия по границите на областта $\partial \omega$ запазвайки реда на използваната апроксимация $O(h^p)$. Така отчитайки \rf{PsnDiscretSym} се получава следното матрично уравнение допълващо \rf{eq55} отчитайки всички точки в $\omega_h$:
+\begin{equation}\label{eq555}
+\begin{split}
+\frac {\widehat{v}^{(k+1)}-\widehat{v}^{(k)}}{\tau}- (1-c^2 \beta) \widehat{v}^{(k)} * (\Delta_{h,p,s,y})^T -&\\
+-\Delta_{h,p,s,x} * \widehat{v}^{(k)}+ \beta (1-c^2 ) \widehat{v}^{(k)} - \alpha \beta \theta (\widehat{v}^{(k)})^2 &= \widehat{w}^{(k)}, \\
+\frac  {\widehat{w}^{(k+1)} -\widehat{w}^{(k)}} {\tau} - \Delta_{h,p,s,x} * \widehat{w}^{(k)} - \widehat{w}^{(k)} * (\Delta_{h,p,s,y})^T &=  c^2 \beta \Delta_{h,p,s,x} * \widehat{v}^{(k)},
+\end{split}
+\end{equation}
+където $\widehat{v}^{(k)}, \widehat{w}^{(k)}, \widehat{v}^{(k+1)}, \widehat{w}^{(k+1)} \in \RR^{(N_x-1)/2 \times (N_y-1)/2}$ са матрици съответно с елементи ${v}_{i,j}^{(k)}$, ${w}_{i,j}^{(k)}$, ${v}_{i,j}^{(k+1)}$ и ${w}_{i,j}^{(k+1)}$.
+ Най-накрая, но не и на последно място,  цикличната процедура описана в \rf{eq55} се нуждае от начални стойности за функиите $\widehat{v},\widehat{w}$, които са взети от "best-fit" формулите в \cite{Ch2011}. 
 \subsection{Контрол на стъпката по времето.}
 Възможно е да се използва нефиксирана стъпка по времето $\tau$ за оптимизиране скоростта на сходимост. Когато $\tau > \tau_{stab}$ премине условието за устойчивост, решението започва да разхожда и става назъбено. Тези знаци се проявяват първоначално при резидуала \rf{residual}, докато численото решение $u$ е все още монотонно и разликите между две последователни итерации не са големи. Когато последното се случи, произволно сечение на резидуала $R$ се описва с дискретна функция сменяща положителни с отрицателни стойности върху мрежата. Това е ясен знак, че стъпката $\tau$ трябва да се намали, в противен случай се увеличава. Промяната се случва на всяка итерация с фактор $f_{\tau} \in \{0.72, 1.015\}$, където $\tau_{new} := f_{\tau}\tau$.
 
-Самият резидуал $R^k_{i,j}$ от дискретната апроксимация на \rf{eq3} в произволна точка от мрежата $(x_i,y_j,t^k)$ е дефиниран чрез:
+Самият резидуал $R^{(k)}_{i,j}$ от дискретната апроксимация на \rf{eq3} в произволна точка от мрежата $(x_i,y_j,t^{(k)})$ е дефиниран чрез:
 \begin{equation}\label{residual}
-R_{i,j}^k := 
-c^2\beta (\widehat{v}^k_{i,j})_{\widehat{yy},p} + \Delta_{h,p}(-\beta \widehat{v}^k_{i,j} - c^2\beta (\widehat{v}^k_{i,j})_{\widehat{yy},p} + \Delta_{h,p} \widehat{v}^k_{i,j} 
-+ \alpha \beta \theta (\widehat{v}^k_{i,j})^2  ).
+R_{i,j}^{(k)} := 
+c^2\beta (\widehat{v}^{(k)}_{i,j})_{\widehat{yy},p} + \Delta_{h,p}(-\beta \widehat{v}^{(k)}_{i,j} - c^2\beta (\widehat{v}^{(k)}_{i,j})_{\widehat{yy},p} + \Delta_{h,p} \widehat{v}^{(k)}_{i,j} 
++ \alpha \beta \theta (\widehat{v}^{(k)}_{i,j})^2  ).
 \end{equation}
  
-\subsection{Асимптотични условия по границата $x=L_x$ и $y=L_y$.}
+%\subsection{Асимптотични условия по границата $x=L_x$ и $y=L_y$.}
 
-The behavior of the solutions $v$ and $w$  as $r =\sqrt{x^2 +y^2} \rightarrow \infty$ is studied in details in \cite{Ch2012,Ch2011,bnd}. The following formulae
-Поведението на решението $v$ и $w$, когато $r =\sqrt{x^2 +y^2} \rightarrow \infty$ е изследвано в детайли в \cite{Ch2012,Ch2011,bnd}. Следните формули
-\begin{equation}\label{bFunV}
-\bar{v}(x,y) = \mu \frac{( (1-c^2)x^2-y^2 )}{((1-c^2)x^2 + y^2)^2 }
-\end{equation}
-and
-\begin{equation}\label{bFunW}
-\bar{w}(x,y) =\tilde {\mu} (1-c^2) \frac{( (1-c^2)x^2-y^2 )}{((1-c^2)x^2 + y^2)^2 }
-\end{equation}
-given in \cite{bnd} are found to describe very well the unknown functions $v$ and $w$ on the computational boundary $\dO$. 
+%The behavior of the solutions $v$ and $w$  as $r =\sqrt{x^2 +y^2} \rightarrow \infty$ is studied in details in \cite{Ch2012,Ch2011,bnd}. The following formulae
+%Поведението на решението $v$ и $w$, когато $r =\sqrt{x^2 +y^2} \rightarrow \infty$ е изследвано в детайли в \cite{Ch2012,Ch2011,bnd}. Следните формули
+%\begin{equation}\label{bFunV}
+%\bar{v}(x,y) = \mu \frac{( (1-c^2)x^2-y^2 )}{((1-c^2)x^2 + y^2)^2 }
+%\end{equation}
+%and
+%\begin{equation}\label{bFunW}
+%\bar{w}(x,y) =\tilde {\mu} (1-c^2) \frac{( (1-c^2)x^2-y^2 )}{((1-c^2)x^2 + y^2)^2 }
+%\end{equation}
+%given in \cite{bnd} are found to describe very well the unknown functions $v$ and $w$ on the computational boundary $\dO$. 
 
-In order to resolve the boundary functions \rf{bFunV} and \rf{bFunW} completely one needs $\mu$ and $\tilde {\mu}$ parameters.
-We obtain them iteratively, at each time level of \rf{eq55}, by the following minimization procedure. For  given solutions  $v^k_{i,j}$ and $ w^k_{i,j}$ at time level $t^k$ 
-we choose $\mu$ and $\tilde {\mu}$ as minimizers of 
-\begin{equation}\label{mu}
-\begin{split}
-\mu = \underset{\mu>0 }{\operatorname{min} } \| \bar{v}(x_i,y_j) - \widehat{v}^k_{i,j} \|_{L_2,\widehat{\Omega}},
-\;\;
-\tilde {\mu} = \underset{\mu>0 }{\operatorname{min} } \| \bar{w}(x_i,y_j) -\widehat{w}^k_{i,j} \|_{L_2,\widehat{\Omega}}.
-\end{split}
-\end{equation}
+%In order to resolve the boundary functions \rf{bFunV} and \rf{bFunW} completely one needs $\mu$ and $\tilde {\mu}$ parameters.
+%We obtain them iteratively, at each time level of \rf{eq55}, by the following minimization procedure. For  given solutions  $v^{(k)}_{i,j}$ and $ w^{(k)}_{i,j}$ at time level $t^{(k)}$ 
+%we choose $\mu$ and $\tilde {\mu}$ as minimizers of 
+%\begin{equation}\label{mu}
+%\begin{split}
+%\mu = \underset{\mu>0 }{\operatorname{min} } \| \bar{v}(x_i,y_j) - \widehat{v}^{(k)}_{i,j} \|_{L_2,\widehat{\Omega}},
+%\;\;
+%\tilde {\mu} = \underset{\mu>0 }{\operatorname{min} } \| \bar{w}(x_i,y_j) -\widehat{w}^{(k)}_{i,j} \|_{L_2,\widehat{\Omega}}.
+%\end{split}
+%\end{equation}
  
-\subsection{3.3~Stop Criteria.}
+\subsection{Критерии за спиране}
 
-Usually  the calculations of  $\widehat{v}^{k+1} $ by equations \rf{eq55} are  terminated if
+Стандартният критерии за спиране на итеративния метод на простата итерация от уравнения \rf{eq55} е когато разликата между две последователни решения стане достатъчно малка
 \begin{equation*}
-\max_{i,j} |\widehat{v}^{k+1}_{i,j}-\widehat{v}^{k}_{i,j}| < \epsilon \max_{i,j} |\widehat{v}^{k}_{i,j}| ,
+\Vert \widehat{v}^{(k+1)}-\widehat{v}^{(k)}\Vert  < \epsilon \Vert \widehat{v}^{(k)}\Vert ,
 \end{equation*}
-where $\epsilon $ is a prescribed accuracy.  But the solution decays as $\sim1/{r}^{2}$ for $r \rightarrow \infty$, $r = \sqrt{{x}^{2} + {y}^{2}}$. Thus for large $x$ and $y$, the following expressions 
-\begin{equation}\label{asy}
-x^{2}U(x,0,t) \sim c_{x} \quad \textrm{and} \quad   y^{2}U(0,y,t) \sim c_{y}
+при предварително избрани подходяща норма и достатъчно малък праг $\epsilon$. В конкретния случай са избрани $L_1$ нормата (понеже има ниска изчислителна сложност) и $\epsilon < 1\times10^{-9}$:
+\begin{equation}\label{crit1}
+\max_{i,j} |\widehat{v}^{(k+1)}_{i,j}-\widehat{v}^{(k)}_{i,j}| < 1\times10^{-9} \max_{i,j} |\widehat{v}^{(k)}_{i,j}|.
 \end{equation}
-have asymptotics of constant functions  $c_{x}$ and $c_{y}$ respectively.
-\begin{figure}{r}{35mm}
-     \begin{center}
-     \includegraphics[scale=1.2]{../EllipticEquationSJC/StopCrit.eps}
-     \end{center}
-	\caption{Stop Criteria Intervals}
-	\label{fig:StopCritf}
-\end{figure}
-There exist start points $x_{s}$ and $y_{s}$ for which the asymptotic conditions
-are valid inside the intervals $[x_{s}, x_{end}]$ and $[y_{s}, y_{end}]$. Furthermore, (\ref{asy}) are also valid on intervals $[x_{m}, x_{end}]$ and $[y_{m}, y_{end}]$, where $x_{m}$ and $y_{m}$ are the midpoints i.e.
-$x_{m} = (x_{s} + x_{end})/2$ and $y_{m} = (y_{s} + y_{end})/2$. 
-
-
-At each $k^{th}$ successful iteration $k \in N$, the two expressions in \rf{asy} are approximated by constant functions (zero order polynomial) $c_{x}(x_{i}) = c_{x}$ and $c_{y}(y_{i}) = c_{y}$ with $x_{i} \in [x_{m}, x_{end}]$ and $y_{i} \in [y_{m}, y_{end}]$ respectively.
-
-In between each $k$ iterations, the approximations are evaluated and compared with each other i.e., if the linear fits $c_{x}$ and $c_{y}$
-\begin{equation}\label{stopCrit}
-|c_{x}^{n} - c_{x}^{(n-k)}| < \epsilon \quad \textrm{and} \quad |c_{y}^{n} - c_{y}^{(n-k)}| < \epsilon
+Критерият за спиране може допълнително да се разшири и да изпълнява още едно условие, което ще го направи по-стриктен. Нека резидуалът $R_{i,j}^{(k)}$ от \rf{residual} да изпълнява следната зависимост
+\begin{equation}\label{crit2}
+\max_{i,j} |R_{i,j}^{(k)}| < \epsilon = 1\times10^{-9}.
 \end{equation}
-cease to change significantly between $k$ iterations then the solution has converged. Here the superscript $n$ is the current iteration number and $c_{x}^{n}$ means the value of $c_{x}$ at the n-th iteration.
+Така критерият за спиране се определя, когато двете неравенства \rf{crit1} и \rf{crit2} са едновременно изпълнени.
 
-\subsection{3.4~Basic Algorithm Steps.}
-The following are the most important milestones during the implementation of the algorithm.
+\subsection{Метод на простата итерация - алгоритмични стъпки}
+Следващия запис дефинира основните стъпки при числената имплементация на метода на простата итерация.
 \\
-1) Resolve proper initial condition $(v^0, w^0)$ on the grid $\Omega_h$.  Set parameters $\epsilon$ and $\tau$.
+1)Препроцесор - зареждат се началните данни $(v^0, w^0)$ върху мрежата $\omega_h$.  Задават се началната стъпка по фиктивното време $\tau$ както и прагът $\epsilon$.
 \\
-2) Suppose $(v^k, w^k)$ are known. 
+2) Процесор $(k \rightarrow k+1)$. На всяка стъпка по времето се изчисляват: 
 \par
-2.1) Find current $\theta_k$ from the discrete approximation of \rf{eqtheta};
+2.1) максимума на решението $\theta_k$ в $(0,0)$  от дискретното уравнение \rf{eqtheta},
 \par
-2.2) Evaluate the solution on the computational boundary;
+2.3) дискретният оператор на Лаплас приложен върху $\widehat{v}^{(k)}$ и $\widehat{w}^{(k)}$
+\begin{align}\label{helper}
+\Delta_{h,p,s,x} * \widehat{v}^{(k)} + \widehat{v}^{(k)} * (\Delta_{h,p,s,y})^T, \nonumber\\
+\Delta_{h,p,s,x} * \widehat{w}^{(k)} + \widehat{w}^{(k)} * (\Delta_{h,p,s,y})^T
+\end{align}
 \par
-2.3) Evaluate $\Delta_{h,p}  \widehat{v}^k$ and $\Delta_{h,p}  \widehat{w}^k$;
+2.4) търсените функции $(\widehat{v}^{(k+1)}, \widehat{w}^{(k+1)})$  на следващия слой по времето $t^{(k+1)}$ посредством явната схема на Ойлер \rf{eq55} и вече изчислените изрази в \rf{helper},
 \par
-2.4) Calculate $(\widehat{v}^{k+1}, \widehat{w}^{k+1})$  on the  time level $t^{k+1}$ by the Euler explicit scheme   \rf{eq55};
+2.5) резидуалът $R^{(k+1)}_{i,j}$ от \rf{residual} използвайки \rf{helper},
 \par
-2.5) Calculate the residual $R^{k+1}_{i,j}$ from \rf{residual} and check the stop condition \rf{stopCrit}.
+2.6) критериите за спиране  \rf{crit1} и \rf{crit2} и съответната проверка заложена в тях,
 \par
-2.6) Control the time step size $\tau$. Set $t^{k+1}=t^{k}+\tau$.
-\\
-3) Continue steps 2.1) -- 2.6) with the next time level $t^{k+1}$ till condition (\ref{stopCrit}) is satisfied.
+2.6) новата стъпка по времето $\tau$. Записва се $t^{(k+1)}=t^{(k)}+\tau$.
 
 \section{4.~Validation.}\label{validation}
 
@@ -1176,7 +1163,7 @@ u(x_i, y_j, t+\tau) = \frac{ \partial u }{ \partial t }(x_i, y_j, t) + \tau \fra
 
 \subsection{Алгоритмични стъпки при метода на Тейлор}
 
-По долу са дефинирани стъпките при имплементацията на числения алгоритъм.
+Следващия запис дефинира стъпките при имплементацията на числения алгоритъм.
 \\
 1) Препроцесор
 \par
@@ -1188,7 +1175,7 @@ u(x_i, y_j, t+\tau) = \frac{ \partial u }{ \partial t }(x_i, y_j, t) + \tau \fra
 \par
 1.2.2) обратните матрици $(S_x^T)^{-1}$, $S_y^{-1}$,
 \\
-2) Процесор. На всяка стъпка по времето $k\tau \in T_\tau$ се изчисляват:
+2) Процесор $(k \rightarrow k+1)$. На всяка стъпка по времето $k\tau \in T_\tau$ се изчисляват:
 \par
 2.1) производните по времето от втората до $p+1$-та ($s=2,..p+1$) използвайки \rf{DiscreteEq} и Fast Poisson Solvers:
 \par
