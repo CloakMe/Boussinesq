@@ -333,33 +333,33 @@ $u(x_1, y_j) = u(x_{-1}, y_j), u(x_2, y_j) = u(x_{-2}, y_j),$
 \begin{equation}\label{Runge}
 \xi = ln  \frac{\Vert u_{h,\tau} - u_{(h,\tau)} \Vert_\kappa } {\Vert  u_{(h/2,\tau/2)} - u_{(h/4,\tau/4)} \Vert_\kappa  } / ln(2),
 \end{equation}
-когато не е известно аналитично решение на уравнението, а нормата $\kappa$ е подходящо подбрана. В настоящата работа за $\kappa$ са използвани $L_2$ и $L_\infty$. Формула \rf{Runge} е приложена и при изчислението на сходимостта на дискретната енергията върху три вложени мрежи с размери $[0:\tau:T]$, $[0:\tau/2:T]$ и $[0:\tau/4:T]$. За леснота в долните Tаблици \rf{tableC} и \rf{tableA} се използва следното означение за грешката в решението:
+когато не е известно аналитично решение на уравнението, а нормата $\kappa$ е подходящо подбрана. В настоящата работа за $\kappa$ са използвани $L_2$ и $L_\infty$. Формула \rf{Runge} е приложена и при изчислението на сходимостта на дискретната енергията върху три вложени мрежи с размери $[0:\tau:T]$, $[0:\tau/2:T]$ и $[0:\tau/4:T]$. За леснота в долните Tаблици \rf{tab:a}, \rf{tab:fourth-der}, \rf{tableC} и \rf{tableA} се използва следното означение за грешката в решението:
 $$\Vert \bar E_i \Vert_\kappa =  \Vert u_{h,\tau} - u_{(h/2,\tau/2)} \Vert_\kappa.$$ 
 При Енергията съответно в Таблици \rf{tableD} и \rf{tableB} се използва следния запис
 $$\Vert \bar{\bar{ E_i}} \Vert_\kappa=  \Vert E(u_{h,\tau}) - E(u_{(h/2,\tau/2)}) \Vert_\kappa.$$ 
-Числените резултати са извършени при следните два случая (виж Таблица \rf{tableP}) $\beta = 3$, $c=0.45$ и $\beta = 1$, $c=0.9$ \begin{table}
+Числените резултати са извършени при $\alpha = 1$ и следните два случая (виж Таблица \rf{tableP}) $\beta = 3$, $c=0.45$ и $\beta = 1$, $c=0.9$ \begin{table}
 \centering
 \small
 		\begin{tabular}{||c|l|l|l|l|l|l|l||}
 			\hline
 			\hline
-                                            &    $\beta$, $c$                              & $O(|h|^p+\tau^p)$   &      $h$                                & $L_x$,$L_y$                              &  Методи & $T$      & Гр. Усл.  \\
+          &    $\beta$, $c$ 	 & $O(|h|^p+\tau^p)$   &      $h$       	& $L_x$,$L_y$   	&  $T$    	& Гр. Усл.  \\
    			\hline 
-					\hline
-           Test 1                        &      $\beta = 3$     &      $p=2, 4, 6$    &    $h=0.2,$       & $L_x = 30$                & Тейлор &                10    &    нула  \\
-                                             &      $c=0.45$         &                             &    $ 0.1, 0.05$   & $L_y=27$                  &  Конс. сх. &                &            \\
+			\hline
+Test 1  &      $\beta = 3$   &      $p=2, 4, 6$    	&    $h=0.2,$       	& $L_x = 30$     	&    10    	&    нулево  \\
+          &      $c=0.45$       &                           	&    $ 0.1, 0.05$   	& $L_y=27	$    	&        		&       		\\
 	   \hline
 			\hline 
-           Test 2                        &      $\beta = 1$     &      $p=2, 4, 6$    &     $h=0.4,$       & $L_x = 128$         & Тейлор  &               10    &   нула  \\
-                                             &      $c=0.9$           &                             &      $0.2, 0.1$     & $L_y=58$              & Конс. сх.  &                   &     \\
+Test 2	&      $\beta = 1$	&      $p=2, 4, 6$    	&     $h=0.4,$      	& $L_x = 128$    	&   10    	&   нулево  \\
+           &      $c=0.9$      	&                       		&      $0.2, 0.1$     & $L_y=58$         &          	&     \\
 	   \hline
 			\hline 
 		\end{tabular}
 \caption{Параметрична таблица с описание на числените тестове}
 \label{tableP}
 \end{table}
-с последващите уточнения при хиперболичната задача. Първо, Консервативната схема е приложена само с втори ред на апроксимация  $p=2$. Второ, при $p=2$ дискретната стъпка по времето е 
- $\tau=h/200$, иначе при $p=4, 6$ тя е $\tau = h/10$. Трето, всички изчисления използват граничните условия, както са описани в секцията "Нулево гранично условие".
+с последващите уточнения. Първо, Консервативната схема е приложена само с втори ред на апроксимация  $p=2$. Второ, при $p=2$ дискретната стъпка по времето е 
+ $\tau=h/200$, иначе при $p=4, 6$ тя е $\tau = h/10$. Трето, всички изчисления при хиперболичната задача използват граничните условия, както са описани в секцията "Нулево гранично условие". Четвърто, при решаването на елиптичната задача се използва мрежа само в първи квадрант и затова се налагат допълнителни гранични условия по абцисата и ординатата.
 \section{Метод за обръщане на двумерния дискретен оператор на Лаплас с по-ниска алгоритмична сложност (Fast Poisson Solvers) }
 
 Нека е дадена следната задача:
@@ -460,9 +460,9 @@ c^2 \beta (E- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2
 \end{equation}
 като $\beta = \beta_1 / \beta_2$.
 Решението $v$ на \rf{eq3} заедно с неговите производни клони към нула, когато $|{\overline x}^2 +{\overline y}^2|\rightarrow \infty$.
-Навсякъде по - надолу в текста ще се използват отново старите означения $x,y$ вместо ${\overline x},{\overline y}$.
+Навсякъде по-надолу в текста ще се използват отново старите означения $x,y$ вместо ${\overline x},{\overline y}$.
 
-Уравнението \rf{eq3} е елиптично от четвърти ред, (а линейните втори производни в \rf{eq3} образуват елиптично уравнение от втори ред) когато е изпълнено условието $c^2 < \min (1/ \sqrt{\beta},1)$. В настоящата работа се разглеждат единствено такива параметри $\beta$ и $c$, които удовлетворяват последното изискване.
+Уравнението \rf{eq3} е елиптично от четвърти ред, (а линейните втори производни в \rf{eq3} образуват елиптично уравнение от втори ред) когато е изпълнено условието $c < \min (1/ \sqrt{\beta},1)$. В настоящата работа се разглеждат единствено такива параметри $\beta$ и $c$, които удовлетворяват последното изискване.
 Равенството \rf{eq3} може да се преобразува в система от две елиптични уравнения от втори ред по различни начини. Очаквайки, че производните $v_{xx}$ по оста $x$ ще са по-малки по абсолютна стойност от производните $v_{yy}$ по $y$ оста (тъй като решението се движи по $y$), заместваме $v_{yy} = \Delta v- v_{xx}$ в \rf{eq3}. След като се добави допълнителна функция $w$, се получава система еквивалентна на \rf{eq3}
 \begin{equation}\label{eq4}
 - (1- c^2 \beta) v_{yy} - v_{xx} + \beta (1-c^2) v - \alpha \beta v^2 = w, 
@@ -491,11 +491,11 @@ c^2 \beta (E- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2
 По този начин стационарната системата от двете уравнения \rf{eq45} се заменя с преходните във времето уравнения дефинирани в \rf{eq5} с условието, че решенията $\widehat{v}$ и $\widehat{w}$ схождат линейно спрямо времето към решенията на \rf{eq45}.
 
 \section{Метод на простата итерация при елиптичната задача}
-Поради симетрията на проблема ще се разглеждат решенията получени само в първи квадрант $\omega = [0,L_x] \times[0,L_y] \in \Omega$. След това се дефинира мрежата $\omega_h$ по следния начин:
+Поради симетрията на проблема ще се разглеждат решенията получени само в първи квадрант $\omega = [0,L_x] \times[0,L_y] \in \Omega$. Дискретизацията на тази област води до мрежата $\omega_h$ дефинирана по следния начин:
 $$
 \omega_h = \{(x_i,y_j): x_i = ih, y_j = jh, i = 0,\cdots ,(N_x-1)/2, j = 0,\cdots , (N_y-1)/2 \},
 $$
-където дискретната стъпка $h$ е същата както при $\Omega_h$ и $\omega_h \in \Omega_h$. Времевата област е дефинирана чрез интервала $[0, T]$ или просто $T$, където стъпката по времето $\tau$ варира в зависимост от големината на резидуала на решението. Това спомага за автоматизиране контрола върху грешката (от апроксимацията и изчисленията, но с условието че итеративният метод на простата итерация е сходящ). Стойността на функцията $v$ в точка от мрежата $x_i,y_j,t_k$ е означена с $v_{i,j}^{(k)}$. 
+където дискретната стъпка $h$ е същата както при $\Omega_h$ и $\omega_h \in \Omega_h$. Времевата област е дефинирана чрез интервала $[0, \widehat T]$ или просто $\widehat T$, където стъпката по времето $\tau$ варира в зависимост от големината на резидуала на решението. Това спомага за автоматизиране контрола върху грешката (от апроксимацията и изчисленията, но с условието че итеративният Метод на простата итерация е сходящ). Стойността на функцията $v$ в точка от мрежата $x_i,y_j,t_k$ е означена с $v_{i,j}^{(k)}$. 
 Дискретизацията на пространствените производни в \rf{eq5} е направена посредством централните крайни разлики дефинирани в \rf{fdx}, \rf{fdy} и описани в \rf{table:A00}. Грешката от апроксимацията при формули \rf{fdx} и \rf{fdy} е $O(h^p)$. Замествайки оператора на Лаплас в \rf{eq5} с дискретния Лапласиан $\Delta_{h,p} (v_{i,j}) = (v_{i,j})_{\widehat{xx},p} + (v_{i,j})_{\widehat{yy},p}$ се получават крайни разлики с до шести ред на апроксимация (във вътрешността на областта $\omega_h$). Това води до по-висок ред на сходимост за използваните методи при достатъчно гладки решения. По този начин се получават по-точни решения върху по-едра мрежа. 
 \par
 Явното правилото на Ойлер е използвано за апроксимацията на нововъведените производни по времето. Нелинейните членове в \rf{eq3} се пресмятат на $t^{(k)}$ слой по времето. Така, численото решение в $t^{(k+1)}$ слой по времето е пресметнато директно чрез численото решение от предходния слой $t^{(k)}$:
@@ -505,17 +505,19 @@ $$
 &\frac  {\widehat{w}_{i,j}^{(k+1)} -\widehat{w}_{i,j}^{(k)}} {\tau} - \Delta_{h,p} \widehat{w}_{i,j}^{(k)} =  c^2 \beta \widehat{v}_{i,j,{\widehat{xx},p}}^{(k)}.
 \end{split}
 \end{equation}
-Този метод за решаване на уравненията \rf{eq45} е известен в литературата още като "метод на простата итерация" при линейни и нелинейни уравнения \cite{sam}. С помощта на матриците $\Delta_{h,p,s,x}$ и $\Delta_{h,p,s,y}$ прилагаме нулево и симетрично гранични условия по границите на областта $\partial \omega$ запазвайки реда на използваната апроксимация $O(h^p)$. Така отчитайки \rf{PsnDiscretSym} се получава следното матрично уравнение допълващо \rf{eq55} отчитайки всички точки в $\omega_h$:
+Този метод за решаване на уравненията \rf{eq45} е известен в литературата още като "Метод на простата итерация" при линейни и нелинейни уравнения \cite{sam}. С помощта на матриците $\Delta_{h,p,s,x}$ и $\Delta_{h,p,s,y}$ прилагаме нулево и симетрично гранични условия по границите на областта $\partial \omega$ запазвайки реда на използваната апроксимация $O(h^p)$ в \rf{eq55}. Така отчитайки \rf{PsnDiscretSym} се получава следното матрично уравнение допълващо \rf{eq55} отчитайки всички точки в $\omega_h$:
 \begin{equation}\label{eq555}
 \begin{split}
-\frac {\widehat{v}^{(k+1)}-\widehat{v}^{(k)}}{\tau}- (1-c^2 \beta) \widehat{v}^{(k)} * (\Delta_{h,p,s,y})^T -&\\
--\Delta_{h,p,s,x} * \widehat{v}^{(k)}+ \beta (1-c^2 ) \widehat{v}^{(k)} - \alpha \beta \theta (\widehat{v}^{(k)})^2 &= \widehat{w}^{(k)}, \\
+\frac {\widehat{v}^{(k+1)}-\widehat{v}^{(k)}}{\tau}- (1-c^2 \beta) \widehat{v}^{(k)} * (\Delta_{h,p,s,y})^T - \quad\quad\quad\;&\\
+-\Delta_{h,p,s,x} * \widehat{v}^{(k)}+ \beta (1-c^2 ) \widehat{v}^{(k)} - \beta \theta f(\widehat{v}^{(k)}) &= \widehat{w}^{(k)}, \\
 \frac  {\widehat{w}^{(k+1)} -\widehat{w}^{(k)}} {\tau} - \Delta_{h,p,s,x} * \widehat{w}^{(k)} - \widehat{w}^{(k)} * (\Delta_{h,p,s,y})^T &=  c^2 \beta \Delta_{h,p,s,x} * \widehat{v}^{(k)},
 \end{split}
 \end{equation}
 където $\widehat{v}^{(k)}, \widehat{w}^{(k)}, \widehat{v}^{(k+1)}, \widehat{w}^{(k+1)} \in \RR^{(N_x-1)/2 \times (N_y-1)/2}$ са матрици съответно с елементи ${v}_{i,j}^{(k)}$, ${w}_{i,j}^{(k)}$, ${v}_{i,j}^{(k+1)}$ и ${w}_{i,j}^{(k+1)}$.
- Най-накрая, но не и на последно място,  цикличната процедура описана в \rf{eq55} се нуждае от начални стойности за функиите $\widehat{v},\widehat{w}$, които са взети от "best-fit" формулите в \cite{Ch2011}. 
-\subsection{Контрол на стъпката по времето.}
+\subsection{Начални данни}
+ Цикличната процедура описана в \rf{eq55} се нуждае от начални стойности за функиите $\widehat{v},\widehat{w}$, които са взети от "best-fit" формулите в \cite{Ch2011}. 
+Решението от задачата \rf{eq3} при $c=0$ също е добро приближение и служи на начални стойности при скорости близки до допустимия максимум $c \approx \min (1/ \sqrt{\beta},1)$, $c < \min (1/ \sqrt{\beta},1)$.
+\subsection{Контрол на стъпката по времето}
 Възможно е да се използва нефиксирана стъпка по времето $\tau$ за оптимизиране скоростта на сходимост. Когато $\tau > \tau_{stab}$ премине условието за устойчивост, решението започва да разхожда и става назъбено. Тези знаци се проявяват първоначално при резидуала \rf{residual}, докато численото решение $u$ е все още монотонно и разликите между две последователни итерации не са големи. Когато последното се случи, произволно сечение на резидуала $R$ се описва с дискретна функция сменяща положителни с отрицателни стойности върху мрежата. Това е ясен знак, че стъпката $\tau$ трябва да се намали, в противен случай се увеличава. Промяната се случва на всяка итерация с фактор $f_{\tau} \in \{0.72, 1.015\}$, където $\tau_{new} := f_{\tau}\tau$.
 
 Самият резидуал $R^{(k)}_{i,j}$ от дискретната апроксимация на \rf{eq3} в произволна точка от мрежата $(x_i,y_j,t^{(k)})$ е дефиниран чрез:
@@ -524,7 +526,14 @@ R_{i,j}^{(k)} :=
 c^2\beta (\widehat{v}^{(k)}_{i,j})_{\widehat{yy},p} + \Delta_{h,p}(-\beta \widehat{v}^{(k)}_{i,j} - c^2\beta (\widehat{v}^{(k)}_{i,j})_{\widehat{yy},p} + \Delta_{h,p} \widehat{v}^{(k)}_{i,j} 
 + \alpha \beta \theta (\widehat{v}^{(k)}_{i,j})^2  ).
 \end{equation}
- 
+Последната дефиниция може да се запише в матричен вид използвайки $\Delta_{h,p,s,y}$ и $\Delta_{h,p,s,y}$:
+\begin{align}\label{residualM}
+&R^{(k)} = 
+c^2\beta \widehat{v}^{(k)}*(\Delta_{h,p,s,y})^T + \Delta_{h,p,s,x} * \widehat{z}^{(k)} + \widehat{z}^{(k)} * (\Delta_{h,p,s,y} )^T, \nonumber\\
+&\widehat{z}^{(k)}  = \nonumber\\
+&-\beta \widehat{v}^{(k)} - c^2\beta \widehat{v}^{(k)}*(\Delta_{h,p,s,y})^T + \Delta_{h,p,s,x} * \widehat{v}^{(k)} +  \widehat{v}^{(k)} * (\Delta_{h,p,s,y})^T 
++ \beta \theta f(\widehat{v}^{(k)}).
+\end{align}
 %\subsection{Асимптотични условия по границата $x=L_x$ и $y=L_y$.}
 
 %The behavior of the solutions $v$ and $w$  as $r =\sqrt{x^2 +y^2} \rightarrow \infty$ is studied in details in \cite{Ch2012,Ch2011,bnd}. The following formulae
@@ -551,7 +560,7 @@ c^2\beta (\widehat{v}^{(k)}_{i,j})_{\widehat{yy},p} + \Delta_{h,p}(-\beta \wideh
  
 \subsection{Критерии за спиране}
 
-Стандартният критерии за спиране на итеративния метод на простата итерация от уравнения \rf{eq55} е когато разликата между две последователни решения стане достатъчно малка
+Стандартният критерии за спиране на итеративния Метод на простата итерация от уравнения \rf{eq55} е когато разликата между две последователни решения стане достатъчно малка
 \begin{equation*}
 \Vert \widehat{v}^{(k+1)}-\widehat{v}^{(k)}\Vert  < \epsilon \Vert \widehat{v}^{(k)}\Vert ,
 \end{equation*}
@@ -574,13 +583,13 @@ c^2\beta (\widehat{v}^{(k)}_{i,j})_{\widehat{yy},p} + \Delta_{h,p}(-\beta \wideh
 \par
 2.1) максимума на решението $\theta_k$ в $(0,0)$  от дискретното уравнение \rf{eqtheta},
 \par
-2.3) дискретният оператор на Лаплас приложен върху $\widehat{v}^{(k)}$ и $\widehat{w}^{(k)}$
+2.3) следните изрази, които са части от дискретният оператор на Лаплас приложен върху $\widehat{v}^{(k)}$ и $\widehat{w}^{(k)}$
 \begin{align}\label{helper}
-\Delta_{h,p,s,x} * \widehat{v}^{(k)} + \widehat{v}^{(k)} * (\Delta_{h,p,s,y})^T, \nonumber\\
-\Delta_{h,p,s,x} * \widehat{w}^{(k)} + \widehat{w}^{(k)} * (\Delta_{h,p,s,y})^T
+\Delta_{h,p,s,x} * \widehat{v}^{(k)}, \quad \widehat{v}^{(k)} * (\Delta_{h,p,s,y})^T, \nonumber\\
+\Delta_{h,p,s,x} * \widehat{w}^{(k)},\quad  \widehat{w}^{(k)} * (\Delta_{h,p,s,y})^T,
 \end{align}
 \par
-2.4) търсените функции $(\widehat{v}^{(k+1)}, \widehat{w}^{(k+1)})$  на следващия слой по времето $t^{(k+1)}$ посредством явната схема на Ойлер \rf{eq55} и вече изчислените изрази в \rf{helper},
+2.4) търсените функции $(\widehat{v}^{(k+1)}, \widehat{w}^{(k+1)})$  на следващия слой по времето $t^{(k+1)}$ посредством явната схема на Ойлер \rf{eq555} и вече изчислените изрази в \rf{helper},
 \par
 2.5) резидуалът $R^{(k+1)}_{i,j}$ от \rf{residual} използвайки \rf{helper},
 \par
@@ -588,87 +597,84 @@ c^2\beta (\widehat{v}^{(k)}_{i,j})_{\widehat{yy},p} + \Delta_{h,p}(-\beta \wideh
 \par
 2.6) новата стъпка по времето $\tau$. Записва се $t^{(k+1)}=t^{(k)}+\tau$.
 
-\section{4.~Validation.}\label{validation}
+Сложността на алгоритъма зависи от матричните умножения в \rf{eq555} и \rf{residualM} с матриците $\Delta_{h,p,s,x}$ и $\Delta_{h,p,s,y}$, които имат лентова структура. Този тип изчисления могат да се извършат с $O(n_z^2)$ операции, където $n_z = max\{(N_x-1)/2, (N_y-1)/2\}$.  Добавяйки и итерациите по фиктивното време $n_t$ се получава следната изчислителна сложност:
+\be\label{complexElpt}
+O(n_z^2 n_t).
+\ee
+Множеството изчислителни тестове показват, че за задачата \rf{eq555} и избраният праг $\epsilon = 1 \times 10^9$, числото $n_t$ е съизмеримо с големината на областта $\omega_h$
+\be
+n_t \approx \frac{N_x-1}{2} \frac{N_y-1}{2}.
+\ee
 
-In this section we give several numerical results concerning the verification of  the presented numerical method. 
- We use FDS with different approximation errors and several sets  of  parameters $c$, $\alpha$, $\beta$,  which are shown on each table. 
+\section{Числени резултати от елиптичната задача}\label{validation}
+В тази част са показани числени резултати от елиптичната задача \rf{eq3} и приложеният за нея ``Метод на простата итерация''. Използваните крайни разлики и параметри $c$, $\alpha$, $\beta$, както и стъпките по пространството са описани в Таблица \rf{tableP}. Приложеният дискретен оператор на Лаплас е подробно дефиниран в секцията ``Симетрично гранично условие по абцисата и ординатата при елиптичната задача''.
 
-
-\begin{center}
 \begin{table}[ht]
 \centering
 		\begin{tabular}{||c|l|ll|ll||}
 			\hline
 			\hline
-      FDS       & $h$ &errors $E_i$in$L_2$&Conv. Rate& errors $E_i$in$L_\infty$&Conv. Rate\\
-   			\hline 
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  &  	\multirow{2  }{*}{ $\Vert \bar{ E_i} \Vert_{L_2}$ }	&Ред на	& \multirow{2  }{*}{ $\Vert \bar{ E_i} \Vert_{L_\infty}$ } 		&Ред на   \\
+	                                        &                                                & 							 					&  сход. 	& 								       					& сход. \\
+   					\hline 
 					\hline 
-      c=0.45    &0.2    &             &            &           &   \\
-   $O(h^2)$     &0.1    &~ 0.010413  &            &~0.009363 &   \\
-                &0.05   &~ 0.002451  &2.0870  &~0.002258 & 2.0517 \\
-               	 \hline 
-     c=0.1      &0.2   &             &           &                & \\
-     $O(h^2)$   &0.1   &~ 0.009880  &             &~0.008483      &    \\
-                &0.05  &~ 0.002332 & 2.0827       &~0.002033      & 2.0609  \\
+$\beta = 3$   	&0.2    										&            &            &           &   \\
+      c=0.45 	&0.1    & 0.010413  						&            & 0.009363 			&   \\
+   $O(h^2)$     &0.05   & 0.002451  						&2.0870  & 0.002258 					& 2.0517 \\
+\hline 
+$\beta = 3$   	&0.2   &            &            &             &    \\
+      $c=0.45 $ &0.1   &  0.000782   &           & 0.000824  &   \\
+       $O(h^4)$	&0.05  &  0.000050 & 3.9582    & 0.000054  & 3.9226  \\
+\hline
+$\beta = 3$   	&0.4   &            &        &                  &      \\
+   $c=0.45$   	&0.2   &  2.0975e-02 &           & 2.9341e-02      &       \\
+     $O(h^6)$	&0.1  &  3.5348e-04 &5.8909  & 5.8346e-04 & 5.6521         \\
+
 			\hline
 			\hline 	
-      c=0.45    &0.2   &            &            &             &    \\
-       $O(h^4)$ &0.1   &~ 0.000782   &           &~0.000824  &   \\
-                &0.05  &~ 0.000050 & 3.9582    &~0.000054  & 3.9226  \\
-					  			\hline 	
-     c=0.1      &0.2  &            &               &               &     \\
-     $O(h^4)$  &0.1   &~ 0.000678  &              &~0.000662      &        \\
-               &0.05  &~ 0.000044 &3.9550        &~0.000044 &  3.9046        \\
-			\hline
+$\beta = 1$   	&0.2   &             &           &                & \\
+     $c=0.9$     &0.1   & 0.009880  &             & 0.008483      &    \\
+     $O(h^2)$	&0.05  & 0.002332 & 2.0827       & 0.002033      & 2.0609  \\
+\hline 	
+ $\beta = 1$   	&0.2  &            &               &               &     \\
+     $c=0.9$  	&0.1   & 0.000678  &              & 0.000662      &        \\
+     $O(h^4)$	&0.05  & 0.000044 &3.9550        & 0.000044 &  3.9046        \\
     \hline
-   c=0.45       &0.4   &            &        &                  &      \\
-     $O(h^6)$   &0.2   &~ 2.0975e-02 &           &~2.9341e-02      &       \\
-     &0.1  &~ 3.5348e-04 &5.8909  &~5.8346e-04 & 5.6521         \\
-	  \hline
-   c=0.1       &0.4   &             &        &               &        \\
-     $O(h^6)$  &0.2   &~ 3.7059e-03  &        &~3.7572e-03     &       \\
-   &0.1  &~ 7.4723e-05 &5.6321  &~8.3359e-05&   5.4942       \\
+ $\beta = 1$	&0.4   &             &        &               &        \\
+   $ c=0.9$  	&0.2   &  3.7059e-03  &        &~3.7572e-03     &       \\
+       $O(h^6)$	&0.1  &  7.4723e-05 &5.6321  & 8.3359e-05&   5.4942       \\
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Convergence test for  FDS with different approximation errors ($O(h^{2})$, $O(h^{4})$ and $O(h^{6})$). Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+		\caption{Ред на сходимост при Метода на простата итерация с апроксимации $O(h^{2})$, $O(h^{4})$ and $O(h^{6})$ за Тест  1 и Тест 2. Грешките $E_i$ са пресметнати в $L_2$ и $L_\infty$ норми.}
 
 \label{tab:a}
 \end{table}
-\end{center}
-
- In this series of tests we evaluate the numerical solution of \rf{eq5} using FDS with approximation errors $O(h^2)$, $O(h^4)$, $O(h^6)$ and parameters  
- $\alpha = 1$,   $\beta=3$,  $\epsilon = 10e-5$, 
-$L_{x }= 30$, $L_{y} = 30$.
-The initial conditions for the artificial parabolic problem \rf{eq55} are taken from  \cite{Ch2011}. 
-Using the values of numerical solution on three nested meshes, we compute the numerical rate of convergence (Conv. Rate) in $L_2$ and $L_{\infty}$ mesh norms
-by Runge method as $(\log E_1 -\log E_2)/\log 2$.  Here  $v_{[h]}$, $v_{ {[h/2]}  }$ and  $v_{ {[h/4]}  }$ represent the numerical solution over three nested meshes and $E_1=\|v_{[h]}-v_{[h/2]}\|$ , $E_2=\|v_{[h/2]}-v_{[h/4]}\|$.  
-Table~\ref{tab:a} contains the errors in $L_2$ and $L_{\infty}$ norms and the corresponding numerical rate of convergence for the numerical solutions obtained by FDS with second, fourth and sixth order of approximation and   velocities  $c=0.1$  or $c=0.45$.
-We observe that the experimental rate of convergence approximates well the approximation error of the difference schemes -- the FDS are of  almost the same order of convergence as the order of approximation. An additional observation  is that  for  the same step size $h$ the schemes with higher order of approximation ($O(h^4)$, $O(h^6)$) lead to a more precise solution than the scheme with $O(h^2)$ approximation error. 
-
+Таблица \rf{tab:a} показва скоростта на сходимост при изчислението на решението от диференчното уравнение \rf{eq555} за апроксимациите $O(h^{2})$, $O(h^{4})$ and $O(h^{6})$ описани в първата колона. Втората, дефинира използваната стъпката по пространството. Третата и четвъртата колона показват грешките от апроксимациите $E_i$ и скоростите на сходимост получени посредством правилото на Рунге \rf{Runge} върху три вложени мрежи. Получените резултати за сходимостта отговарят на приложения ред на апроксимация, а диференчните схеми при $p=4,6$ водят до по-прецизни решения.
 \begin{figure}[ht]
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedleft
-		\includegraphics[width=\linewidth]{../EllipticEquationSJC/solution/SOL2D_bnd25_c090_bt1.eps}
-	\end{minipage}
+
 	\begin{minipage}[b]{0.5\linewidth}
 		\raggedright
 		\includegraphics[width=\linewidth]{../EllipticEquationSJC/solution/SOL2D_bnd25_c050_bt3.eps}
 	\end{minipage}
-	\begin{minipage}[b]{0.45\linewidth}
-		 \raggedleft
-		\includegraphics[width=\linewidth]{../EllipticEquationSJC/solution/SOL3D_bnd25_c090_bt1.eps}
-		\centerline{$c = 0.9$, $\beta = 1$}
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedleft
+		\includegraphics[width=\linewidth]{../EllipticEquationSJC/solution/SOL2D_bnd25_c090_bt1.eps}
 	\end{minipage}
 	\begin{minipage}[b]{0.5\linewidth}
 		 \raggedright
 		\includegraphics[width=\linewidth]{../EllipticEquationSJC/solution/SOL3D_bnd25_c050_bt3.eps}
 		\centerline{$c = 0.5$, $\beta = 3$}
 	\end{minipage}
-	\caption{2D and 3D profiles of the numerical solution $u$ to \rf{eqtheta} and \rf{eq5}}
+	\begin{minipage}[b]{0.45\linewidth}
+		 \raggedleft
+		\includegraphics[width=\linewidth]{../EllipticEquationSJC/solution/SOL3D_bnd25_c090_bt1.eps}
+		\centerline{$c = 0.9$, $\beta = 1$}
+	\end{minipage}
+	\caption{2Д и 3Д профили на численото решение $u$ от \rf{eqtheta} и \rf{eq555}. За изображенията са избрани най-ситните стъпки - $h=0.05$ (ляво), $h=0.1$ (дясно) .}
 	\label{fig:solutions}
 \end{figure}
-
+Фигура \rf{fig:solutions} показва формата на решението получено с параметрите заложени съответно в Тест 1 (ляво) и Тест 2 (дясно). Вижда се че при $\beta=1$ дисперсията на вълната спрямо разгледаната област $[-10,10] \times [-10,10]$ е доста по-голяма спрямо формата получена при $\beta=3$. В допълнение на графиката отнасяща се за Тест 1 изобразената област е $[-5,5] \times [-5,5]$. Разбира се решението е пресметнато в правоъгълника $\Omega_h$ зададен в Таблица \rf{tableP}, но за да изпъкне формата от решението близо до максимума, стойностите, които са по ръбовете и близки до нула, са изрязани.
 \section{5.~Results.}\label{results}
 
 In this section we apply the presented  numerical method  to study the characteristic properties of the obtained numerical solution.  Many parametric dependencies of the numerical solution,  discovered in \cite{Ch2012,Ch2011}, such as dependence of the solution's shape on the velocity $c$ and on the relative dispersion parameter $\beta$, are confirmed here once again.
@@ -1330,10 +1336,10 @@ $$ O(N_x N_y \bar \epsilon N_t ) $$
 Фигура \ref{Test1En} показва дискретните Маса и Енергия при Тест 1 изчислени посредством решенията от Консервативната схема и метода на Тейлор. 
 Фигура \rf{Test2En} показва аналогични резултати, но при Тест 2. В случая на $O(|h|^2 +\tau^2)$ апроксимация, графиките на Масата и Енергията получени от двата метода както при Тест 1 така и при Тест 2 се припокриват (черната линия и сините кръгчета). Енергията е константна величина спрямо времевата променлива. 
 \begin{figure}[ht]\vspace{0.2cm}
-	\begin{minipage}[b]{0.4\linewidth}
+	\begin{minipage}[b]{0.51\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/Mass_bt3_c045_h005_Taylor_Conservative.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.4\linewidth}
+	\begin{minipage}[b]{0.51\linewidth}
 		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt3_c045_h005_Taylor_Conservative.png}	
 	\end{minipage}
 \caption{Масата (ляво) и Енергията (дясно) на решението при Тест 1, $O(|h|^2 + \tau^2)$ и $T=10$.}
@@ -1344,12 +1350,11 @@ $$ O(N_x N_y \bar \epsilon N_t ) $$
 При Тест 1 увеличението спрямо Масата в началния момент е $0.33\%$, а при Тест 2 е $1.8\%$.
 
 \begin{figure}[ht]\vspace{0.2cm}
-	\begin{minipage}[b]{0.4\linewidth}
+	\begin{minipage}[b]{0.51\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/Mass_bt1_c090_h010_Taylor_Conservative.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.4\linewidth}
-		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt1_c090_h010_Taylor_Conservative.png}
-		
+	\begin{minipage}[b]{0.51\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt1_c090_h010_Taylor_Conservative.png}		
 	\end{minipage}
 \caption{Масата (ляво) и Енергията (дясно) на решението при Тест 2, $O(|h|^2 + \tau^2)$ и $T=10$.}
 \label{Test2En}
@@ -1360,10 +1365,10 @@ $$ O(N_x N_y \bar \epsilon N_t ) $$
 %----------------------------------------------------------------------------------------------------------------------------------------------
 \iffalse
 \begin{figure}[ht]\vspace{0.4cm}
-	\begin{minipage}[b]{0.33\linewidth}
+	\begin{minipage}[b]{0.51\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/Mass_bt1_c090_h010_x3O.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.33\linewidth}
+	\begin{minipage}[b]{0.51\linewidth}
 		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt1_c090_h010_x3O.png}
 		
 	\end{minipage}
@@ -1371,10 +1376,10 @@ $$ O(N_x N_y \bar \epsilon N_t ) $$
 \label{Test1TEn}
 \end{figure}
 \begin{figure}[ht]\vspace{0.4cm}
-	\begin{minipage}[b]{0.33\linewidth}
+	\begin{minipage}[b]{0.51\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/Mass_bt3_c045_h005_x3O.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.33\linewidth}
+	\begin{minipage}[b]{0.51\linewidth}
 		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt1_c090_h010_x3O.png}
 		
 	\end{minipage}
@@ -1405,10 +1410,10 @@ $$ O(N_x N_y \bar \epsilon N_t ) $$
 \noindent 
 при $\beta =  1$ и $c = 0.9$. Тук процентното увеличение на Масата спрямо увеличението на областта е измерено както следва $1.80\%$, $0.70\%$ и $0.18\%$.
 \begin{figure}[ht]\vspace{0.2cm}
-	\begin{minipage}[b]{0.4\linewidth}
+	\begin{minipage}[b]{0.51\linewidth}
 		\includegraphics[width=\linewidth]{../amitans/figures/MassTaylor_120_60_30_ZB1_bt3_c045_h020_O(h^6).png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.4\linewidth}
+	\begin{minipage}[b]{0.51\linewidth}
 		\includegraphics[width=\linewidth]{../amitans/figures/MassTaylor_512_256_128_ZB1_bt1_c090_h040_O(h^6).png}
 		
 	\end{minipage}
