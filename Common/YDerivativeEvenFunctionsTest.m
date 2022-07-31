@@ -53,3 +53,28 @@ for i=2:-1:-2
     j = j - 1;
 end
 AB(2:end-1,2:end-1)
+
+return;
+[ S, D ] = eig( -(Delta_hy'+Delta_hy)/2 );
+max(max(diag(D)))
+min(min(diag(D)))
+
+Sym_hy = BEUtilities.GetFinDiffMat(this.sy,this.order);
+[ SSym, DSym ] = eig( Sym_hy );
+max(max(diag(DSym)))
+min(min(diag(DSym)))
+
+figure(1)
+plot(1:this.sy, diag(DSym), 'g', 1:this.sy, diag(D), 'k', 1:this.sy, diag(D) + diag(DSym), 'r')
+
+Diff_hy = Sym_hy - (Delta_hy'+Delta_hy)/2 ; %+ 2*diag(ones(this.sy,1))
+[ SDif, DDif ] = eig( Diff_hy );
+max(max(diag(DSum)))
+min(min(diag(DSum)))
+
+figure(2)
+plot(1:this.sy, diag(DDif), 'b', 1:this.sy, diag(-DSym), 'g', 1:this.sy, diag(DSum - DSym), 'r');
+legend('DDif','-DSym', 'DDif-DSym');
+Sum_hy(1:10,1:10)
+
+

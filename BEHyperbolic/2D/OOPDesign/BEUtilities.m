@@ -548,6 +548,45 @@ classdef BEUtilities
         return;
     end
     
+    function [dxMat]=GetFinDiffMat1DerZeroBnd(sx,order)
+    
+        if(order == 2)
+            dxMat=diag(zeros(sx,1));
+            dxMat(1,2)=1;
+            for l=2:sx-1
+                dxMat(l,l-1)=-1;
+                dxMat(l,l+1)=1;
+            end
+            dxMat(sx,sx-1)=1;
+            %dx2 = dx2/h^2;
+        elseif(order == 4)
+            dxMat=diag(zeros(sx,1));
+            dxMat(1,1:4)=[   4             -3              4/3           -1/4];
+            dxMat(2,1:4)=[ -5/6            3/2           -1/2            1/12];
+            for l=3:sx-2
+                dxMat(l,l-2)=1/12;
+                dxMat(l,l-1)=-2/3;
+                dxMat(l,l+1)=2/3;
+                dxMat(l,l+2)=-1/12;
+            end
+            dxMat(sx-1,sx-3:sx)=[1/12          -1/2            3/2           -5/6 ];    
+            dxMat(sx,sx-3:sx)  =[-1/4            4/3           -3              4  ];
+        elseif(order == 6)             
+            dxMat=diag(zeros(sx,1));
+            dxMat(1,1:6)= [ 6            -15/2           20/3          -15/4            6/5           -1/6];
+            dxMat(2,1:6)= [-77/60           5/2           -5/3            5/6           -1/4            1/30];
+            dxMat(3,1:6)=   [3/20          -3/4            0              3/4           -3/20           1/60];
+            for l=4:sx-3
+                dxMat(l,l-3:l+3)=[-1/60           3/20          -3/4            0              3/4           -3/20           1/60];
+            end
+            dxMat(sx-2,sx-5:sx)=[-1/60           3/20          -3/4            0              3/4           -3/20];  
+            dxMat(sx-1,sx-5:sx)=[1/30          -1/4            5/6           -5/3            5/2          -77/60];    
+            dxMat(sx,sx-5:sx)=  [-1/6            6/5          -15/4           20/3          -15/2            6];
+        else
+            error('No such order %d!', order);
+        end
+        
+    end
     function [sdah] = GetDerOnBnd(X,Y,sdah,t,bt,c,mu,ord)
 
         c12 = 1 - c^2;
