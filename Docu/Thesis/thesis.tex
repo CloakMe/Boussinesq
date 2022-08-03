@@ -48,7 +48,7 @@ c^2 (E-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 
 %A new boundary condition on the computational boundary is also used \cite{bnd}, together with uniform grid and local approximation order of $O(h^4)$ and $O(h^6)$. The numerical solution %of the fourth order elliptic problem \rf{eq2} is replaced with an iterative procedure, which involves solution  of an appropriate  parabolic type problem at every iteration step.
  %until this solution converges. 
-Трето, добавен е стоп критерии, които отчита първо, резидуала от дискретното уравнение, дефиниран в \rf{residual}, второ, разликата между две решения получени от последователни итерации и трето, промяната в поведението на търсената функция в пограничните области близо до $\partial \Omega_h$.
+Трето, добавен е стоп критерии, които отчита първо, остатъка от дискретното уравнение, дефиниран в \rf{residual}, второ, разликата между две решения получени от последователни итерации и трето, промяната в поведението на търсената функция в пограничните области близо до $\partial \Omega_h$.
 Четвърто, разгледани са две гранични условия: нулево и ненулево като последното е описано в \cite{bnd}.
 Най-накрая решенията получени от елиптичната задача са сравнени с числените резултати от \cite{Ch2012,Ch2011} при различни скорости $c$ и дисперсионни параметри $\beta =\beta_1  / \beta_2$ и е показано, че формата на решението се изменя по сходен начин и в двата случая в зависимост от входните параметри. Получените резултати от елиптичната задача са сравнени с "best-fit" апроксимационните формули изведени в \cite{Ch2011}. Показано е че последните не удовлетворяват уравнението в околност на нулата $(0,0)$ в класическия смисъл, защото четвъртите производни от решението са сингулярни. Разликата (измерена в $L_2$ и $L_\infty$ норми) между полученото тук решение и при апроксимационните формули от \cite{Ch2011} са достатъчно големи особено при по високи скорости $c$.
 %\iffalse
@@ -495,7 +495,7 @@ c^2 \beta (E- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2
 $$
 \omega_h = \{(x_i,y_j): x_i = ih, y_j = jh, i = 0,\cdots ,(N_x-1)/2, j = 0,\cdots , (N_y-1)/2 \},
 $$
-където дискретната стъпка $h$ е същата както при $\Omega_h$ и $\omega_h \in \Omega_h$. Времевата област е дефинирана чрез интервала $[0, \widehat T]$ или просто $\widehat T$, където стъпката по времето $\tau$ варира в зависимост от големината на резидуала на решението. Това спомага за автоматизиране контрола върху грешката (от апроксимацията и изчисленията, но с условието че итеративният Метод на простата итерация е сходящ). Стойността на функцията $v$ в точка от мрежата $x_i,y_j,t_k$ е означена с $v_{i,j}^{(k)}$. 
+където дискретната стъпка $h$ е същата както при $\Omega_h$ и $\omega_h \in \Omega_h$. Времевата област е дефинирана чрез интервала $[0, \widehat T]$ или просто $\widehat T$, където стъпката по времето $\tau$ варира в зависимост от големината на остатъка на решението. Това спомага за автоматизиране контрола върху грешката (от апроксимацията и изчисленията, но с условието че итеративният Метод на простата итерация е сходящ). Стойността на функцията $v$ в точка от мрежата $x_i,y_j,t_k$ е означена с $v_{i,j}^{(k)}$. 
 Дискретизацията на пространствените производни в \rf{eq5} е направена посредством централните крайни разлики дефинирани в \rf{fdx}, \rf{fdy} и описани в \rf{table:A00}. Грешката от апроксимацията при формули \rf{fdx} и \rf{fdy} е $O(h^p)$. Замествайки оператора на Лаплас в \rf{eq5} с дискретния Лапласиан $\Delta_{h,p} (v_{i,j}) = (v_{i,j})_{\widehat{xx},p} + (v_{i,j})_{\widehat{yy},p}$ се получават крайни разлики с до шести ред на апроксимация (във вътрешността на областта $\omega_h$). Това води до по-висок ред на сходимост за използваните методи при достатъчно гладки решения. По този начин се получават по-точни решения върху по-едра мрежа. 
 \par
 Явното правилото на Ойлер е използвано за апроксимацията на нововъведените производни по времето. Нелинейните членове в \rf{eq3} се пресмятат на $t^{(k)}$ слой по времето. Така, численото решение в $t^{(k+1)}$ слой по времето е пресметнато директно чрез численото решение от предходния слой $t^{(k)}$:
@@ -518,9 +518,9 @@ $$
  Цикличната процедура описана в \rf{eq55} се нуждае от начални стойности за функиите $\widehat{v},\widehat{w}$, които са взети от "best-fit" формулите в \cite{Ch2011}. 
 Решението от задачата \rf{eq3} при $c=0$ също е добро приближение и служи на начални стойности при скорости близки до допустимия максимум $c \approx \min (1/ \sqrt{\beta},1)$, $c < \min (1/ \sqrt{\beta},1)$.
 \subsection{Контрол на стъпката по времето}
-Възможно е да се използва нефиксирана стъпка по времето $\tau$ за оптимизиране скоростта на сходимост. Когато $\tau > \tau_{stab}$ премине условието за устойчивост, решението започва да разхожда и става назъбено. Тези знаци се проявяват първоначално при резидуала \rf{residual}, докато численото решение $u$ е все още монотонно и разликите между две последователни итерации не са големи. Когато последното се случи, произволно сечение на резидуала $R$ се описва с дискретна функция сменяща положителни с отрицателни стойности върху мрежата. Това е ясен знак, че стъпката $\tau$ трябва да се намали, в противен случай се увеличава. Промяната се случва на всяка итерация с фактор $f_{\tau} \in \{0.72, 1.015\}$, където $\tau_{new} := f_{\tau}\tau$.
+Възможно е да се използва нефиксирана стъпка по времето $\tau$ за оптимизиране скоростта на сходимост. Когато $\tau > \tau_{stab}$ премине условието за устойчивост, решението започва да разхожда и става назъбено. Тези знаци се проявяват първоначално при остатъка \rf{residual}, докато численото решение $u$ е все още монотонно и разликите между две последователни итерации не са големи. Когато последното се случи, произволно сечение на остатъка $R$ се описва с дискретна функция сменяща положителни с отрицателни стойности върху мрежата. Това е ясен знак, че стъпката $\tau$ трябва да се намали, в противен случай се увеличава. Промяната се случва на всяка итерация с фактор $f_{\tau} \in \{0.72, 1.015\}$, където $\tau_{new} := f_{\tau}\tau$.
 
-Самият резидуал $R^{(k)}_{i,j}$ от дискретната апроксимация на \rf{eq3} в произволна точка от мрежата $(x_i,y_j,t^{(k)})$ е дефиниран чрез:
+Самият остатък $R^{(k)}_{i,j}$ от дискретната апроксимация на \rf{eq3} в произволна точка от мрежата $(x_i,y_j,t^{(k)})$ е дефиниран чрез:
 \begin{equation}\label{residual}
 R_{i,j}^{(k)} := 
 c^2\beta (\widehat{v}^{(k)}_{i,j})_{\widehat{yy},p} + \Delta_{h,p}(-\beta \widehat{v}^{(k)}_{i,j} - c^2\beta (\widehat{v}^{(k)}_{i,j})_{\widehat{yy},p} + \Delta_{h,p} \widehat{v}^{(k)}_{i,j} 
@@ -568,7 +568,7 @@ c^2\beta \widehat{v}^{(k)}*(\Delta_{h,p,s,y})^T + \Delta_{h,p,s,x} * \widehat{z}
 \begin{equation}\label{crit1}
 \max_{i,j} |\widehat{v}^{(k+1)}_{i,j}-\widehat{v}^{(k)}_{i,j}| < 1\times10^{-9} \max_{i,j} |\widehat{v}^{(k)}_{i,j}|.
 \end{equation}
-Критерият за спиране може допълнително да се разшири и да изпълнява още едно условие, което ще го направи по-стриктен. Нека резидуалът $R_{i,j}^{(k)}$ от \rf{residual} да изпълнява следната зависимост
+Критерият за спиране може допълнително да се разшири и да изпълнява още едно условие, което ще го направи по-стриктен. Нека остатъкът $R_{i,j}^{(k)}$ от \rf{residual} да изпълнява следната зависимост
 \begin{equation}\label{crit2}
 \max_{i,j} |R_{i,j}^{(k)}| < \epsilon = 1\times10^{-9}.
 \end{equation}
@@ -591,7 +591,7 @@ c^2\beta \widehat{v}^{(k)}*(\Delta_{h,p,s,y})^T + \Delta_{h,p,s,x} * \widehat{z}
 \par
 2.4) търсените функции $(\widehat{v}^{(k+1)}, \widehat{w}^{(k+1)})$  на следващия слой по времето $t^{(k+1)}$ посредством явната схема на Ойлер \rf{eq555} и вече изчислените изрази в \rf{helper},
 \par
-2.5) резидуалът $R^{(k+1)}_{i,j}$ от \rf{residual} използвайки \rf{helper},
+2.5) остатъкът $R^{(k+1)}_{i,j}$ от \rf{residual} използвайки \rf{helper},
 \par
 2.6) критериите за спиране  \rf{crit1} и \rf{crit2} и съответната проверка заложена в тях,
 \par
@@ -675,33 +675,29 @@ $\beta = 1$   	&0.2   &             &           &                & \\
 	\label{fig:solutions}
 \end{figure}
 Фигура \rf{fig:solutions} показва формата на решението получено с параметрите заложени съответно в Тест 1 (ляво) и Тест 2 (дясно). Вижда се че при $\beta=1$ дисперсията на вълната спрямо разгледаната област $[-10,10] \times [-10,10]$ е доста по-голяма спрямо формата получена при $\beta=3$. В допълнение на графиката отнасяща се за Тест 1 изобразената област е $[-5,5] \times [-5,5]$. Разбира се решението е пресметнато в правоъгълника $\Omega_h$ зададен в Таблица \rf{tableP}, но за да изпъкне формата от решението близо до максимума, стойностите, които са по ръбовете и близки до нула, са изрязани.
-\section{5.~Results.}\label{results}
+\section{Числени резултати от метода на простата итерация}\label{results}
+В тази част са представени резултатите от приложения числен метод описан по-горе за елиптичното уравнение \rf{eq3}. Потвърждават се и характерните свойства на получените решения за различни стойности на параметрите $\beta$ и $c$, които са представени първоначално в \cite{Ch2012,Ch2011} като например зависимостта на формата на вълната от скоростта $c$ и дисперсията $\beta$ и асимптотичното поведение $\frac{1}{x^2 + y^2}$ на безкрайност. В допълнение са открити и други релации например за положителните и отрицателните области на решението.
+Също така е последното е сравнено с ``best-fit'' апроксимационните формули от \cite{Ch2011}, като това сравнение е все още липсващо в литературата, но се оказва съществен елемент и повратна точка в изследването на хиперболичната задача \rf{eq1}-\rf{eq11}. Тук напомняме на читателя, че ``best-fit'' формулите са използвани за начално условие в итеративния алгоритъм.
 
-In this section we apply the presented  numerical method  to study the characteristic properties of the obtained numerical solution.  Many parametric dependencies of the numerical solution,  discovered in \cite{Ch2012,Ch2011}, such as dependence of the solution's shape on the velocity $c$ and on the relative dispersion parameter $\beta$, are confirmed here once again.
- We   also compare  the best--fit  formulae,  built up in \cite{Ch2011}, with the numerical solution  developed here. Such comparison is still missing in the literature.
-Recall that the best--fit formulae   are used as initial data for our algorithm. 
-
-\subsection{5.1~Solution residual.}
+\subsection{Остатък}
 
 \begin{figure}[htbp]
 	\begin{minipage}[b]{0.5\linewidth}
 		 \centering
 		\includegraphics[width=\linewidth]{../EllipticEquationSJC/residual/residual_bt5c03.eps}
-		\centerline{$\beta = 5$, $c = 0.3$}
+		\centerline{$\beta = 3$, $c = 0.45$}
 	\end{minipage}	
 	\begin{minipage}[b]{0.5\linewidth}
 		\centering
 		 \includegraphics[width=\linewidth]{../EllipticEquationSJC/residual/residual_bt1c09.eps}
 	\centerline{$\beta = 1$, $c = 0.9$ }
 	\end{minipage}
-		\caption{Residual at the last step of iteration process \rf{eq55} }
+		\caption{Резидуала \rf{residual} от решението от последната итерация при уравнения \rf{eq555} }
 		\label{resid}
 \end{figure}
 
-On the left picture in Figure~\ref{resid} we present  the residual \rf{residual}, saved on the last time level of the numerical scheme \rf{eq55},  for $\beta = 5$ and $c = 0.3$, while the residual, evaluated for problem with $\beta = 1$, $c = 0.9$, is demonstrated on the right part of Figure~\ref{resid}. Here  $\epsilon =10e-6$ and the FDS is of 6th order of approximation. In these cases the difference between the last two iterations is $3.7749e-007$ for the first data set and $1.2726e-007$ for the second data set. These results show that the  equation \rf{eq3} is satisfied numerically with high accuracy. 
-Note that similar results about the residual for the numerical scheme in \cite{Ch2012} are not reported there. Concerning the best--fit formulae from \cite{Ch2011} -- it is obvious to conclude from these formulae that the third, fourth and so on derivatives of the best--fit solution are unbounded in the neighborhood of the point $(0,0)$. Thus  
-the residual, which includes fourth order derivatives of the solution, could not be considered and evaluated in the classical sense. Therefore the equation \rf{eq3} is not satisfied in the neighborhood of the origin by the best--fit formulae  from \cite{Ch2011}!
- \begin{center}
+На Фигура \ref{resid} е представен остатъкът \rf{residual}, който е запазен от последната стъпка на итеративната схема \rf{eq555}, като за левия панел  параметрите са $\beta = 3$ и $c = 0.45$, а за десния $\beta = 1$ и $c = 0.9$. И в двата случая $\epsilon =1e-9$, а използваните крайни разлики са от шести порядък. Разликите в решенията между последните две итерации е $0.000e-000$ и $0.000e-000$ съответно за първия и втория пример. Така, диференчната схема \rf{eq55} е удовлетворена с голяма прецизност както от апроксимации на вторите производни с до шести ред така и от ниският праг $\epsilon =1e-9$. От друга страна разглеждайки формулите от ``best-fit'' апроксимацията от \cite{Ch2011} се вижда, че третите, четвъртите и други производни по пространството от по висок ред са неограничени в околност на нулата $(0,0)$. Така нито елиптичното уравнение \rf{eq3}, нито остатъка \rf{residual} могат да бъдат пресметнати в класическия смисъл и следователно не са удовлетворени от ``best-fit'' формулите!
+\begin{center}
 \begin{table}[ht]
 \centering
 		\begin{tabular}{||c|l|ll|ll||}
@@ -729,17 +725,13 @@ the residual, which includes fourth order derivatives of the solution, could not
 		   \hline
 			\hline 
 		\end{tabular}
-		\caption{Errors  in $L_2$ and $L_\infty$ norms and  convergence  rate for  fourth order discrete derivative  evaluated by FDS with $O(h^2)$ and $O(h^6)$ approximation errors}
+		\caption{Грешките в $L_2$ и $L_\infty$ норми заедно със сходимостта на четвъртите производни по $x$ пресметнати с $O(h^2)$ и $O(h^6)$ апроксимации.}
 \label{tab:fourth-der}
 \end{table}
 \end{center}
 
-\subsection{5.2~Solution derivatives.}
-
-We have mentioned already that the best--fit formulae from \cite{Ch2011} have singularities near the origin. 
-Now we demonstrate  that the discrete fourth order derivatives of the numerical solution converge numerically as the step size $h$ goes to zero.
-We apply the Runge test, evaluating the discrete fourth order derivative $v_{\widehat{xxxx}}$ of the solution on three nested meshes with step sizes $h$, $h/2$, $h/4$ (see Section~\rf{validation}).  The results are demonstrated on Table~\ref{tab:fourth-der}.  
-We conclude that the discrete  derivative $v_{\widehat{xxxx}}$ is bounded and converges numerically for $h\rightarrow 0$. The tests for the other fourth order derivatives are similar to the derivative $v_{xxxx}$ and we do not present them here.
+\subsection{Производни на решението}
+Както вече е разкрито, ``best-fit'' формулите от \cite{Ch2011} имат особености около нулата. Затова е важно да се покаже, че дискретните производни на решението от четвърти ред $v_{\widehat{xxxx}}$ схождат числено, когато стъпката $h$ намалява. За целта е приложено правилото на Рунге \rf{runge} върху три вложени мрежи с размери $h$, $h/2$, $h/4$, а получените резултати за сходимостта $\xi$ са представени в Таблица \rf{tab:fourth-der}. В заключение се вижда, че дискретните производни $v_{\widehat{xxxx}}$ са ограничени и сходящи. Тестове със смесените производни - $v_{xxyy}$ и само по $y$ - $v_{yyyy}$ не са представени тук, но резултатите от тях са сходни като тези при $v_{xxxx}$.
 
 \subsection{5.3~Solution shape.}
 
@@ -808,8 +800,6 @@ We perform a detailed study   of the numerical solution's shape with respect to 
 On Figure~\ref{profilesSpeedVarying}, parameter $\beta=1$ is held constant and the wave dependence on the phase velocity  $c$ for $c=0.1, 0.3, 0.5, 0.7, 0.9$ is demonstrated.  Linear plots of the solution are presented on the upper row while  log--log plots of the absolute value of the solution are shown on the lower part.  These types of plots help us to establish the size of the computational box. 
 
 One can observe that as the phase velocity $c$ increases the wave's support  along $x$ direction increases too, but the maximum of the wave decreases. The linear part of the solution on the log--log plots is under the governance of the boundary function.
-
-\bigskip
 
 
 \section{6.~Comparison with best--fit formulae from \cite{Ch2011}.}
@@ -1293,7 +1283,6 @@ $$ O(N_x N_y \bar \epsilon N_t ) $$
 \end{table}
 
 \subsection{Числени резултати за Масата и Енергията}
-
 Фигура \ref{Test1En} показва дискретните Маса и Енергия при Тест 1 изчислени посредством решенията от Консервативната схема и метода на Тейлор. 
 Фигура \rf{Test2En} показва аналогични резултати, но при Тест 2. В случая на $O(|h|^2 +\tau^2)$ апроксимация, графиките на Масата и Енергията получени от двата метода както при Тест 1 така и при Тест 2 се припокриват (черната линия и сините кръгчета). Енергията е константна величина спрямо времевата променлива. 
 \begin{figure}[ht]\vspace{0.2cm}
@@ -1538,7 +1527,7 @@ $$ \delta_{i,j} = u_{i,j}^{(0)} - u_{i,j+cT/h}^{(N_t)},$$
 \label{tableG}
 \end{table}
 
-Таблица \ref{tableG} показва, че с намаляване на стъпките по пространството $h$ и времето $\tau$, разликата между разгледаните решения също намалява. В допълнение се вижда, че формата на вълната се запазва по-добре, когато степента на апроксимация $p$ на диференциалните оператори е по-висока. Последните разсъждения затвърждават очакването, че разликата във формата на решението $||u^{(0)} - u^{(N_t)}||_\kappa$ при различни времена клони към нула когато $h$ и $\tau$ са безкрайно малки.
+Таблица \ref{tableG} показва, че с намаляване на стъпките по пространството $h$ и времето $\tau$, разликата между разгледаните решения също намалява. В допълнение се вижда, че формата на вълната се запазва по-добре, когато степента на апроксимация $p$ на диференциалните оператори е по-висока. Последните разсъждения затвърждават очакването, че разликата във формата на решението $||u^{(0)} - u^{(N_t)}||_\kappa$ при различни времена клони към нула когато $h$ и $\tau$ са много малки.
 
 \begin{figure}\vspace{0.2cm}
 	\centering
@@ -1553,6 +1542,8 @@ $$ \delta_{i,j} = u_{i,j}^{(0)} - u_{i,j+cT/h}^{(N_t)},$$
 \end{figure}
 
 В следния параграф се обръща внимание на максимума на решението, но при по-голям времеви интервал $[0, 30]$. Постановката за този числен експеримент е описана с помощта на Таблица \ref{tableP}, т.е. използван е метод на Тейлор с шести ред на апроксимация $p=6$, със стъпки $h=0.05$, $\tau = 0.001$ при Тест 1 и $h=0.2$,  $\tau=0.02$ при Test 2. Крайното време е $T=30$, а големината на областта $\Omega_h$ е увеличена по $y$ оста за да обхване преместването на вълната изцяло, т.е. $L_y = 45$ при Тест 1 и $L_y = 90$ при Тест 2. Както вече беше споменато, точната позиция на максимума не винаги лежи върху точка от мрежата $\Omega_h$. Това води до назъбване на графиките, което се забелязва по-отчетливо на десния панел при Тест 2 на Фигура \ref{Maximum}. Формите на решението са показани на Фигури \ref{Wave1} и \ref{Wave2} съответно при Тест 1 и Тест 2.
+
+За всеки от разработените методи са изчислени масата и енергията върху полученото решение. То, заедно с неговите свойства като маса, енергия и форма са сравнени. Изчисленията са направени върху три вложени мрежи, за да се изследва сходимостта на методите. Показано е, че решенията получени с метода на Тейлор и Консервативната схема са доста близки. Една от целите на статията е да покаже, че метода на Тейлор приложен към уравнението \rf{problemVC} също води до достатъчно добри резултати, а също така може да се приложи с по-висок ред на апроксимация, което води и до по-фино решение.
 
 \begin{thebibliography}{99}
 

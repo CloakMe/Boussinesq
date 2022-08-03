@@ -52,7 +52,7 @@ for i=2:-1:-2
     AB(j,end-fdsize+1:end) = fliplr(coeffs);
     j = j - 1;
 end
-AB(2:end-1,2:end-1)
+A = AB(2:end-1,2:end-1)
 
 return;
 [ S, D ] = eig( -(Delta_hy'+Delta_hy)/2 );
