@@ -59,7 +59,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
             if(mod(k,this.estep)==0)
                 tt(e)=k*this.tau;
                 if( mod(k*this.tau, 1) == 0 )
-                    dvz = (vmo - 2*vz + vu)/tau^2;
+                    dvz = (vmo - 2*vz + vu)/this.tau^2;
                     this.SaveSolutionOnIterStep( tt(e), vz, dvz ); 
                 end                
                 %{

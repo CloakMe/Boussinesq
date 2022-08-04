@@ -1,23 +1,50 @@
 classdef (ConstructOnLoad) BEEngineTaylorZeroBnd < BEEngineTaylor
    % Class help goes here
-  
+  properties ( SetAccess = protected, GetAccess = public)
+    domainUtils
+  end 
   
   methods
     
     function this = BEEngineTaylorZeroBnd( dscrtParams, eqParams, ic )
         this = this@BEEngineTaylor( dscrtParams, eqParams, ic, 1 );
-        this.Delta_hx = BEUtilities.GetFinDiffMatZeroBnd( this.sx, this.order, this.h );
-        this.Delta_hy = BEUtilities.GetFinDiffMatZeroBnd( this.sy, this.order, this.h )';
-
-        [ this.eigenFinDiffMat_x, this.D_x ] = eig( -this.Delta_hx );
-        [ this.eigenFinDiffMat_y, this.D_y ] = eig( -this.Delta_hy );
-        this.invEigenFinDiffMat_x = inv(this.eigenFinDiffMat_x);
+        Delta_hx = BEUtilities.GetFinDiffMatZeroBnd( this.sx, this.order, this.h );
+        Delta_hy = BEUtilities.GetFinDiffMatZeroBnd( this.sy, this.order, this.h );
+        
+%         n = (this.order/2)-1;
+%         for i=1:(this.order/2)-1
+%             pivot = Delta_hx(this.order/2-i+1, this.order-i+1);
+%             for j=1:n
+%                 Delta_hx(j, :) = ...
+%                     ( pivot / Delta_hx(j, this.order-i+1) ) * Delta_hx(j,:)  -...
+%                     Delta_hx(this.order/2 - i + 1, :);
+%             end
+%             n = n-1;
+%         end
+%         Delta_hx( end-(this.order/2)+1:end, :) = flipud( fliplr( Delta_hx(1:(this.order/2),:) ) );
+% 
+%         n = (this.order/2)-1;
+%         for i=1:(this.order/2)-1
+%             pivot = Delta_hy(this.order/2-i+1, this.order-i+1);
+%             for j=1:n
+%                 Delta_hy(j, :) = ...
+%                     ( pivot / Delta_hy(j, this.order-i+1) ) * Delta_hy(j,:)  -...
+%                     Delta_hy(this.order/2 - i + 1, :);
+%             end
+%             n = n-1;
+%         end        
+%         Delta_hy( end-(this.order/2)+1:end, :) = flipud( fliplr( Delta_hy(1:(this.order/2),:) ) );
+                
+        [ this.eigenFinDiffMat_x, this.D_x ] = eig( Delta_hx' );
+        [ this.eigenFinDiffMat_y, this.D_y ] = eig( Delta_hy' );
+        this.invEigenFinDiffMat_xT = inv(this.eigenFinDiffMat_x');
         this.invEigenFinDiffMat_y = inv(this.eigenFinDiffMat_y);
         [this.Lambda_X, this.Lambda_Y] = this.SetLambdaNet();
+        this.domainUtils = BEDomainUtils( this.x, this.y, this.order );
     end
     
     function [ this, tt, max_v, t, EN, II, vu, dtv ]= BESolver( this )
-        [ this, tt, max_v, t, EN, II, vu, dtv ] = BESolver@BEEngineTaylor(this);
+        [ this, tt, max_v, t, EN, II, vu, dtv ] = BESolver@BEEngineTaylor(this);        
     end
     
     function [ name ] = GetName( this )
@@ -33,11 +60,11 @@ classdef (ConstructOnLoad) BEEngineTaylorZeroBnd < BEEngineTaylor
             error( 'Not yet implemented for order = 8!' );
         end
         
-        deltab = this.eigenFinDiffMat_x' * ( this.Delta_hx * nonlinTerm + nonlinTerm * this.Delta_hy' ) * this.eigenFinDiffMat_y;
-        X = deltab ./ (this.Lambda_X + this.Lambda_Y + this.h^2);
-        dnvz = ( this.invEigenFinDiffMat_x' * X * this.invEigenFinDiffMat_y + this.Delta_hx / this.h^2 * dnU_dtn + dnU_dtn * this.Delta_hy' / this.h^2 )/this.beta;
+        deltab = this.eigenFinDiffMat_x' * this.domainUtils.DeltaHZeroBnd( nonlinTerm ) * this.eigenFinDiffMat_y;
+        X = -deltab ./ ( this.Lambda_X + this.Lambda_Y - this.h^2);
+        dnvz = ( this.invEigenFinDiffMat_xT * X * this.invEigenFinDiffMat_y + this.domainUtils.DeltaHZeroBnd( dnU_dtn ) / this.h^2 )/this.beta;
         
-        %intermediate = this.invEigenFinDiffMat_x * nonlinTerm * this.invEigenFinDiffMat_y';
+        %intermediate = this.invEigenFinDiffMat_xT * nonlinTerm * this.invEigenFinDiffMat_y';
         %X = (this.D_x * intermediate + intermediate * this.D_y) ./ (this.Lambda_X + this.Lambda_Y + this.h^2);
         %dnvz = ( this.eigenFinDiffMat_x * X * this.eigenFinDiffMat_y' + this.Delta_hx / this.h^2 * dnU_dtn + dnU_dtn * this.Delta_hy' / this.h^2 )/this.beta;
         
@@ -58,27 +85,22 @@ classdef (ConstructOnLoad) BEEngineTaylorZeroBnd < BEEngineTaylor
     function [e] = GetEnergy( this, vz, vpo, t )
         
         vt = (vpo - vz)/this.tau;
-
-        wvt = this.eigenFinDiffMat_x' * vt * this.eigenFinDiffMat_y;
-
-        idhv = this.beta * (vz+vpo) - ( this.Delta_hx * ( vz+vpo ) + ( vz+vpo ) * this.Delta_hy' )/this.h^2;
-        X = wvt ./ (this.Lambda_X + this.Lambda_Y);
-        vec1 = this.eigenFinDiffMat_x * X * this.eigenFinDiffMat_y';  %/h^2
-        sigma = 0;  
-        IDhvt = this.beta*vt - ( this.Delta_hx * vt + vt * this.Delta_hy' )/this.h^2;
-        Le= this.beta * ( vec1 + vt ) .* vt  +...
-            this.tau^2 * ( sigma - 1/4 ) *  IDhvt.*vt + idhv .* ( vz+vpo ) / 4 ;
-
-        NLe = ( this.alpha*this.beta/3 ) * ( vz.^3  + vpo.^3 );
-
-        energyTerm = Le + NLe;
+        
+        wvt = this.eigenFinDiffMat_x' * vt * this.eigenFinDiffMat_y;        
+        X = -wvt ./ (this.Lambda_X + this.Lambda_Y);
+        vec1 = this.h^2 * this.invEigenFinDiffMat_xT * X * this.invEigenFinDiffMat_y;
+        
+        midv = (vz  + vpo)/2;
+        energyTerm = this.beta * ( vec1 + vt ) .* vt  + ...
+            (this.beta * midv - this.domainUtils.DeltaHZeroBnd( midv )/this.h^2 ) .* midv + ...
+            (this.alpha*this.beta/3 ) * ( vz.^3 + vpo.^3 ); %  
         e = this.GetIntegralOf(energyTerm);
     end
     
     function [lambda_X, lambda_Y] = SetLambdaNet(this)
         
-        sx = size(this.Delta_hx,1);
-        sy = size(this.Delta_hy,1);
+        sx = size(this.D_x,1);
+        sy = size(this.D_y,1);
         
         ox1 = ones(1,sy);
         lambda_X = diag(this.D_x)*ox1;
@@ -95,10 +117,8 @@ classdef (ConstructOnLoad) BEEngineTaylorZeroBnd < BEEngineTaylor
   
   properties ( SetAccess = protected, GetAccess = public)
     %Discretization parameters
-    Delta_hx
-    Delta_hy    
     eigenFinDiffMat_x
-    invEigenFinDiffMat_x
+    invEigenFinDiffMat_xT
     D_x
     eigenFinDiffMat_y
     invEigenFinDiffMat_y

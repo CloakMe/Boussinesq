@@ -1,6 +1,6 @@
 classdef (ConstructOnLoad) BEDomainUtils
     
-    properties (SetAccess = private, GetAccess = protected)
+    properties (SetAccess = private, GetAccess = public)
         X
         Y      
         hx
@@ -27,30 +27,41 @@ classdef (ConstructOnLoad) BEDomainUtils
     
   methods( Access = public )
       
-    function this = BEDomainUtils( x, y, order ) 
+    function this = BEDomainUtils( x, y, order, der ) 
+        
+        if(nargin == 3)
+            der = 2;
+        end
+        
         if( mod( order, 2 ) ~= 0 || order<1 )
             error( 'order must be positive even number! ' );
         end
         this.order = order;
-        numberOfExtPoints = order/2;
         this.hx = x( 2 ) - x( 1 );
-        this.hy = y( 2 ) - y( 1 );
-        
-        leftJointX = (-numberOfExtPoints:1:-1)*this.hx + x( 1 );
-        rightJointX = (1:numberOfExtPoints)*this.hx + x( end );
-        extendedX = [leftJointX x rightJointX];
-        
-        leftJointY = (-numberOfExtPoints:1:-1)*this.hy + y( 1 );
-        rightJointY = (1:numberOfExtPoints)*this.hy + y( end );
-        extendedY = [leftJointY y rightJointY];
-        
+        this.hy = y( 2 ) - y( 1 );        
         this.x = x;
         this.y = y;
         [ this.X, this.Y ] = this.GetNet(x,y);
-        [ this.X_xAugDomain, this.Y_xAugDomain ] = this.GetNet(extendedX,y);
-        [ this.X_yAugDomain, this.Y_yAugDomain ] = this.GetNet(x,extendedY); 
         
-        this.mFiniteDiff = BEUtilities.GetFinDiffMatZeroBnd(order+1,order);
+        if(der == 2)
+            this.mFiniteDiff = BEUtilities.GetFinDiffMatZeroBnd(order+1,order);
+        else
+            this.mFiniteDiff = BEUtilities.GetFinDiffMat1DerZeroBnd(order+1,order);
+        end
+
+%         n = (order/2)-1;
+%         for i=1:(order/2)-1
+%             pivot = this.mFiniteDiff(this.order/2-i+1, this.order-i+1);
+%             for j=1:n
+%                 this.mFiniteDiff(j, :) = ...
+%                     ( pivot / this.mFiniteDiff(j, this.order-i+1) ) * this.mFiniteDiff(j,:)  -...
+%                     this.mFiniteDiff(this.order/2 - i + 1, :);
+%             end
+%             n = n-1;
+%         end
+%         this.mFiniteDiff( (order/2)+2:end, :) = flipud( fliplr( this.mFiniteDiff(1:(order/2),:) ) );
+        
+%       symetric = BEUtilities.GetFinDiffMat(order+1,order);
         boolbreak = 1;
     end
     
@@ -73,23 +84,7 @@ classdef (ConstructOnLoad) BEDomainUtils
                          this.XDerivative( M, augPntsTop, augPntsBtm, finiteDiff );
         end
     end
-    
-    function [ zeroMatrix ] = XDer(      this,...
-                                         M,...
-                                         finiteDiff ) 
-
-        augZeroPointsX = zeros( size( this.topX ) );
-        zeroMatrix = this.XDerivative( M, augZeroPointsX, augZeroPointsX, finiteDiff );
-    end
-    
-    function [ zeroMatrix ] = YDer(     this,...
-                                         M,...
-                                         finiteDiff ) 
-
-        augZeroPointsY = zeros( size( this.leftY ) );
-        zeroMatrix = this.YDerivative( M, augZeroPointsY, augZeroPointsY, finiteDiff );
-    end
-    
+        
     function [ zeroMatrix ] = YDerivative( this, M, augLeftPoints, augRightPoints, finiteDiff ) 
         if( size( finiteDiff, 1 ) > 1 )
             error( 'Finite Difference expected as a row vector but received column vector!' );
@@ -130,14 +125,14 @@ classdef (ConstructOnLoad) BEDomainUtils
     function [ zeroMatrix ] = YDerivativeZeroBnd( this, M ) 
 
         zeroMatrix = zeros( size( M ) );
-        
+        %left boundary elements
         mid = (this.order+2)/2;
         sizeFD = size( this.mFiniteDiff, 2 ) - 1;
         for j = 1:mid-1
             zeroMatrix(:,j) = M(:,1:sizeFD)*this.mFiniteDiff(j,1:end-1)';
         end
-        
-        [ zeroMatrix ] = YDerivativeZeroRightBnd( this, M, zeroMatrix, mid, sizeFD );
+        %internal and right boundary elements
+        [ zeroMatrix ] = YDerivativeCommonPart( this, M, zeroMatrix, mid, sizeFD );
 
     end
     
@@ -154,14 +149,15 @@ classdef (ConstructOnLoad) BEDomainUtils
     function [ zeroMatrix ] = YDerivativeEvenFunZeroBnd( this, M ) 
 
         zeroMatrix = zeros( size( M ) );
-        
+        %left boundary elements
         mid = (this.order+2)/2;
         sizeFD = size( this.mFiniteDiff, 2 ) - 1;
         for j = 1:mid-1
             zeroMatrix(:,j) =  M(:,1:mid-1+j)*this.mFiniteDiff(mid,mid+1-j:end)'  + M(:,2:mid+1-j)*this.mFiniteDiff(mid,mid+j:end)';
         end
         
-        [ zeroMatrix ] = YDerivativeZeroRightBnd( this, M, zeroMatrix, mid, sizeFD );
+        %internal and right boundary elements
+        [ zeroMatrix ] = YDerivativeCommonPart( this, M, zeroMatrix, mid, sizeFD );
 
     end
     
@@ -188,8 +184,8 @@ classdef (ConstructOnLoad) BEDomainUtils
   end
   
   methods( Access = protected )
-      
-    function [ zeroMatrix ] = YDerivativeZeroRightBnd( this, M, zeroMatrix, mid, sizeFD ) 
+    %internal and right boundary elements
+    function [ zeroMatrix ] = YDerivativeCommonPart( this, M, zeroMatrix, mid, sizeFD ) 
        
         for j=mid:size(M,2)-mid+1
             zeroMatrix(:,j) = M(:,j-mid+1:j+mid-1)*this.mFiniteDiff(mid,:)';
@@ -201,60 +197,7 @@ classdef (ConstructOnLoad) BEDomainUtils
         end
 
     end
-    
-    function [ this ] = SetBoundingBox( this, x, y, numberOfExtPoints )
-        %================= left ======================
-        startAugleftY = y( 1 ) - numberOfExtPoints*this.hy;
-        endAugleftY = y( 1 ) - this.hy;
-        %x(1)
-        %x(end)
-        
-        yAug = startAugleftY : this.hy : endAugleftY;
-        [ this.leftX, this.leftY ] = this.GetNet(x,yAug);
-        %=======================================
-        %================= right ======================
-        startAugrightY = y( end ) + this.hy;
-        endAugrightY = y( end ) + numberOfExtPoints*this.hy;
-        %x(1)
-        %x(end)
-        
-        yAug = startAugrightY : this.hy : endAugrightY;
-        [ this.rightX, this.rightY ] = this.GetNet(x,yAug);
-        %=======================================        
-        %================== top =====================
-        startAugtopX = x( 1 ) - numberOfExtPoints*this.hx;
-        endAugtopX = x( 1 ) - this.hx;
-        %y(1)
-        %y(end)
-        
-        xAug = startAugtopX : this.hx : endAugtopX;
-        [ this.topX, this.topY ] = this.GetNet(xAug,y);
-        %=======================================        
-        %================== btm =====================
-        startAugbtmX = x( end ) + this.hx;
-        endAugbtmX = x( end ) + numberOfExtPoints*this.hx;
-        %y(1)
-        %y(end)
-        
-        xAug = startAugbtmX : this.hx : endAugbtmX;
-        [ this.btmX, this.btmY ] = this.GetNet(xAug,y);
-    end
-            
-    function [X,Y]=GetBndNet(this,x,y, numberOfExtPoints )
-        
-        sx = length(x);
-        sy = length(y);
-        
-        ox1 = [ ones(1,numberOfExtPoints); zeros(1,sy); ones(1,numberOfExtPoints) ];
-        X = x'*ox1;
-        if(sx~=sy )
-            oy1 = [ ones(1,numberOfExtPoints); zeros(1,sx); ones(1,numberOfExtPoints) ];
-            Y = (y'*oy1)';
-        else
-            Y = (y'*ox1)';
-        end
-    end
-    
+
   end 
 
 end
