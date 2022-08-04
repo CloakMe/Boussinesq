@@ -373,6 +373,7 @@ classdef BEUtilities
              error('BMM; right side is MATRIX; MATRIX size too small small (<7)!!! ');
             end
             if(sm == 3)
+                fprintf('here');
                 HM = X(1:end-2,:);
                 XV(1,:) = HM(:)';
                 HM = X(2:end-1,:);

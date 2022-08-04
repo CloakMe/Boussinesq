@@ -1,11 +1,11 @@
 %return
 clear; clc;
-
+addpath('..\..\..\Common');
 bndCutSize = 0;
 % ChristovIC_40_80_bt1_c090_h010_O(h^6)
 % partialPath = 'BEEliptic\Boussinesq2D\SavedWorkspaces\';
-partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_30_bt3_c045\Oh6\';
-waveFactory = WaveFactory( partialPath, 'ChristovIC_30_ZB1_bt3_c045_h020_O(h^6)', bndCutSize, 0 ); %
+partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_30_bt3_c045\Oh2\';
+waveFactory = WaveFactory( partialPath, 'ChristovIC_30_ZB1_bt3_c045_h010_O(h^2)', bndCutSize, 0 ); %
 %waveFactory = WaveFactory( 'BestFitIC' );
 
 tEnd=10;
@@ -14,7 +14,7 @@ fprintf('SavingTheSolution = %.1d\n', SavingTheSolution);
 
 tau = waveFactory.h/10;
 if( waveFactory.order == 2 )
-    tau = waveFactory.h/200;
+    tau = waveFactory.h/20;
 end
 %tau = 2/180;
 %fprintf('tau = %.6f, h = %.6f, h/tau = %.6f\n', tau, waveFactory.h, waveFactory.h/tau);
@@ -29,14 +29,14 @@ eqParams = BEEquationParameters( waveFactory.alpha, waveFactory.beta1, waveFacto
 ic = BEInitialCondition( waveFactory.u_t0 , waveFactory.dudt_t0, waveFactory.mu, waveFactory.theta );   
 %ic = BEInitialCondition( vl , dvl, waveFactory.mu, waveFactory.theta );   
 %engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %BEEngineTaylorSoftBnd %BEEngineEnergySaveSoftBnd
-engine = BEEngineTaylorZeroBnd( dscrtParams, eqParams, ic );
+engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic );
 fprintf('Engine Type = %s\n', engine.GetName());
 % _____________________________________
 tic
 
 %(VS) vector scheme: -->  O(tau + h^2)
 %(VS) vector scheme: -->  O(tau + h^2)
-%[tt, max_vv, t ,v1l, v2l]  = BE2D_v6(x,y,h,tau,t_end,beta1,beta2,al,estep,u_t0,dudt_t0); ver = 6;
+[tt, max_vv, t ,v1l, v2l]  = BE2D_v6(waveFactory.x,waveFactory.y,waveFactory.h,tau,tEnd,waveFactory.beta1,waveFactory.beta2,waveFactory.alpha,estep,waveFactory.u_t0,waveFactory.dudt_t0); ver = 6;
 %(VC) Explicit method with variable change applied -->  O(tau^2 + h^2)  tau<function(h,beta)<h ..
 %[tt, max_v, t, vl]  = BE2D_v4(x,y,h,tau,t_end,beta1,beta2,al,estep,u_t0,dudt_t0);  ver = 4;
 %(NVC) Explicit method NO variable change -->  O(tau^2 + h^2) 
@@ -44,7 +44,7 @@ tic
 %Taylor method variable change applied --> O(tau^4 + h^2)  tau<function(h,beta)<h ..
 %[tt, max_v, t, vl]  = BE2D_t1(x,y,h,tau,t_end,beta1,beta2,al,estep,u_t0,dudt_t0);  ver = 1;
 % Taylor method variable change applied --> O(tau^4 + h^4)  tau<function(h,beta)<h ..
-[engine, tt, max_v, t, EN, II, vl, dvl] = engine.BESolver( );
+%[engine, tt, max_v, t, EN, II, vl, dvl] = engine.BESolver( );
 % Taylor method variable change applied --> O(tau^4/tau^4 + h^8)  tau<function(h,beta)<h ..
 %[tt, max_v, t, EN, II, vl, dvl]  =  BE2D_t8(x,y,h,tau,t_end,beta1,beta2,al,c,c1,ord,0,estep,u_t0,dudt_t0);  ver = 2;
 % Taylor method variable change applied --> O(tau^4 + h^4)  tau<function(h,beta)<h ..

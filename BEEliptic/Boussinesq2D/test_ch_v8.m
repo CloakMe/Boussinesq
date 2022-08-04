@@ -1,4 +1,5 @@
 %return;
+addpath('..\..\Common');
 clear;clc;
 tic
 x_st = -24.0;    y_st = -24.0;
