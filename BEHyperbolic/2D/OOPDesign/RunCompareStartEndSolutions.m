@@ -18,8 +18,9 @@ clear;clc;
 % end
 
 additionalInfo = 2;
-domainLen = '128'; %128, 30
-if( true )
+
+if( false )
+    domainLen = '128'; %128, 30
     CompareStartEndSolitons('1', '90', '40' ,'6', domainLen, additionalInfo, 'b' ) 
     CompareStartEndSolitons('1', '90', '20' ,'6', domainLen, additionalInfo, 'gx' ) 
     CompareStartEndSolitons('1', '90', '10' ,'6', domainLen, additionalInfo, 'md' ) 
@@ -40,6 +41,7 @@ if( true )
     
 
 else
+    domainLen = '30'; %128, 30
     CompareStartEndSolitons('3', '45', '20' ,'2', domainLen, additionalInfo, 'ko' ) 
     CompareStartEndSolitons('3', '45', '10' ,'2', domainLen, additionalInfo, 'kx' ) 
     CompareStartEndSolitons('3', '45', '05' ,'2', domainLen, additionalInfo, 'kd' ) 

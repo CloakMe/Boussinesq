@@ -1,14 +1,14 @@
 clear
-btString = { '1' };
-cString = { '90' };
-hString = { '10', '20', '40' };
+btString = { '3' };
+cString = { '45' };
+hString = { '05', '10', '20' };
 orderString = { '2' };
-domainLenString = { '128' };
-solTypeString = { 'Taylor' };
+domainLenString = { '30' };
+solTypeString = { 'EnergySave' };
 bndString = { 'ZeroBoundary' };
-legendString = { 'Taylor O(h^2+{\tau}^2)', 'Taylor O(h^4+{\tau}^4)', 'Taylor O(h^6+{\tau}^6)' }; %,  'Conservative Scheme O(h^2+{\tau}^2)' 
-
-additionalInfo = 'mass';
+%legendString = { 'Taylor O(h^2+{\tau}^2)', 'Taylor O(h^4+{\tau}^4)', 'Taylor O(h^6+{\tau}^6)' }; Conservative Scheme O(h^2+{\tau}^2)
+legendString = { 'h = 0.05', 'h = 0.1', 'h = 0.2'};
+additionalInfo = 'energy';
 
 PlotSolCharacteristics(btString, cString, hString ,orderString, domainLenString, solTypeString, bndString, legendString, additionalInfo);
 return;
