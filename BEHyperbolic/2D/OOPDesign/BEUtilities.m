@@ -553,12 +553,12 @@ classdef BEUtilities
     
         if(order == 2)
             dxMat=diag(zeros(sx,1));
-            dxMat(1,2)=1;
+            dxMat(1,2)=1/2;
             for l=2:sx-1
-                dxMat(l,l-1)=-1;
-                dxMat(l,l+1)=1;
+                dxMat(l,l-1)=-1/2;
+                dxMat(l,l+1)=1/2;
             end
-            dxMat(sx,sx-1)=1;
+            dxMat(sx,sx-1)=-1/2;
             %dx2 = dx2/h^2;
         elseif(order == 4)
             dxMat=diag(zeros(sx,1));
