@@ -37,8 +37,20 @@ classdef (ConstructOnLoad) BEDomainUtils
             error( 'order must be positive even number! ' );
         end
         this.order = order;
+
         this.hx = x( 2 ) - x( 1 );
-        this.hy = y( 2 ) - y( 1 );        
+        this.hy = y( 2 ) - y( 1 );
+
+        numberOfExtPoints = order/2;
+        leftJointX = (-numberOfExtPoints:1:-1)*this.hx + x( 1 );
+        rightJointX = (1:numberOfExtPoints)*this.hx + x( end );
+        extendedX = [leftJointX x rightJointX];
+        
+        leftJointY = (-numberOfExtPoints:1:-1)*this.hy + y( 1 );
+        rightJointY = (1:numberOfExtPoints)*this.hy + y( end );
+        extendedY = [leftJointY y rightJointY];
+        [ this.X_xAugDomain, this.Y_xAugDomain ] = this.GetNet(extendedX,y);
+        [ this.X_yAugDomain, this.Y_yAugDomain ] = this.GetNet(x,extendedY);
         this.x = x;
         this.y = y;
         [ this.X, this.Y ] = this.GetNet(x,y);

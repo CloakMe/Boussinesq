@@ -29,7 +29,7 @@ eqParams = BEEquationParameters( waveFactory.alpha, waveFactory.beta1, waveFacto
 ic = BEInitialCondition( waveFactory.u_t0 , waveFactory.dudt_t0, waveFactory.mu, waveFactory.theta );   
 %ic = BEInitialCondition( vl , dvl, waveFactory.mu, waveFactory.theta );   
 %engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %%BEEngineTaylorZeroBnd BEEngineEnergySaveSoftBnd BEEngineAlternating
-engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic );
+engine = BEEngineTaylor( dscrtParams, eqParams, ic );
 fprintf('Engine Type = %s\n', engine.GetName());
 % _____________________________________
 tic
