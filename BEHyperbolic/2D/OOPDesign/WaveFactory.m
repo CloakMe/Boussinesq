@@ -5,7 +5,7 @@ classdef WaveFactory
             this = this.WaveFactory1( partialPath, workspaceName, bndCutSize, twoWaves );
         end
         if( nargin == 1 )
-            this = this.WaveFactory2( workspaceName );
+            this = this.WaveFactory2( partialPath );
         end
         %if( nargin == 3 )
         %    this = this.WaveFactory3( workspaceName );
@@ -86,10 +86,10 @@ classdef WaveFactory
         this.compBox = compBox;
         this.x = x;
         this.y = y;
-        this.y_st = y_st;
-        this.y_end = y_end;
-        this.x_end = x_end;
-        this.x_st = x_st;
+        this.y_st = y_st2;
+        this.y_end = y_end2;
+        this.x_end = x_end2;
+        this.x_st = x_st2;
         this.h = h;
         this.c = c;
         this.beta = beta1/beta2;

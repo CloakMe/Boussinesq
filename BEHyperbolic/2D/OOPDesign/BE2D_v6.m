@@ -5,9 +5,8 @@ delete SOL\*
   
 sy = length(y);
 sx = length(x);
-    order = 2;
-    d2x_s = BEUtilities.GetFinDiffMat(7,2,h);
-    domainUtils = BEDomainUtils( 1:10, 1:10, order );
+
+    d2x_s = deltah2d_xy(7,h);
     d2x_ss = d2x_s*d2x_s;
     eye7 = eye(7);
     sqD = sqrt(  ( 1 + beta1/tau^2)^2 - 4*beta2/tau^2 );
@@ -27,14 +26,14 @@ sx = length(x);
     W = eigvect(sx);
     IDH = zeros(1,sx);
     for i = 1:sx
-       IDH(i) = W(:,i)' * BEUtilities.BandMatMult([(-1) (h^2/beta1+4)  (-1)], W(:,i)', (h^2/beta1+4))';
+       IDH(i) = W(:,i)'*BMM([(-1) (h^2/beta1+4)  (-1)],W(:,i)')';
     end
     
     max_v(1,1) = max(max(abs(u_t0)));
     max_v(2,1) = max(max(abs(u_t0)));
    
-    [D2x]=BEUtilities.GetFinDiffMat(sx,2,h);
-    [D2y]=BEUtilities.GetFinDiffMat(sy,2,h);
+    %[D2x]=deltah2d_xy(sx,h);
+    %[D2y]=deltah2d_xy(sy,h);
          
     VV = zeros(sx,sy);
     vdah = zeros(sx,sy);
@@ -76,12 +75,13 @@ sx = length(x);
     while(t(k)<t_end-1.0e-08)
 
         b2 = (2*v1z - v1mo)/tau^2;
-        VV = domainUtils.XDerivativeZeroBnd ( al* v1z.^2 );
-        d2vz = domainUtils.YDerivativeZeroBnd( al* v2z.^2 );
+        VV = diff2x ( al* v1z.^2 , vdah );
+        d2vz = diff2y( al* v2z.^2 , vdah  );
         
         gm = (h^2/beta2)*( 1 + beta1/tau^2);
-        d3vz = domainUtils.XDerivativeZeroBnd ( -(beta2/h^2) * domainUtils.YDerivativeZeroBnd(v2z+v1z) - beta1*b2 );
-        d4vz = domainUtils.YDerivativeZeroBnd( (-beta2/h^2) * domainUtils.YDerivativeZeroBnd(v2z) + v2z + (beta1/tau^2)*(v2z - 2*v2mo + v2mt) );
+        
+        d3vz = diff2x ( -(beta2/h^2) * diff2y(v2z+v1z , vdah) - beta1*b2 , vdah );
+        d4vz = diff2y( (-beta2/h^2) * diff2y(v2z , vdah) + v2z + (beta1/tau^2)*(v2z - 2*v2mo + v2mt) , vdah  );
         
         b = b2*h^2 + VV + d2vz + d3vz + d4vz;
 
@@ -89,12 +89,12 @@ sx = length(x);
         for j=1:(sy+1)/2
             if( norm( b(:,j) - b(:,end - j + 1), 2) < 1.00e-10 )
                 %v1u(:,j) = diag3solv(sA1,b(:,j));  v1u(:,j) = coeff*diag3solv(sA2,v1u(:,j));
-                v1u(:,j) = BEUtilities.PentSolv(a11, sA, b(:,j));
+                v1u(:,j) = pentsolv(a11,sA,b(:,j));
                 v1u(:,end - j + 1) = v1u(:,j);%pentsolv(a11,sA,b(:,end - j + 1));
                 f1 = f1+1;
             else
-                v1u(:,j) = BEUtilities.PentSolv(a11, sA, b(:,j));
-                v1u(:,end - j + 1) = BEUtilities.PentSolv(a11, sA, b(:,end - j + 1));
+                v1u(:,j) = pentsolv(a11,sA,b(:,j));
+                v1u(:,end - j + 1) = pentsolv(a11,sA,b(:,end - j + 1));
                 
                 %v1u(:,j) = diag3solv(sA1,b(:,j));  v1u(:,j) = coeff*diag3solv(sA2,v1u(:,j));
                 %v1u(:,end - j + 1) = diag3solv(sA1,b(:,end - j + 1));
@@ -109,20 +109,20 @@ sx = length(x);
         
         %d2vz = al*diff2y((v2z.^2)  , vdah );
         %VV = diff2x (  al* v1z.^2 , vdah );
-
-        d3vz = domainUtils.XDerivativeZeroBnd( ( -beta2/h^2) * domainUtils.XDerivativeZeroBnd(v1u) + (1 + beta1/tau^2)*v1u -( beta2/h^2) * domainUtils.YDerivativeZeroBnd(v2z+v1u ) - beta1*b2 );
-        d4vz = domainUtils.YDerivativeZeroBnd(  -beta1 * b );
+        
+        d3vz = diff2x( ( -beta2/h^2) * diff2x(v1u , vdah) + (1 + beta1/tau^2)*v1u -( beta2/h^2)* diff2y(v2z+v1u , vdah)   - beta1*b2   , vdah );
+        d4vz = diff2y(  -beta1 * b , vdah );
         b2 = b*h^2  + VV +  d2vz + d3vz + d4vz;
   
         for i=1:(sx+1)/2
             if( norm(b2(i,:) - b2(end - i + 1,:)  , 2) < 1.00e-10 )
-                v2u(i,:) = BEUtilities.PentSolv(a11, sA, b2(i,:));
+                v2u(i,:) = pentsolv(a11,sA,b2(i,:));
                 %v2u(i,:) = diag3solv(sA1,b2(i,:));    v2u(i,:) = coeff*diag3solv(sA2,v2u(i,:));
                 v2u(end - i + 1,:) = v2u(i,:);%pentsolv(a11,sA,b2(end - i + 1,:));
                 f1 = f1+1;
             else
-                v2u(i,:) = BEUtilities.PentSolv(a11, sA, b2(i,:));
-                v2u(end - i + 1,:) = BEUtilities.PentSolv(a11, sA, b2(end - i + 1,:));
+                v2u(i,:) = pentsolv(a11,sA,b2(i,:));
+                v2u(end - i + 1,:) = pentsolv(a11,sA,b2(end - i + 1,:));
                 
                 %v2u(i,:) = diag3solv(sA1,b2(i,:));    v2u(i,:) = coeff*diag3solv(sA2,v2u(i,:));
                 %v2u(end - i + 1,:) = diag3solv(sA1,b2(end - i + 1,:));
@@ -198,70 +198,53 @@ sx = length(x);
     
    clear('v1mo');  clear('v2mo'); 
     sol_size = size(v1u)
-end
-      
-function [d2vz, d3vz, d4vz, d5vz] = calc_der2d_v2(vz,dvz,W,IDH,s_isdh,vdah,h,sx,al,beta1,beta2,order)
-    
-    domainUtils = BEDomainUtils( 1:10, 1:10, 2 );
- %==================
-    VV = vdah;
-    
-    b=(al*vz.*vz + (beta2/h^2)*(-dh_gmI(vz,h^2/beta2,domainUtils)));
-    
-    deltab = W'* dh_gmI(b,0,domainUtils)/beta1; 
-    if(s_isdh == 3)  
-        for j=1:sx
-            VV(j,:) = BEUtilities.TridiagSolv([(-1) IDH(j) (-1)],deltab(j,:));
-        end
-    else 
-    end
-    d2vz = W*VV ;
-    if(order == 2) d3vz = vdah; d4vz = vdah; d5vz = vdah; return; end
-    
-    %==================    
-    
-    b=( 2*al*dvz.*vz + (beta2/h^2)*(-dh_gmI(dvz,h^2/beta2,domainUtils)));
-    deltab = W'* dh_gmI(b,0,domainUtils)/beta1;    
-    
-    if(s_isdh == 3)  
-        for j=1:sx
-            VV(j,:) = BEUtilities.TridiagSolv([(-1) IDH(j) (-1)],deltab(j,:));
-        end
-    else 
-    end
-    d3vz = W*VV ;
-    if(order == 3) d4vz = vdah; d5vz = vdah; return; end
-    
-    %==================    
-    
-    b=(2*al*(dvz.*dvz + vz.*d2vz) + (beta2/h^2)*(-dh_gmI(d2vz,h^2/beta2,domainUtils)));
-    deltab = W'* dh_gmI(b,0,domainUtils)/beta1;    
-    
-    if(s_isdh == 3)  
-        for j=1:sx
-            VV(j,:) = BEUtilities.TridiagSolv([(-1) IDH(j) (-1)],deltab(j,:));
-        end
-    else  
-    end
-    d4vz = W*VV ;
-    if(order == 4) d5vz = vdah; return; end
-    
-    %==================  
-    
-    b=(2*al*(3*dvz.*d2vz + vz.*d3vz) + (beta2/h^2)*(-dh_gmI(d3vz, h^2/beta2 ,domainUtils)));
-    deltab = W'* dh_gmI(b,0,domainUtils)/beta1;    
-    
-    if(s_isdh == 3)  
-        for j=1:sx
-            VV(j,:) = BEUtilities.TridiagSolv([(-1) IDH(j) (-1)],deltab(j,:));
-        end
-    else  
-    end
-    d5vz = W*VV ;
-    %==================  
-end
 
-function vdah=dh_gmI(M,gm,domainUtils)   %Delta_h - gm*I 
-    vdah = (domainUtils.DeltaHZeroBnd(M) - gm*M);
-end
+function vdah=diff2y(M,vdah)
+      j=1;
+      vdah(:,j) =  - (2)*M(:,j) +  M(:,j+1);
+      for j=2:size(M,1)-1
+          vdah(:,j) =  +  M(:,j-1) - (2)*M(:,j) +M(:,j+1);
+      end
+      j=size(M,1);
+      vdah(:,j) =  +M(:,j-1) - (2)*M(:,j) ;
+      %vdah = vdah/h^2;
+      
+function vdah=diff2x(M,vdah)
+      j=1;
+      vdah(j,:) = - (2)*M(j,:) +  M(j+1,:);
+      for j=2:size(M,1)-1
+          vdah(j,:) =  M(j-1,:) - (2)*M(j,:) +  M(j+1,:);
+      end
+      j=size(M,1);
+      vdah(j,:) =  M(j-1,:) - (2)*M(j,:) ;
+      %vdah = vdah/h^2;
+      
+function vdah=dh_gmI(M,gm,vdah)   %dh operator if gm = 0
+
+      j=1;
+      vdah(j,:) = - (2+gm)*M(j,:) +  M(j+1,:);
+      for j=2:size(M,1)-1
+          vdah(j,:) =  M(j-1,:) - (2+gm)*M(j,:) +  M(j+1,:);
+      end
+      j=size(M,1);
+      vdah(j,:) =  M(j-1,:) - (2+gm)*M(j,:) ;
+      
+      
+      j=1;
+      vdah(:,j) = vdah(:,j) - (2)*M(:,j) +  M(:,j+1);
+      for j=2:size(M,1)-1
+          vdah(:,j) = vdah(:,j)  +  M(:,j-1) - (2)*M(:,j) +M(:,j+1);
+      end
+      j=size(M,1);
+      vdah(:,j) =  vdah(:,j) +M(:,j-1) - (2)*M(:,j) ;
+      
+function resmm=d2y_gmI(M,gm,vdah)
+      vdah(:,1:end-1) = M(:,2:end);    
+      vdah(:,2:end) = vdah(:,2:end) + M(:,1:end-1);
+      resmm = vdah - (2 +gm)*M;
+      
+function resmm=d2x_gmI(M,gm,vdah)
+      vdah(1:end-1,:) = M(2:end,:); 
+      vdah(2:end,:) = vdah(2:end,:) + M(1:end-1,:);
+      resmm = vdah- (2 +gm)*M;
         

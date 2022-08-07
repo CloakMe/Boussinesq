@@ -2,20 +2,20 @@
 clear; clc;
 addpath('..\..\..\Common');
 bndCutSize = 0;
-% ChristovIC_40_80_bt1_c090_h010_O(h^6)
-% partialPath = 'BEEliptic\Boussinesq2D\SavedWorkspaces\';
+% ChristovIC_40_80_bt1_c090_h010_O(h^6) 
+% partialPath = 'BEEliptic\Boussinesq2D\SavedWorkspaces\'; ChristovIC_128_bt1_c090 ChristovIC_128_ZB1_bt1_c090_h020_O
 partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_30_bt3_c045\Oh2\';
-waveFactory = WaveFactory( partialPath, 'ChristovIC_30_ZB1_bt3_c045_h010_O(h^2)', bndCutSize, 0 ); %
+waveFactory = WaveFactory( partialPath, 'ChristovIC_30_ZB1_bt3_c045_h020_O(h^2)', bndCutSize, 0 ); %
 %waveFactory = WaveFactory( 'BestFitIC' );
 
-tEnd=10;
+tEnd=1;
 SavingTheSolution = 1;
 fprintf('SavingTheSolution = %.1d\n', SavingTheSolution);
 
 tau = waveFactory.h/10;
-if( waveFactory.order == 2 )
-    tau = waveFactory.h/20;
-end
+%if( waveFactory.order == 2 )
+%    tau = waveFactory.h/10;
+%end
 %tau = 2/180;
 %fprintf('tau = %.6f, h = %.6f, h/tau = %.6f\n', tau, waveFactory.h, waveFactory.h/tau);
 
@@ -28,7 +28,7 @@ dscrtParams = BEDiscretizationParameters( waveFactory.x, waveFactory.y ,waveFact
 eqParams = BEEquationParameters( waveFactory.alpha, waveFactory.beta1, waveFactory.beta2, waveFactory.c );
 ic = BEInitialCondition( waveFactory.u_t0 , waveFactory.dudt_t0, waveFactory.mu, waveFactory.theta );   
 %ic = BEInitialCondition( vl , dvl, waveFactory.mu, waveFactory.theta );   
-%engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %BEEngineTaylorSoftBnd %BEEngineEnergySaveSoftBnd
+%engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %%BEEngineTaylorZeroBnd BEEngineEnergySaveSoftBnd BEEngineAlternating
 engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic );
 fprintf('Engine Type = %s\n', engine.GetName());
 % _____________________________________
@@ -36,15 +36,15 @@ tic
 
 %(VS) vector scheme: -->  O(tau + h^2)
 %(VS) vector scheme: -->  O(tau + h^2)
-[tt, max_vv, t ,v1l, v2l]  = BE2D_v6(waveFactory.x,waveFactory.y,waveFactory.h,tau,tEnd,waveFactory.beta1,waveFactory.beta2,waveFactory.alpha,estep,waveFactory.u_t0,waveFactory.dudt_t0); ver = 6;
+%[tt, max_v, t ,vl, dvl]  = BE2D_v6(engine.x,engine.y,waveFactory.h,tau,tEnd,waveFactory.beta1,waveFactory.beta2,waveFactory.alpha,estep,engine.u_t0,engine.dudt_t0); ver = 6;
 %(VC) Explicit method with variable change applied -->  O(tau^2 + h^2)  tau<function(h,beta)<h ..
 %[tt, max_v, t, vl]  = BE2D_v4(x,y,h,tau,t_end,beta1,beta2,al,estep,u_t0,dudt_t0);  ver = 4;
 %(NVC) Explicit method NO variable change -->  O(tau^2 + h^2) 
 %[tt, max_v, t, vl]  = BE2D_v3(x,y,h,tau,t_end,beta1,beta2,al,estep,u_t0,dudt_t0);  ver = 3;
 %Taylor method variable change applied --> O(tau^4 + h^2)  tau<function(h,beta)<h ..
 %[tt, max_v, t, vl]  = BE2D_t1(x,y,h,tau,t_end,beta1,beta2,al,estep,u_t0,dudt_t0);  ver = 1;
-% Taylor method variable change applied --> O(tau^4 + h^4)  tau<function(h,beta)<h ..
-%[engine, tt, max_v, t, EN, II, vl, dvl] = engine.BESolver( );
+% includes vector scheme O(h^2 + tau), Taylor --> O(tau^p + h^p), EnergySave O(tau^2 + h^2) tau<function(h,beta)<h ..
+ [engine, tt, max_v, t, EN, II, vl, dvl] = engine.BESolver( );
 % Taylor method variable change applied --> O(tau^4/tau^4 + h^8)  tau<function(h,beta)<h ..
 %[tt, max_v, t, EN, II, vl, dvl]  =  BE2D_t8(x,y,h,tau,t_end,beta1,beta2,al,c,c1,ord,0,estep,u_t0,dudt_t0);  ver = 2;
 % Taylor method variable change applied --> O(tau^4 + h^4)  tau<function(h,beta)<h ..
@@ -64,10 +64,8 @@ tic
 elapsedTime = toc;
 fprintf('Elapsed Time = %.2f min \n', elapsedTime/60);
 
-curSz = size( vl );
-
-x = engine.x;
-y = engine.y;
+x = waveFactory.x;
+y = waveFactory.y;
 
 bt = waveFactory.beta1/waveFactory.beta2;
 %DrawEnergyForHyperbolicBE( engine, tt );
@@ -95,6 +93,11 @@ if( SavingTheSolution == 1)
     end
 end
 
+if( strcmp(engine.GetName(),'AlternatingMethod') == 1 )
+    engine.PlotResults( 0, vl, dvl, t, max_v)
+    return;
+end
+
 topView = 1;
 viewTypeX = 0;
 viewTypeY = 90;
@@ -106,23 +109,23 @@ if (false)
     figure(i+1)
     mesh(x, y(1:Q), vl(:,1:Q)');
     view( viewTypeX, viewTypeY );
-    title('Bottom domain boundary near y=-40');
+    title('Bottom domain boundary near y=-end');
     xlabel('x');            ylabel('y');
     figure(i+2)
     mesh(x(1:Q), y, vl(1:Q,:)');
     view( viewTypeX, viewTypeY );    
-    title('Left domain boundary near x=-40');
+    title('Left domain boundary near x=-end');
     xlabel('x');            ylabel('y');
 
     figure(i+3)
     mesh(x, y(end-Q:end), vl(:,end-Q:end)');
     view( viewTypeX, viewTypeY );    
-    title('Top domain boundary near y=40');
+    title('Top domain boundary near y=end');
     xlabel('x');            ylabel('y');    
     figure(i+4)
     mesh(x(end-Q:end), y, vl(end-Q:end,:)');
     view( viewTypeX, viewTypeY );
-    title('Right domain boundary near x=40');
+    title('Right domain boundary near x=end');
     xlabel('x');            ylabel('y');
 end
 
@@ -190,5 +193,8 @@ waveFactory = WaveFactory( 'ChristovIC_80_bt1_c090_h020_O(h^4)', 5 );
     mesh(x,y,this.u_t0')
     title('solution');
     xlabel('x');            ylabel('y');
+
+    
+   
 
    

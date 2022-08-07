@@ -1,17 +1,18 @@
 % constants
-x_st =  -22.0;   y_st = -22.0;
-x_end = 22.0;   y_end = 22.0;
-x_st2 = -1.0;   y_st2 = -1.0;
-x_end2 = -1.0;   y_end2 = -1.0;
+x_st =  -.0;   y_st = -.0;
+x_end = .0;   y_end = .0;
+x_st2 = -30.0;   y_st2 = -27.0;
+x_end2 = 30.0;   y_end2 = 27.0;
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
 
-h = 0.05; 
-x=x_st:h:x_end; y=y_st:h:y_end;
+h = 0.1; 
+x=x_st2:h:x_end2;
+y=y_st2:h:y_end2;
 al = -1;%99979 izb
 beta1 = 3;
 beta2 = 1;
-c = 0.5;
+c = 0.45;
 
 vc=1;
 order=2; %O( h^ord + tau^ord )

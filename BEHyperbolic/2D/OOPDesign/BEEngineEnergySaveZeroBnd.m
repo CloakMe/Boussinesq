@@ -44,9 +44,10 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
         II=zeros(1,this.tEnd/this.tau);
         EN(1) = EN_1;
         II(1) = II_1;
-        while( t(k) < this.tEnd )
-            
+        totalNumOfIter = 0;
+        while( t(k) < this.tEnd )            
             [vu, numOfIter] = this.GetVuPicardi( vz, vmo, t(k) );
+            totalNumOfIter = totalNumOfIter + numOfIter;
             if( numOfIter > 25 )
                 return;
             end
@@ -57,6 +58,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
             EN(k) = this.GetEnergy( vz, vu, t( k ) );
             II(k)= this.GetIntegralOf( vz );
             if(mod(k,this.estep)==0)
+               
                 tt(e)=k*this.tau;
                 if( mod(k*this.tau, 1) == 0 )
                     dvz = (vmo - 2*vz + vu)/this.tau^2;
@@ -93,7 +95,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
             
             vmo = vz; vz = vu; 
         end
-        
+        fprintf('picardi iterations: %.4f\n', totalNumOfIter/(this.tEnd/this.tau));
         II(k)= this.GetIntegralOf( vu );
         clear('W');    clear('vmo'); 
         sol_size = size(vu) 
@@ -192,7 +194,7 @@ classdef (ConstructOnLoad) BEEngineEnergySaveZeroBnd < BEEngine
         
         %===============================================
         mmax=max( max( abs( niv0 ) ) );
-        numOfIter=0;
+        numOfIter=1;
         
         while( max( max( abs( niv0 - vu ) ) ) > epsilon * mmax )
             niv0=vu;
