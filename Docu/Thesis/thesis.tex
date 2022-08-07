@@ -937,21 +937,21 @@ a $\{\lambda_1,..,\lambda_n\}$ са собствените ѝ стойности
 \Delta_{h,2} * \Delta_{h,2}^{-1} = E \Leftrightarrow \Delta_{h,2}^{-T} * \Delta_{h,2}^{T} = E \Leftrightarrow \Delta_{h,2}^{-T} * \Delta_{h,2} = E 
 \Leftrightarrow \Delta_{h,2}^{-T} = \Delta_{h,2}^{-1} 
 \end{equation*}
-Понеже $-\Delta_{h,2}^{-1} > 0$, остава да се покаже, че останалата част в $\bar L$, т.е. $\bar L - \beta ( - \Delta_{h,2}^{-1})$:
+Понеже $-\Delta_{h,2}^{-1} > 0$, остава да се покаже, че останалата част в $\bar L$, която е:
 \be\label{Lrest}
-\frac{\tau^2}{4}\left( \left( \frac{4 \beta}{\tau^2} - 1\right) E -(-\Delta_{h,2}) \right)
+\frac{4}{\tau^2}\left( \bar L - \beta ( - \Delta_{h,2}^{-1}) \right) = \left( \frac{4 \beta}{\tau^2} - 1\right) E -(-\Delta_{h,2}),
 \ee
 е положително дефинирана. Очевидно е, че операторът \rf{Lrest} е симетричен, защото $-\Delta_{h,2}$ е симетричен. Използвайки Лема \rf{lemma1} се вижда, че собствените стойности на \rf{Lrest} са
 \begin{align}\label{Lrest2}
-\frac{\tau^2}{4}\left(  \frac{4 \beta}{\tau^2} - 1 - \frac{4}{h^2}sin^2(\frac{i \pi}{N_x-1}) - \frac{4}{h^2}sin^2(\frac{j \pi}{N_y-1}) \right)& > \nonumber\\
-&\frac{\tau^2}{4}\left( \frac{4 \beta}{\tau^2} - 1 - \frac{8}{h^2} \right).
+ &\frac{4 \beta}{\tau^2} - 1 - \frac{4}{h^2}sin^2(\frac{i \pi}{N_x-1}) - \frac{4}{h^2}sin^2(\frac{j \pi}{N_y-1}) > \frac{4 \beta}{\tau^2} - 1 - \frac{8}{h^2}, \\
+&i = 1,..,N_x-2; \quad j = 1, .. , N_y-2. \nonumber
 \end{align}
 Дясната страна в \rf{Lrest2} е положителна при условието, че
 \be\label{stabCond}
 \frac{4 \beta}{\tau^2} - 1 - \frac{8}{h^2} > 0  \Leftrightarrow \tau^2 < \frac{4 \beta h^2}{8 + h^2}.
 \ee
 
-Остана да се покаже, че и операторът $E - \Delta_{h, 2}$ е положително дефиниран. Видно е, че той е симетричен, а от Лема \rf{lemma1} за собствените му стойности се получава:
+Остана да се покаже, че и операторът $E - \Delta_{h, 2}$ е положително дефиниран без допълнителни условия. Видно е, че той е симетричен, а от Лема \rf{lemma1} за собствените му стойности се получава:
 \begin{align}
 &1+ \frac{4}{h^2}sin^2(\frac{i \pi}{N_x-1}) + \frac{4}{h^2}sin^2(\frac{j \pi}{N_y-1}) >0, \nonumber\\
 &i = 1,..,N_x-2; \quad j = 1, .. , N_y-2 \nonumber
