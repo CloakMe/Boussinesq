@@ -26,11 +26,15 @@ sy = (length(y)+1)/2
    c = 0.9;
    iterMax = 9000000;
    %eps = 1/max(y_end^6,((1-c^2)*x_end^2)^3);
-   eps = 5.0e-04;%5.0e-09;
-   ICSwitch=3;
+   eps = 5.0e-02;%5.0e-09;
    % IC_switch = 0 ->christov sech formula
    % IC_switch = 1 ->nat42 formula
-   useZeroBoundary  = 1;
+   ICSwitch=0;   
+   %useZeroBoundary:
+   % 0 -> use points (one, two, three for p=2,4,6 ) outside the domain with nonzero boundary function
+   % 1 -> use points (one, two, three for p=2,4,6 ) outside the domain with zero boundary function
+   % 2 -> use non-symetric finite differences without points outside the domain   
+   useZeroBoundary  = 2;
    plotResidual  = 0;
    plotBoundary  = 0;
    checkBoundary = 0;
@@ -51,7 +55,7 @@ sy = (length(y)+1)/2
   if(length(tauVector)<iterMax && UseExtendedDomain == 1 && size(bigUTimeDerivative,1)~=1)
      fprintf('\nLarge Domamin Calculations:\n\n');
      prmtrs.checkBoundary = 0;
-     prmtrs.eps = 1.0e-6;
+     prmtrs.eps = 1.0e-3;
      prmtrs.plotResidual = 0;
      prmtrs.tau = tauVector(end);
      [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,mu,tauVector,angl,sw_div] =...
