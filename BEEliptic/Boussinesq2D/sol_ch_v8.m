@@ -50,11 +50,11 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
 
     bigZeroMatrix = zeros(sx,sy);
     zeroMatrix = zeros(size(U));
-    if(prmtrs.useZeroBoundary == 0)
-        [muU,muP] = FindBoundaryConstants(U,0*U,innerBoundaryUF,innerBoundaryPF,step);
-    else
-        muU = 0;
-    end
+    if(prmtrs.useZeroBoundary > 0)
+            muU = 0; muP = 0;
+        else
+            [muU,muP] = FindBoundaryConstants(U,P,innerBoundaryUF,innerBoundaryPF,step);
+        end
     %deltaU = DeltaEvenFunctions(U, zeroMatrix, muU*outerRigthBoundaryF, muU*outerTopBoundaryF, derivative.second);
     Uxx = XDerivativeEvenFunctions(U, zeroMatrix,muU*outerRigthBoundaryF,derivative.second);
     Uyy = YDerivativeEvenFunctions(U, zeroMatrix,muU*outerTopBoundaryF,derivative.second);
@@ -93,10 +93,10 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
         P = Pup;
         U = Uup;
         iterCounter=iterCounter+1;
-        if(prmtrs.useZeroBoundary == 0)
-            [muU,muP] = FindBoundaryConstants(U,P,innerBoundaryUF,innerBoundaryPF,step);
-        else
+        if(prmtrs.useZeroBoundary > 0)
             muU = 0; muP = 0;
+        else
+            [muU,muP] = FindBoundaryConstants(U,P,innerBoundaryUF,innerBoundaryPF,step);
         end
         %deltaU = DeltaEvenFunctions(U, zeroMatrix, muU*outerRigthBoundaryF, muU*outerTopBoundaryF,derivative.second); %<--- TIME CONSummable
         Usquare = U .^2;

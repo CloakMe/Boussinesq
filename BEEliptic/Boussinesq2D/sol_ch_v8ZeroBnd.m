@@ -1,5 +1,5 @@
 function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector,angl,sw_div]=...
-    sol_ch_v8(U,x,y,prmtrs,bt1,bt2,al,c,theta,derivative,P)
+    sol_ch_v8ZeroBnd(U,x,y,prmtrs,bt1,bt2,al,c,theta,derivative,P)
 
     sw = 0;  
     if (nargin == 13) 
@@ -50,16 +50,16 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
     innerBoundaryUF=[approxBoundaryF(xHeiA,yLen)  approxBoundaryF(xLen,yHeiA)'];
     innerBoundaryPF = bt*(1-c^2)*innerBoundaryUF;
 
-    bigZeroMatrix = zeros(sx,sy);
+    %bigZeroMatrix = zeros(sx,sy);
     zeroMatrix = zeros(size(U));
-    if(prmtrs.useZeroBoundary == 0)
-        [muU,muP] = FindBoundaryConstants(U,0*U,innerBoundaryUF,innerBoundaryPF,step);
-    else
-        muU = 0;
-    end
+    if(prmtrs.useZeroBoundary > 0)
+            muU = 0; muP = 0;
+        else
+            [muU,muP] = FindBoundaryConstants(U,P,innerBoundaryUF,innerBoundaryPF,step);
+        end
     %deltaU = DeltaEvenFunctions(U, zeroMatrix, muU*outerRigthBoundaryF, muU*outerTopBoundaryF, derivative.second);
-    Uxx = domainUtils.XDerivativeEvenFunZeroBnd(U);
-    Uyy = domainUtils.YDerivativeEvenFunZeroBnd(U);
+    Uxx = domainUtils.XDerivativeEvenFunZeroBnd(U)/h^2;
+    Uyy = domainUtils.YDerivativeEvenFunZeroBnd(U)/h^2;
     if(sw == 0)
         %P = bt*(1-c^2)*U - (1-bt*c^2)*(Uyy + Uxx) + theta*al*bt*U.^2;
         P = bt*(1-c^2)*U - (1-bt*c^2)*Uyy - Uxx + theta*al*bt*U.^2;        
@@ -70,19 +70,12 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
      Usquare = U .^2; %
      %thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*( Uyy(1,1) + Uxx(1,1)) )/(al*bt*Usquare(1,1));
      thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*Uyy(1,1) + Uxx(1,1) )/(al*bt*Usquare(1,1));
-     residualInfNorm(1) =  GetResidualInfNorm(...
-         al,...
-         bt,...
-         c,...
-         thetaVector,...
-         iterCounter,...
-         U,...
-         Usquare,...
-         Uxx+Uyy,...
-         zeroMatrix,...
-         muU*outerRigthBoundaryF,...
-         muU*outerTopBoundaryF,...
-         derivative.second);
+     
+     mid = floor(length(derivative.second)/2);
+     crrntResidual = Get2DResidual(al,bt,c,theta,iterCounter,U,Usquare,...
+         Uxx + Uyy,zeroMatrix,outerRigthBoundaryF,outerTopBoundaryF,derivative.second, prmtrs, domainUtils );
+
+     residualInfNorm(1)=max(max(abs(crrntResidual(1:end-mid ,1:end-mid ))));
      
      Pup = P;
      Uup = U;
@@ -95,15 +88,15 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
         P = Pup;
         U = Uup;
         iterCounter=iterCounter+1;
-        if(prmtrs.useZeroBoundary == 0)
-            [muU,muP] = FindBoundaryConstants(U,P,innerBoundaryUF,innerBoundaryPF,step);
-        else
+        if(prmtrs.useZeroBoundary > 0)
             muU = 0; muP = 0;
+        else
+            [muU,muP] = FindBoundaryConstants(U,P,innerBoundaryUF,innerBoundaryPF,step);
         end
         %deltaU = DeltaEvenFunctions(U, zeroMatrix, muU*outerRigthBoundaryF, muU*outerTopBoundaryF,derivative.second); %<--- TIME CONSummable
         Usquare = U .^2;
-        Uxx = domainUtils.XDerivativeEvenFunZeroBnd(U);
-        Uyy = domainUtils.YDerivativeEvenFunZeroBnd(U);
+        Uxx = domainUtils.XDerivativeEvenFunZeroBnd(U)/h^2;
+        Uyy = domainUtils.YDerivativeEvenFunZeroBnd(U)/h^2;
          % TIME CONSumable       |
          %                      \|/
          %                       '
@@ -111,15 +104,15 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
         xDerBnd = (muU*bt*c^2 + muP*bt*(1-c^2))*outerRigthBoundaryF;
         if( false )
             thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*( Uxx(1,1)+Uyy(1,1) ) )/(al*bt*Usquare(1,1));
-            Pup = P + (tau)*(domainUtils.YDerivativeEvenFunZeroBnd(P) +...
-                domainUtils.XDerivativeEvenFunZeroBnd(P-bt*c^2*(Uxx + Uyy - U)));  
+            Pup = P + (tau)*(domainUtils.YDerivativeEvenFunZeroBnd(P)/h^2 +...
+                domainUtils.XDerivativeEvenFunZeroBnd(P-bt*c^2*(Uxx + Uyy - U))/h^2);  
         
             Uup = U + tau*( Pup - (al*bt*thetaVector(iterCounter) )*Usquare +...
                 ((1 - bt*c^2))* (Uxx+Uyy) - (bt*(1 - c^2))*U );
         else 
             thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*Uyy(1,1) + Uxx(1,1) )/(al*bt*Usquare(1,1));
-            Pup = P + (tau)*(domainUtils.YDerivativeEvenFunZeroBnd(P) +...
-                domainUtils.XDerivativeEvenFunZeroBnd(P) + bt*c^2*Uxx );  
+            Pup = P + (tau)*(domainUtils.YDerivativeEvenFunZeroBnd(P)/h^2 +...
+                domainUtils.XDerivativeEvenFunZeroBnd(P)/h^2 + bt*c^2*Uxx );  
 
             Uup = U + tau*( Pup - (al*bt*thetaVector(iterCounter) )*Usquare +...
                 (1 - bt*c^2)*Uyy + Uxx - (bt*(1 - c^2))*U  );        
@@ -130,7 +123,7 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
         if(mod(iterCounter,10) ==0)        
            
            crrntResidual = Get2DResidual(al,bt,c,thetaVector,iterCounter,U,Usquare,Uxx+Uyy,...
-               zeroMatrix,muU*outerRigthBoundaryF,muU*outerTopBoundaryF,derivative.second);
+               zeroMatrix,muU*outerRigthBoundaryF,muU*outerTopBoundaryF,derivative.second, prmtrs, domainUtils);
            
            subCounter=subCounter+1;
            [residualInfNorm(subCounter)]=abs(thetaVector(iterCounter))*max(max(abs(crrntResidual(1:end-8,1:end-8))));
@@ -187,7 +180,7 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
     [muU, muP]=FindBoundaryConstants(Uup,Pup,innerBoundaryUF,innerBoundaryPF,step);
     mu = struct('muU',{muU},'muP',{muP});
     
-    bigU = thetaEnd*transf2qD(U,x,y,zeroX,zeroY);    
+    bigU = thetaVector(iterCounter)*transf2qD(U,x,y,zeroX,zeroY);    
     domainUtils1Der = BEDomainUtils( x, y, length(derivative.first)-1, 1 );    
     bigUTimeDerivative = -c * domainUtils1Der.YDerivativeZeroBnd(bigU)/h;
     

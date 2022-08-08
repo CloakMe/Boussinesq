@@ -7,7 +7,7 @@ function [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,mu,tauVector,
 
     bt = bt1/bt2;
     c12 = 1-c^2;
-    if(prmtrs.useZeroBoundary == 1)
+    if(prmtrs.useZeroBoundary > 0)
         mu.muU = 0;
     end   
     newBigIC = mu.muU * lastTheta*(c12 * X.^2 - Y.^2)./(c12*X.^2 + Y.^2).^2;
