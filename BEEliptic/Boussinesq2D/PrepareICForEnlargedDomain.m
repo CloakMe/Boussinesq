@@ -21,7 +21,13 @@ function [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,mu,tauVector,
     quater = floor(length(compBox.x_end:prmtrs.h:compBox.x_end2));
     PlotJunctionPoints(x,y,newBigIC, quater);
 
-    [bigU,bigUTimeDerivative,P,U,theta,mu,solutionNorms,tauVector,angl,sw_div] =...
-       sol_ch_v8(NewIC,x,y,prmtrs,bt1,bt2,al,c,thet,derivative);
+    if(prmtrs.useZeroBoundary == 2)
+        [bigU,bigUTimeDerivative,P,U,theta,mu,solutionNorms,tauVector,angl,sw_div] =...
+            sol_ch_v8ZeroBnd(NewIC,x,y,prmtrs,bt1,bt2,al,c,thet,derivative);
+    else
+        [bigU,bigUTimeDerivative,P,U,theta,mu,solutionNorms,tauVector,angl,sw_div] =...
+            sol_ch_v8(NewIC,x,y,prmtrs,bt1,bt2,al,c,thet,derivative);
+    end
+    
        
 end

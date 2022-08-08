@@ -51,7 +51,7 @@ sy = (length(y)+1)/2
   if(length(tauVector)<iterMax && UseExtendedDomain == 1 && size(bigUTimeDerivative,1)~=1)
      fprintf('\nLarge Domamin Calculations:\n\n');
      prmtrs.checkBoundary = 0;
-     prmtrs.eps = 1.0e-5;
+     prmtrs.eps = 1.0e-6;
      prmtrs.plotResidual = 0;
      prmtrs.tau = tauVector(end);
      [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,mu,tauVector,angl,sw_div] =...
@@ -73,8 +73,13 @@ return;
 % Continue from lasth iteration:
 lastTheta=theta(end); lastU=U; lastP = P;  last_tau = tauVector(end); 
 
-[bigU,bigUTimeDerivative,P,U,thetaCont,mu,solutionNormsCont,tauVecCont,anglCont,sw_div] =...
-       sol_ch_v8(lastU,x,y,prmtrs,bt1,bt2,al,c,lastTheta,derivative,lastP);
+if(prmtrs.useZeroBoundary == 2)    
+    [bigU,bigUTimeDerivative,P,U,thetaCont,mu,solutionNormsCont,tauVecCont,anglCont,sw_div] =...
+        sol_ch_v8ZeroBnd(lastU,x,y,prmtrs,bt1,bt2,al,c,lastTheta,derivative,lastP);
+else
+    [bigU,bigUTimeDerivative,P,U,thetaCont,mu,solutionNormsCont,tauVecCont,anglCont,sw_div] =...
+        sol_ch_v8(lastU,x,y,prmtrs,bt1,bt2,al,c,lastTheta,derivative,lastP);
+end
 if(sw_div == 1)
     return;
 end
@@ -169,11 +174,15 @@ if(sw_div == 1)
     return;
 end
 
-% Continue from lasth iteration:
+% Continue from last iteration:
 lastTheta=theta(end); lastU=U; lastP = P;  last_tau = tauVector(end); 
-
-[bigU,bigUTimeDerivative,P,U,thetaCont,mu,solutionNormsCont,tauVecCont,anglCont,sw_div] =...
-       sol_ch_v8(lastU,x,y,prmtrs,bt1,bt2,al,c,lastTheta,derivative,lastP);
+if(prmtrs.useZeroBoundary == 2)
+    [bigU,bigUTimeDerivative,P,U,thetaCont,mu,solutionNormsCont,tauVecCont,anglCont,sw_div] =...
+        sol_ch_v8ZeroBnd(lastU,x,y,prmtrs,bt1,bt2,al,c,lastTheta,derivative,lastP);
+else
+    [bigU,bigUTimeDerivative,P,U,thetaCont,mu,solutionNormsCont,tauVecCont,anglCont,sw_div] =...
+        sol_ch_v8(lastU,x,y,prmtrs,bt1,bt2,al,c,lastTheta,derivative,lastP);
+end
 if(sw_div == 1)
     return;
 end

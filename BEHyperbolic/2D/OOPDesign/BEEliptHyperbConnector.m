@@ -1,20 +1,22 @@
 %return
 clear; clc;
+
 addpath('..\..\..\Common');
 bndCutSize = 0;
-% ChristovIC_40_80_bt1_c090_h010_O(h^6) 
-% partialPath = 'BEEliptic\Boussinesq2D\SavedWorkspaces\'; ChristovIC_128_bt1_c090 ChristovIC_128_ZB1_bt1_c090_h020_O
-partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_30_bt3_c045\Oh2\';
-waveFactory = WaveFactory( partialPath, 'ChristovIC_30_ZB1_bt3_c045_h020_O(h^2)', bndCutSize, 0 ); %
+inputDirectory = 'ZeroBoundary'; %ZeroBoundary, ZeroBnd
+fprintf('BoundaryConditionDir = %s \n', inputDirectory);
+partialPath = strcat('BEEliptic\Boussinesq2D\',inputDirectory,'\ChristovIC_128_bt1_c090\Oh6\');
+waveFactory = WaveFactory( partialPath, 'ChristovIC_128_ZB1_bt1_c090_h010_O(h^6)', bndCutSize, 0 ); %
+
+%partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_30_bt3_c045\Oh2\';
+%waveFactory = WaveFactory( partialPath, 'ChristovIC_30_ZB1_bt3_c045_h010_O(h^2)', bndCutSize, 0 ); %
 %waveFactory = WaveFactory( 'BestFitIC' );
 
 tEnd=10;
 SavingTheSolution = 1;
 fprintf('SavingTheSolution = %.1d\n', SavingTheSolution);
 
-tau = waveFactory.h/20;
-%if( waveFactory.order == 2 )
-%    tau = waveFactory.h/10;
+tau = waveFactory.h/2;
 %end
 %tau = 2/180;
 %fprintf('tau = %.6f, h = %.6f, h/tau = %.6f\n', tau, waveFactory.h, waveFactory.h/tau);

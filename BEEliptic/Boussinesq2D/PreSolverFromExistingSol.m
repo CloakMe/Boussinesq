@@ -25,7 +25,12 @@ function [bigU,bigUTimeDerivative,P,U,thetaCont,mu,solutionNormsCont,tauVecCont,
     fprintf('new solution (x,y) size = (%d,%d)\n', length(nx)/2, length(ny)/2);
     
     tic
-    [bigU,bigUTimeDerivative,P,U,thetaCont,mu,solutionNormsCont,tauVecCont,anglCont] =...
-       sol_ch_v8(nU,nx,ny,prmtrs,bt1,bt2,al,c,th,derivative);   
+    if(prmtrs.useZeroBoundary == 2)
+        [bigU,bigUTimeDerivative,P,U,thetaCont,mu,solutionNormsCont,tauVecCont,anglCont] =...
+            sol_ch_v8ZeroBnd(nU,nx,ny,prmtrs,bt1,bt2,al,c,th,derivative);
+    else
+        [bigU,bigUTimeDerivative,P,U,thetaCont,mu,solutionNormsCont,tauVecCont,anglCont] =...
+            sol_ch_v8(nU,nx,ny,prmtrs,bt1,bt2,al,c,th,derivative);   
+    end
     fprintf('elapsed solver time = %d \n', toc);
 end

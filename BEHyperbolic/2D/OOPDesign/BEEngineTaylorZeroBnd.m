@@ -59,15 +59,17 @@ classdef (ConstructOnLoad) BEEngineTaylorZeroBnd < BEEngineTaylor
         if( this.order > 6 )
             error( 'Not yet implemented for order = 8!' );
         end
+        if(this.beta > 1 || this.beta < 1)
+            deltab = this.eigenFinDiffMat_x' * this.domainUtils.DeltaHZeroBnd( nonlinTerm ) * this.eigenFinDiffMat_y;
+            X = -deltab ./ ( this.Lambda_X + this.Lambda_Y - this.h^2);
+            dnvz = ( this.invEigenFinDiffMat_xT * X * this.invEigenFinDiffMat_y + this.domainUtils.DeltaHZeroBnd( dnU_dtn ) / this.h^2 )/this.beta;
+        else
+            deltab = this.h^2 * ( this.eigenFinDiffMat_x' * nonlinTerm * this.eigenFinDiffMat_y );
+            X = -deltab ./ ( this.Lambda_X + this.Lambda_Y - this.h^2);
+            dnvz = ( - nonlinTerm + this.invEigenFinDiffMat_xT * X * this.invEigenFinDiffMat_y + this.domainUtils.DeltaHZeroBnd( dnU_dtn ) / this.h^2 )/this.beta;
+        end
         
-        deltab = this.eigenFinDiffMat_x' * this.domainUtils.DeltaHZeroBnd( nonlinTerm ) * this.eigenFinDiffMat_y;
-        X = -deltab ./ ( this.Lambda_X + this.Lambda_Y - this.h^2);
-        dnvz = ( this.invEigenFinDiffMat_xT * X * this.invEigenFinDiffMat_y + this.domainUtils.DeltaHZeroBnd( dnU_dtn ) / this.h^2 )/this.beta;
-        
-        %intermediate = this.invEigenFinDiffMat_xT * nonlinTerm * this.invEigenFinDiffMat_y';
-        %X = (this.D_x * intermediate + intermediate * this.D_y) ./ (this.Lambda_X + this.Lambda_Y + this.h^2);
-        %dnvz = ( this.eigenFinDiffMat_x * X * this.eigenFinDiffMat_y' + this.Delta_hx / this.h^2 * dnU_dtn + dnU_dtn * this.Delta_hy' / this.h^2 )/this.beta;
-        
+       
         %{
         Q = 21;
         dnvz2 =  ( deltab )/this.beta;

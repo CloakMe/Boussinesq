@@ -2,9 +2,9 @@ clear;
 bndCutSizeX = 0;
 bndCutSizeY = 0;
 
-bndDirectory = 'WithBoundary\'; % 'ZeroBoundary\' 'WithBoundary\'
-name = 'Taylor_'; % 'EnergySave_' 'Taylor_'
-domLength = '40_'; %'80_' '40_'
+bndDirectory = 'WithBoundary\'; % 'ZeroBoundary\' 'WithBoundary\' ZeroBnd
+name = 'Taylor_'; % 'EnergySave_' 'Taylor_' TaylorZeroBnd_
+domLength = '40'; %'80_' '40_', '128_'
 paramString = 'bt3_c052'; %'bt3_c052' 'bt1_c090'
 orderString = '6';
 
@@ -21,7 +21,7 @@ if( strcmp(paramString, 'bt1_c090') == 1 )
 end
 yo = cellstr(yo);
 bndString = 'ZB0_';
-if( strcmp(bndDirectory, 'ZeroBoundary\') == 1 )
+if( strcmp(bndDirectory, 'ZeroBoundary\') == 1 || strcmp(bndDirectory, 'ZeroBnd\') == 1 )
     bndString = 'ZB1_';
 end
 if( strcmp(name, 'EnergySave_') == 1 && strcmp(orderString, '2') == 0 )
