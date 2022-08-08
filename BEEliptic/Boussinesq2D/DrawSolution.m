@@ -38,7 +38,7 @@ function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secon
     %hold on; 
     %surf(xx,yy,(BigUNearCenter)', 'Edgecolor', 'none');
     %hold off;
-    return
+    
     %{
     Q = 41;
     viewTypeX = 90;
