@@ -2,7 +2,7 @@ clear;
 %Eliptic
 bndCutSizeX = 0;
 bndCutSizeY = 0;
-bndDirectory = 'ZeroBoundary\'; % 'ZeroBoundary\' 'WithBoundary\'
+bndDirectory = 'ZeroBoundary\'; % 'ZeroBoundary\' 'WithBoundary\' ZeroBnd
 ICType = 'ChristovIC_'; % 'ChristovIC_' 'Natali_'
 domLength = '128_'; %'80_' '40_' '82_'
 paramString = 'bt1_c090'; %'bt3_c052' 'bt1_c090'
@@ -22,6 +22,8 @@ yo = cellstr(yo);
 bndString = 'ZB0_';
 if( strcmp(bndDirectory, 'ZeroBoundary\') == 1 )
     bndString = 'ZB1_';
+elseif( strcmp(bndDirectory, 'ZeroBnd\') == 1 )
+    bndString = 'ZB2_';
 end
 if( strcmp(ICType, 'EnergySave_') == 1 && strcmp(orderString, '2') == 0 )
     fprintf('EnergySave solution; setting order = 2!\n');

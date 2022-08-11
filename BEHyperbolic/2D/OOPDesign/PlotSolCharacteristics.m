@@ -29,7 +29,7 @@ function PlotSolCharacteristics(btString, cString, hString ,orderString, domainL
         bndCutSizeX = 0;
         bndCutSizeY = 0;
         shortBndString = '_ZB0';
-        if( strcmp( bndString(i), 'ZeroBoundary' ) == true )
+        if( strcmp( bndString(i), 'ZeroBoundary' ) == true || strcmp( bndString(i), 'ZeroBnd' ) == true )
             shortBndString = '_ZB1';
         end
         cellStrEn = strcat('SavedWorkspaces\', bndString(i), '\', solTypeString(i), '_', domainLenString(i),...
@@ -61,7 +61,7 @@ function PlotSolCharacteristics(btString, cString, hString ,orderString, domainL
             hold off;
             
         elseif( strcmp( additionalInfo, 'energy' ) )
-            title('Energy');
+            ylabel('E_h','FontSize',20);
             [indeces, shift] = BEUtilities.GetCommonIndexArray( t, EN );
             indeces(1) = [];
             plot( t(1:end-1),EN,colors{i} );            
@@ -69,7 +69,8 @@ function PlotSolCharacteristics(btString, cString, hString ,orderString, domainL
         hold off;
     end
     legend(legendString);    
-    xlabel('time "t"'); 
+    xlabel('t','FontSize',20);  
+    set(gca,'FontSize',20);
 
 end
 

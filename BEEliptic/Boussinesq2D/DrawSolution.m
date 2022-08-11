@@ -66,11 +66,10 @@ function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secon
     xlabel('x');            ylabel('y');
     %}
     Yk = bigU;
-    bigZeroMatrix=zeros(size(Yk));
-    dyy_yk = bt*c^2*YDer(Yk,secondDerivative);
-    deltaU = Delta(Yk,bigZeroMatrix,bigZeroMatrix,bigZeroMatrix,bigZeroMatrix,bigZeroMatrix,secondDerivative);
-    residual =  Delta(bt*Yk - deltaU + al*bt*Yk.^2 + dyy_yk ,...
-        bigZeroMatrix,bigZeroMatrix,bigZeroMatrix,bigZeroMatrix,bigZeroMatrix,secondDerivative) - dyy_yk;
+    domainUtils = BEDomainUtils( x, y, length(secondDerivative)-1, 2 ); 
+    dyy_yk = bt*c^2*domainUtils.YDerivativeZeroBnd(Yk)/h^2;
+    deltaU = domainUtils.DeltaHZeroBnd(Yk)/h^2;
+    residual =  domainUtils.DeltaHZeroBnd(bt*Yk - deltaU + al*bt*Yk.^2 + dyy_yk)/h^2 - dyy_yk;
     figure(4)
     mesh(x(9:end-8),y(9:end-8),residual(9:end-8,9:end-8)');
     title('Residual (no boundary values)')
@@ -80,7 +79,7 @@ function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secon
     figure(15)
     mesh(x,y,residual');
     title('Residual (with all boundary values)')
-    return
+
     figure(18);
     mesh(x,y,bigU');
     xlabel('x');    ylabel('y');
@@ -143,6 +142,8 @@ function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secon
     fig_ss12=figure(12);
     set(fig_ss12, 'OuterPosition', [0.0      	30.0        380.0     340.0]);
     %*sqrt(1-c^2)
+    [X,Y]=Domain(x,y);
+    bigIC = u_ex2d_mat_vc(X,Y,c,bt);
     mesh(x,y,( bigIC'));
     xlabel('x');    ylabel('y');
     title('IC')

@@ -5,7 +5,7 @@ hString = { '05', '10', '20' };
 orderString = { '2' };
 domainLenString = { '30' };
 solTypeString = { 'EnergySave' };
-bndString = { 'ZeroBoundary' };
+bndString = { 'ZeroBoundary' }; %ZeroBoundary ZeroBnd
 %legendString = { 'Taylor O(h^2+{\tau}^2)', 'Taylor O(h^4+{\tau}^4)', 'Taylor O(h^6+{\tau}^6)' }; Conservative Scheme O(h^2+{\tau}^2)
 legendString = { 'h = 0.05', 'h = 0.1', 'h = 0.2'};
 additionalInfo = 'energy';
@@ -21,8 +21,8 @@ figure(20)
 hold on;
 plot(tt(1:799:end),EN(1:799:end),'bo' )
 hold off;
-title('Energy functional');
-xlabel('time "t"');  ylabel('EN');
+xlabel('t','FontSize',20);  ylabel('E_h','FontSize',20);
+set(gca,'FontSize',20);
 
 figure(20)
 hold on;
@@ -30,5 +30,5 @@ hold on;
 indeces(1) = [];
 plot( t(indeces(1:399:end)) ,II(indeces(1:399:end)),'bo' )
 hold off;
-title('Integral');
-xlabel('time "t"');  ylabel('Integral');
+xlabel('t','FontSize',20);  ylabel('E_h','FontSize',20);
+set(gca,'FontSize',20);
