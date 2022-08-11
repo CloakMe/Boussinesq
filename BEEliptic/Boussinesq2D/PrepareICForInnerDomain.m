@@ -13,7 +13,7 @@ function [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,mu,tauVector,ang
     if(prmtrs.ICSwitch == 1)
        [bigIC,IC] = pola2cart_v5(x, y, gamma1, gamma2);%, ode_name, IC);
     else  
-       bigIC = u_ex2d_mat_vc(X,Y,c/sqrt(bt),bt);
+       bigIC = u_ex2d_mat_vc(X,Y,c,bt);
        IC = bigIC(zeroX:end,zeroY:end);
     end
     th = abs(IC(1,1));

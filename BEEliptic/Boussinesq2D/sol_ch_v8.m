@@ -50,11 +50,7 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
 
     bigZeroMatrix = zeros(sx,sy);
     zeroMatrix = zeros(size(U));
-    if(prmtrs.useZeroBoundary > 0)
-            muU = 0; muP = 0;
-        else
-            [muU,muP] = FindBoundaryConstants(U,P,innerBoundaryUF,innerBoundaryPF,step);
-        end
+    muU = 0; muP = 0;
     %deltaU = DeltaEvenFunctions(U, zeroMatrix, muU*outerRigthBoundaryF, muU*outerTopBoundaryF, derivative.second);
     Uxx = XDerivativeEvenFunctions(U, zeroMatrix,muU*outerRigthBoundaryF,derivative.second);
     Uyy = YDerivativeEvenFunctions(U, zeroMatrix,muU*outerTopBoundaryF,derivative.second);
@@ -165,8 +161,8 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
         
         tauVector(iterCounter) = tau;        
         [tau, tauMax, tauIncreasedIteration, tauDecreasedIteration] =...
-        DefineCurrentTau(prmtrs.tau, subCounter, iterCounter, iterMax, tau,  tauMax, tauIncreasedIteration,...
-           tauDecreasedIteration, residualInfNorm,UvsUupInfNorm, minResidual, angl , manualStop, flag, crrntResidual);
+           DefineCurrentTau(prmtrs.tau, subCounter, iterCounter, iterMax, tau,  tauMax, tauIncreasedIteration,...
+           tauDecreasedIteration, residualInfNorm, UvsUupInfNorm, minResidual, angl , manualStop, flag, crrntResidual);
         
         if( flag == 1 )
            afterCounter = afterCounter - 1; 
