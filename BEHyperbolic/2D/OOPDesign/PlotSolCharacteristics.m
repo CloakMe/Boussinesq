@@ -22,7 +22,7 @@ function PlotSolCharacteristics(btString, cString, hString ,orderString, domainL
     if( length(bndString) == 1 )
        bndString = CreateMultiArrString( bndString(1), len );
     end
-    colors = { 'k', 'g', 'm', 'r', 'b', 'c'}; 
+    colors = { 'k', 'g', 'm', 'r', 'b', 'c'}; %
     figNum = 20;
     figure(figNum)
     for i=1:len
@@ -50,11 +50,11 @@ function PlotSolCharacteristics(btString, cString, hString ,orderString, domainL
         figure(figNum)
         hold on;
         if( strcmp( additionalInfo, 'maximum' ) )
-            title('Maximum');
+            ylabel('max|u_h|','FontSize',20);
             plot(t(1:end-1),max_v, colors{i} );    
             
         elseif( strcmp( additionalInfo, 'mass' ) )
-            title('Mass');
+            ylabel('Mass','FontSize',20);
             [indeces, shift] = BEUtilities.GetCommonIndexArray( t, II );
             indeces(1) = [];
             plot(t(indeces+shift),II(indeces),colors{i} );
@@ -70,7 +70,7 @@ function PlotSolCharacteristics(btString, cString, hString ,orderString, domainL
     end
     legend(legendString);    
     xlabel('t','FontSize',20);  
-    set(gca,'FontSize',20);
+    set(gca,'FontSize',18);
 
 end
 
