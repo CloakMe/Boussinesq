@@ -1,5 +1,5 @@
-function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,c1,c2,solutionNorms,tauVector, angl]=...
-    sol_ch_v9(U,x,y,prmtrs,bt1,bt2,al,c,theta,zeroX,zeroY,derivative,P)
+function [bigU, bigUTimeDerivative, Pup, Uup, thetaVector, mu, solutionNorms, tauVector, angl, sw_div]=...
+    sol_ch_v9(U,x,y,prmtrs,bt1,bt2,al,c,theta,derivative,P)
 
 sw = 0;  
 if (nargin == 13) 
@@ -31,10 +31,11 @@ end
    angl = zeros(1,iterMax/10);
    step = Step(h);
    
+   [zeroX,zeroY]=GetZeroNodes(x,y);
    % approxBoundaryF is over the augmented domain 
    % where four points were added top and bottom
    approxBoundaryF = GetApproximationForBoundary(x(zeroX:end),y(zeroY:end),h,c/sqrt(bt));
-   
+      
    outerTopBoundaryF=approxBoundaryF(1:end-4,end-3:end); 
    outerRigthBoundaryF=approxBoundaryF(end-3:end,1:end-4); 
    
@@ -57,9 +58,9 @@ end
      subCounter=1;
      Usquare = U .^2;
      thetaVector(iterCounter) = (P(1,1) -  (bt-c^2)*U(1,1) + (1 - c^2) * deltaU(1,1) )/(al*bt*Usquare(1,1));
-     residualInfNorm(1) =  GetResidualInfNorm(al,bt,c/sqrt(bt),thetaVector,0,iterCounter,U,Usquare,...
+     residualInfNorm(1) =  GetResidualInfNorm(al,bt,c/sqrt(bt),thetaVector,iterCounter,U,Usquare,...
          deltaU,zeroMatrix,c1*outerRigthBoundaryF,c1*outerTopBoundaryF,derivative.second);
-     
+
      Pup = P;
      Uup = U;
      minResidual = min(1000,residualInfNorm(subCounter));
@@ -94,10 +95,9 @@ end
         
         if(mod(iterCounter,10) ==0)
            
-           [flag, axNew, ayNew] = StopCriteria(x, y, h, zeroX, zeroY, U, ax, ay, eps);
-           crrntResidual = Get2DResidual(al,bt,c/sqrt(bt),thetaVector,c1,iterCounter,U,Usquare,deltaU,...
+           [flag, axNew, ayNew] = StopCriteria(x, y, zeroX, zeroY, U, ax,    ay,    minResidual, eps);
+           crrntResidual = Get2DResidual(al,bt,c/sqrt(bt),thetaVector,iterCounter,U,Usquare,deltaU,...
                zeroMatrix,outerRigthBoundaryF,outerTopBoundaryF,derivative.second);
-           
            subCounter=subCounter+1;
            [residualInfNorm(subCounter)]=thetaVector(iterCounter)*max(max(abs(crrntResidual(1:end-8,1:end-8))));
            angl(subCounter) =  Deviation(residualInfNorm,subCounter);
@@ -122,8 +122,8 @@ end
                
                stopSwitch = Stop(fig9,stopSwitch);
            end
-           ax = axNew;
-           ay = ayNew;
+           ax = axNew(1);
+           ay = ayNew(1);
            boundaryHit = IsBoundaryHit(checkBnd,crrntResidual*thetaVector(iterCounter),...
                residualInfNorm,subCounter,derivative.second);
            sw_div = IsAlgoDiverging(subCounter,residualInfNorm); 
@@ -132,8 +132,8 @@ end
         tauVector(iterCounter) = tau;
         
         [tau, tauMax, tauIncreasedIteration, tauDecreasedIteration] =...
-        DefineCurrentTau(subCounter, iterCounter, iterMax, tau,  tauMax, tauIncreasedIteration,...
-            tauDecreasedIteration, residualInfNorm,UvsUupInfNorm, minResidual, angl , stopSwitch,crrntResidual);
+            DefineCurrentTau(prmtrs.tau, subCounter, iterCounter, iterMax, tau,  tauMax, tauIncreasedIteration,...
+            tauDecreasedIteration, residualInfNorm,UvsUupInfNorm, minResidual, angl , stopSwitch, flag, crrntResidual);
     
         if(sw_div ==1 || stopSwitch ==2 || boundaryHit ==1 || iterCounter ==iterMax || flag ==1)
             break;
@@ -144,12 +144,13 @@ end
     thetaVector = thetaVector(1:iterCounter);
     angl = angl(1:subCounter);
     [c1,c2]=FindBoundaryConstants(Uup,Pup,innerBoundaryUF,innerBoundaryPF,step);
+    mu = struct('muU',{c1},'muP',{c2});
     
-    [bigU,bigUTimeDerivative] = GetBigSolution(x,y,c,bt,c1,thetaVector(iterCounter),...
+    [bigU,bigUTimeDerivative] = GetBigSolution(x,y,c,bt,thetaVector(iterCounter),...
         Uup,bigZeroMatrix,derivative.first,outerTopBoundaryF);
-   
+    
     [solutionNorms] = CalculateSolutionNorms(U,Uup,P,Pup,UvsUupInfNorm,crrntResidual,...
-        residualInfNorm,innerBoundaryUF,innerBoundaryPF,subCounter,thetaVector(iterCounter),step,h,c1,c2);
+        residualInfNorm,c1*innerBoundaryUF,c2*innerBoundaryPF,subCounter,thetaVector(iterCounter),step,h);
 end
 
 %z1 = YDerivativeEvenFunctions2(P,zeroMatrix,yDerBnd,derivative.second);

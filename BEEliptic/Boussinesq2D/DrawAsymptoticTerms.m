@@ -11,7 +11,7 @@ function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBo
         y_end = compBox.y_end2;   
     end
     
-    barF = 100;
+    barF = 50;
     [zeroX,zeroY]=GetZeroNodes(x,y);
     lenx = floor(length( x(zeroX:end) )*1/2);
     leny = floor(length( y ) / 4);
@@ -51,6 +51,7 @@ function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBo
     figure(5)
     mesh(xx,yy, res1(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
     title('al * bt * Delta(U^2) (no boundary values)')
+    xlabel('x');    ylabel('y');
     
     figure(51)
     mesh(xx,yy, res1Y(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
@@ -71,7 +72,7 @@ function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBo
     mesh(xx,yy, (res0(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny) + res1(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny) +...
         + res2(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny))');
     title('Residual (no boundary values)');
-    
+    xlabel('x');    ylabel('y');
 return;
     bigZeroMatrix=zeros(size(bigU));
     dyy_yk = bt*c^2*YDer(Yk,secondDerivative);

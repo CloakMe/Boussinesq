@@ -1,7 +1,7 @@
 function crrntResidual = Get2DResidual(al,bt,c,th,iterCounter,U,Usquare,deltaU,...
     zeroMatrix,outerRigthBoundaryF,outerTopBoundaryF,secondDerivative, prmtrs, domUtils)
-    
-    if(prmtrs.useZeroBoundary == 2)
+        
+    if(nargin == 14 && prmtrs.useZeroBoundary == 2)
         dyy_yk = domUtils.YDerivativeEvenFunZeroBnd(U)/prmtrs.h^2;
         crrntResidual =  domUtils.DeltaHEvenFunZeroBnd(bt*U + al*bt*th(iterCounter)*Usquare - deltaU +...
             bt*c^2*dyy_yk )/prmtrs.h^2 -...
