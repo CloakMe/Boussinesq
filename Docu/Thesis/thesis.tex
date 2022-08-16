@@ -507,7 +507,20 @@ $$
 където $\widehat{v}^{(k)}, \widehat{w}^{(k)}, \widehat{v}^{(k+1)}, \widehat{w}^{(k+1)} \in \RR^{(N_x-1)/2 \times (N_y-1)/2}$ са матрици съответно с елементи ${v}_{i,j}^{(k)}$, ${w}_{i,j}^{(k)}$, ${v}_{i,j}^{(k+1)}$ и ${w}_{i,j}^{(k+1)}$.
 \subsection{Начални данни}
  Цикличната процедура описана в \rf{eq55} се нуждае от начални стойности за функиите $\widehat{v},\widehat{w}$, които са взети от "best-fit" формулите в \cite{Ch2011}. 
-Решението от задачата \rf{eq3} при $c=0$ също е добро приближение и служи на начални стойности при скорости близки до допустимия максимум $c \approx \min (1/ \sqrt{\beta},1)$, $c < \min (1/ \sqrt{\beta},1)$.
+Решението от задачата \rf{eq3} при $c=0$ също е добро приближение и служи на начални стойности на \rf{eq55} при скорости близки до допустимия максимум $c \approx \min (1/ \sqrt{\beta},1)$, $c < \min (1/ \sqrt{\beta},1)$. При $c=0$ уравнение \rf{eq3} добива следния вид:
+\be\label{eq3c0}
+\Delta (\beta  v - \Delta v - \beta f(v)) = 0.
+\ee
+В частност, ако за уравнението 
+\be\label{eq3c01}
+\beta v - \Delta v - \beta f(v) = 0
+\ee
+съществува решение $\nu$, то също ще удовлетворява и \rf{eq3c0}. Ако разгледаме само радиално симетрични решения на \rf{eq3c01} и преминем в полярни координати получаваме:
+\begin{align}\label{eq3c02}
+\beta v_{polar}(r)  - \frac{ \partial^2 v_{polar} } {\partial r^2}(r) - \frac{1}{r} \frac{ \partial v_{polar} } {\partial r}(r)  - \beta f(v_{polar}(r)) = 0, \nonumber \\
+\frac{ \partial v_{polar} } {\partial r}(0) = 0, \quad v_{polar}(r) \rightarrow 0, \; \text{as} \; r \rightarrow \infty
+\end{align}
+Последното диференциално уравнение и числените му решения са разгледани в \cite{ref1c0, ref2c0}.
 \subsection{Контрол на стъпката по времето}
 Възможно е да се използва нефиксирана стъпка по времето $\tau$ за оптимизиране скоростта на сходимост. Когато $\tau > \tau_{stab}$ премине условието за устойчивост, решението започва да разхожда и става назъбено. Тези знаци се проявяват първоначално при остатъка \rf{residual}, докато численото решение $u$ е все още монотонно и разликите между две последователни итерации не са големи. Когато последното се случи, произволно сечение на остатъка $R$ се описва с дискретна функция сменяща положителни с отрицателни стойности върху мрежата. Това е ясен знак, че стъпката $\tau$ трябва да се намали, в противен случай се увеличава. Промяната се случва на всяка итерация с фактор $f_{\tau} \in \{0.72, 1.015\}$, където $\tau_{new} := f_{\tau}\tau$.
 
@@ -1682,6 +1695,17 @@ Strassen, Volker, Gaussian Elimination is not Optimal,
 \bibitem{boole}
 Zucker, Ruth, "Chapter 25.4.14: Numerical Interpolation, Differentiation, and Integration - Integration - Numerical Analysis". In Abramowitz, Milton; Stegun, Irene Ann (eds.). Handbook of Mathematical Functions with Formulas, Graphs, and Mathematical Tables. 
 \it{Applied Mathematics Series} \textbf{55}  (1983), ISBN 978-0-486-61272-0.
+
+\bibitem{ref25} Kolkovska N.,Two families of finite difference schemes for multidimensional Boussinesq paradigm equation, In:
+{\it Applications of Mathematics in Technical and Natural Sciences,  Sozopol (Bulgaria)},
+\emph{AIP Conference Proceedings}, \textbf{1301} (2010), 395.
+
+\bibitem{ref1c0} Kolkovska N. Angelow K., Numerical computation of the critical energy constant for two-dimensional Boussinesq equations,
+{\it Application of Mathematics in Technical and Natural Sciences, Albena (Bulgaria)},
+\emph{AIP Conference Proceedings}  \textbf{1684} (2015), 080007.
+
+\bibitem{ref2c0} Kolkovska N., Numerical Evaluation of 2D Ground States,
+\emph{ EPJ Web of Conferences}, \textbf{108} (2016), 02032.
 
 \end{thebibliography}
 \end{document}

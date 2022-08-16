@@ -1,4 +1,9 @@
-function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secondDerivative)
+function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secondDerivative, extended)
+
+    if(nargin == 13)
+        extended = 0;
+    end
+    
     if(x(1) == compBox.x_st)
         x_st = compBox.x_st;
         x_end = compBox.x_end;
@@ -11,66 +16,118 @@ function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBo
         y_end = compBox.y_end2;   
     end
     
-    barF = 50;
+    barF = floor(min(length(x), length(y))/20);
+    
     [zeroX,zeroY]=GetZeroNodes(x,y);
-    lenx = floor(length( x(zeroX:end) )*1/2);
-    leny = floor(length( y ) / 4);
-    xx = x(zeroX + lenx:end-barF);
-    yy = y(zeroY - leny:zeroY + leny);
+    h = x(2) - x(1);
+    lenx = floor(length( x(zeroX:end) )*2/5);
+    leny = floor(length( y(zeroY:end) )*2/5);
+    xpts = zeroX + lenx:length(x) - barF;
+    ypts = zeroY + leny:length(y) - barF;
+    xx = x(xpts);
+    yy = y(ypts);
     Yk = bigU;
-    dyy_U = YDer(Yk,secondDerivative);
-    dxx_U = XDer(Yk,secondDerivative);
-    res0 = bt * ((1-c^2) * dyy_U + dxx_U);
-    res0Y = bt * ((1-c^2) * dyy_U);
-    res0X = bt * (dxx_U);
+    domainUtils = BEDomainUtils( x, y, length(secondDerivative)-1, 2 ); 
+    dyy_U = domainUtils.YDerivativeZeroBnd(Yk)/h^2;
+    dxx_U = domainUtils.XDerivativeZeroBnd(Yk)/h^2;
+    
+    btU_xx = bt * dxx_U;
+    bt1McSQU_yy = bt * (1-c^2) * dyy_U;
+    
+    coefU_yyyy = - (1 - bt * c^2) * domainUtils.YDerivativeZeroBnd( dyy_U )/h^2;
+    coefU_xxyy = - (2 - bt * c^2) * domainUtils.YDerivativeZeroBnd( dxx_U )/h^2;
+    coefU_xxxx =                  - domainUtils.XDerivativeZeroBnd( dxx_U )/h^2;
+    
+    coeffUsq_xx = + al * bt * domainUtils.XDerivativeZeroBnd(Yk.^2)/h^2;
+    coeffUsq_yy = + al * bt * domainUtils.YDerivativeZeroBnd(Yk.^2)/h^2;
+    
+    residual = btU_xx + bt1McSQU_yy + coefU_xxxx + coefU_xxyy + coefU_yyyy + coeffUsq_xx + coeffUsq_yy;
+    
+    legendString = { '|\beta U_x_x|', '|\gamma_1U_y_y|', ...
+        '|\gamma_2U_y_y_y_y|', '|\gamma_3U_x_x_y_y|', '|U_x_x_x_x|', ...
+        '|\alpha\beta(U^2)_x_x|', '|\alpha\beta(U^2)_y_y|', '|R|'};
+    
+    figure(2)
+    %ax2 = axes('Position',[0.1 0.1 0.64 0.80]);
+    %plt = loglog(ax2, y(ypts), abs(btU_xx(zeroX, ypts)), 'b.',...
+    plt = loglog(y(ypts), abs(btU_xx(zeroX, ypts)), 'b',...
+         y(ypts), abs(bt1McSQU_yy(zeroX, ypts)), 'r:',...
+         y(ypts), abs(coefU_yyyy(zeroX, ypts)), 'c', ...
+         y(ypts), abs(coefU_xxyy(zeroX, ypts)), 'k',...
+         y(ypts), abs(coefU_xxxx(zeroX, ypts)), ...
+         y(ypts), abs(coeffUsq_xx(zeroX, ypts)),...
+         y(ypts), abs(coeffUsq_yy(zeroX, ypts)), 'g',...
+         y(ypts), abs(residual(zeroX, ypts) ), '--' );% y(zeroY+10:end-barF), 1 ./ y(zeroY+10:end-barF) .^ 2, 'k' ); %(1+end)/2  
+     
+    set(plt(5),'Color',[0.4500 0.120 0.90]);
+    set(plt(6),'Color',[0.92 0.6 0.1]);    %orange
+    set(plt(8),'Color',[0.20 0.550 0.20]);
+    
+    xlabel('y','FontSize',17);    
+    legend(legendString);
+    set(gca,'FontSize',18);
+    legend(legendString,'Location', 'eastoutside','FontSize',16);        
+    title('x==0 cross-section','FontSize',16);
+    %xlabel('x','FontSize',18);    ylabel('y','FontSize',18);
+    
+    
+    figure(3) 
+    plt = loglog(x(xpts), abs(btU_xx(xpts, zeroY)), 'b',...
+        x(xpts), abs(bt1McSQU_yy(xpts, zeroY)), 'r:',...
+        x(xpts), abs(coefU_yyyy(xpts, zeroY)), 'c', ...
+        x(xpts), abs(coefU_xxyy(xpts, zeroY)), 'k',...
+        x(xpts), abs(coefU_xxxx(xpts, zeroY)), ...
+        x(xpts), abs(coeffUsq_xx(xpts, zeroY)) ,...
+        x(xpts), abs(coeffUsq_yy(xpts, zeroY)), 'g',...
+        x(xpts), abs(residual(xpts, zeroY)),'--' ); 
+    
+    set(plt(5),'Color',[0.4500 0.120 0.90]);
+    set(plt(6),'Color',[0.92 0.6 0.1]);    %255,158,0
+    set(plt(8),'Color',[0.20 0.550 0.20]);
+    xlim([x(xpts(1)) x(xpts(end))])
+    %set(plt(5),'Color',[0.9900 0.280 0.00]);
+    xlabel('x','FontSize',18);
+    set(gca,'FontSize',18);
+    legend(legendString,'Location', 'eastoutside','FontSize',16);        
+    title('y==0 cross-section','FontSize',16);    
+    
+    if(extended == 0)
+        return;
+    end
     
     figure(4)
-    mesh(xx,yy, res0(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
-    title('bt * ( (1-c^2) * U_y_y + U_x_x) (no boundary values)');
-    
-    figure(41)
-    mesh(xx,yy, res0Y(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
-    title('bt * ((1-c^2) * U_y_y ) (no boundary values)');
-    
-    figure(42)
-    mesh(xx,yy, res0X(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
-    title('bt * ( U_x_x) (no boundary values)');
-    
-%     figure(15)
-%     plot(y(zeroY:end-barF), bigU(zeroX, zeroY:end-barF), 'b', y(zeroY:end-barF), res(zeroX, zeroY:end-barF), 'r', y(zeroY+10:end-barF), 1 ./ y(zeroY+10:end-barF) .^ 2, 'k' ); %(1+end)/2  
-%     xlabel('y')
-%     title('x==0 cross-section');
-%     figure(16) 
-%     plot(x(zeroX:end-barF), bigU(zeroX:end-barF, zeroY), 'b', x(zeroX:end-barF), res(zeroX:end-barF, zeroY), 'r', x(zeroX+10:end-barF), 1 ./ x(zeroX+10:end-barF) .^ 2, 'k')   % ((x.^2)').*
-%     xlabel('x')
-%     title('y==0 cross-section');
-    YkSquare = Yk.^2;
-    res1 = + al * bt * ( YDer(YkSquare,secondDerivative) + XDer(YkSquare,secondDerivative) );
-    res1Y = + al * bt * ( YDer(YkSquare,secondDerivative) );
-    
+    mesh(xx,yy, btU_xx(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
+    title('bt * U_x_x (no boundary values)');
+    xlabel('x');    ylabel('y');    
     figure(5)
-    mesh(xx,yy, res1(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
-    title('al * bt * Delta(U^2) (no boundary values)')
+    mesh(xx,yy, bt1McSQU_yy(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
+    title('bt * (1-c^2) * U_y_y (no boundary values)');
+    xlabel('x');    ylabel('y');    
+    
+    figure(10)
+    mesh(xx,yy, coefU_yyyy(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
+    title(' - (1 - bt * c^2) * U_y_y_y_y (no boundary values)');
     xlabel('x');    ylabel('y');
-    
-    figure(51)
-    mesh(xx,yy, res1Y(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
-    title('al * bt * (U^2)_y_y (no boundary values)')
-    
-    YkSquare = Yk.^2;
-    res1X = + al * bt * ( XDer(YkSquare,secondDerivative) );
-    figure(52)
-    mesh(xx,yy, res1X(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
-    title('al * bt * (U^2)_x_x (no boundary values)')
-    
-    res2 = YDer( (bt * c^2 - 1) * dyy_U - dxx_U, secondDerivative ) + XDer( (bt * c^2 - 1) * dyy_U - dxx_U, secondDerivative );
-    figure(6)
-    mesh(xx,yy, res2(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
-    title('Delta( (bt * c^2 - 1)U_y_y - U_x_x )(no boundary values)');
-
     figure(11)
-    mesh(xx,yy, (res0(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny) + res1(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny) +...
-        + res2(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny))');
+    mesh(xx,yy, coefU_xxyy(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
+    title(' - (2 - bt * c^2) * U_x_x_y_y (no boundary values)');
+    xlabel('x');    ylabel('y');    
+    figure(12)
+    mesh(xx,yy, coefU_xxxx(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
+    title(' - U_x_x_x_x (no boundary values)');
+    xlabel('x');    ylabel('y');    
+   
+    figure(13)
+    mesh(xx,yy, coeffUsq_xx(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
+    title('al * bt * (U^2)_x_x (no boundary values)')
+    xlabel('x');    ylabel('y');        
+    figure(14)
+    mesh(xx,yy, coeffUsq_yy(zeroX + lenx:end-barF,zeroY - leny:zeroY + leny)');
+    title('al * bt * (U^2)_y_y (no boundary values)')
+    xlabel('x');    ylabel('y');
+        
+    figure(15)
+    mesh(x,y, residual');
     title('Residual (no boundary values)');
     xlabel('x');    ylabel('y');
 return;
