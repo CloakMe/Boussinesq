@@ -446,10 +446,11 @@ O(N_x N_y \bar{\epsilon}),
 \section{Формулировка на елиптичната задача}
 Посредством смяната на променливите $x=\sqrt\beta_1 { \overline x}$, $y=\sqrt\beta_1 { \overline y}$, $U(x,y)= v({ \overline x},{ \overline y} )$ уравнение 
 \rf{eq2} добива следната форма
- \begin{equation}\label{eq3}
-c^2 \beta (E- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2 v - \beta \Delta f(v)
-\end{equation}
-като $\beta = \beta_1 / \beta_2$.
+ \begin{align}\label{eq3}
+&c^2 \beta (E- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2 v - \beta \Delta f(v), \\ 
+&v(\overline x, \overline y) \rightarrow 0,  \Delta v(\overline x, \overline y) \rightarrow 0 ,  \quad \text{for}  \sqrt{\overline x^2 + \overline y^2} \rightarrow \infty, \nonumber
+\end{align}
+взимайки предвид граничното условие от \rf{eq1} и $\beta = \beta_1 / \beta_2$.
 Решението $v$ на \rf{eq3} заедно с неговите производни клони към нула, когато $|{\overline x}^2 +{\overline y}^2|\rightarrow \infty$.
 Навсякъде по-надолу в текста ще се използват отново старите означения $x,y$ вместо ${\overline x},{\overline y}$.
 
@@ -733,7 +734,7 @@ $\beta = 1$   	&0.2   &             &           &                & \\
 \end{center}
 
 \subsection{Производни на решението}
-Както вече е разкрито, ``best-fit'' формулите от \cite{Ch2011} имат особености около нулата. Затова е важно да се покаже, че дискретните производни на решението от четвърти ред $v_{\widehat{xxxx}}$ схождат числено, когато стъпката $h$ намалява. За целта е приложено правилото на Рунге \rf{runge} върху три вложени мрежи с размери $h$, $h/2$, $h/4$, а получените резултати за сходимостта $\xi$ са представени в Таблица \rf{tab:fourth-der}. В заключение се вижда, че дискретните производни $v_{\widehat{xxxx}}$ са ограничени и сходящи. Тестове със смесените производни - $v_{xxyy}$ и само по $y$ - $v_{yyyy}$ не са представени тук, но резултатите от тях са сходни като тези при $v_{xxxx}$.
+Целта на този параграф е да покаже, че дискретните производни на решението от четвърти ред $v_{\widehat{xxxx}}$ схождат числено, когато стъпката $h$ намалява. За целта е приложено правилото на Рунге \rf{runge} върху три вложени мрежи с размери $h$, $h/2$, $h/4$, а получените резултати за сходимостта $\xi$ са представени в Таблица \rf{tab:fourth-der}. В заключение се вижда, че дискретните производни $v_{\widehat{xxxx}}$ са ограничени и сходящи. Тестове със смесените производни - $v_{xxyy}$ и само по $y$ - $v_{yyyy}$ не са представени тук, но резултатите от тях са сходни като тези при $v_{xxxx}$.
 
 \subsection{Форма на решението}
 
@@ -875,11 +876,143 @@ $\beta$	& c 	& $\|v^*-v \|_{L_2 }$ & $\|v^*-v \|_{L_\infty }$  	& $D^*_{L_2}$	& 
 \label{tab:diff-c017}
 \end{table}
 %================================================================
-При Таблица \rf{tab:diff-c017} се получават сходни резултати. При по-големи стойности за $\beta$, процентната разлика нараства до $7.0\%$ и $4.6\%$ съответно в $L_2$ и $L_\infty$ норми. Описаните разлики при всичките разгледани случаи се оказват достатъчно големи, както ще бъде показано в последствие.
+При Таблица \rf{tab:diff-c017} се получават сходни резултати. При по-големи стойности за $\beta$, процентната разлика нараства до $7.0\%$ и $4.6\%$ съответно в $L_2$ и $L_\infty$ норми. Описаните разлики при повечето от разгледани случаи се оказват достатъчно големи и водят до разпадане на вълната дори и при малка скорост от $c=0.27$ и $\beta = 3$, както е показано в \cite{ref21, dani, milenaDani}. Този пример е разгледан по-надолу в настоящата работа в частта ``Числен тест за хиперболичната задача при параметри $\beta = 3$ и $c=0.27$'', където е показано, че формата и максимума на вълната се запазват за времевия интервал $[0, 10]$, ако за начално условие се изполва решението от ``Метода на простата итерация'' приложен за елиптичната задача. 
 
+\section{Гранично условие за двумерното елиптично уравнение \rf{eq3}}
+Трябва да се отбележи, че както елиптичното така и хиперболичното уравнения са дефинирани в цялата равнина $\RR^2$. За да се решат тези уравнения числено се въвежда краен правоъгълник, върху който се построява мрежа $\Omega_h$. Така могат да се получат резултати, които апроксимират непрекъснатото решение в неограничената област, като целият процес трябва да приключи за някакво разумно време (не повече от два-три дни при най-ситните стъпки $h$ и $\tau$). В случай, че за уравнение \rf{eq3} се приложи гранично условие по краищата на областта $\partial \Omega_h$, то със сигурност изчислителната сложност ще намалее използвайки по-малки области особено при Тест 2 ($\Omega_h = [-128, 128] \times [-58, 58]$). Тук се използва Гранично Условие (ГУ) познато в литературата като абсорбиращо ГУ (виж \cite{ref16} при вълнови уравнения, \cite{ref31} при уравнения от типа на Хелмхолц, \cite{ref32} за елиптични уравнения от втори ред и т.н.). Задачата за намиране на гранично условие е разгледана в \cite{ref116}, където е открита следната асимптотика за търсената функция $v$:
+\be
+v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r>>1
+\ee
+за достатъчно големи стойности $r = \sqrt{x^2 + y^2}$. Тази част на дисертацията изследва едно ново гранично условие за стационарното ПУБ \rf{eq3}:
+\be\label{bndK}
+v(x,y) = \mu \frac{ (1-c^2)x^2 - y^2}{ ((1-c^2)x^2 - y^2)^2}, \quad x^2 + y^2 >> 1.
+\ee
+Условието \rf{bndK} има аналитичен вид и директно зависи от $x,y$ и скоростта $c$. Уравнение \rf{eq3} е еквивалентно на 
+\begin{align}\label{eq3full}
+&\beta v_{xx} + \beta (1-c^2) v_{yy} - v_{xxxx} - (2-\beta c^2)v_{xxyy} - (1-\beta c^2)v_{yyyy} \nonumber \\ 
+&- \alpha \beta (v^2)_{xx} - \alpha \beta (v^2)_{yy}  =0.
+\end{align}
+Взимайки предвид факта, че функцията $v(r)$ има асимптотика $O(r^{-2})$, то учакването е, че за големи стойности на $r >> 1$ членовете $\beta v_{xx}$ и $\beta (1-c^2) v_{yy}$ ще имат асимптотика $O(r^{-4})$, а останалите събираеми в уравнението \rf{eq3full}:
+\be
+- v_{xxxx},  - (2-\beta c^2)v_{xxyy},  - (1-\beta c^2)v_{yyyy}, - \alpha \beta (v^2)_{xx}, - \alpha \beta (v^2)_{yy}
+\ee
+ще имат асимптотика, която е $O(r^{-6})$. Така за големи стойности на $r$, пренебрегвайки членовете от по-нисък порядък $O(r^{-6})$,
+остават два водещи члена:
+\be\label{asymptEq}
+\beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) ~ \frac{1}{x^2 + y^2}, \quad x^2 + y^2 >>1.
+\ee
+Вида на отделните членове е описан в серия от експериметни и може да се види на Фигура \ref{fig:assympt_cfix}, където $c=0.17$ е фиксирано, а $\beta = 1, 3, 5$ се мени и Фигура \ref{fig:assympt_betafix}, където $\beta=1$ е фиксирано, а $c = 0.1, 0.5, 0.9$ се мени. Съответните числени  експерименти са направени при големина на областта $\Omega_h = [-50, 50] \times [-50, 50]$, с метод на Тейлор, шести ред апроксимация $p=6$, стъпка по пространството $h=0.2$, $\alpha = 1$ и праг на спиране $\epsilon \le 5 \times 10^{-10}$. Използвано е нулево гранично условие използвайки алгоритъма за елиптичната задача от предишната глава. Представените графики са в логаритмични скали по $x,y$. Основния извод от тези картинки е, че водещите членове с най-голяма абсолютна стойност са $- \alpha \beta (v^2)_{xx}$ и  $- \alpha \beta (v^2)_{yy}$, а останалите са по-малки. Остатъкът $R$ от \rf{residual}, който също е представен на графиката, е сума от всички членове в уравнението \rf{eq3full}. Изобразявайки функцията $\Psi : \RR \rightarrow \RR$, с уточнението че $\Psi(r) = r^{-n}, n \in \mathbb{N}$, в логаритмични скали представлява граф от вида $(\rho, -n \rho )$, където $\rho = log_{10}(r)$ и $log_{10}( \Psi(r) ) = -n \rho$, т.е. това е линейна функция с наклон $-n$. Същото свойство е видно и на всички графики от Фигурите \ref{fig:assympt_cfix} и \ref{fig:assympt_betafix}. 
+\begin{figure}[ht]
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedleft
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongX_50_ZB2_bt1_c017_h020_O(h^6).png}
+	\end{minipage}
+	\begin{minipage}[b]{0.5\linewidth}
+		 \raggedright
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongY_50_ZB2_bt1_c017_h020_O(h^6).png}
+	\end{minipage}
+
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedleft
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongX_50_ZB2_bt3_c017_h020_O(h^6).png}
+	\end{minipage}
+	\begin{minipage}[b]{0.5\linewidth}
+		 \raggedright
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongY_50_ZB2_bt3_c017_h020_O(h^6).png}
+	\end{minipage}
+
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedleft
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongX_50_ZB2_bt5_c017_h020_O(h^6).png}
+	\end{minipage}
+	\begin{minipage}[b]{0.5\linewidth}
+		 \raggedright
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongY_50_ZB2_bt5_c017_h020_O(h^6).png}
+	\end{minipage}
+%\centerline{$c=0.17$}
+%\centerline{$\beta = 1,2,3,4,5$ (от горе надолу) }
+
+%\centerline{$\beta = 1$}
+%\centerline{$c = 0.1, 0.3, 0.5, 0.7, 0.9$ (от горе надолу)}
+	\caption{Асимптотичното поведение на членовете от уравнение \rf{eq3full}, представени в абсолютна стойност и логаритмични скали по $x,y$, получено с ``Метода на простата итерация'' и нулево гранично условие. Скоростта $c=0.17$ е фиксирана, а дисперсионния параметър се мени както следва $\beta = 1,3,5$ (от горе надолу). }
+	\label{fig:assympt_cfix}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[ht]
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedleft
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongX_50_ZB2_bt1_c010_h020_O(h^6).png}
+	\end{minipage}
+	\begin{minipage}[b]{0.5\linewidth}
+		 \raggedright
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongY_50_ZB2_bt1_c010_h020_O(h^6).png}
+	\end{minipage}
+
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedleft
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongX_50_ZB2_bt1_c050_h020_O(h^6).png}
+	\end{minipage}
+	\begin{minipage}[b]{0.5\linewidth}
+		 \raggedright
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongY_50_ZB2_bt1_c050_h020_O(h^6).png}
+	\end{minipage}
+
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedleft
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongX_50_ZB2_bt1_c090_h020_O(h^6).png}
+	\end{minipage}
+	\begin{minipage}[b]{0.5\linewidth}
+		 \raggedright
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongY_50_ZB2_bt1_c090_h020_O(h^6).png}
+	\end{minipage}
+%\centerline{$c=0.17$}
+%\centerline{$\beta = 1,2,3,4,5$ (от горе надолу) }
+
+%\centerline{$\beta = 1$}
+%\centerline{$c = 0.1, 0.3, 0.5, 0.7, 0.9$ (от горе надолу)}
+	\caption{Асимптотичното поведение на членовете от уравнение \rf{eq3full}, представени в абсолютна стойност и логаритмични скали по $x,y$, получено с ``Метода на простата итерация'' и нулево гранично условие. Скоростта се мени както следва $c=0.1, 0.5, 0.9$  (от горе надолу), а дисперсионния параметър $\beta = 1$ е фиксиран. }
+	\label{fig:assympt_betafix}
+\end{figure}
+\FloatBarrier
+Следната смяна $\bar x  = \sqrt{1-c^2} x$, $\bar y = y$ и $\tilde V (\bar x, \bar y)$ на променливите трансформира \rf{asymptEq} в уравнението на Лаплас:
+\be\label{LaplaceEq}
+\Delta \tilde V(\bar x, \bar y) = 0, \quad \tilde V(\bar x, \bar y) = \frac{1}{\bar r^2}, \quad \bar r = \sqrt{\bar x^2 + \bar y^2} \rightarrow \infty.
+\ee
+Последното в полярни координати има следния вид:
+\begin{align}\label{LaplacePolar}
+&\frac{\partial^2}{\partial \bar r^2} \tilde V_p(\bar r, \phi) + \frac{1}{\bar r} \frac{\partial}{\partial \bar r} \tilde V_p(\bar r, \phi) + \frac{1}{\bar r^2} \frac{\partial^2}{\partial \bar \phi^2} \tilde V_p(\bar r, \phi) = 0 \\
+&\phi = arctan(\frac{\bar y}{\bar x}) \nonumber
+\end{align}
+След разделяне на променливите $\tilde V_p(\bar r, \phi) = H(\bar r) G(\phi)$ в \rf{LaplacePolar} за решението му се получават следните функции:
+\begin{align}\label{LaplaceSol}
+&H(\bar{r}) = \sum^{\infty}_{n=0} (\mu_{1,n} \frac{1}{ \bar{r}^n} + \mu_{2,n} \bar{r}^n ),
+\\ \nonumber &G(\phi) = \sum^{\infty}_{n=0} (\mu_{3,n}sin(n \phi ) + \mu_{4,n}cos(n \phi)),
+\end{align}
+където $\mu_{1,n}, \mu_{2,n}, \mu_{3,n}, \mu_{4,n}, n \neq 0$ са реални константи. Първата функция се опростява до вида
+\be
+H(\bar r) = \mu_{1,2}\frac{1}{\bar r^2}, \quad \mu_{1,n} = 0, \quad n \neq 2, \quad \mu_{2,n} = 0, \quad n \ge 0
+\ee
+знаейки, че решението има асимптотика от вида $1/r^2$. За втората функция се получава
+\be
+G(\phi) = \mu_{4,2}cos(2 \phi), \quad \mu_{3,n} = 0, \quad n \ge 0, \quad \mu_{4,n} = 0, \quad n \neq 2.
+\ee
+знаейки, че решението за достатъчно големи $r >> 1$ е положително върху абцисата и отрицателно върху ординатата (по посока на движение на вълната). Крайната формула за решението на \rf{LaplacePolar} е:
+\be \label{LaplaceSol2}
+\tilde V_p(\bar r, \phi) = \mu_v \frac{ cos(2 \phi) }{ \bar r^2 } = \mu_v \frac{ cos(\phi)^2 - sin(\phi)^2 }{ \bar r^2 } = \mu_v \frac{ \bar x^2 - \bar y^2 }{ (\bar x^2 + \bar y^2)^2 },
+\ee
+където $\mu_v = \mu_{1,2} \mu_{4,2}$. В старите $(x, y)$ координати \rf{LaplaceSol2} е еквивалентно на 
+\be
+\tilde v(x, y) = \mu_v \frac{ (1-c^2) x^2 - y^2 }{ ((1-c^2) x^2 + y^2)^2 }
+\ee
+Предполага се, че помощната функция $\widehat w$ от \rf{eq45} има същата асимптотика, защото зависи пряко от $\widehat v$ и затова граничната функция за $\widehat w$ ще има сходен вид
+\be
+W(x,y) = \mu_w \frac{ (1-c^2) x^2 - y^2 }{ ((1-c^2) x^2 + y^2)^2 },
+\ee
+ където $\mu_w = \beta(1 - c^2) \mu_v$.
 \section{7.~Conclusion.}
 Fourth and sixth order finite difference schemes are applied for numerical evaluation of the stationary traveling wave solutions to the Boussinesq equation in this paper. The high accuracy of the method applied is demonstrated on several experiments. The numerical solution obtained here performs similarly to the numerical solutions given in \cite{Ch2012,Ch2011} with respect to solution shape and the dependence on the velocity $c$ and relative dispersion $\beta$. 
-The best--fit approximation formulae from  \cite{Ch2011} fail to satisfy the initial equation in the classical sense in the neighborhood of the origin. 
+The best-fit approximation formulae from  \cite{Ch2011} fail to satisfy the initial equation in the classical sense in the neighborhood of the origin. 
 In the future, we will exploit the obtained stationary traveling wave solutions as initial data to the corresponding Boussinesq equation in order to seek two dimensional solitary wave solutions to \rf{eq1}.
 
 \bigskip
@@ -1159,7 +1292,7 @@ g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(
 	\begin{minipage}[b]{0.48\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/Energy_EnergySave_bt1_c090_x3O.png}
 	\end{minipage}
-\caption{Дискретната енергия на решението от Консервативната схема при Тест 1 (ляво) и Тест 2 (дясно) с апроксимационна грешка $O(|h|^2 + \tau^2)$ във времето $T_{\tau} = [0 10]$.}
+\caption{Дискретната енергия на решението от Консервативната схема при Тест 1 (ляво) и Тест 2 (дясно) с апроксимационна грешка $O(|h|^2 + \tau^2)$ във времето $T_{\tau} = [0, 10]$.}
 \label{EnOnly}
 \end{figure}
 Фигура \rf{EnOnly} показва развитиетно на дискретната Енергия за двата числени теста описани в Таблица \rf{tableP}. Вижда се, че независимо от големината на използваните стъпки по пространството $h = 0.05$, $h = 0.1$ и $h = 0.2$ при Тест 1 и $h = 0.1$, $h = 0.2$ и $h = 0.4$ при Тест 2, Енергията е константа величина за целия времеви период $T_{\tau} \in [0, 10]$. Стъпките по времето са описани в Таблица \rf{tableD}. Тези резултати в последствие ще се съпоставят с Енергията получена при метода на Тейлор. Пресметнат е и редът на сходимост за дискретната Енергия описан в Таблица \rf{tableD}, използвайки правилото на Рунге \rf{Runge}. Първата колона описва параметричната постановка съответно при Тест 1 и Тест 2. Втората колона е със стъпките по пространството и времето. Последните две колони дават информация за апроксимационните грешки и реда на сходимост получени съответно в $L_2$ и $L_\infty$ норми. Вижда се, че вторият ред на апроксимация отговаря на полученият втори ред на сходимост от таблицата при използваните норми.
@@ -1222,7 +1355,7 @@ u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_
 \nonumber\\
 \frac{ \tau^p }{ p! } \frac{ \partial^{p+1} u }{ \partial t^{p+1} }(x_i, y_j, t) + O(\tau^{p+1})
 \end{align}
-което има същия ред на апроксимация спрямо \rf{TSe}. Това е необходимо, тъй като решението на по-следващия слой по времето $t+2\tau$ зависи от двойката ($u(t+\tau)$, $u_t(t+\tau)$), която служи като базис и всички по-високи производни могат да се изразят единствено чрез нея. След като всички необходими производни са пресметнати се заместват в уравнение \rf{TSe}, за да се получи решението на следващия слой по времето $t+\tau$, със следните локални апроксимации: за $p=2$ имаме $O(|h|^2 + \tau^3)$, за $p=4$ - $O(|h|^4 + \tau^5)$ и за $p=6$ - $O(|h|^6 + \tau^7)$. Понеже редът на Тейлор трябва да се пресметне на всеки слой по времето, локалната грешка акумулира с $N_t - 1 = T/\tau$, за да се получи ? $O(|h|^p + T \tau^p)$ : $O(\frac{T}{\tau} |h|^p + T\tau^p))$.
+което има същия ред на апроксимация спрямо \rf{TSe}. Това е необходимо, тъй като решението на по-следващия слой по времето $t+2\tau$ зависи от двойката ($u(t+\tau)$, $u_t(t+\tau)$), която служи като базис и всички по-високи производни могат да се изразят единствено чрез нея. След като всички необходими производни са пресметнати се заместват в уравнение \rf{TSe}, за да се получи решението на следващия слой по времето $t+\tau$, със следните локални апроксимации: за $p=2$ имаме $O(|h|^2 + \tau^3)$, за $p=4$ - $O(|h|^4 + \tau^5)$ и за $p=6$ - $O(|h|^6 + \tau^7)$. Понеже редът на Тейлор трябва да се пресметне на всеки слой по времето, локалната грешка акумулира с $N_t - 1 = T/\tau$, за да се получи $O(|h|^p + T \tau^p)$.
 
 \subsection{Алгоритмични стъпки при метода на Тейлор}
 
@@ -1453,9 +1586,57 @@ D_h^{**} = 100 \times |D(t=0) - D(t=T)|/D(t=0).
 \FloatBarrier
 Тези резултати и разсъждения показват, че колкото е по-голяма областта $\Omega_h$, промяната в Масата отчетена чрез $D_h^{**}$, става все по-малка. Последното твърдение е в подкрепа на тезата, че $D_h$ е константна величина спрямо времевата променлива в непрекъсната област $\Omega$. 
 
-\subsection{Числени резултати за формата и максимума на решението}
-В този параграф се разглежда формата на решението получена както с Консервативната схема и така и с метода на Тейлор. Стойностите на използваните параметри са описани в Таблица \ref{tableP}, когато $p=2$. Накратко, това са числени резултати от Тест 1 и Тест 2, при двата метода на решение, върху три вложени мрежи и с апроксимационни формули само от втори ред. Нека да означим с $uC$ и $uT$ двата класа от решения получени съответно с Консервативната схема \rf{consFDS} и метода на Тейлор \rf{TSe}. 
+\subsection{Числени резултати за формата на решението}
+В тази част се разглежда формата на решението получена както с Консервативната схема, така и с метода на Тейлор. Стойностите на използваните параметри са описани в Таблица \ref{tableP}, когато $p=2$. Накратко, това са числени резултати от Тест 1 и Тест 2, при двата метода на решение, върху три вложени мрежи и с апроксимационни формули само от втори ред. Нека да означим с $uC$ и $uT$ двата класа от решения получени съответно с Консервативната схема \rf{consFDS} и метода на Тейлор \rf{TSe}. 
 Фигури \ref{Test1_Diff} и \ref{Test2_Diff} илюстрират разликите между двата класа от решения получени съответно при Тест 1 и Тест 2. Графиките обхващат само централната (1/9) част от числената област $\Omega_h$, където отклоненията са по-големи. Ако разделим мислено $\Omega_h$ на по три равни по площ части, първо по дължина, а после и по ширина се получават девет еднакви правоъгълника като в картинките се разглежда средният.
+\begin{figure}[ht]\vspace{0.2cm}
+\centering
+	\begin{minipage}[b]{0.32\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T0.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.32\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T6.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.32\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T12.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.32\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T18.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.32\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T24.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.32\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T30.png}
+	\end{minipage}
+\caption{Числени резултати за една вълна при $\beta=3$ и $c = 0.45$ за времена $t=0,6,12,18,24,30$.}
+\label{Wave1}
+\end{figure}
+\FloatBarrier
+\begin{figure}[ht]\vspace{0.2cm}
+\centering
+	\begin{minipage}[b]{0.33\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T0.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.33\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T6.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.33\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T12.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.33\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T18.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.33\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T24.png}
+	\end{minipage}
+	\begin{minipage}[b]{0.33\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T30.png}
+	\end{minipage}
+\caption{Числени резултати за една вълна при $\beta=1$ и $c = 0.9$ за времена $t=0,6,12,18,24,30$.}
+\label{Wave2}
+\end{figure}
+\FloatBarrier
 \begin{figure}[ht]\vspace{0.4cm}
 	\begin{minipage}[b]{0.32\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/compare_30_bt3_c045_h020.png}
@@ -1469,7 +1650,7 @@ D_h^{**} = 100 \times |D(t=0) - D(t=T)|/D(t=0).
 \caption{Разликите $uC - uT$ между класовете от решения получени при Консервативната схема и метода на Тейлор при време $t=10$ и апроксимация $O(|h|^2 + \tau^2)$ при Тест 1. От ляво на дясно се променят стъпките както следва $h=0.2, 0.1, 0.05$.}
 \label{Test1_Diff}
 \end{figure}
-
+\FloatBarrier
 \begin{figure}[ht]\vspace{0.4cm}
 	\begin{minipage}[b]{0.32\linewidth}
 		\includegraphics[width=\linewidth]{../amitans/figures/compare_128_bt1_c09_h040.png}
@@ -1483,59 +1664,10 @@ D_h^{**} = 100 \times |D(t=0) - D(t=T)|/D(t=0).
 \caption{Разликите $uC - uT$  между класовете от решения получени при Консервативната схема и метода на Тейлор при време $t=10$ и апроксимация $O(|h|^2 + \tau^2)$ при Тест 2. От ляво на дясно се променят стъпките както следва $h=0.4, 0.2, 0.1$.}
 \label{Test2_Diff}
 \end{figure}
-
-\begin{figure}[ht]\vspace{0.2cm}
-\centering
-	\begin{minipage}[b]{0.30\linewidth}
-		\includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T0.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.30\linewidth}
-		\includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T6.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.30\linewidth}
-		 \includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T12.png}
-	\end{minipage}
-	\begin{minipage}[b]{0.30\linewidth}
-		\includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T18.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.30\linewidth}
-		 \includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T24.png}
-	\end{minipage}
-	\begin{minipage}[b]{0.30\linewidth}
-		 \includegraphics[width=\linewidth]{../amitans/figures/solution_30x45_bt3_c045_T30.png}
-	\end{minipage}
-\caption{Числени резултати за една вълна при $\beta=3$ и $c = 0.45$ за времена $t=0,6,12,18,24,30$.}
-\label{Wave1}
-\end{figure}
-
-\begin{figure}[ht]\vspace{0.2cm}
-\centering
-	\begin{minipage}[b]{0.30\linewidth}
-		\includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T0.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.30\linewidth}
-		\includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T6.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.30\linewidth}
-		 \includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T12.png}
-	\end{minipage}
-	\begin{minipage}[b]{0.30\linewidth}
-		\includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T18.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.30\linewidth}
-		 \includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T24.png}
-	\end{minipage}
-	\begin{minipage}[b]{0.30\linewidth}
-		 \includegraphics[width=\linewidth]{../amitans/figures/solution_128x90_bt1_c090_T30.png}
-	\end{minipage}
-\caption{Числени резултати за една вълна при $\beta=1$ и $c = 0.9$ за времена $t=0,6,12,18,24,30$.}
-\label{Wave2}
-\end{figure}
-
+\FloatBarrier
 Фигурите показват, че най-големите различия се проявяват около и в максимума на вълната. В допълнение към последните резултати е Таблица \ref{tableF}, която отново показва разликите $||uC - uT||_\kappa$ в  $L_2$ и ${L_\infty}$ норми. Първата колона от таблицата е за вида на числения тест, който е направен. Във втората колона са описани стъпките по пространството и времето. В третата и четвъртата са разликите от решенията между двата метода в $L_2$ и ${L_\infty}$ норми. Последната колона от таблицата е безкрайната норма на решението (което е максимума) при Консервативната схема. Наблюдава се, че при намаляване на дискретните стъпки $h$ и $\tau$ различията стават по-малки. Също така процентната разлика между двете решения дефинирана с безкайната норма
 $$\frac{ ||uC - uT||_{L_\infty}} { ||uC||_{L_\infty} } \times 100$$
-варира в интервала $[0.0001\%, 0.69\%]$ за всички случаи описани в таблицата. Аналогични резултати са получени и при процентната разлика дефинирана с $L_2$ нормата и затова те са пропуснати. Формите на решенията получени с Консервативната схема и метода на Тейлор са доста близки и от числените резултати се забелязва тенденцията, че разликата $||uC - uT||_\kappa$ клони към нула когато стъпките $h$ и $\tau$ са безкрайно малки.
-
+варира в интервала $[0.0001\%, 0.69\%]$ за всички случаи описани в таблицата. Аналогични резултати са получени и при процентната разлика дефинирана с $L_2$ нормата и затова те са пропуснати. Формите на решенията получени с Консервативната схема и метода на Тейлор са доста близки и от числените резултати се забелязва тенденцията, че разликата $||uC - uT||_\kappa$ клони към нула когато стъпките $h$ и $\tau$ са много малки.
 %F
 \begin{table}[ht]
 \centering
@@ -1561,11 +1693,10 @@ $$\frac{ ||uC - uT||_{L_\infty}} { ||uC||_{L_\infty} } \times 100$$
 		\caption{Разлики $uC - uT$ между двата класа от решения получени от Консервативната схема и метода на Тейлор при време $t=10$ а апроксимация $O(|h|^2 + \tau^2)$. Разликите са измерени в $L_2$ и $L_\infty$ норми.}
 \label{tableF}
 \end{table}
-
+\FloatBarrier
 В този параграф се разглежда запазването на формата на решението във времевия интервал $[0, 10]$. Както и в по-горните случаи така и тук с помощта на параметричната Таблица \ref{tableP} се описват компютърните изчисления. Използван е метод на Тейлор с втори, четвърти и шести ред на апроксимация, а при всяка от апроксимациите са използвани три вложени мрежи. Резултатите са представени в Таблица \ref{tableG}. Първата колона описва вида на теста и апроксимацията. Втората колона представя стъпките по времето и пространството $h$ и $\tau$. В третата и четвъртата колони са показани разликите между решенията в началния $t=0$ и крайния  $t=10$ момент от време в  $L_2$ и $L_\infty$ норми. Вълната изминава разтояние равно на скоростта й умножена по крайното време $t=10$. В този случай максимума на решението се намира в $(0, 10 c) \in \Omega$, а в началния момент при $t=0$ максимума се намира в нулата $(0, 0) \in \Omega$. За съжаление при Тест 1, $h=0.2$ и Тест 2, $h=0.4$ максимума на решението при време $t=10$ не попада върху точка от мрежата. Затова са направени допълнителни итерации по времето с които да се отмести върха върху най-близката точка от мрежата $\Omega_h$. При Тест 1 ($c=0.45$) вълната изминава допълнително разтояние от 0.1 за време 2/9, което измества максимума в позиция $(0, 4.6) \in \Omega_h$. При Тест 2 ($c=0.9$) вълната изминава допълнително разтояние от 0.2 за време 2/9, което измества максимума в позиция $(0, 9.2) \in \Omega_h$. Разликата между двете решения $u^{(0)} - u^{(N_t)}$ може да се опише чрез матрица със следните коефициенти:
 $$ \delta_{i,j} = u_{i,j}^{(0)} - u_{i,j+cT/h}^{(N_t)},$$
 където $0 < i < N_x$ и $0 < j < N_y - cT/h$. 
-
 %G
 \begin{table}[ht]
 \centering
@@ -1606,9 +1737,11 @@ $$ \delta_{i,j} = u_{i,j}^{(0)} - u_{i,j+cT/h}^{(N_t)},$$
 		\caption{Разликата $||u^{(0)} - u^{(N_t)}||_\kappa$ в $L_2$ и $L_\infty$ норми между решенията в началния $t=0$ и крайния $t=10$ моменти от време. За резултатите от таблицата е използван единствено метода на Тейлор.}
 \label{tableG}
 \end{table}
-
+\FloatBarrier
 Таблица \ref{tableG} показва, че с намаляване на стъпките по пространството $h$ и времето $\tau$, разликата между разгледаните решения също намалява. В допълнение се вижда, че формата на вълната се запазва по-добре, когато степента на апроксимация $p$ на диференциалните оператори е по-висока. Последните разсъждения затвърждават очакването, че разликата във формата на решението $||u^{(0)} - u^{(N_t)}||_\kappa$ при различни времена клони към нула когато $h$ и $\tau$ са много малки.
 
+\subsection{Числени резултати за максимума на решението}
+В следния параграф се обръща внимание на максимума на решението, но при по-голям времеви интервал $[0, 30]$. Постановката за този числен експеримент е описана с помощта на Таблица \ref{tableP}, т.е. използван е метод на Тейлор с шести ред на апроксимация $p=6$, със стъпки $h=0.05$, $\tau = 0.001$ при Тест 1 и $h=0.2$,  $\tau=0.02$ при Тест 2. Крайното време е $T=30$, а големината на областта $\Omega_h$ е увеличена по $y$ оста за да обхване преместването на вълната изцяло, т.е. $L_y = 45$ при Тест 1 и $L_y = 90$ при Тест 2. Както вече е описано по-горе, точната позиция на максимума не винаги лежи върху точка от мрежата $\Omega_h$. Това води до назъбване на графиките, което се забелязва по-отчетливо на десния панел при Тест 2 на Фигура \ref{Maximum}. 
 \begin{figure}\vspace{0.2cm}
 	\centering
 	\begin{minipage}[b]{0.40\linewidth}
@@ -1620,9 +1753,7 @@ $$ \delta_{i,j} = u_{i,j}^{(0)} - u_{i,j+cT/h}^{(N_t)},$$
 \caption{Развитие на максимума на решението върху по-голям интервал от време $[0, 30]$ при Тест 1 (ляв панел) и Тест 2 (десен панел).}
 \label{Maximum}
 \end{figure}
-
-В следния параграф се обръща внимание на максимума на решението, но при по-голям времеви интервал $[0, 30]$. Постановката за този числен експеримент е описана с помощта на Таблица \ref{tableP}, т.е. използван е метод на Тейлор с шести ред на апроксимация $p=6$, със стъпки $h=0.05$, $\tau = 0.001$ при Тест 1 и $h=0.2$,  $\tau=0.02$ при Test 2. Крайното време е $T=30$, а големината на областта $\Omega_h$ е увеличена по $y$ оста за да обхване преместването на вълната изцяло, т.е. $L_y = 45$ при Тест 1 и $L_y = 90$ при Тест 2. Както вече беше споменато, точната позиция на максимума не винаги лежи върху точка от мрежата $\Omega_h$. Това води до назъбване на графиките, което се забелязва по-отчетливо на десния панел при Тест 2 на Фигура \ref{Maximum}. Формите на решението са показани на Фигури \ref{Wave1} и \ref{Wave2} съответно при Тест 1 и Тест 2.
-
+\FloatBarrier
 За всеки от разработените методи са изчислени масата и енергията върху полученото решение. То, заедно с неговите свойства като маса, енергия и форма са сравнени. Изчисленията са направени върху три вложени мрежи, за да се изследва сходимостта на методите. Показано е, че решенията получени с метода на Тейлор и Консервативната схема са доста близки. Една от целите на статията е да покаже, че метода на Тейлор приложен към уравнението \rf{problemVC} също води до достатъчно добри резултати, а също така може да се приложи с по-висок ред на апроксимация, което води и до по-фино решение.
 
 \begin{thebibliography}{99}
@@ -1706,6 +1837,19 @@ Zucker, Ruth, "Chapter 25.4.14: Numerical Interpolation, Differentiation, and In
 
 \bibitem{ref2c0} Kolkovska N., Numerical Evaluation of 2D Ground States,
 \emph{ EPJ Web of Conferences}, \textbf{108} (2016), 02032.
+
+\bibitem{dani}
+C. Christov, N. Kolkovska, D. Vasileva, On the numerical simulation of unsteady solutions for the 2D Boussinesq paradigm equation, LNCS, \textbf{8236}  (2011), 386.
+
+\bibitem{milenaDani}
+M.Dimova, D. Vasileva, Comparison of Two Numerical Approaches to Boussinesq Paradigm Equation, 
+{\it Numerical Analysis and Its Applications. NAA 2012. Lecture Notes in Computer Science}, \textbf{8236}, (2013), 255.
+
+\bibitem{ref31} B. Engquist and A. Majda, Absorbing boundary conditions for the numerical simulation of waves, {\it Math. Comp.}, \textbf{31} (1977), 629–651.
+
+\bibitem{ref32}  C.I. Goldstein, A finite element method for solving Helmholtz type equations in waveguides and other unbounded domains,
+{\it Math. Comp.}, \textbf{39} (1982), 309–324.
+
 
 \end{thebibliography}
 \end{document}

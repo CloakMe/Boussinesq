@@ -92,10 +92,9 @@ classdef (ConstructOnLoad) BEEngineTaylorZeroBnd < BEEngineTaylor
         X = -wvt ./ (this.Lambda_X + this.Lambda_Y);
         vec1 = this.h^2 * this.invEigenFinDiffMat_xT * X * this.invEigenFinDiffMat_y;
         
-        midv = (vz  + vpo)/2;
         energyTerm = this.beta * ( vec1 + vt ) .* vt  + ...
-            (this.beta * midv - this.domainUtils.DeltaHZeroBnd( midv )/this.h^2 ) .* midv + ...
-            (this.alpha*this.beta/3 ) * ( vz.^3 + vpo.^3 ); %  
+            (this.beta * vz - this.domainUtils.DeltaHZeroBnd( vz )/this.h^2 ) .* vz + ...
+            (2*this.alpha*this.beta/3 ) * ( vz.^3 ); %  
         e = this.GetIntegralOf(energyTerm);
     end
     
