@@ -1,6 +1,6 @@
-function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secondDerivative, extended)
+function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secondDerivative, mu, extended)
 
-    if(nargin == 13)
+    if(nargin == 14)
         extended = 0;
     end
     
@@ -45,7 +45,8 @@ function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBo
     
     legendString = { '|\beta U_x_x|', '|\gamma_1U_y_y|', ...
         '|\gamma_2U_y_y_y_y|', '|\gamma_3U_x_x_y_y|', '|U_x_x_x_x|', ...
-        '|\alpha\beta(U^2)_x_x|', '|\alpha\beta(U^2)_y_y|', '|R|'};
+        '|\alpha\beta(U^2)_x_x|', '|\alpha\beta(U^2)_y_y|', '|R|', ...
+         '|\gamma_4 y^{-4}|', '|\gamma_5 y^{-6}|'};
     
     figure(2)
     %ax2 = axes('Position',[0.1 0.1 0.64 0.80]);
@@ -57,38 +58,44 @@ function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBo
          y(ypts), abs(coefU_xxxx(zeroX, ypts)), ...
          y(ypts), abs(coeffUsq_xx(zeroX, ypts)),...
          y(ypts), abs(coeffUsq_yy(zeroX, ypts)), 'g',...
-         y(ypts), abs(residual(zeroX, ypts) ), '--' );% y(zeroY+10:end-barF), 1 ./ y(zeroY+10:end-barF) .^ 2, 'k' ); %(1+end)/2  
+         y(ypts), abs(residual(zeroX, ypts) ), '--', ...
+         y(ypts(1:5:end)), abs( ( btU_xx(zeroX, ypts(1))*y(ypts(1))^4 ) ./ y(ypts(1:5:end)).^4), 'ok', ...
+         y(ypts(1:5:end)), abs( ( coefU_xxyy(zeroX, ypts(1))*y(ypts(1))^6 )./y(ypts(1:5:end)).^6), 'om');% y(zeroY+10:end-barF), 1 ./ y(zeroY+10:end-barF) .^ 2, 'k' ); %(1+end)/2  
      
     set(plt(5),'Color',[0.4500 0.120 0.90]);
     set(plt(6),'Color',[0.92 0.6 0.1]);    %orange
     set(plt(8),'Color',[0.20 0.550 0.20]);
     
-    xlabel('y','FontSize',17);    
-    legend(legendString);
+    label_y = strcat('y in [', num2str(y(ypts(1)), '%.1f'), ',', num2str(y(ypts(end)), '%.1f'), ']');
+    xlabel(label_y,'FontSize',17);    
     set(gca,'FontSize',18);
-    legend(legendString,'Location', 'eastoutside','FontSize',16);        
+    legend(legendString, 'FontSize',14, 'Position',[0.772 0.166 0.227 0.829]);   %,'Location', 'eastoutside'
     title('x==0 cross-section','FontSize',16);
     %xlabel('x','FontSize',18);    ylabel('y','FontSize',18);
     
     
+    legendString = {'|\gamma_6 x^{-4}|', '|\gamma_7 x^{-6}|'};
+     
     figure(3) 
-    plt = loglog(x(xpts), abs(btU_xx(xpts, zeroY)), 'b',...
+    plt = loglog(x(ypts(1:5:end)), abs( ( btU_xx(xpts(1), zeroY)*x(xpts(1))^4 ) ./ x(ypts(1:5:end)).^4), 'ok', ...
+        x(ypts(1:5:end)), abs( ( coefU_xxyy(xpts(1), zeroY)*x(ypts(1))^6 )./x(ypts(1:5:end)).^6), 'om', ...
+        x(xpts), abs(btU_xx(xpts, zeroY)), 'b',...
         x(xpts), abs(bt1McSQU_yy(xpts, zeroY)), 'r:',...
         x(xpts), abs(coefU_yyyy(xpts, zeroY)), 'c', ...
         x(xpts), abs(coefU_xxyy(xpts, zeroY)), 'k',...
         x(xpts), abs(coefU_xxxx(xpts, zeroY)), ...
         x(xpts), abs(coeffUsq_xx(xpts, zeroY)) ,...
         x(xpts), abs(coeffUsq_yy(xpts, zeroY)), 'g',...
-        x(xpts), abs(residual(xpts, zeroY)),'--' ); 
+        x(xpts), abs(residual(xpts, zeroY)),'--' );
     
-    set(plt(5),'Color',[0.4500 0.120 0.90]);
-    set(plt(6),'Color',[0.92 0.6 0.1]);    %255,158,0
-    set(plt(8),'Color',[0.20 0.550 0.20]);
+    set(plt(5+2),'Color',[0.4500 0.120 0.90]);
+    set(plt(6+2),'Color',[0.92 0.6 0.1]);    %255,158,0
+    set(plt(8+2),'Color',[0.20 0.550 0.20]);
     xlim([x(xpts(1)) x(xpts(end))])
-    %set(plt(5),'Color',[0.9900 0.280 0.00]);
-    xlabel('x','FontSize',18);
+    label_x = strcat('x in [',num2str(x(xpts(1)),'%.1f'), ',  ', num2str(x(xpts(end)),'%.1f'), ']');
+    xlabel(label_x,'FontSize',18);
     set(gca,'FontSize',18);
-    legend(legendString,'Location', 'eastoutside','FontSize',16);        
+    legend(legendString, 'FontSize',14, 'Position',[0.205 0.2 0.15 0.2]);   %,'Location', 'eastoutside'
     title('y==0 cross-section','FontSize',16);    
     
     if(extended == 0)

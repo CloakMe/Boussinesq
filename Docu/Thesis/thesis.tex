@@ -361,8 +361,8 @@ Test 2	&      $\beta = 1$	&      $p=2, 4, 6$    	&     $h=0.4,$      	& $L_x = 1
 \end{table}
 с последващите уточнения. Първо, Консервативната схема е приложена само с втори ред на апроксимация  $p=2$. Второ, при $p=2$ дискретната стъпка по времето е 
  $\tau=h/200$, иначе при $p=4, 6$ тя е $\tau = h/10$. Трето, всички изчисления при хиперболичната задача използват граничните условия, както са описани в секцията "Нулево гранично условие". Четвърто, при решаването на елиптичната задача се използва мрежа само в първи квадрант и затова се налагат допълнителни гранични условия по абцисата и ординатата.
-\section{Метод за обръщане на двумерния дискретен оператор на Лаплас с по-ниска алгоритмична сложност (Fast Poisson Solvers) }
 
+\section{Метод за обръщане на двумерния дискретен оператор на Лаплас с по-ниска алгоритмична сложност (Fast Poisson Solvers) }
 Нека е дадена следната задача:
 \be\label{PoissonEq}
 -\Delta v = f
@@ -371,7 +371,14 @@ Test 2	&      $\beta = 1$	&      $p=2, 4, 6$    	&     $h=0.4,$      	& $L_x = 1
 \be\label{PsnDiscret}
 -\Delta_{h,p,x} *  V_h - V_h * (\Delta_{h,p,y})^T = F_h,
 \ee
-където $V_h, F_h \in \RR^{(N_x-2)\times(N_y-2)}$ са матрици с елементи $v(x_i,y_j)$ и съответно $f(x_i,y_j)$. Нека за матриците $(\Delta_{h,p,x})^T$ и $(\Delta_{h,p,y})^T$, както са дефинирани в ``Нулево гранично условие'', имаме следните собствени стойности $\lambda_{x,i}$, $\lambda_{y,j}$ и собствени вектори $s_{x,i}$, $s_{y,j}$:
+където $V_h, F_h \in \RR^{(N_x-2)\times(N_y-2)}$ са матрици с елементи $v(x_i,y_j)$ и съответно $f(x_i,y_j)$ (виж \cite{ref33}). Дискретните функции $V_h, F_h$ представят непрекъснатите такива $v, f$ ограничени върху мрежата $\Omega_h$, т.е. $V_h = v(\Omega_h)$ и $F_h = f(\Omega_h)$ (виж Фигура \ref{fig:FPSexplained}).
+\begin{figure}[ht]
+     \includegraphics[width=\linewidth]{FPSExplained.png}
+	\caption{}
+	\label{fig:FPSexplained}
+\end{figure}
+\FloatBarrier
+Нека за матриците $(\Delta_{h,p,x})^T$ и $(\Delta_{h,p,y})^T$, както са дефинирани в ``Нулево гранично условие'', имаме следните собствени стойности $\lambda_{x,i}$, $\lambda_{y,j}$ и собствени вектори $s_{x,i}$, $s_{y,j}$:
 \begin{align}
 S_x:=[s_{x,1},..,s_{x,N_x-2}],\\
 D_x:= diag(\lambda_{x,1},..,\lambda_{x,N_x-2}),\\
@@ -428,11 +435,11 @@ v-\Delta v = f,
 \ee
 дефинирана в областта $\Omega$ с хомогенни гранични условия $v \big|_{\partial\Omega} = 0$. В този случай дискретната версия на \rf{PoissonEqExt} използвайки \rf{DeltaH} има вида:
 \be\label{PsnDiscretExt}
-\beta V_h - \Delta_{h,p,x} * V_h - V_h * (\Delta_{h,p,y}) ^{T}  = F_h,
+V_h - \Delta_{h,p,x} * V_h - V_h * (\Delta_{h,p,y}) ^{T}  = F_h,
 \ee
 което е аналогично с \rf{PsnDiscret} и дефинициите заложени там. Използвайки същите съждения от \rf{subst}-\rf{fpp4} лесно се получава, че:
 \be\label{fpp4Ext}
-X_{i,j} = - b_{i,j}/(\lambda_{x,i}  + \lambda_{x,j} -\beta)
+X_{i,j} = - b_{i,j}/(\lambda_{x,i}  + \lambda_{x,j} -1)
 \ee
 за всяко $(i,j)$, $i = 1,..,N_x-2$, $j = 1,..,N_y-2 $.
 Изчислителната сложност при обръщането на оператора на Лаплас изложен тук се разделя на две части. Първата част (I) е свързана с изчисляването на собствените стойности $D_x, D_y$ и вектори $S_x, S_y$ на двете матрици $(\Delta_{h,p,x})^T$ и $(\Delta_{h,p,y})^T$. Също така се включват и пресмятанията необходими за получаването на обратните матрици $(S_x^T)^{-1}$ и $S_y^{-1}$. Сложността на тези две процедури се оценя на $O(N_x^3+N_y^3)$ (\cite{ref260}) и съответно на $O(N_x^{2.37}+N_y^{2.37})$ (\cite{ref27}). Втората част (II) е предимно свързана с умножение на не-разредени матрици в дясната част на \rf{fpp2} и обратната субституция \rf{substInv}, като и в двата случая произведението се формира от три матрици  с големини както следва: първата - $(N_x-2) \times (N_x-2)$, втората (средната) - $(N_x-2) \times (N_y-2)$ и третата - $(N_y-2) \times (N_y-2)$. Това води до изчислителна сложност от 
@@ -448,7 +455,7 @@ O(N_x N_y \bar{\epsilon}),
 \rf{eq2} добива следната форма
  \begin{align}\label{eq3}
 &c^2 \beta (E- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2 v - \beta \Delta f(v), \\ 
-&v(\overline x, \overline y) \rightarrow 0,  \Delta v(\overline x, \overline y) \rightarrow 0 ,  \quad \text{for}  \sqrt{\overline x^2 + \overline y^2} \rightarrow \infty, \nonumber
+&v(\overline x, \overline y) \rightarrow 0,  \Delta v(\overline x, \overline y) \rightarrow 0 ,  \quad \text{за}  \sqrt{\overline x^2 + \overline y^2} \rightarrow \infty, \nonumber
 \end{align}
 взимайки предвид граничното условие от \rf{eq1} и $\beta = \beta_1 / \beta_2$.
 Решението $v$ на \rf{eq3} заедно с неговите производни клони към нула, когато $|{\overline x}^2 +{\overline y}^2|\rightarrow \infty$.
@@ -462,7 +469,7 @@ O(N_x N_y \bar{\epsilon}),
 \begin{equation}\label{eq44}
  - \Delta w = c^2 \beta v_{xx}. 
 \end{equation}
-Търсят се ненулеви решения на \rf{eq4},\rf{eq44} както е описано в \cite{Ch2012,chd-chr}: фиксира се стойността на нейзвестната функция $v$ в нулата, $v(0,0)=\theta$ и се въвеждат две нови функции: $\widehat{v}=v/{\theta} $ и $\widehat{w}=w/{\theta} $. Следователно $\widehat{v}(0,0)=1$ и 
+Търсят се ненулеви решения на \rf{eq4},\rf{eq44} както е описано в \cite{ref116, ref117}: фиксира се стойността на нейзвестната функция $v$ в нулата, $v(0,0)=\theta$ и се въвеждат две нови функции: $\widehat{v}=v/{\theta} $ и $\widehat{w}=w/{\theta} $. Следователно $\widehat{v}(0,0)=1$ и 
 \begin{equation}\label{eq45}
 \begin{split}
  &- (1 - c^2 \beta) \widehat{v}_{yy} -\widehat{v}_{xx} + \beta (1-c^2) \widehat{v} - \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
@@ -522,6 +529,7 @@ $$
 \frac{ \partial v_{polar} } {\partial r}(0) = 0, \quad v_{polar}(r) \rightarrow 0, \; \text{as} \; r \rightarrow \infty
 \end{align}
 Последното диференциално уравнение и числените му решения са разгледани в \cite{ref1c0, ref2c0}.
+
 \subsection{Контрол на стъпката по времето}
 Възможно е да се използва нефиксирана стъпка по времето $\tau$ за оптимизиране скоростта на сходимост. Когато $\tau > \tau_{stab}$ премине условието за устойчивост, решението започва да разхожда и става назъбено. Тези знаци се проявяват първоначално при остатъка \rf{residual}, докато численото решение $u$ е все още монотонно и разликите между две последователни итерации не са големи. Когато последното се случи, произволно сечение на остатъка $R$ се описва с дискретна функция сменяща положителни с отрицателни стойности върху мрежата. Това е ясен знак, че стъпката $\tau$ трябва да се намали, в противен случай се увеличава. Промяната се случва на всяка итерация с фактор $f_{\tau} \in \{0.72, 1.015\}$, където $\tau_{new} := f_{\tau}\tau$.
 
@@ -539,32 +547,8 @@ c^2\beta \widehat{v}^{(k)}*(\Delta_{h,p,s,y})^T + \Delta_{h,p,s,x} * \widehat{z}
 &-\beta \widehat{v}^{(k)} - c^2\beta \widehat{v}^{(k)}*(\Delta_{h,p,s,y})^T + \Delta_{h,p,s,x} * \widehat{v}^{(k)} +  \widehat{v}^{(k)} * (\Delta_{h,p,s,y})^T 
 + \beta \theta f(\widehat{v}^{(k)}).
 \end{align}
-%\subsection{Асимптотични условия по границата $x=L_x$ и $y=L_y$.}
-
-%The behavior of the solutions $v$ and $w$  as $r =\sqrt{x^2 +y^2} \rightarrow \infty$ is studied in details in \cite{Ch2012,Ch2011,bnd}. The following formulae
-%Поведението на решението $v$ и $w$, когато $r =\sqrt{x^2 +y^2} \rightarrow \infty$ е изследвано в детайли в \cite{Ch2012,Ch2011,bnd}. Следните формули
-%\begin{equation}\label{bFunV}
-%\bar{v}(x,y) = \mu \frac{( (1-c^2)x^2-y^2 )}{((1-c^2)x^2 + y^2)^2 }
-%\end{equation}
-%and
-%\begin{equation}\label{bFunW}
-%\bar{w}(x,y) =\tilde {\mu} (1-c^2) \frac{( (1-c^2)x^2-y^2 )}{((1-c^2)x^2 + y^2)^2 }
-%\end{equation}
-%given in \cite{bnd} are found to describe very well the unknown functions $v$ and $w$ on the computational boundary $\dO$. 
-
-%In order to resolve the boundary functions \rf{bFunV} and \rf{bFunW} completely one needs $\mu$ and $\tilde {\mu}$ parameters.
-%We obtain them iteratively, at each time level of \rf{eq55}, by the following minimization procedure. For  given solutions  $v^{(k)}_{i,j}$ and $ w^{(k)}_{i,j}$ at time level $t^{(k)}$ 
-%we choose $\mu$ and $\tilde {\mu}$ as minimizers of 
-%\begin{equation}\label{mu}
-%\begin{split}
-%\mu = \underset{\mu>0 }{\operatorname{min} } \| \bar{v}(x_i,y_j) - \widehat{v}^{(k)}_{i,j} \|_{L_2,\widehat{\Omega}},
-%\;\;
-%\tilde {\mu} = \underset{\mu>0 }{\operatorname{min} } \| \bar{w}(x_i,y_j) -\widehat{w}^{(k)}_{i,j} \|_{L_2,\widehat{\Omega}}.
-%\end{split}
-%\end{equation}
  
 \subsection{Критерии за спиране}
-
 Стандартният критерии за спиране на итеративния Метод на простата итерация от уравнения \rf{eq55} е когато разликата между две последователни решения стане достатъчно малка
 \begin{equation*}
 \Vert \widehat{v}^{(k+1)}-\widehat{v}^{(k)}\Vert  < \epsilon \Vert \widehat{v}^{(k)}\Vert ,
@@ -656,7 +640,6 @@ $\beta = 1$   	&0.2   &             &           &                & \\
 \end{table}
 Таблица \rf{tab:a} показва скоростта на сходимост при изчислението на решението от диференчното уравнение \rf{eq555} за апроксимациите $O(h^{2})$, $O(h^{4})$ and $O(h^{6})$ описани в първата колона. Втората колона дефинира използваната стъпката по пространството. Третата и четвъртата колона показват грешките от апроксимациите $E_i$ и скоростите на сходимост получени посредством правилото на Рунге \rf{Runge} върху три вложени мрежи. Получените резултати за сходимостта отговарят на приложения ред на апроксимация, а диференчните схеми при $p=4,6$ водят до по-прецизни решения.
 \begin{figure}[ht]
-
 	\begin{minipage}[b]{0.5\linewidth}
 		\raggedright
 		\includegraphics[width=\linewidth]{../EllipticEquationSJC/solution/SOL2D_bnd25_c050_bt3.eps}
@@ -679,7 +662,7 @@ $\beta = 1$   	&0.2   &             &           &                & \\
 	\label{fig:solutions}
 \end{figure}
 \section{Числени резултати от ``метода на простата итерация''}\label{results}
-В тази част са представени резултатите от приложения числен метод описан по-горе за елиптичното уравнение \rf{eq3}. Потвърждават се и характерните свойства на получените решения за различни стойности на параметрите $\beta$ и $c$, които са представени първоначално в \cite{Ch2012,Ch2011} като например зависимостта на формата на вълната от скоростта $c$ и дисперсията $\beta$ и асимптотичното поведение $\frac{1}{x^2 + y^2}$ на безкрайност. В допълнение са открити и други релации например за положителните и отрицателните области на решението.
+В тази част са представени резултатите от приложения числен метод описан по-горе за елиптичното уравнение \rf{eq3}. Потвърждават се и характерните свойства на получените решения за различни стойности на параметрите $\beta$ и $c$, които са представени първоначално в \cite{ref116,Ch2011} като например зависимостта на формата на вълната от скоростта $c$ и дисперсията $\beta$ и асимптотичното поведение $\frac{1}{x^2 + y^2}$ на безкрайност. В допълнение са открити и други релации например за положителните и отрицателните области на решението.
 Също така е последното е сравнено с ``best-fit'' апроксимационните формули от \cite{Ch2011}, като това сравнение е все още липсващо в литературата, но се оказва съществен елемент и повратна точка в изследването на хиперболичната задача \rf{eq1}-\rf{eq11}. Тук напомняме на читателя, че ``best-fit'' формулите са използвани за начално условие в итеративния алгоритъм.
 
 \subsection{Остатък}
@@ -698,8 +681,10 @@ $\beta = 1$   	&0.2   &             &           &                & \\
 		\caption{Резидуала \rf{residual} от решението от последната итерация при уравнения \rf{eq555} }
 		\label{resid}
 \end{figure}
-
+\FloatBarrier
 На Фигура \ref{resid} е представен остатъкът \rf{residual}, който е запазен от последната стъпка на итеративната схема \rf{eq555}, като за левия панел  параметрите са $\beta = 3$ и $c = 0.45$, а за десния $\beta = 1$ и $c = 0.9$. И в двата случая $\epsilon =1e-6$, а използваните крайни разлики са от шести порядък. Разликите в решенията между последните две итерации е $0.000e-000$ и $0.000e-000$ съответно за първия и втория пример. Така, диференчната схема \rf{eq55} е удовлетворена с голяма прецизност както от апроксимации на вторите производни с до шести ред така и от ниският праг $\epsilon =1\times10^{-6}$. От друга страна разглеждайки формулите от ``best-fit'' апроксимацията от \cite{Ch2011} се вижда, че третите, четвъртите и други производни по пространството от по висок ред са неограничени в околност на нулата $(0,0)$. Така нито елиптичното уравнение \rf{eq3}, нито остатъка \rf{residual} могат да бъдат пресметнати в класическия смисъл и следователно не са удовлетворени от ``best-fit'' формулите!
+
+\subsection{Производни на решението}
 \begin{center}
 \begin{table}[ht]
 \centering
@@ -732,9 +717,8 @@ $\beta = 1$   	&0.2   &             &           &                & \\
 \label{tab:fourth-der}
 \end{table}
 \end{center}
-
-\subsection{Производни на решението}
-Целта на този параграф е да покаже, че дискретните производни на решението от четвърти ред $v_{\widehat{xxxx}}$ схождат числено, когато стъпката $h$ намалява. За целта е приложено правилото на Рунге \rf{runge} върху три вложени мрежи с размери $h$, $h/2$, $h/4$, а получените резултати за сходимостта $\xi$ са представени в Таблица \rf{tab:fourth-der}. В заключение се вижда, че дискретните производни $v_{\widehat{xxxx}}$ са ограничени и сходящи. Тестове със смесените производни - $v_{xxyy}$ и само по $y$ - $v_{yyyy}$ не са представени тук, но резултатите от тях са сходни като тези при $v_{xxxx}$.
+\FloatBarrier
+Целта на този параграф е да покаже, че дискретните производни на решението от четвърти ред $v_{\widehat{xxxx}}$ схождат числено, когато стъпката $h$ намалява. За целта е приложено правилото на Рунге \rf{Runge} върху три вложени мрежи с размери $h$, $h/2$, $h/4$, а получените резултати за сходимостта $\xi$ са представени в Таблица \rf{tab:fourth-der}. В заключение се вижда, че дискретните производни $v_{\widehat{xxxx}}$ са ограничени и сходящи. Тестове със смесените производни - $v_{xxyy}$ и само по $y$ - $v_{yyyy}$ не са представени тук, но резултатите от тях са сходни като тези при $v_{xxxx}$.
 
 \subsection{Форма на решението}
 
@@ -878,7 +862,7 @@ $\beta$	& c 	& $\|v^*-v \|_{L_2 }$ & $\|v^*-v \|_{L_\infty }$  	& $D^*_{L_2}$	& 
 %================================================================
 При Таблица \rf{tab:diff-c017} се получават сходни резултати. При по-големи стойности за $\beta$, процентната разлика нараства до $7.0\%$ и $4.6\%$ съответно в $L_2$ и $L_\infty$ норми. Описаните разлики при повечето от разгледани случаи се оказват достатъчно големи и водят до разпадане на вълната дори и при малка скорост от $c=0.27$ и $\beta = 3$, както е показано в \cite{ref21, dani, milenaDani}. Този пример е разгледан по-надолу в настоящата работа в частта ``Числен тест за хиперболичната задача при параметри $\beta = 3$ и $c=0.27$'', където е показано, че формата и максимума на вълната се запазват за времевия интервал $[0, 10]$, ако за начално условие се изполва решението от ``Метода на простата итерация'' приложен за елиптичната задача. 
 
-\section{Гранично условие за двумерното елиптично уравнение \rf{eq3}}
+\section{Ново гранично условие за двумерното елиптично уравнение \rf{eq3}}
 Трябва да се отбележи, че както елиптичното така и хиперболичното уравнения са дефинирани в цялата равнина $\RR^2$. За да се решат тези уравнения числено се въвежда краен правоъгълник, върху който се построява мрежа $\Omega_h$. Така могат да се получат резултати, които апроксимират непрекъснатото решение в неограничената област, като целият процес трябва да приключи за някакво разумно време (не повече от два-три дни при най-ситните стъпки $h$ и $\tau$). В случай, че за уравнение \rf{eq3} се приложи гранично условие по краищата на областта $\partial \Omega_h$, то със сигурност изчислителната сложност ще намалее използвайки по-малки области особено при Тест 2 ($\Omega_h = [-128, 128] \times [-58, 58]$). Тук се използва Гранично Условие (ГУ) познато в литературата като абсорбиращо ГУ (виж \cite{ref16} при вълнови уравнения, \cite{ref31} при уравнения от типа на Хелмхолц, \cite{ref32} за елиптични уравнения от втори ред и т.н.). Задачата за намиране на гранично условие е разгледана в \cite{ref116}, където е открита следната асимптотика за търсената функция $v$:
 \be
 v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r>>1
@@ -892,87 +876,105 @@ v(x,y) = \mu \frac{ (1-c^2)x^2 - y^2}{ ((1-c^2)x^2 - y^2)^2}, \quad x^2 + y^2 >>
 &\beta v_{xx} + \beta (1-c^2) v_{yy} - v_{xxxx} - (2-\beta c^2)v_{xxyy} - (1-\beta c^2)v_{yyyy} \nonumber \\ 
 &- \alpha \beta (v^2)_{xx} - \alpha \beta (v^2)_{yy}  =0.
 \end{align}
-Взимайки предвид факта, че функцията $v(r)$ има асимптотика $O(r^{-2})$, то учакването е, че за големи стойности на $r >> 1$ членовете $\beta v_{xx}$ и $\beta (1-c^2) v_{yy}$ ще имат асимптотика $O(r^{-4})$, а останалите събираеми в уравнението \rf{eq3full}:
+Взимайки предвид факта, че функцията $v(r)$ има асимптотика $O(r^{-2})$, то очакването е, че за големи стойности на $r >> 1$ членовете $\beta v_{xx}$ и $\beta (1-c^2) v_{yy}$ ще имат асимптотика $O(r^{-4})$, а останалите събираеми в уравнението \rf{eq3full}:
 \be
 - v_{xxxx},  - (2-\beta c^2)v_{xxyy},  - (1-\beta c^2)v_{yyyy}, - \alpha \beta (v^2)_{xx}, - \alpha \beta (v^2)_{yy}
 \ee
-ще имат асимптотика, която е $O(r^{-6})$. Така за големи стойности на $r$, пренебрегвайки членовете от по-нисък порядък $O(r^{-6})$,
+ще имат асимптотика, която е $O(r^{-6})$. Така за големи стойности на $r$, пренебрегвайки частите с по-нисък порядък $O(r^{-6})$,
 остават два водещи члена:
 \be\label{asymptEq}
 \beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) ~ \frac{1}{x^2 + y^2}, \quad x^2 + y^2 >>1.
 \ee
-Вида на отделните членове е описан в серия от експериметни и може да се види на Фигура \ref{fig:assympt_cfix}, където $c=0.17$ е фиксирано, а $\beta = 1, 3, 5$ се мени и Фигура \ref{fig:assympt_betafix}, където $\beta=1$ е фиксирано, а $c = 0.1, 0.5, 0.9$ се мени. Съответните числени  експерименти са направени при големина на областта $\Omega_h = [-50, 50] \times [-50, 50]$, с метод на Тейлор, шести ред апроксимация $p=6$, стъпка по пространството $h=0.2$, $\alpha = 1$ и праг на спиране $\epsilon \le 5 \times 10^{-10}$. Използвано е нулево гранично условие използвайки алгоритъма за елиптичната задача от предишната глава. Представените графики са в логаритмични скали по $x,y$. Основния извод от тези картинки е, че водещите членове с най-голяма абсолютна стойност са $- \alpha \beta (v^2)_{xx}$ и  $- \alpha \beta (v^2)_{yy}$, а останалите са по-малки. Остатъкът $R$ от \rf{residual}, който също е представен на графиката, е сума от всички членове в уравнението \rf{eq3full}. Изобразявайки функцията $\Psi : \RR \rightarrow \RR$, с уточнението че $\Psi(r) = r^{-n}, n \in \mathbb{N}$, в логаритмични скали представлява граф от вида $(\rho, -n \rho )$, където $\rho = log_{10}(r)$ и $log_{10}( \Psi(r) ) = -n \rho$, т.е. това е линейна функция с наклон $-n$. Същото свойство е видно и на всички графики от Фигурите \ref{fig:assympt_cfix} и \ref{fig:assympt_betafix}. 
+Вида на отделните членове е описан в серия от експериметни и може да се види на Фигури \ref{fig:assympt_c017bt1}, \ref{fig:assympt_c017bt3} и \ref{fig:assympt_c017bt5}, където $c=0.17$ е фиксирано, а $\beta = 1, 3, 5$ се мени и Фигури \ref{fig:assympt_beta1c01}, \ref{fig:assympt_beta1c05} и \ref{fig:assympt_beta1c09}, където $\beta=1$ е фиксирано, а $c = 0.1, 0.5, 0.9$ се мени. Съответните числени експерименти изображения са направени при големина на областта $\Omega_h = [-50, 50] \times [-50, 50]$, с метод на Тейлор, шести ред апроксимация $p=6$, стъпка по пространството $h=0.2$, $\alpha = 1$ и праг на спиране $\epsilon \le 5 \times 10^{-10}$. Използвано е гранично условие описано в частта ``Симетрично гранично условие по абцисата и ординатата при елиптичната задача'' заедно с ``метода на простата итерация''. Представените графики са в логаритмични скали по $x,y$. На всяка страница долната легенда е обща и за двете картинки с цел по-добро представяне на резултатите. Константите $\gamma_1$, $\gamma_2$ и $\gamma_3$ са коефициентите пред съответните членове от уравнението както следва
+\begin{align*}
+\gamma_1 = \beta (1-c^2) \\
+\gamma_2 = (1-\beta c^2) \\
+\gamma_3 = (2-\beta c^2).
+\end{align*}
+Останалите константи $\gamma_4$, $\gamma_5$, $\gamma_6$ и $\gamma_6$ са подходящо избрани за всяка двойка графики, така че функциите $(r^{-4}, |\tilde v_{xx}|)$ и $(r^{-6}, |- (2-\beta c^2)v_{xxyy}|)$ да са равни в началото (при $x=20$ на горния панел и при $y=20$ на долния панел).
+Основния извод е, че водещите членове с най-голяма абсолютна стойност са $- \alpha \beta (v^2)_{xx}$ и  $- \alpha \beta (v^2)_{yy}$, а останалите са по-малки. Остатъкът $R$ от \rf{residual}, който също е представен на графиката, е сума от всички членове в уравнението \rf{eq3full} и той е най-малък по абсолютна стойност, т.е. уравнението е удовлетворено числено в разгледаните интервали. 
+Изобразявайки функцията $\Psi : \RR \rightarrow \RR$, с уточнението че $\Psi(r) = r^{-n}, n \in \mathbb{N}$, в логаритмични скали представлява граф от вида $(\rho, -n \rho )$, където $\rho := log_{10}(r)$ и $ -n \rho = log_{10}( \Psi(r) ) $, т.е. това е линейна функция с наклон $-n$. Същото свойство е видно и на всички графики от Фигурите \ref{fig:assympt_c017bt1} - \ref{fig:assympt_beta1c09}. Посредством помощните функции $\gamma_4 y^{-4}$, $\gamma_5 y^{-6}$, $\gamma_6 x^{-4}$ и $\gamma_7 x^{-6}$ се открояват различните наклони при членовете $\beta v_{xx}$ и $\beta (1-c^2) v_{yy}$ с асимптотика $O(r^{-4})$ и 
+$$
+- v_{xxxx},  - (2-\beta c^2)v_{xxyy},  - (1-\beta c^2)v_{yyyy}, - \alpha \beta (v^2)_{xx}, - \alpha \beta (v^2)_{yy}
+$$
+с асимптотика $O(r^{-6})$, които са съответно $-4$ и $-6$.
 \begin{figure}[ht]
-	\begin{minipage}[b]{0.5\linewidth}
+	\begin{minipage}[b]{0.95\linewidth}
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/c017_bt1_5/ChristovIC_AlongX_50_ZB2_bt1_c017_h020_O(h^6).png}
+	\end{minipage}
+	\begin{minipage}[b]{0.95\linewidth}
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/c017_bt1_5/ChristovIC_AlongY_50_ZB2_bt1_c017_h020_O(h^6).png}
+	\end{minipage}
+	\caption{Асимптотичното поведение на членовете от уравнение \rf{eq3full}, представени в абсолютна стойност и логаритмични скали по $x,y$, получено с ``Метода на простата итерация'' и нулево гранично условие. Скоростта и дисперсионния параметър са $\boldsymbol{c=0.17}$ и $\boldsymbol{\beta = 1}$. }
+	\label{fig:assympt_c017bt1}
+\end{figure}
+\FloatBarrier
+\begin{figure}[ht]
+	\begin{minipage}[b]{0.95\linewidth}
 		\raggedleft
-		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongX_50_ZB2_bt1_c017_h020_O(h^6).png}
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/c017_bt1_5/ChristovIC_AlongX_50_ZB2_bt3_c017_h020_O(h^6).png}
 	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
+	\begin{minipage}[b]{0.95\linewidth}
 		 \raggedright
-		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongY_50_ZB2_bt1_c017_h020_O(h^6).png}
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/c017_bt1_5/ChristovIC_AlongY_50_ZB2_bt3_c017_h020_O(h^6).png}
 	\end{minipage}
-
-	\begin{minipage}[b]{0.5\linewidth}
+	\caption{Асимптотичното поведение на членовете от уравнение \rf{eq3full}, представени в абсолютна стойност и логаритмични скали по $x,y$, получено с ``Метода на простата итерация'' и нулево гранично условие. Скоростта и дисперсионния параметър са $\boldsymbol{c=0.17}$ и $\boldsymbol{\beta = 3}$.}
+	\label{fig:assympt_c017bt3}
+\end{figure}
+\FloatBarrier
+\begin{figure}[ht]
+	\begin{minipage}[b]{0.95\linewidth}
 		\raggedleft
-		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongX_50_ZB2_bt3_c017_h020_O(h^6).png}
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/c017_bt1_5/ChristovIC_AlongX_50_ZB2_bt5_c017_h020_O(h^6).png}
 	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
+	\begin{minipage}[b]{0.95\linewidth}
 		 \raggedright
-		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongY_50_ZB2_bt3_c017_h020_O(h^6).png}
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/c017_bt1_5/ChristovIC_AlongY_50_ZB2_bt5_c017_h020_O(h^6).png}
 	\end{minipage}
-
-	\begin{minipage}[b]{0.5\linewidth}
+	\caption{Асимптотичното поведение на членовете от уравнение \rf{eq3full}, представени в абсолютна стойност и логаритмични скали по $x,y$, получено с ``Метода на простата итерация'' и нулево гранично условие. Скоростта и дисперсионния параметър са $\boldsymbol{c=0.17}$ и $\boldsymbol{\beta = 5}$.}
+	\label{fig:assympt_c017bt5}
+\end{figure}
+\FloatBarrier
+%end----------------
+\begin{figure}[ht]
+	\begin{minipage}[b]{0.95\linewidth}
 		\raggedleft
-		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongX_50_ZB2_bt5_c017_h020_O(h^6).png}
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/bt1_c010_090/ChristovIC_AlongX_50_ZB2_bt1_c010_h020_O(h^6).png}
 	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
+	\begin{minipage}[b]{0.95\linewidth}
 		 \raggedright
-		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongY_50_ZB2_bt5_c017_h020_O(h^6).png}
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/bt1_c010_090/ChristovIC_AlongY_50_ZB2_bt1_c010_h020_O(h^6).png}
 	\end{minipage}
-%\centerline{$c=0.17$}
-%\centerline{$\beta = 1,2,3,4,5$ (от горе надолу) }
-
-%\centerline{$\beta = 1$}
-%\centerline{$c = 0.1, 0.3, 0.5, 0.7, 0.9$ (от горе надолу)}
-	\caption{Асимптотичното поведение на членовете от уравнение \rf{eq3full}, представени в абсолютна стойност и логаритмични скали по $x,y$, получено с ``Метода на простата итерация'' и нулево гранично условие. Скоростта $c=0.17$ е фиксирана, а дисперсионния параметър се мени както следва $\beta = 1,3,5$ (от горе надолу). }
-	\label{fig:assympt_cfix}
+	\caption{Асимптотичното поведение на членовете от уравнение \rf{eq3full}, представени в абсолютна стойност и логаритмични скали по $x,y$, получено с ``Метода на простата итерация'' и нулево гранично условие. Скоростта и дисперсионния параметър са $\boldsymbol{c=0.1}$ и $\boldsymbol{\beta = 1}$. }
+	\label{fig:assympt_beta1c01}
 \end{figure}
 \FloatBarrier
 
 \begin{figure}[ht]
-	\begin{minipage}[b]{0.5\linewidth}
+	\begin{minipage}[b]{0.95\linewidth}
 		\raggedleft
-		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongX_50_ZB2_bt1_c010_h020_O(h^6).png}
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/bt1_c010_090/ChristovIC_AlongX_50_ZB2_bt1_c050_h020_O(h^6).png}
 	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
+	\begin{minipage}[b]{0.95\linewidth}
 		 \raggedright
-		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongY_50_ZB2_bt1_c010_h020_O(h^6).png}
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/bt1_c010_090/ChristovIC_AlongY_50_ZB2_bt1_c050_h020_O(h^6).png}
 	\end{minipage}
+	\caption{Асимптотичното поведение на членовете от уравнение \rf{eq3full}, представени в абсолютна стойност и логаритмични скали по $x,y$, получено с ``Метода на простата итерация'' и нулево гранично условие. Скоростта и дисперсионния параметър са $\boldsymbol{c=0.5}$ и $\boldsymbol{\beta = 1}$. }
+	\label{fig:assympt_beta1c05}
+\end{figure}
+\FloatBarrier
 
-	\begin{minipage}[b]{0.5\linewidth}
+\begin{figure}[ht]	
+	\begin{minipage}[b]{0.95\linewidth}
 		\raggedleft
-		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongX_50_ZB2_bt1_c050_h020_O(h^6).png}
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/bt1_c010_090/ChristovIC_AlongX_50_ZB2_bt1_c090_h020_O(h^6).png}
 	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
+	\begin{minipage}[b]{0.95\linewidth}
 		 \raggedright
-		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongY_50_ZB2_bt1_c050_h020_O(h^6).png}
+		\includegraphics[width=\linewidth]{AssymptForEachTerm/bt1_c010_090/ChristovIC_AlongY_50_ZB2_bt1_c090_h020_O(h^6).png}
 	\end{minipage}
-
-	\begin{minipage}[b]{0.5\linewidth}
-		\raggedleft
-		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongX_50_ZB2_bt1_c090_h020_O(h^6).png}
-	\end{minipage}
-	\begin{minipage}[b]{0.5\linewidth}
-		 \raggedright
-		\includegraphics[width=\linewidth]{AssymptForEachTerm/ChristovIC_AlongY_50_ZB2_bt1_c090_h020_O(h^6).png}
-	\end{minipage}
-%\centerline{$c=0.17$}
-%\centerline{$\beta = 1,2,3,4,5$ (от горе надолу) }
-
-%\centerline{$\beta = 1$}
-%\centerline{$c = 0.1, 0.3, 0.5, 0.7, 0.9$ (от горе надолу)}
-	\caption{Асимптотичното поведение на членовете от уравнение \rf{eq3full}, представени в абсолютна стойност и логаритмични скали по $x,y$, получено с ``Метода на простата итерация'' и нулево гранично условие. Скоростта се мени както следва $c=0.1, 0.5, 0.9$  (от горе надолу), а дисперсионния параметър $\beta = 1$ е фиксиран. }
-	\label{fig:assympt_betafix}
+	\caption{Асимптотичното поведение на членовете от уравнение \rf{eq3full}, представени в абсолютна стойност и логаритмични скали по $x,y$, получено с ``Метода на простата итерация'' и нулево гранично условие. Скоростта и дисперсионния параметър са $\boldsymbol{c=0.9}$ и $\boldsymbol{\beta = 1}$. }
+	\label{fig:assympt_beta1c09}
 \end{figure}
 \FloatBarrier
 Следната смяна $\bar x  = \sqrt{1-c^2} x$, $\bar y = y$ и $\tilde V (\bar x, \bar y)$ на променливите трансформира \rf{asymptEq} в уравнението на Лаплас:
@@ -1001,18 +1003,80 @@ G(\phi) = \mu_{4,2}cos(2 \phi), \quad \mu_{3,n} = 0, \quad n \ge 0, \quad \mu_{4
 \be \label{LaplaceSol2}
 \tilde V_p(\bar r, \phi) = \mu_v \frac{ cos(2 \phi) }{ \bar r^2 } = \mu_v \frac{ cos(\phi)^2 - sin(\phi)^2 }{ \bar r^2 } = \mu_v \frac{ \bar x^2 - \bar y^2 }{ (\bar x^2 + \bar y^2)^2 },
 \ee
-където $\mu_v = \mu_{1,2} \mu_{4,2}$. В старите $(x, y)$ координати \rf{LaplaceSol2} е еквивалентно на 
-\be
+където $\mu_v = \mu_{1,2} \mu_{4,2}$. В старите $(x, y, r=\sqrt{x^2+y^2})$ координати \rf{LaplaceSol2} е еквивалентно на 
+\be\label{bndv}
 \tilde v(x, y) = \mu_v \frac{ (1-c^2) x^2 - y^2 }{ ((1-c^2) x^2 + y^2)^2 }
 \ee
-Предполага се, че помощната функция $\widehat w$ от \rf{eq45} има същата асимптотика, защото зависи пряко от $\widehat v$ и затова граничната функция за $\widehat w$ ще има сходен вид
-\be
-W(x,y) = \mu_w \frac{ (1-c^2) x^2 - y^2 }{ ((1-c^2) x^2 + y^2)^2 },
+
+където $\mu_w = \beta(1-c^2)$. Параметърът $\mu_v$ се намира чрез минимизиране на 
+\begin{equation}\label{eqMin}
+\mu_v = \min_{ \mu_v > 0 } || \tilde v( x_i, y_j) - \widehat v^{(k)}_{i,j} ||_{L_2}, \quad (x_i, y_j) \in \omega_B ,
+\end{equation}
+където 
+\be\label{omegaB}
+\omega_B = \{ (x_i, y_j) \in \omega_h \: | \: x_i > \frac{3L_x}{4}, y_j > \frac{3L_y}{4} \},
 \ee
- където $\mu_w = \beta(1 - c^2) \mu_v$.
+а с $\widehat v^{(k)}$ е означено решението получено при $k$-тата итерация от процедурата \rf{eq55}. Минимизационната задача дефинирана в \rf{eqMin} е еквивалента на решаването на линейно уравнение спрямо $\mu_v$. Централните крайни разлики използвани при апроксимацията на оператора на Лаплас и описани в Таблица \rf{table:A00} не се променят по границата $x=L_x$ и $y=L_y$. За целта при $p=2$ областта $\omega_h$ се разширява по $x$ и по $y$ с една стъпка $h$, при $p=4$ с две стъпки $2h$ и при $p=6$ с три стъпки $3h$.
+Функциите $\widehat v$ и $\widehat w$ във възлите от увеличената област, които са извън $\omega_h$, се изчисляват използвайки съответно граничните функции $\tilde v(x, y)$ и $\tilde w(x, y)$.
+
+\section{Числени резултати от ``метода на простата итерация'' получени с новото ГУ}
+Два числени теста са направени за валидация на формула \rf{bndv}. Първия експеримент разглежда поведението на константата $\mu_v$ и резултата от минимизационната процедура \rf{eqMin} при нарастване на областта. Втория тест разглежда поведението на функцията $\widehat v$ и нейната асимптотика по $x,y$ осите.
+\subsection{Експеримент 1 за ГУ \rf{bndv}, \rf{bndw}}
+В тази част са използвани диференчни схеми с четвърти ред на апроксимация $p=4$ и параметрите в \rf{eq55} са дефинирани както следва: $\alpha = 1$, $\beta = 3$ и $c=0.45$. Разгледани са четири различни по големина области $\omega_h = [0, L_x] \times [0, L_y]$, където $L_x = L_y = 20, 40, 80, 160$ и фиксирана стъпка по пространството $h=0.5$. На Таблица \rf{tab:valBnd1} са представени резултати получени в края на итеративната процедура \rf{eq55} и прилагайки ГУ от \rf{bndv}. Първата колона описва размера на областта. Във втората колона е показана стойността на функцията $\widehat{v}_{i,j}$ в точката: ${x}_i = 0$, $ {y}_j =   L_{ y}$. Поведението на параметъра $\mu_v$ е представено в третата колона. Най-накрая се вижда разликата между граничната функция \rf{bndv} и численото решение $\widehat{v}$ от последната итерация върху $\omega_B$ в $L_2$ норма.
+\begin{table}[ht]
+\centering
+		\begin{tabular}{||c||c|c|c||}
+			\hline
+			\hline
+      $ L_{ x} = L_{ y}$        &         $\widehat{v}_{i,j}^k$ в  $({x}_i, {y}_j) = (0, L_{ y})$    &    $\mu_v$  &   \mbox{$min|| \tilde v( x_i, y_j) - \widehat v ^k_{i,j} ||_{L_2,\omega_B}$}\\
+   			\hline
+			\hline
+      20    & -2.23e-04    &  1.9355e-01  &     4.17e-05  \\
+               	 \hline
+    40      & -5.65e-05   &   1.9369e-01    &    4.42e-06 \\
+			\hline 	
+      80    & -1.41e-05  &      1.9378e-01      &       7.56e-07  \\
+			\hline 	
+     160     & -3.53e-06  &    1.9381e-01        &     7.44e-10 \\
+		   \hline
+	             \hline
+                     \end{tabular}
+\caption{Свойства на решението и ГУ при различни големини на областта $\omega_h$.}
+\label{tab:valBnd1}
+\end{table}
+\FloatBarrier
+Резултатите от Таблица \rf{tab:valBnd1} показват, че стойностите $\mu_v$ се установяват, понеже разликата между две последователни стойности намалява с увеличаването на областта. В допълнение, стойността на функцията $\widehat v(0,L_y)$ намалява с темп от вида $1/r^2$. Разликите между численото решение $\widehat v$ и граничната функция $\tilde v$ в $\omega_B$ намаляват при по-големи размери $L_x, L_y$. 
+\subsection{Експеримент 2 за ГУ \rf{bndv}}
+В тази част са разгледани различни аспекти от асимптотиката на численото решение. В този случай размерът на областта $\omega_h = [0, 50] \times [0, 50]$ е фиксирана. Използвани са диференчни схеми с четвърти ред на апроксимация $p=4$ и параметрите в \rf{eq55} са дефинирани както следва: $\alpha = 1$, $\beta = 3$ и $c=0.45$. Единствено стъпката по пространството се мени $h=0.1, 0.2, 0.4, 0.8$.
+\begin{figure}[ht]
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedleft
+		\includegraphics[width=\linewidth]{NewBoundaryCondition/crossSectionLogX=0.eps}
+	\end{minipage}	
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedright
+		 \includegraphics[width=\linewidth]{NewBoundaryCondition/crossSectionLogY=0.eps}
+	\end{minipage}
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedleft
+		\includegraphics[width=\linewidth]{NewBoundaryCondition/crossSectionX=0FF.eps}
+	\end{minipage}	
+	\begin{minipage}[b]{0.5\linewidth}
+		\raggedright
+		 \includegraphics[width=\linewidth]{NewBoundaryCondition/crossSectionY=0FF.eps}
+	\end{minipage}
+	\caption{Ефектът от промяната на дискретната стъпка по пространството $h=0.1, 0.2, 0.4, 0.8$. На горните панели се вижда функцията $\widehat{v}$ в логаритмични скали по $x,\widehat v(x,0)$ и $y,\widehat v(0,y)$. На долните панели са разположени следните криви: $(y, y^2 \widehat v(0,y)), \; (x, x^2 \widehat v(x,0))$. }
+	\label{fig:bndCross}
+\end{figure}
+\FloatBarrier
+Горните две графики от Фигура \ref{fig:bndCross} представят решението в абсолютна стойност върху логаритмични скали по осите $(y,\widehat v(0,y) )$ и $(x,\widehat v(x,0))$. Ясно се вижда, че численото решение за всяка от стъпките $h$ следва наклона на функцията $1/r^2$ за достатъчно големи $r >> 1$. Долните две графики показват численото решение скалирано с множител $r^2$, т.е. това са кривите $(y, y^2 \widehat v(0, y) )$ и $(x, x^2 \widehat v(y, x) )$. Скалирания профил на решението апроксимира константа: $s_y=-0.20356$ (за левия панел) и $s_x=0.25542$ (за десния панел), за достатъчно големи $r >> 1$. Тези графики са в съответствие с новото ГУ от \rf{bndv} и асимптотиката намерена в \cite{ref116}. В допълнение, използвайки \rf{bndv} за гореописаните случаи при $x=0$ и $y=0$, може да се изведат следните константи:
+\be
+\tilde v(0, y) = -\mu_u \frac{1}{y^2}, \quad \tilde v(x, 0) = \frac{\mu_u}{(1-c^2)} \frac{1}{x^2}.
+\ee
+От последните формули се извежда и връзката между константите $s_x$ и $s_y$ показани в долните панели на Фигура \ref{fig:bndCross}.
 \section{7.~Conclusion.}
 Fourth and sixth order finite difference schemes are applied for numerical evaluation of the stationary traveling wave solutions to the Boussinesq equation in this paper. The high accuracy of the method applied is demonstrated on several experiments. The numerical solution obtained here performs similarly to the numerical solutions given in \cite{Ch2012,Ch2011} with respect to solution shape and the dependence on the velocity $c$ and relative dispersion $\beta$. 
-The best-fit approximation formulae from  \cite{Ch2011} fail to satisfy the initial equation in the classical sense in the neighborhood of the origin. 
+The best-fit approximation formulae from \cite{Ch2011} fail to satisfy the initial equation in the classical sense in the neighborhood of the origin. 
 In the future, we will exploit the obtained stationary traveling wave solutions as initial data to the corresponding Boussinesq equation in order to seek two dimensional solitary wave solutions to \rf{eq1}.
 
 \bigskip
@@ -1850,6 +1914,8 @@ M.Dimova, D. Vasileva, Comparison of Two Numerical Approaches to Boussinesq Para
 \bibitem{ref32}  C.I. Goldstein, A finite element method for solving Helmholtz type equations in waveguides and other unbounded domains,
 {\it Math. Comp.}, \textbf{39} (1982), 309–324.
 
+\bibitem{ref33} T. Lyche, Fast Direct Solution of a Large Linear System,
+\it{Numerical Linear Algebra and Matrix Factorizations, Texts in Computational Science and Engineering}, \textbf{22}, (2020), p 237-250 
 
 \end{thebibliography}
 \end{document}
