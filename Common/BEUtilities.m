@@ -69,7 +69,7 @@ classdef BEUtilities
         T=T(:,1:N); % Only output Taylor Table terms that are used  
     end
     
-    function x=SevenSolv(a11,A,b)
+    function x=SevenSolv(a11,A,b)% 34 operations inside for loop
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % 
         % Solve a seven diagonal system Dx=b where D is a strongly nonsingular
@@ -139,7 +139,7 @@ classdef BEUtilities
             %helperD = 1;
             for k=4:N-3
                 D1(k) =  d - D4(k-3)^2 * D1(k-3) - D3(k-2)^2 * D1(k-2) - D2(k-1)^2 * D1(k-1);
-                D2(k) = (f - D4(k-2)*D3(k-2) * D1(k-2) - D3(k-1)*D2(k-1) * D1(k-1))/D1(k);
+                D2(k) = (f - D4(k-2)*D3(k-2) * D1(k-2) - D3(k-1)*D2(k-1)  *D1(k-1))/D1(k);
                 D3(k) = (e - D4(k-1)*D2(k-1) * D1(k-1))/D1(k);
                 D4(k) =  c/D1(k);
             end
@@ -175,7 +175,7 @@ classdef BEUtilities
             end
     end
     
-    function x=PentSolv(a11,A,b)
+    function x=PentSolv(a11,A,b) % 18 operations inside for loop
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % 
         % Solve a pentadiagonal system Dx=b where D is a strongly nonsingular
@@ -263,7 +263,7 @@ classdef BEUtilities
             end
     end
 
-    function x=TridiagSolv(A,b)
+    function x=TridiagSolv(A,b) % 9 operations inside for loop
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %
         % Solve a tridiagonal system Dx=b where D is a strongly nonsingular
