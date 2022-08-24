@@ -112,8 +112,8 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
                 ((1 - bt*c^2))* (Uxx+Uyy) - (bt*(1 - c^2))*U );
         else 
             thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*Uyy(1,1) + Uxx(1,1) )/(al*bt*Usquare(1,1));
-            Pup = P + (tau)*(YDerivativeEvenFunctions(P,zeroMatrix,yDerBnd,derivative.second) +...
-                XDerivativeEvenFunctions(P,zeroMatrix,xDerBnd,derivative.second) + bt*c^2*Uxx );  
+            Pup = P + (tau)*( YDerivativeEvenFunctions(P,zeroMatrix,yDerBnd,derivative.second) +...
+                XDerivativeEvenFunctions(P + bt*c^2*U,zeroMatrix,xDerBnd,derivative.second) );  
 
             Uup = U + tau*( Pup - (al*bt*thetaVector(iterCounter) )*Usquare +...
                 (1 - bt*c^2)*Uyy + Uxx - (bt*(1 - c^2))*U  );        
