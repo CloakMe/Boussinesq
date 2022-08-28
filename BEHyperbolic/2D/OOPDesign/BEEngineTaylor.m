@@ -8,6 +8,7 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
             flag = 0;
         end
         this = this@BEEngine( dscrtParams, eqParams, ic, flag );
+        this.mBoundaryUtils = BEBoundaryUtils( this.x, this.y, this.order, this.alpha, this.beta, this.c, this.mu, this.theta, this.h );
     end
     
     function [ this, tt, max_v, t, EN, II, vu, dtv ]= BESolver( this )
@@ -163,16 +164,15 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         if( this.order > 6 )
             error( 'Not yet implemented for order = 8!' );
         end
-        boundaryUtils = BEBoundaryUtils( this.x, this.y, this.order, this.alpha, this.beta, this.c, this.mu, this.theta, this.h );
-                
+                        
         VV = this.vdah;
         fd2ndDer = this.GetFd2ndDer();
         mid = ( this.order/2 + 1 );
-        b1 = boundaryUtils.AssymptoticFuncSquareOutside( fd2ndDer, t, order ) + ...
-        	boundaryUtils.AssymptoticFuncOutside( this.beta-1, fd2ndDer, t, order );
-        b2 = boundaryUtils.FPSOperatorOutside( fd2ndDer, t, order );
+        b1 = this.mBoundaryUtils.AssymptoticFuncSquareOutside( fd2ndDer, t, order ) + ...
+        	this.mBoundaryUtils.AssymptoticFuncOutside( this.beta-1, fd2ndDer, t, order );
+        b2 = this.mBoundaryUtils.FPSOperatorOutside( fd2ndDer, t, order );
         
-        deltab = this.eigenFinDiffMat'* ( boundaryUtils.DeltaH( nonlinTerm, fd2ndDer )+...
+        deltab = this.eigenFinDiffMat'* ( this.mBoundaryUtils.DeltaH( nonlinTerm, fd2ndDer )+...
             b1 + ...
             b2 );    
         
@@ -191,9 +191,9 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
             end
         end
         
-        deltav = ( boundaryUtils.DeltaH( dnU_dtn, fd2ndDer ) )/this.h^2;%/this.beta;
+        deltav = ( this.mBoundaryUtils.DeltaH( dnU_dtn, fd2ndDer ) )/this.h^2;%/this.beta;
 
-        myBoundary = boundaryUtils.AssymptoticFuncOutside( 1, fd2ndDer, t, order )/this.h^2;%+ myBoundary
+        myBoundary = this.mBoundaryUtils.AssymptoticFuncOutside( 1, fd2ndDer, t, order )/this.h^2;%+ myBoundary
         dnvz = ( this.eigenFinDiffMat*VV + deltav + myBoundary)/this.beta;
         %{
         Q = 21;
@@ -210,12 +210,9 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
     end
     
     function [e] = GetEnergy( this, vz, vpo, t )
-        
         vt = (vpo - vz)/this.tau;
         wvt = this.eigenFinDiffMat'*vt;
-        
-        domainUtils = BEDomainUtils( this.x, this.y, this.order);
-        
+                
         do = 0;
         %left = domainUtilsP2.GetDersBndLeft( t, do ) + domainUtilsP2.GetDersBndLeft( t + this.tau, do );
         %right = domainUtilsP2.GetDersBndRight( t, do ) + domainUtilsP2.GetDersBndRight( t + this.tau, do );
@@ -224,8 +221,10 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         
         fd2ndDer = this.GetFd2ndDer();
         mid = ( this.order/2 + 1 );
-        %idhv = vz+vpo - domainUtils.DeltaH( vz+vpo, fd2ndDer, 0*left(:,:,1), 0*right(:,:,1), 0*top(:,:,1), 0*btm(:,:,1) )/this.h^2;
-        idhv = this.beta * (vz+vpo) - domainUtils.DeltaH( vz+vpo, fd2ndDer )/this.h^2;
+        
+        b1 = this.mBoundaryUtils.AssymptoticFuncOutside( 1, fd2ndDer/this.h^2, t, this.order );
+        
+        idhv = this.beta * (vz) - this.mBoundaryUtils.DeltaH( vz, fd2ndDer )/this.h^2 - b1;
         VV = zeros( size( this.vdah ) );
         for j=1:this.sx
             diag = [ -fd2ndDer(1:mid-1) this.minusDHdiag(j) -fd2ndDer(mid+1:end) ]/this.h^2;
@@ -239,18 +238,21 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
             end
         end
         
-        vec1 = this.eigenFinDiffMat*VV;  %/h^2
+        vec1 = this.eigenFinDiffMat*VV; 
         sigma = 0;  
-        IDhvt = this.beta*vt - domainUtils.DeltaH( vt, fd2ndDer )/this.h^2;
-        Le= this.beta * ( vec1 + vt ) .* vt  +...
-            this.tau^2 * ( sigma - 1/4 ) *  IDhvt.*vt + idhv .* ( vz+vpo ) / 4 ;
-
-        NLe = ( this.alpha*this.beta/3 ) * ( vz.^3  + vpo.^3 );
-
-        energyTerm = Le + NLe;
+        b2 = this.mBoundaryUtils.AssymptoticFuncOutside( 1, fd2ndDer/this.h^2, t+this.tau, this.order );
+        IDhvt = this.beta*vt - this.mBoundaryUtils.DeltaH( vt, fd2ndDer )/this.h^2 - (b2-b1)/(this.tau);
+        energyTerm= this.beta * ( vec1 + vt ) .* vt  +...
+            this.tau^2 * ( sigma - 1/4 ) *  IDhvt.*vt + idhv .* ( vz ) +...
+            ( 2*this.alpha*this.beta/3 ) * ( vz.^3 );
+        
         e = this.GetIntegralOf(energyTerm);
     end
       
   end
+  
+  properties ( SetAccess = protected, GetAccess = public)
+    mBoundaryUtils
+  end 
 
 end
