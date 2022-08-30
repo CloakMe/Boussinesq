@@ -54,7 +54,7 @@ classdef WaveFactory
             this.mu = c1;
         end
         try
-            if(prmtrs.useZeroBoundary == 1)
+            if(prmtrs.useZeroBoundary ~= 0)
                 this.mu = 0;
             end
         catch
