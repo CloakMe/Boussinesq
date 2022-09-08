@@ -4,7 +4,7 @@ function [yLen,xLen,yHeiA,xHeiA] = GetInnerNodesForComparingBoundaryFunctions(xL
 % and the current solution (with respect
 % to the current iteration) are to be compared on the following node numbers:
 % (xHeiA,yLen) and (xLen,yHeiA)
-   band = floor(3 * min(xLength, yLength)/4);
+   band = floor(min(xLength, yLength)/8);
    
    stY = mod(yLength , step);
    if(stY == 0)

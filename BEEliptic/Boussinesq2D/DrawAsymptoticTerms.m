@@ -68,12 +68,12 @@ function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,prmtrs,bigUTimeDer,bigIC,U,comp
         btU_xx = bt * dxx_U;
         bt1McSQU_yy = bt * (1-c^2) * dyy_U;
 
-        coefU_yyyy = - (1 - bt * c^2) * YDerivativeEvenFunctions(dyy_U, zeroMatrix, mu.muU*outerTopBoundaryF_yy, secondDerivative);
+        coefU_yyyy = - (1 - bt * c^2) * YDerivativeEvenFunctions( dyy_U, zeroMatrix, mu.muU*outerTopBoundaryF_yy, secondDerivative);
         coefU_xxyy = - (2 - bt * c^2) * YDerivativeEvenFunctions( dxx_U, zeroMatrix, mu.muU*outerTopBoundaryF_xx, secondDerivative );
         coefU_xxxx =                  - XDerivativeEvenFunctions( dxx_U, zeroMatrix, mu.muU*outerRigthBoundaryF_xx, secondDerivative );
         
-        coeffUsq_yy = + al * bt * YDerivativeEvenFunctions(U.^2, zeroMatrix, mu.muU^2*outerTopBoundaryF.^2, secondDerivative);
-        coeffUsq_xx = + al * bt * XDerivativeEvenFunctions(U.^2, zeroMatrix, mu.muU^2*outerRigthBoundaryF.^2, secondDerivative);
+        coeffUsq_yy = + al * bt * theta(end) * YDerivativeEvenFunctions(U.^2, zeroMatrix, mu.muU^2*outerTopBoundaryF.^2, secondDerivative);
+        coeffUsq_xx = + al * bt * theta(end) * XDerivativeEvenFunctions(U.^2, zeroMatrix, mu.muU^2*outerRigthBoundaryF.^2, secondDerivative);
     end
     
     residual = btU_xx + bt1McSQU_yy + coefU_xxxx + coefU_xxyy + coefU_yyyy + coeffUsq_xx + coeffUsq_yy;
@@ -97,7 +97,8 @@ function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,prmtrs,bigUTimeDer,bigIC,U,comp
          yy, abs(coeffUsq_yy(1, ypts)), 'g',...
          yy, abs(residual(1, ypts) ), '--', ...
          yy(1:5:end), abs( 6 * bt * (1-c^2) * mu.muU ./ yy(1:5:end).^4), 'ok', ...
-         yy(1:5:end), abs( ( coefU_xxyy(1, ypts(1))*yy(1)^6 ) ./ yy(1:5:end).^6), 'om');% y(zeroY+10:end-barF), 1 ./ y(zeroY+10:end-barF) .^ 2, 'k' ); %(1+end)/2  
+         yy(1:5:end), abs( ( coefU_xxyy(1, ypts(1))*yy(1)^6 ) ./ yy(1:5:end).^6), 'om',...
+         y2(end-15:end), bt * (1-c^2) * mu.muU * abs( approxBoundaryF_yy(1, end-15:end)' ), 'y');% y(zeroY+10:end-barF), 1 ./ y(zeroY+10:end-barF) .^ 2, 'k' ); %(1+end)/2  
      
     set(plt(5),'Color',[0.4500 0.120 0.90]);
     set(plt(6),'Color',[0.92 0.6 0.1]);    %orange
@@ -135,6 +136,11 @@ function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,prmtrs,bigUTimeDer,bigIC,U,comp
     set(gca,'FontSize',18);
     legend(legendString, 'FontSize',14, 'Position',[0.205 0.2 0.15 0.2]);   %,'Location', 'eastoutside'
     title('y==0 cross-section','FontSize',16);    
+    
+    figure(15)
+    mesh(x(zeroX:end),y(zeroY:end), residual');
+    title('Residual (with boundary values)');
+    xlabel('x');    ylabel('y');
     
     if(extended == 0)
         return;
