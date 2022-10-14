@@ -50,18 +50,18 @@ function PlotSolCharacteristics(btString, cString, hString ,orderString, domainL
         figure(figNum)
         hold on;
         if( strcmp( additionalInfo, 'maximum' ) )
-            ylabel('max|u_h|','FontSize',20);
+            ylabel('max|u_h|','FontSize',18);
             plot(t(1:end-1),max_v, colors{i} );    
             
         elseif( strcmp( additionalInfo, 'mass' ) )
-            ylabel('Mass','FontSize',20);
+            ylabel('Mass','FontSize',18);
             [indeces, shift] = BEUtilities.GetCommonIndexArray( t, II );
             indeces(1) = [];
             plot(t(indeces+shift),II(indeces),colors{i} );
             hold off;
             
         elseif( strcmp( additionalInfo, 'energy' ) )
-            ylabel('E_h','FontSize',20);
+            ylabel('E_h','FontSize',18);
             [indeces, shift] = BEUtilities.GetCommonIndexArray( t, EN );
             indeces(1) = [];
             plot( t(1:end-1),EN,colors{i} );            
@@ -69,7 +69,7 @@ function PlotSolCharacteristics(btString, cString, hString ,orderString, domainL
         hold off;
     end
     legend(legendString);    
-    xlabel('t','FontSize',20);  
+    xlabel('t','FontSize',18);  
     set(gca,'FontSize',18);
 
 end
