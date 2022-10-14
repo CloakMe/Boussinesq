@@ -4,10 +4,10 @@ function PlotAssymptVsSolu( x, y, h, bigU, muTheta, c, factor)
         factor = 2;
     end
 
-    shift = ceil(2/h);
+    shift = ceil(10/h);
     [zeroX,zeroY]=GetZeroNodes(x,y);
-    stX = zeroX+shift-1;
-    stY = zeroY+shift-1;
+    stX = zeroX+shift-1; %zeroX+shift-1;  length(x) - shift;
+    stY = zeroY+shift-1; %zeroY+shift-1; length(y) - shift;
     newX = x(stX:end);
     newY = y(stY:end);
         
