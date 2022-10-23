@@ -78,8 +78,14 @@ function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secon
     
     figure(15)
     mesh(x,y,residual');
-    title('Residual (with all boundary values)')
-
+    %title('Residual (with all boundary values)')
+    axis([-7 7 -5 5 -1 1]);
+    colorbar;
+    caxis([-.0000000001 .0000000001]);
+    view(0,90);
+    xlabel('x','FontSize',18);    ylabel('y','FontSize',18);
+    set(gca,'FontSize',18);
+    
     figure(18);
     mesh(x,y,bigU');
     xlabel('x');    ylabel('y');
