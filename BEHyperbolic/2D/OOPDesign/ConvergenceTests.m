@@ -14,7 +14,7 @@ fprintf('!\n');
 yo(1,:) = '20';
 yo(2,:) = '10';
 yo(3,:) = '05';
-if( strcmp(paramString, 'bt1_c090') == 1 )
+if( strcmp(paramString, 'bt1_c090') == 1 || strcmp(paramString, 'bt1_c080') == 1 || strcmp(paramString, 'bt1_c070') == 1 )
     yo(1,:) = '40';
     yo(2,:) = '20';
     yo(3,:) = '10';
