@@ -136,7 +136,10 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
                fprintf('||R||_Inf = %.4e \n', residualInfNorm(subCounter));
                fprintf('tau = %.4e \n', tau);
                %fprintf('|ax - axNew| = %.15e \n|ay - ayNew| = %.15e\n eps = %.15e\n', abs( ax-Px(1) ), abs( ay-Py(1) ), eps );
-                
+               %if(sum(tauVector(1:iterCounter)) > 10455)
+               %    autoStop = 1;
+               %    fprintf('stop at sum(tauVector) = %.4f \n', sum(tauVector(1:iterCounter)));
+               %end
                if(prmtrs.plotResidual)
                    PlotResidual(x(zeroX:end),y(zeroY:end),crrntResidual*thetaVector(iterCounter));
                end

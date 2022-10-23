@@ -39,7 +39,7 @@ function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,prmtrs,bigUTimeDer,bigIC,U,comp
         coefU_xxxx =                  - domainUtils.XDerivativeEvenFunZeroBnd( dxx_U )/h^2;
 
         coeffUsq_yy = + al * bt * domainUtils.YDerivativeEvenFunZeroBnd(U.^2)/h^2;
-        coeffUsq_xx = + al * bt * domainUtils.XerivativeEvenFunZeroBnd(U.^2)/h^2;
+        coeffUsq_xx = + al * bt * domainUtils.XDerivativeEvenFunZeroBnd(U.^2)/h^2;
         
     else
         
@@ -97,8 +97,8 @@ function DrawAsymptoticTerms(x,y,h,al,bt,c,theta,prmtrs,bigUTimeDer,bigIC,U,comp
          yy, abs(coeffUsq_yy(1, ypts)), 'g',...
          yy, abs(residual(1, ypts) ), '--', ...
          yy(1:5:end), abs( 6 * bt * (1-c^2) * mu.muU ./ yy(1:5:end).^4), 'ok', ...
-         yy(1:5:end), abs( ( coefU_xxyy(1, ypts(1))*yy(1)^6 ) ./ yy(1:5:end).^6), 'om',...
-         y2(end-15:end), bt * (1-c^2) * mu.muU * abs( approxBoundaryF_yy(1, end-15:end)' ), 'y');% y(zeroY+10:end-barF), 1 ./ y(zeroY+10:end-barF) .^ 2, 'k' ); %(1+end)/2  
+         yy(1:5:end), abs( ( coefU_xxyy(1, ypts(1))*yy(1)^6 ) ./ yy(1:5:end).^6), 'om');%,...
+         %y2(end-15:end), bt * (1-c^2) * mu.muU * abs( approxBoundaryF_yy(1, end-15:end)' ), 'y');% y(zeroY+10:end-barF), 1 ./ y(zeroY+10:end-barF) .^ 2, 'k' ); %(1+end)/2  
      
     set(plt(5),'Color',[0.4500 0.120 0.90]);
     set(plt(6),'Color',[0.92 0.6 0.1]);    %orange

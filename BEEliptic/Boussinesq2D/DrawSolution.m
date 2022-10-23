@@ -78,8 +78,14 @@ function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secon
     
     figure(15)
     mesh(x,y,residual');
-    title('Residual (with all boundary values)')
-
+    %title('Residual (with all boundary values)')
+    axis([-7 7 -5 5 -1 1]);
+    colorbar;
+    caxis([-.0000000001 .0000000001]);
+    view(0,90);
+    xlabel('x','FontSize',18);    ylabel('y','FontSize',18);
+    set(gca,'FontSize',18);
+    
     figure(18);
     mesh(x,y,bigU');
     xlabel('x');    ylabel('y');
@@ -131,13 +137,14 @@ function DrawSolution(x,y,h,al,bt,c,theta,bigU,bigUTimeDer,bigIC,U,compBox,secon
     set(fig_ss11, 'OuterPosition', [0.0      	30.0        380.0     340.0]);
     %*sqrt(1-c^2)
     mesh(x,y,bigU');
-    xlabel('x');    ylabel('y');
-    title('end solution')
+    xlabel('x','FontSize',18);    ylabel('y','FontSize',18);
+    %title('end solution')
     %axis([x_st2 x_end2 y_st2 y_end2 -0.5 1]);
-    axis([x_st x_end y_st y_end -0.01 .01]);
+    axis([x_st2 x_end2 y_st2 y_end2 -0.1 3.01]);
     colorbar;
-    caxis([-0.00000001 .00000001]);
+    caxis([-0.00001 .00001]);
     view(0,90);
+    set(gca,'FontSize',18);
 
     fig_ss12=figure(12);
     set(fig_ss12, 'OuterPosition', [0.0      	30.0        380.0     340.0]);
