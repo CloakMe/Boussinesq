@@ -204,7 +204,7 @@ classdef (ConstructOnLoad) BEDomainUtils
         end
         jfd = mid+1;
         for j=size(M,2)-mid+2:size(M,2)
-            zeroMatrix(:,j) = M(:,end-sizeFD+1:end)*this.mFiniteDiff(jfd,2:end)';
+            zeroMatrix(:,j) = M(:,end-sizeFD:end)*this.mFiniteDiff(jfd,1:end)';
             jfd = jfd+1;
         end
 

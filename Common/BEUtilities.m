@@ -515,34 +515,28 @@ classdef BEUtilities
             end
             dxMat(sx,sx-1)=1;
             %dx2 = dx2/h^2;
-        elseif(order == 4)
-            dxMat=-2.5*diag(ones(sx,1));
-            dxMat(1,1:4)=[-38/15    29/20    -2/15   1/120];
-            dxMat(2,1:4)=  [4/3       -5/2      4/3    -1/12];
-            for l=3:sx-2
-                dxMat(l,l-2)=-1/12;
-                dxMat(l,l+2)=-1/12;
-                dxMat(l,l-1)=16/12;
-                dxMat(l,l+1)=16/12;
+        elseif(order == 4 || order == 6)
+
+            stencil = -order/2:order/2;
+            fdsize = length(GetFiniteDifferenceCoeff( stencil, 2));
+
+            dxMat = zeros(sx);
+            mid = (fdsize - 1)/2 ;
+
+            for i = order/2 + 1:sx - order/2
+                dxMat(i,i-mid:i+mid) = GetFiniteDifferenceCoeff( stencil, 2)';
             end
-            dxMat(sx-1,sx-3:sx)=[-1/12    4/3     -5/2     4/3];    
-            dxMat(sx,sx-3:sx)  =[1/120    -2/15  29/20   -38/15];
-        elseif(order == 6)
-            dxMat=-49/18*diag(ones(sx,1));
-            dxMat(1,1:6)= [-327/140        191/168        167/1134        -1/7           19/420        -77/13331];
-            dxMat(2,1:6)= [54/35           -235/84        884/567         -5/28           2/105        -11/11340];
-            dxMat(3,1:6)=   [-3/20           3/2            -49/18           3/2           -3/20           1/90];
-            for l=4:sx-3
-                dxMat(l,l-3)=1/90;
-                dxMat(l,l+3)=1/90;
-                dxMat(l,l-2)=-3/20;
-                dxMat(l,l+2)=-3/20;
-                dxMat(l,l-1)=3/2;
-                dxMat(l,l+1)=3/2;
+
+            for i=1:order/2
+
+                stencil = -i:order-i+1;
+                fd = GetFiniteDifferenceCoeff( stencil, 2)';    
+                dxMat(i,1:order+1) = fd(2:end);
+
+                stencil = fliplr(stencil);
+                fd = GetFiniteDifferenceCoeff( stencil, 2)';  
+                dxMat(end-i+1,end-order:end) = fd(1:end-1);
             end
-            dxMat(sx-2,sx-5:sx)=[1/90          -3/20           3/2          -49/18           3/2           -3/20];  
-            dxMat(sx-1,sx-5:sx)=[ -11/11340        2/105         -5/28         884/567       -235/84          54/35];    
-            dxMat(sx,sx-5:sx)=  [-77/13331       19/420         -1/7          167/1134       191/168       -327/140];
         else
             error('No such order %d!', order);
         end
