@@ -6,7 +6,7 @@ bndCutSize = 0;
 inputDirectory = 'WithBoundary'; %ZeroBoundary, ZeroBnd, WithBoundary
 fprintf('BoundaryConditionDir = %s \n', inputDirectory);
 partialPath = strcat('BEEliptic\Boussinesq2D\',inputDirectory,'\ChristovIC_128_bt1_c090\Oh6\');
-waveFactory = WaveFactory( partialPath, 'ChristovIC_128_ZB0_bt1_c090_h010_O(h^6)', bndCutSize, 0 ); %
+waveFactory = WaveFactory( partialPath, 'ChristovIC_128_ZB2_bt1_c090_h040_O(h^6)', bndCutSize, 0 ); %
 
 %partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_30_bt3_c045\Oh2\';
 %waveFactory = WaveFactory( partialPath, 'ChristovIC_30_ZB1_bt3_c045_h010_O(h^2)', bndCutSize, 0 ); %
@@ -30,8 +30,9 @@ dscrtParams = BEDiscretizationParameters( waveFactory.x, waveFactory.y ,waveFact
 eqParams = BEEquationParameters( waveFactory.alpha, waveFactory.beta1, waveFactory.beta2, waveFactory.c );
 ic = BEInitialCondition( waveFactory.u_t0 , waveFactory.dudt_t0, waveFactory.mu, waveFactory.theta );   
 %ic = BEInitialCondition( vl , dvl, waveFactory.mu, waveFactory.theta );   
-%engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); %%BEEngineTaylorZeroBnd BEEngineEnergySaveSoftBnd BEEngineAlternating
-engine = BEEngineTaylor( dscrtParams, eqParams, ic );
+%engine = BEEngineEnergySaveZeroBnd( dscrtParams, eqParams, ic ); 
+%%BEEngineTaylorLyche BEEngineTaylorZeroBnd BEEngineEnergySaveSoftBnd BEEngineAlternating
+engine = BEEngineTaylorZeroBnd( dscrtParams, eqParams, ic );
 fprintf('Engine Type = %s\n', engine.GetName());
 % _____________________________________
 tic
@@ -72,10 +73,7 @@ y = waveFactory.y;
 bt = waveFactory.beta1/waveFactory.beta2;
 %DrawEnergyForHyperbolicBE( engine, tt );
 
-useZeroBoundary = 0;
-if( waveFactory.mu == 0 )
-    useZeroBoundary = 1;
-end
+useZeroBoundary = waveFactory.useZeroBoundary;
 fprintf('Use ZeroBoundary = %d\n', useZeroBoundary);
 if( SavingTheSolution == 1)
 	try
@@ -106,8 +104,8 @@ viewTypeY = 90;
 %MovieForBEHyperbolic( viewTypeX, viewTypeY, tt, x, y );
 
 Q = 41;
-i = 10;
-if (true)
+i = 20;
+if (false)
     figure(i+1)
     mesh(x, y(1:Q), vl(:,1:Q)');
     view( viewTypeX, viewTypeY );

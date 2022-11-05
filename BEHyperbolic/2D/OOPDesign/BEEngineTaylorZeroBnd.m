@@ -97,35 +97,9 @@ classdef (ConstructOnLoad) BEEngineTaylorZeroBnd < BEEngineTaylor
             (2*this.alpha*this.beta/3 ) * ( vz.^3 ); %  
         e = this.GetIntegralOf(energyTerm);
     end
-    
-    function [lambda_X, lambda_Y] = SetLambdaNet(this)
-        
-        sx = size(this.D_x,1);
-        sy = size(this.D_y,1);
-        
-        ox1 = ones(1,sy);
-        lambda_X = diag(this.D_x)*ox1;
-        
-        if(sx~=sy )
-            oy1 = ones(1,sx);
-            lambda_Y = (diag(this.D_y)*oy1)';
-        else
-            lambda_Y = (diag(this.D_y)*ox1)';
-        end
-    end
       
   end
   
-  properties ( SetAccess = protected, GetAccess = public)
-    %Discretization parameters
-    eigenFinDiffMat_x
-    invEigenFinDiffMat_xT
-    D_x
-    eigenFinDiffMat_y
-    invEigenFinDiffMat_y
-    D_y
-    Lambda_X
-    Lambda_Y
-  end 
+
 
 end

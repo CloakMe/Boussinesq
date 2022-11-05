@@ -72,6 +72,7 @@ classdef WaveFactory
         this.y = this.y( bndPtsRem+1:end-bndPtsRem );
         this.dudt_t0 = this.dudt_t0( bndPtsRem+1:end-bndPtsRem, bndPtsRem+1:end-bndPtsRem );
         this.u_t0 = this.u_t0( bndPtsRem+1:end-bndPtsRem, bndPtsRem+1:end-bndPtsRem );
+        this.useZeroBoundary = prmtrs.useZeroBoundary;
         if(twoWaves > 0)
             this.u_t0 = this.u_t0 + fliplr(this.u_t0);
             this.dudt_t0 = this.dudt_t0 + fliplr(this.dudt_t0);
@@ -97,6 +98,7 @@ classdef WaveFactory
         this.beta2 = beta2;
         this.alpha = al;
         this.order = order;
+        this.useZeroBoundary = prmtrs.useZeroBoundary;
         if(vc==1)
             this.u_t0 = u_ex2d_mat_vc(X,Y,c,this.beta1);
             if(c==0)
@@ -212,7 +214,7 @@ classdef WaveFactory
         beta2
         c
         order
-
+        useZeroBoundary
         %helpers
         newY
         compBox
