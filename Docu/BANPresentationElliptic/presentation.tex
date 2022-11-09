@@ -1,0 +1,215 @@
+\documentclass{beamer}
+
+\usepackage[bulgarian]{babel}
+\usepackage{amsfonts,amsmath}
+\usepackage{lmodern}
+\usepackage[notref,notcite]{showkeys}
+
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\rf}[1]{(\ref{#1})}
+
+\title{Числено решаване на двумерното стационарно парадигматично уравнение на Бузинеск}
+\author{Красимир Ангелов, Наталия Колковска}
+\usetheme{default}
+\begin{document}
+
+%==================1======================================
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+%==================2======================================
+\begin{frame}
+\frametitle{ Едномерното парадигматично уравнение на Бузинеск }
+\begin{align}
+&u_{tt} - u_{xx} -\beta_1  \Delta u_{tt} +\beta_2 u_{xxxx} + \Delta f(u)=0   \quad \text{при} \,  (x,y) \in \RR, \, t\in\RR^+,\label{eq1D}
+\\ \nonumber &u(x,0)=u_0(x), \, u_t(x,0)=u_1(x)   \quad\text{при} \, x \in \RR,
+\\  &u(x) \rightarrow 0,  u(x)_{xx} \rightarrow 0 ,  \quad \text{при} \, x \rightarrow \infty, \label{eq1d1}
+\end{align}
+
+Точно решение при $u =\tilde u(x-ct)$:
+\begin{align}
+\tilde u(x,t:c) = \frac{3}{2} \frac{c^2-1}{\alpha}sech^2 \left( \frac{1}{2}  \sqrt{ \frac{\beta_1 (c^2-1)}{\beta_1 c^2-\beta_2}} (x-c t \sqrt{\frac{\beta_1}{\beta_2}} ) \right)
+\end{align}
+
+\end{frame}
+
+%==================3======================================
+\begin{frame}
+
+\frametitle{ Двумерното $(x,y) \in \Omega \subset \RR^2$ парадигматично уравнение на Бузинеск }
+
+\begin{align}
+&u_{tt} - \Delta u -\beta_1  \Delta u_{tt} +\beta_2 \Delta ^2 u + \Delta f(u)=0, \, t\in\RR^+,\label{eq1}
+\\ \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)  ,
+\\  &u(x,y) \rightarrow 0, \,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{при} \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11}
+\end{align}
+\begin{itemize}
+  \item Извеждане на стационарно уравнение чрез полагането $U(x,y-ct)=u(x,y,t)$ в \rf{eq1}
+\end{itemize}
+\begin{equation}\label{eq2}
+c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
+\end{equation}
+
+\end{frame}
+
+%==================4======================================
+\begin{frame}
+\frametitle{Смяна на променливите, свойства на новото уравнение } 
+ 
+\begin{itemize}
+\item Смяната $x=\sqrt\beta_1 { \overline x}$, $y=\sqrt\beta_1 { \overline y}$, $U(x,y)= v({ \overline x},{ \overline y} )$ в елиптичното уравнение \rf{eq2} води до
+ \begin{align}\label{eq3}
+&c^2 \beta (E_1- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2 v - \beta \Delta f(v), \\ 
+&v(\overline x, \overline y) \rightarrow 0,  \Delta v(\overline x, \overline y) \rightarrow 0 ,  \quad \text{за}  \sqrt{\overline x^2 + \overline y^2} \rightarrow \infty, \nonumber
+\end{align}
+\end{itemize}
+\begin{itemize}
+  \item нов дисперсионен параметър $\beta := \beta_1/\beta_2$
+  \item уравнение \rf{eq3} е елиптично (4ти ред) при $c < \min (1/ \sqrt{\beta},1)$
+  \item преминаване към система от две уравнения - подобряване на устойчивостта
+  \item скалиране на решението спрямо $(0,0) \in \Omega_h$ - търсят се ненулеви решения 
+\end{itemize}
+
+\end{frame}
+
+%==================5======================================
+\begin{frame}
+\frametitle{Метод на простата итерация} 
+\begin{itemize}
+  \item Въвеждат се две нови функции: $\widehat{v}=v/{\theta} $ и $\widehat{w}=w/{\theta} $, където $v(0,0)=\theta$
+\end{itemize}
+\begin{equation}\label{eq45}
+\begin{split}
+ &- (1 - c^2 \beta) \widehat{v}_{yy} -\widehat{v}_{xx} + \beta (1-c^2) \widehat{v} - \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
+ &- \Delta \widehat{w} =  c^2 \beta \widehat{v}_{xx}.
+\end{split}
+\end{equation}
+
+\begin{itemize}
+  \item Численото решение на уравнение \rf{eq45} се намира чрез метода на простата итерация като изкуствено се добавят производни по времето както следва:
+\end{itemize}
+\begin{align}\label{eq5}
+\begin{split}
+ &\frac {\partial \widehat{v}}{\partial t} - (1 - c^2 \beta) \widehat{v}_{yy} -\widehat{v}_{xx} + \beta (1-c^2) \widehat{v} - \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
+ &\frac {\partial \widehat{w}}{\partial t} - \Delta \widehat{w} =  c^2 \beta \widehat{v}_{xx}. 
+\end{split}
+\end{align}
+%По този начин стационарната системата от двете уравнения \rf{eq45} се заменя с преходните във времето уравнения дефинирани в \rf{eq5} с условието, че решенията $\widehat{v}$ и $\widehat{w}$ схождат линейно спрямо времето към решенията на \rf{eq45}.
+
+\end{frame}
+
+
+%==================6======================================
+\begin{frame}
+\frametitle{Метод на простата итерация} 
+Дискретизацията на последното уравнение \rf{eq5} води до следната явна схема:
+\begin{equation}\label{eq555}
+\begin{split}
+\frac {\widehat{v}^{(k+1)}-\widehat{v}^{(k)}}{\tau}- (1-c^2 \beta) \widehat{v}^{(k)}  (\Delta_{h,p,s,y})^T - \quad\quad\quad\;&\\
+-\Delta_{h,p,s,x}  \widehat{v}^{(k)}+ \beta (1-c^2 ) \widehat{v}^{(k)} - \beta \theta f(\widehat{v}^{(k)}) &= \widehat{w}^{(k)}, \\
+\frac  {\widehat{w}^{(k+1)} -\widehat{w}^{(k)}} {\tau} - \Delta_{h,p,s,x}  \widehat{w}^{(k)} - \widehat{w}^{(k)}  (\Delta_{h,p,s,y})^T &=  c^2 \beta \Delta_{h,p,s,x}  \widehat{v}^{(k)}.
+\end{split}
+\end{equation}
+
+Стойността на $\theta$ се намира използвайки следната зависимост
+\begin{equation}\label{eqtheta}
+\theta = \frac{ (1-c^2 \beta) \widehat{v}_{yy} + \widehat{v}_{xx} - \beta (1-c^2) \widehat{v} +\widehat{w}}{\alpha \beta \widehat{v}^2 } |_{x=0,y=0}.
+\end{equation}
+\end{frame}
+
+
+%==================7======================================
+\begin{frame}
+\frametitle{Метод на простата итерация}
+\framesubtitle{Втори ред на апроксимация на вторите производни ($p=2$)}
+Матриците $\Delta_{h,p,s,x}$ и $\Delta_{h,p,s,y}$ имат една и съща структура, но различна големина.
+\[
+\frac{1}{h^2}
+\begin{bmatrix}
+    -2	       & 2        &     \dots   &   \dots        & 0   \\
+    1               & -2            &   1           &   0               & \vdots    \\
+        0           & \ddots        &    \ddots    &   \ddots       &  0 \\ 
+    \vdots       &     0            &  1     	& -2    	   & 1 \\
+    0               & \dots          &  \dots         & 1  	   & -2 \\
+\end{bmatrix}
+\]
+\end{frame}
+
+%==================8======================================
+\begin{frame}
+\frametitle{Метод на простата итерация}
+\framesubtitle{Четвърти ред на апроксимация на вторите производни ($p=4$)}
+Матриците $\Delta_{h,p,s,x}$ и $\Delta_{h,p,s,y}$ при $p=4$
+\[
+\Delta_{h,4,s,x} = \frac{1}{h^2}
+\begin{bmatrix}
+     -\frac{5}{2}	& \frac{8}{3}       & -\frac{1}{6}	&    0     			&    \dots      	   &   0           & 0    \\
+    \frac{4}{3}          &-\frac{31}{12}    	& \frac{4}{3}	&   -\frac{1}{12}	  	&   \dots      	  &   0	           & \vdots  \\
+    -\frac{1}{12}	& \frac{4}{3}         	& -\frac{5}{2}	&  \frac{4}{3}    	 &   -\frac{1}{12}	  &      0           &\vdots    \\
+        0           		& \ddots        	&    \ddots   		 &   \ddots      	 &     \ddots      	  &  \ddots        &    0 \\	
+\\
+   \vdots      		 & 0           		 &  -\frac{1}{12}	& \frac{4}{3}    	& -\frac{5}{2}	&  \frac{4}{3}   &   -\frac{1}{12} \\
+    0      		 &  \dots           	 &   0     		& -\frac{1}{12} 	 & \frac{4}{3} 	 & -\frac{5}{2}  &  \frac{4}{3}\\
+    0              		 & \dots          	&  0              		 &\frac{1}{120} 	 &  -\frac{2}{15} 	& \frac{29}{20} & -\frac{38}{15}\\
+\end{bmatrix}
+\]
+\end{frame}
+
+%==================9======================================
+\begin{frame}
+\frametitle{Метод на простата итерация}
+\framesubtitle{Шести ред на апроксимация на вторите производни ($p=6$) }
+Матриците $\Delta_{h,p,s,x}$ и $\Delta_{h,p,s,y}$ при $p=6$
+\[
+\frac{1}{h^2}
+\begin{bmatrix}
+   -\frac{49}{18}		& \frac{3}{1}			&   -\frac{3}{10}		& \frac{1}{45}    		 &  0					& 0	   					&    0      	   	&   \dots           & 0    \\
+    \frac{3}{2}    	&-\frac{517}{180}    	&    \frac{68}{45}     & -\frac{3}{20}  	 		& \frac{1}{90} 		&  0					 &   0      	   	&   \dots	       & \vdots  \\
+    -\frac{3}{20}		& \frac{68}{45}         	& -\frac{49}{18} 	&  \frac{3}{2}		&  -\frac{3}{20}    	 &   \frac{1}{90}    	 &  0			&     \dots         &\vdots    \\
+    \frac{1}{90}		& -\frac{3}{20}		& \frac{3}{2}         	& -\frac{49}{18} 	&  \frac{3}{2}		&  -\frac{3}{20}    	 &   \frac{1}{90} &     \dots         &\vdots    \\
+        0           		& \ddots        		&         \ddots           	& \ddots        		&    \ddots   		&   \ddots      		 &     \ddots    	&  \ddots          &    0 \\	
+\\
+   \vdots      		&            		 	&    	0	      		& \frac{1}{90}		& -\frac{3}{20}		& \frac{3}{2}         	& -\frac{49}{18}	&  \frac{3}{2}  &  -\frac{3}{20} \\
+    0      			&              	 	&    0      		&   -\frac{11}{11340}	 	&    \frac{2}{105} 	&  -\frac{5}{28} 	& \frac{884}{567} &-\frac{235}{84} &  \frac{54}{35}\\
+    0              	& 	          		&    0              	&  -\frac{77}{13331}    		&  \frac{19}{420}&-\frac{1}{7}	 &  \frac{167}{1134} 	& \frac{191}{168}  &  -\frac{327}{140}\\
+\end{bmatrix}
+\]
+\end{frame}
+
+%==================10=====================================
+\begin{frame}
+\frametitle{Начални данни}
+\begin{itemize}
+  \item ``best-fit'' формули - Christov, C.I., Choudhury, J., Perturbation solution for the 2D Boussinesq equation, {\it Mech. Res. Commun.}, \textbf{38} (2011), 274-281,
+  \item радиално симетрично решение при $c=0$ - Kolkovska N. Angelow K., Numerical computation of the critical energy constant for two-dimensional Boussinesq equations, {\it Application of Mathematics in Technical and Natural Sciences, Albena (Bulgaria)},
+\emph{AIP Conference Proceedings}  \textbf{1684} (2015), 080007.
+  \item Kolkovska N., Numerical Evaluation of 2D Ground States,
+\emph{ EPJ Web of Conferences}, \textbf{108} (2016), 02032.
+\end{itemize}
+
+
+\end{frame}
+
+%==================11=====================================
+\begin{frame}
+\frametitle{Контрол на стъпката по времето}
+
+
+\end{frame}
+
+%==================12=====================================
+\begin{frame}
+\frametitle{Критерии за спиране}
+
+
+\end{frame}
+
+%==================13=====================================
+\begin{frame}
+\frametitle{Критерии за спиране}
+
+
+\end{frame}
+\end{document}
