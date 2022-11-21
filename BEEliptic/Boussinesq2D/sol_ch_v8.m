@@ -61,18 +61,18 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
     else
         [muU,muP] = FindBoundaryConstants(U,0*U,innerBoundaryUF,innerBoundaryPF,step);
     end
-    deltaU = DeltaEvenFunctions(U, zeroMatrix, muU*outerRigthBoundaryF, muU*outerTopBoundaryF, derivative.second);
+    %deltaU = DeltaEvenFunctions(U, zeroMatrix, muU*outerRigthBoundaryF, muU*outerTopBoundaryF, derivative.second);
     Uxx = XDerivativeEvenFunctions(U, zeroMatrix,muU*outerRigthBoundaryF,derivative.second);
     Uyy = YDerivativeEvenFunctions(U, zeroMatrix,muU*outerTopBoundaryF,derivative.second);
     if(sw == 0)
-        %P = bt*(1-c^2)*U - (1-bt*c^2)*deltaU + theta*al*bt*U.^2;
+        %P = bt*(1-c^2)*U - (1-bt*c^2)*(Uyy + Uxx) + theta*al*bt*U.^2;
         P = bt*(1-c^2)*U - (1-bt*c^2)*Uyy - Uxx + theta*al*bt*U.^2;        
     end
      
      iterCounter=1;
      subCounter=1;
      Usquare = U .^2; %
-     %thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*( deltaU(1,1) ) )/(al*bt*Usquare(1,1));
+     %thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*( Uyy(1,1) + Uxx(1,1) ) )/(al*bt*Usquare(1,1));
      thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*Uyy(1,1) + Uxx(1,1) )/(al*bt*Usquare(1,1));
      residualInfNorm(1) =  GetResidualInfNorm(...
          al,...
@@ -82,7 +82,7 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
          iterCounter,...
          U,...
          Usquare,...
-         deltaU,...
+         Uxx+Uyy,...
          zeroMatrix,...
          muU*outerRigthBoundaryF,...
          muU*outerTopBoundaryF,...
@@ -111,32 +111,29 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
         % TIME CONSumable       |
         %                      \|/
         %                       '
-        yDerBnd = muP*bt*(1-c^2)*outerTopBoundaryF + muP*muP*al*bt*outerTopBoundaryF.^2 -...
-            muP*outerTopBoundaryF_xx - muP*(1-bt*c^2)*outerTopBoundaryF_yy;
-        xDerBnd = muP*bt*(1-c^2)*outerRigthBoundaryF + muP*muP*al*bt*outerRigthBoundaryF.^2 -...
-            muP*outerRigthBoundaryF_xx - muP*(1-bt*c^2)*outerRigthBoundaryF_yy;
+        yDerBnd = muP*bt*(1-c^2)*outerTopBoundaryF;
+        xDerBnd = (muU*bt*c^2 + muP*bt*(1-c^2))*outerRigthBoundaryF;
         if( false )
-            thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*( deltaU(1,1) ) )/(al*bt*Usquare(1,1));
+            thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*( Uxx(1,1)+Uyy(1,1) ) )/(al*bt*Usquare(1,1));
             Pup = P + (tau)*(YDerivativeEvenFunctions(P,zeroMatrix,yDerBnd,derivative.second) +...
-                XDerivativeEvenFunctions(P-bt*c^2*(deltaU - U),zeroMatrix,xDerBnd,derivative.second));  
+                XDerivativeEvenFunctions(P-bt*c^2*(Uxx + Uyy - U),zeroMatrix,xDerBnd,derivative.second));  
 
             Uup = U + tau*( Pup - (al*bt*thetaVector(iterCounter) )*Usquare +...
-                ((1 - bt*c^2))* deltaU - (bt*(1 - c^2))*U );
+                ((1 - bt*c^2))* (Uxx+Uyy) - (bt*(1 - c^2))*U );
         else
             thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*Uyy(1,1) + Uxx(1,1) )/(al*bt*Usquare(1,1));
-            Pup = P + (tau)*( DeltaEvenFunctions(P, zeroMatrix, xDerBnd, yDerBnd, derivative.second) + bt*c^2*Uxx );  
+            Pup = P + (tau)*( YDerivativeEvenFunctions(P,zeroMatrix,yDerBnd,derivative.second) +...
+                XDerivativeEvenFunctions(P + bt*c^2*U,zeroMatrix,xDerBnd,derivative.second) );  
 
-            Uup = U + tau*( Pup - ( al*bt*thetaVector(iterCounter) ) * Usquare +...
-                YDerivativeEvenFunctions(U',zeroMatrix',muU*outerRigthBoundaryF',derivative.second)' +...
-                (1 - bt*c^2)*YDerivativeEvenFunctions(U,zeroMatrix,muU*outerTopBoundaryF,derivative.second) -...
-                (bt*(1 - c^2))*U );            
+            Uup = U + tau*( Pup - (al*bt*thetaVector(iterCounter) )*Usquare +...
+                (1 - bt*c^2)*Uyy + Uxx - (bt*(1 - c^2))*U  );
         end
 
         UvsUupInfNorm(iterCounter) = max(max(abs(U-Uup)));
         
         if(mod(iterCounter,10) ==0)        
-           deltaU = DeltaEvenFunctions(U, zeroMatrix, muU*outerRigthBoundaryF, muU*outerTopBoundaryF,derivative.second); %<--- TIME CONSummable
-           crrntResidual = Get2DResidual(al,bt,c,thetaVector,iterCounter,U,Usquare,deltaU,...
+           %deltaU = DeltaEvenFunctions(U, zeroMatrix, muU*outerRigthBoundaryF, muU*outerTopBoundaryF,derivative.second); %<--- TIME CONSummable
+           crrntResidual = Get2DResidual(al,bt,c,thetaVector,iterCounter,U,Usquare,Uxx+Uyy,...
                zeroMatrix,muU*outerRigthBoundaryF,muU*outerTopBoundaryF,derivative.second);
            
            subCounter=subCounter+1;

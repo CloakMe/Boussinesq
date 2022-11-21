@@ -18,16 +18,28 @@ clear;clc;
 % end
 
 additionalInfo = 2;
+domainLen = '50'; %128, 30, 50
 
-if( false )
-    domainLen = '128'; %128, 30
+if( strcmp(domainLen,'50') == 1 )
+    CompareStartEndSolitons('3', '30', '40' ,'4', domainLen, additionalInfo, 'ro' ) 
+    CompareStartEndSolitons('3', '30', '20' ,'4', domainLen, additionalInfo, 'go' ) 
+    CompareStartEndSolitons('3', '30', '10' ,'4', domainLen, additionalInfo, 'bo' ) 
+
+    CompareStartEndSolitons('3', '30', '40' ,'6', domainLen, additionalInfo, 'r' ) 
+    CompareStartEndSolitons('3', '30', '20' ,'6', domainLen, additionalInfo, 'g' ) 
+    CompareStartEndSolitons('3', '30', '10' ,'6', domainLen, additionalInfo, 'b' ) 
+    legendString = { 'h=0.4, p=4', 'h=0.2, p=4', 'h=0.1, p=4', 'h=0.4, p=6', 'h=0.2, p=6', 'h=0.1, p=6'}; %
+    legend(legendString); 
+end
+
+if( strcmp(domainLen,'128') == 1 )
     CompareStartEndSolitons('1', '90', '40' ,'6', domainLen, additionalInfo, 'b' ) 
     CompareStartEndSolitons('1', '90', '20' ,'6', domainLen, additionalInfo, 'gx' ) 
     CompareStartEndSolitons('1', '90', '10' ,'6', domainLen, additionalInfo, 'md' ) 
     if( additionalInfo == 2 )
         %legendString = { 'h=0.4, {\tau} = 0.002', 'h=0.2, {\tau} = 0.001', 'h=0.1, {\tau} = 0.0005'}; %
         %legendString = { 'h=0.4, {\tau} = 0.04', 'h=0.2, {\tau} = 0.02', 'h=0.1, {\tau} = 0.01'}; %
-        legendString = { 'h=0.4, {\tau} = 0.04', 'h=0.2, {\tau} = 0.02', 'h=0.1, {\tau} = 0.01'}; %
+        legendString = { 'h=0.4, {\tau} = 0.04', 'h=0.2, {\tau} = 0.02', 'h=0.1, {\tau} = 0.01'};
         legend(legendString); 
     end
     return;
@@ -38,10 +50,9 @@ if( false )
     CompareStartEndSolitons('1', '90', '40' ,'6', domainLen, additionalInfo, 'mo' ) 
     CompareStartEndSolitons('1', '90', '20' ,'6', domainLen, additionalInfo, 'mx' ) 
     CompareStartEndSolitons('1', '90', '10' ,'6', domainLen, additionalInfo, 'md' ) 
-    
+end
 
-else
-    domainLen = '30'; %128, 30
+if( strcmp(domainLen,'30') == 1 )
     CompareStartEndSolitons('3', '45', '20' ,'2', domainLen, additionalInfo, 'ko' ) 
     CompareStartEndSolitons('3', '45', '10' ,'2', domainLen, additionalInfo, 'kx' ) 
     CompareStartEndSolitons('3', '45', '05' ,'2', domainLen, additionalInfo, 'kd' ) 

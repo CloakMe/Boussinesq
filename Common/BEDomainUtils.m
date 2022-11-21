@@ -114,10 +114,27 @@ classdef (ConstructOnLoad) BEDomainUtils
         end
 
         zeroMatrix = zeros( size( M ) );
-        newM = [ augLeftPoints M augRightPoints ];
+%         newM = [ augLeftPoints M augRightPoints ];
+% 
+%         for j=1:size(M,2)
+%             zeroMatrix(:,j) = newM(:,j:j+sizeFD-1)*finiteDiff';
+%         end
+        
+        len = length(finiteDiff);
+        mid = (len+1)/2;
 
-        for j=1:size(M,2)
-            zeroMatrix(:,j) = newM(:,j:j+sizeFD-1)*finiteDiff';
+        for j = 1:mid-1
+            zeroMatrix(:,j) = augLeftPoints(:,j:mid-1)*finiteDiff(1:mid-j)' +...
+                M(:,1:mid-1+j)*finiteDiff(mid+1-j:end)';
+        end
+        if( abs(M(ceil(sxM/2), ceil(syM))) > 0 )
+            for j=mid:size(M,2)-mid+1
+                zeroMatrix(:,j) = M(:,j-mid+1:j+mid-1)*finiteDiff';
+            end
+        end
+        for j = 0:mid-2
+            zeroMatrix(:,end-j) =  M(:,end-mid+1-j:end)*finiteDiff(1:end-mid+1+j)' +...
+                augRightPoints(:,1:mid-1-j)*finiteDiff(end-mid+2+j:end)';
         end
 
     end
