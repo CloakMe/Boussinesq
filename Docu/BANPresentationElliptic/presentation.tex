@@ -27,7 +27,7 @@
 \begin{frame}
 \frametitle{ Едномерното парадигматично уравнение на Бусинеск }
 \begin{align}
-&u_{tt} - u_{xx} -\beta_1  \Delta u_{tt} +\beta_2 u_{xxxx} + \Delta f(u)=0   \quad \text{при} \,  (x,y) \in \RR, \, t\in\RR^+,\label{eq1D}
+&u_{tt} - u_{xx} -\beta_1  u_{ttxx} +\beta_2 u_{xxxx} + f(u)_{xx}=0   \quad \text{при} \,  x \in \RR, \, t\in\RR^+,\label{eq1D}
 \\ \nonumber &u(x,0)=u_0(x), \, u_t(x,0)=u_1(x)   \quad\text{при} \, x \in \RR,
 \\  &u(x) \rightarrow 0,  u(x)_{xx} \rightarrow 0 ,  \quad \text{при} \, x \rightarrow \infty, \label{eq1d1}
 \end{align}
@@ -161,7 +161,7 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 \begin{frame}
 \frametitle{Метод на простата итерация}
 \framesubtitle{Втори ред на апроксимация на вторите производни ($p=2$)}
-Матриците $\Delta_{h,p,s,x}$ и $\Delta_{h,p,s,y}$ при $p=2$
+Матриците $\Delta_{h,2,s,x}$ и $\Delta_{h,2,s,y}$ при $p=2$
 \[
 \frac{1}{h^2}
 \begin{bmatrix}
@@ -178,7 +178,7 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 \begin{frame}
 \frametitle{Метод на простата итерация}
 \framesubtitle{Четвърти ред на апроксимация на вторите производни ($p=4$)}
-Матриците $\Delta_{h,p,s,x}$ и $\Delta_{h,p,s,y}$ при $p=4$
+Матриците $\Delta_{h,4,s,x}$ и $\Delta_{h,4,s,y}$ при $p=4$
 \[
 \Delta_{h,4,s,x} = \frac{1}{h^2}
 \begin{bmatrix}
@@ -198,7 +198,7 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 \begin{frame}
 \frametitle{Метод на простата итерация}
 \framesubtitle{Шести ред на апроксимация на вторите производни ($p=6$) }
-Матриците $\Delta_{h,p,s,x}$ и $\Delta_{h,p,s,y}$ при $p=6$
+Матриците $\Delta_{h,6,s,x}$ и $\Delta_{h,6,s,y}$ при $p=6$
 \[
 \frac{1}{h^2}
 \begin{bmatrix}
