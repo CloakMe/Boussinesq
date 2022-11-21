@@ -134,21 +134,24 @@ end
 figure(i+5)
 mesh(x,y,vl')
 view( viewTypeX, viewTypeY );
-title('solution');
-xlabel('x');            ylabel('y');
+%title('solution');
+xlabel('x','FontSize',18);    ylabel('y','FontSize',18);
+set(gca,'FontSize',18);
 colorbar;
 figure(i+6)
 %hold on;
 plot(t(1:end-1),max_v,'k', t(1), max_v+0.005, 'k', t(1), max_v-0.005, 'k' );
 %hold off;
-title('Evolution of the maximum');
-xlabel('time "t"');  ylabel('max(u_h)');
+%title('Evolution of the maximum');
+xlabel('t','FontSize',18);  ylabel('max(v_h)','FontSize',18);
+set(gca,'FontSize',18);
 figure(i+7)
 %hold on;
 plot(t(1:end-1),EN,'k',t(1),EN(2)+EN(2)/1000.0,t(end),EN(end)-EN(end)/1000.0 )
 %hold off;
 title('Energy functional');
-xlabel('time "t"');  ylabel('EN');
+xlabel('t','FontSize',18);  ylabel('E','FontSize',18);
+set(gca,'FontSize',18);
 
 figure(i+8)
 %hold on;
@@ -157,8 +160,8 @@ indeces(1) = [];
 plot(t(indeces+shift),II(indeces),'k',t(1),II(2)+II(2)/1000.0,t(end),II(end)-II(end)/1000.0 )
 %hold off;
 title('Integral');
-xlabel('time "t"');  ylabel('Integral');
-
+xlabel('t','FontSize',18);  ylabel('Integral','FontSize',18);
+set(gca,'FontSize',18);
 return;
 %----------------------------------------------------------------------------------------
 CreatePictures( viewTypeX, viewTypeY, tt, x, y ); 

@@ -1,5 +1,13 @@
 clear;
 addpath('..\..\..\Common');
+
+warning('off','all');
+load (  'SOL_bt3_c030\vz_0.mat' );
+vl_start = vz;
+warning('on','all');
+CompareStartEndFromSOL(.05, 0.3, 5, 30, 'SOL_bt3_c030', vl_start) 
+return;
+
 btString = { '1' };
 cString = { '90' };
 hString = { '40' }; %, '10', '20'
@@ -35,3 +43,5 @@ plot( t(indeces(1:500:end)) ,II(indeces(1:500:end)),'bo' )
 hold off;
 xlabel('t','FontSize',20);  ylabel('E_h','FontSize',20);
 set(gca,'FontSize',18);
+
+
