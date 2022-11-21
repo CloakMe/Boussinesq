@@ -8,10 +8,14 @@ function [bigUcut, c] = GetElipticSol( btString, cString, hString, orderString, 
     bndCutSizeY = 0;
     bndString = 'WithBoundary';
     if( withBoundary == 0 )
+        bndNumber = '0';
         bndString = 'ZeroBoundary';
+    elseif( withBoundary == 2 )
+        bndNumber = '2';
+        bndString = 'ZeroBnd';
     end
     cellStrTlr = strcat('..\..\..\BEEliptic\Boussinesq2D\', bndString, '\ChristovIC_', domainLen, '_bt', btString, '_c0', cString,...
-            '\Oh', orderString, '\ChristovIC_', domainLen, '_ZB1_bt',...
+            '\Oh', orderString, '\ChristovIC_', domainLen, '_ZB', bndNumber, '_bt',...
             btString, '_c0', cString, '_h0', hString, '_O(h^', orderString, ')' );
         
     warning('off','all');

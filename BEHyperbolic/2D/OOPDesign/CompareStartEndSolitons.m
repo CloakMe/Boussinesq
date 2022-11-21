@@ -14,18 +14,27 @@ function CompareStartEndSolitons(btString, cString, hString ,orderString, domain
     fprintf('c = 0.%s, bt = %s, order = %s \n', cString, btString, orderString);
     
     %get solution from elliptic problem
-    [bigU, c] = GetElipticSol( btString, cString, hString, orderString, 0, domainLen );
+    [bigU, c] = GetElipticSol( btString, cString, hString, orderString, 2, domainLen );
     %get solution from hyperbolic problem
-    [x,y,t,max_v,EN,II,vl] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 0, domainLen, additionalInfo );
+    [x,y,t,max_v,EN,II,vl] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 2, domainLen, additionalInfo );
     
     if( additionalInfo == 2 )
-        stepM = length(max_v)/80;
+        stepM = ceil(length(max_v)/80);
+        mySlice = 1:stepM:length(max_v);
+        if(orderString == '4')
+            stepM = length(max_v)/10;
+            mySlice = 1:stepM:length(max_v);
+        end
+        if(mySlice(end) ~= length(max_v) && stepM > 1)
+            mySlice = [mySlice length(max_v)];
+        end
         figure(16)
         hold on;
-        plot(t(1:stepM:end-1), max_v(1:stepM:end), color );
+        plot(t(mySlice), max_v(mySlice), color ); %t(1:stepM:end-1)
         hold off;
-        title('Evolution of the maximum');
-        xlabel('time "t"');  ylabel('max(u_h)'); 
+        %title('Evolution of the maximum');
+        xlabel('t','FontSize',18);  ylabel('max(v_h)','FontSize',18); 
+        set(gca,'FontSize',18);
         return;
     end
     
