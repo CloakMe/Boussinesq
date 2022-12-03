@@ -35,7 +35,7 @@
 \begin{align}
 \tilde u(x,t:c) = \frac{3}{2} \frac{c^2-1}{\alpha}sech^2 \left( \frac{1}{2}  \sqrt{ \frac{\beta_1 (c^2-1)}{\beta_1 c^2-\beta_2}} (x-c t \sqrt{\frac{\beta_1}{\beta_2}} ) \right)
 \end{align}
-Солитона е самодвижеща се вълнова композиция, която запазва формата си, докато се разпространява с постоянна скорост. Структурата се запазва дори след взаимодействие с друг(и) солитон(и).
+Солитона е самодвижеща се вълнова композиция, която запазва формата си, докато се разпространява с постоянна скорост. Структурата ѝ се запазва дори след взаимодействие с друг(и) солитон(и).
 \end{frame}
 
 %==================3======================================
@@ -43,15 +43,16 @@
 \frametitle{ Двумерното $(x,y) \in \RR^2$ парадигматично уравнение на Бусинеск }
 \begin{align}
 &u_{tt} - \Delta u -\beta_1  \Delta u_{tt} +\beta_2 \Delta ^2 u + \Delta f(u)=0, \, t\in\RR^+,\label{eq1}
-\\ \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)  ,
-\\  &u(x,y) \rightarrow 0, \,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{при} \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11}
+\\
+&f(u) = u^2 \nonumber \\  \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)  , 
+\\  &u(x,y) \rightarrow 0, \,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{при} \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11} 
 \end{align}
 \begin{itemize}
   \item Извеждане на {\color{red}стационарно} уравнение чрез полагането $U(x,y-ct)=u(x,y,t)$ в \rf{eq1}
 \end{itemize}
 \color{red}
 \begin{equation}
-c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
+c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U)
 \end{equation}
 
 \end{frame}
@@ -66,8 +67,8 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 Целта на настоящата работа е
 \begin{itemize}
   \item да се намерят числени решения на \rf{eq2} при различни параметри $\beta$ и $c$ с висок ред на апроксимация - 2ри, 4ти и 6ти.
-  \item да се построи ново гранично условие за  \rf{eq2}
-  \item да се намерят числени решения на \rf{eq2} за по-високи скорости близо до допустимия максимум $c \approx \min (1/ \sqrt{\beta_1},1)$, $c < \min (1/ \sqrt{\beta_1},1)$.
+  \item да се намерят числени решения на \rf{eq2} за по-високи скорости близо до допустимия максимум $c \approx \min (1/ \sqrt{\beta_1},1)$, $c < \min (1/ \sqrt{\beta_1},1)$,
+  \item да се построи ново гранично условие за  \rf{eq2}.
 \end{itemize}
 \end{frame}
 
@@ -95,6 +96,11 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 \begin{frame}
 \frametitle{Метод на простата итерация} 
 \begin{itemize}
+  \item C.I. Christov, Numerical implementation of the asymptotic boundary conditions for steadily propagating 2D solitons of Boussinesq type equations,
+{\it Mathematics and Computers in Simulation}, \textbf{82} (2012), 1079-1092.
+\end{itemize}
+
+\begin{itemize}
   \item Въвеждат се две нови функции: $\widehat{v}=v/{\theta} $ и $\widehat{w}=w/{\theta} $, където $v(0,0)=\theta$
 \end{itemize}
 \begin{equation}\label{eq45}
@@ -105,7 +111,7 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 \end{equation}
 
 \begin{itemize}
-  \item Численото решение на уравнение \rf{eq45} се намира чрез метода на простата итерация като изкуствено се добавят производни по времето както следва:
+  \item Численото решение на системата \rf{eq45} се намира чрез метода на простата итерация като изкуствено се добавят производни по времето както следва:
 \end{itemize}
 \begin{align}\label{eq5}
 \begin{split}
@@ -114,6 +120,8 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 \end{split}
 \end{align}
 %По този начин стационарната системата от двете уравнения \rf{eq45} се заменя с преходните във времето уравнения дефинирани в \rf{eq5} с условието, че решенията $\widehat{v}$ и $\widehat{w}$ схождат линейно спрямо времето към решенията на \rf{eq45}.
+
+
 
 \end{frame}
 
@@ -267,7 +275,7 @@ c^2\beta (\widehat{v}^{(k)}_{i,j})_{\widehat{yy},p}  \nonumber \\
 	\max_{i,j} \Vert R_{i,j}^{(k)} \Vert < \epsilon,
 	\end{equation}
 \end{itemize}
-при $L_1$ норма и достатъчно малък праг $\epsilon < 1\times10^{-9}$.
+при $L_\infty$ норма и достатъчно малък праг $\epsilon < 1\times10^{-9}$.
 
 \end{frame}
 
@@ -280,7 +288,7 @@ c^2\beta (\widehat{v}^{(k)}_{i,j})_{\widehat{yy},p}  \nonumber \\
 		\begin{tabular}{||c|l|ll|ll||}
 			\hline
 			\hline
-             & $h$, $\tau$  &  	$\Vert \bar{ E_i} \Vert_{L_2}$ 	& сход.	& $\Vert \bar{ E_i} \Vert_{L_\infty}$  		&сход.   \\
+             & $h$  &  	$\Vert \bar{ E_i} \Vert_{L_2}$ 	& сход.	& $\Vert \bar{ E_i} \Vert_{L_\infty}$  		&сход.   \\
    					\hline 
 					\hline 
 $\beta = 3$   	&0.2    										&            &            &           &   \\
@@ -313,7 +321,7 @@ $\beta = 3$   	&0.2   &            &        &                  &      \\
 		\begin{tabular}{||c|l|ll|ll||}
 			\hline
 			\hline
-             & $h$, $\tau$  &  	$\Vert \bar{ E_i} \Vert_{L_2}$ 	& сход.	& $\Vert \bar{ E_i}\Vert_{L_\infty}$  		&сход.   \\
+             & $h$  &  	$\Vert \bar{ E_i} \Vert_{L_2}$ 	& сход.	& $\Vert \bar{ E_i}\Vert_{L_\infty}$  		&сход.   \\
    					\hline 					
 			\hline 	
 $\beta = 1$   	&0.4   &             &           &                & \\
