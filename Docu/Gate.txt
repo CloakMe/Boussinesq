@@ -1,4 +1,4 @@
-﻿Common responsibilities
+﻿Common responsibilities 
 
     Performs individual (under supervision) and collaborative research;
 	My research topic is numerical methods for differential equations. I have investigated
