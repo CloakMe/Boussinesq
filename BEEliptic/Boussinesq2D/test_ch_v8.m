@@ -2,17 +2,17 @@
 addpath('..\..\Common');
 clear;clc;
 tic
-x_st = -24.0;    y_st = -24.0;
-x_end = 24.0;    y_end = 24.0;
-x_st2 = -30.0;   y_st2 = -30.0;
-x_end2 = 30.0;   y_end2 = 30.0;
+x_st = -12.0;    y_st = -12.0;
+x_end = 12.0;    y_end = 12.0;
+x_st2 = -20.0;   y_st2 = -20.0;
+x_end2 = 20.0;   y_end2 = 20.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
 
 UseExtendedDomain=1;
 
-h = 0.4;
+h = 0.5;
 x=x_st2:h:x_end2; 
 y=y_st2:h:y_end2; 
 %tau = 0.00114425*8;% getTau(h,x_end,y_end)/20;
@@ -22,11 +22,11 @@ sx = (length(x)+1)/2
 sy = (length(y)+1)/2
    
    al = -1;%99979 izb
-   bt1 = 1;bt2 = 1; bt = bt1/bt2;
-   c = 0.9;
+   bt1 = 3;bt2 = 1; bt = bt1/bt2;
+   c = 0.45;
    iterMax = 9000000;
    %eps = 1/max(y_end^6,((1-c^2)*x_end^2)^3);
-   eps = 5.0e-02;%5.0e-09;
+   eps = 5.0e-06;%5.0e-09;
    % IC_switch = 0 ->christov sech formula
    % IC_switch = 1 ->nat42 formula
    ICSwitch=0;   
@@ -34,7 +34,7 @@ sy = (length(y)+1)/2
    % 0 -> use points (one, two, three for p=2,4,6 ) outside the domain with nonzero boundary function
    % 1 -> use points (one, two, three for p=2,4,6 ) outside the domain with zero boundary function
    % 2 -> use non-symetric finite differences without points outside the domain   
-   useZeroBoundary  = 2;
+   useZeroBoundary  = 0;
    plotResidual  = 0;
    plotBoundary  = 0;
    checkBoundary = 0;
@@ -45,8 +45,8 @@ sy = (length(y)+1)/2
        'plotResidual',{plotResidual},'plotBoundary',{plotBoundary},'plotAssympt',{plotAssympt},...
        'checkBoundary',{checkBoundary}, 'useZeroBoundary', {useZeroBoundary});
    
-   firstDerivative = GetFiniteDifferenceCoeff([-3,-2,-1,0,1,2,3],1)'/h;
-   secondDerivative = GetFiniteDifferenceCoeff([-3,-2,-1,0,1,2,3],2)'/h^2;
+   firstDerivative = GetFiniteDifferenceCoeff([-2,-1,0,1,2],1)'/h;
+   secondDerivative = GetFiniteDifferenceCoeff([-2,-1,0,1,2],2)'/h^2;
    derivative = struct('first',{firstDerivative},'second',{secondDerivative});
    
   [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,mu,tauVector,angl,sw_div]=...
@@ -55,7 +55,7 @@ sy = (length(y)+1)/2
   if(length(tauVector)<iterMax && UseExtendedDomain == 1 && size(bigUTimeDerivative,1)~=1)
      fprintf('\nLarge Domamin Calculations:\n\n');
      prmtrs.checkBoundary = 0;
-     prmtrs.eps = 1.0e-3;
+     prmtrs.eps = 1.0e-13;
      prmtrs.plotResidual = 0;
      prmtrs.tau = tauVector(end);
      [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,mu,tauVector,angl,sw_div] =...
@@ -99,6 +99,12 @@ solutionNorms.PvsPupInfNorm = solutionNormsCont.PvsPupInfNorm;
 solutionNorms.PvsPupL2Norm = solutionNormsCont.PvsPupL2Norm;
 solutionNorms.boundaryFunctionUvsUL2Norm = solutionNormsCont.boundaryFunctionUvsUL2Norm;
 solutionNorms.BoundaryFunctionPvsPL2Norm = solutionNormsCont.BoundaryFunctionPvsPL2Norm;
+solutionNorms.UL2Norm = solutionNormsCont.UL2Norm;
+solutionNorms.PL2Norm = solutionNormsCont.PL2Norm;
+solutionNorms.boundaryFunctionUvsUInfNorm = solutionNormsCont.boundaryFunctionUvsUInfNorm;
+solutionNorms.BoundaryFunctionPvsPInfNorm = solutionNormsCont.BoundaryFunctionPvsPInfNorm;
+solutionNorms.UInfNorm = solutionNormsCont.UInfNorm;
+solutionNorms.PInfNorm = solutionNormsCont.PInfNorm;
 
 save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
       '_h0' num2str(h * 100,'%.02d') '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
@@ -122,11 +128,11 @@ PlotAssymptVsSolu( x, y, h, bigU, mu.muU*theta(end), c);
 return;
 % Enlarge Domain from existing save:
 %old domain parameters from the save must be the same as define here:
-x_st = -80.0;    y_st = -80.0;
-x_end = 80.0;    y_end = 80.0;
+x_st = -40.0;    y_st = -40.0;
+x_end = 40.0;    y_end = 40.0;
 %new domain boundaries:
-x_st2 = -160.0;   y_st2 = -160.0;
-x_end2 = 160.0;   y_end2 = 160.0;
+x_st2 = -80.0;   y_st2 = -80.0;
+x_end2 = 80.0;   y_end2 = 80.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
@@ -202,6 +208,12 @@ solutionNorms.PvsPupInfNorm = solutionNormsCont.PvsPupInfNorm;
 solutionNorms.PvsPupL2Norm = solutionNormsCont.PvsPupL2Norm;
 solutionNorms.boundaryFunctionUvsUL2Norm = solutionNormsCont.boundaryFunctionUvsUL2Norm;
 solutionNorms.BoundaryFunctionPvsPL2Norm = solutionNormsCont.BoundaryFunctionPvsPL2Norm;
+solutionNorms.UL2Norm = solutionNormsCont.UL2Norm;
+solutionNorms.PL2Norm = solutionNormsCont.PL2Norm;
+solutionNorms.boundaryFunctionUvsUInfNorm = solutionNormsCont.boundaryFunctionUvsUInfNorm;
+solutionNorms.BoundaryFunctionPvsPInfNorm = solutionNormsCont.BoundaryFunctionPvsPInfNorm;
+solutionNorms.UInfNorm = solutionNormsCont.UInfNorm;
+solutionNorms.PInfNorm = solutionNormsCont.PInfNorm;
 
 save (['SavedWorkspaces\' GetICName(ICSwitch) 'IC_2W_' num2str(floor(x_end2)) '_ZB'  num2str(useZeroBoundary) '_bt' num2str(bt) '_c0' num2str(floor(c*100)) ...
     '_h0' num2str(h * 100,'%.02d') '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);

@@ -11,11 +11,18 @@ function PrintResults(solutionNorms,mu)
     fprintf('||U-Uup||_Inf = %.4e \n', solutionNorms.UvsUpInfNorm(end));
 
     fprintf('||P-Pup||_L2 = %.4e \n', solutionNorms.PvsPupL2Norm);
-    fprintf('||U-Uup||_L2 = %.4e \n', solutionNorms.UvsUupL2Norm);
+    fprintf('||U-Uup||_L2 = %.4e \n\n', solutionNorms.UvsUupL2Norm);
 
-    fprintf('||PBndAprox - PBnd||_L2 = %.4e \n', solutionNorms.BoundaryFunctionPvsPL2Norm);
-    fprintf('||UBndAprox - UBnd||_L2 = %.4e \n\n', solutionNorms.boundaryFunctionUvsUL2Norm);
+    fprintf('||UBndAprox - UBnd||_L2 = %.4e, ||UBnd||_L2 = %.4e \n', ...
+        solutionNorms.boundaryFunctionUvsUL2Norm, solutionNorms.UL2Norm);
+    fprintf('||PBndAprox - PBnd||_L2 = %.4e, ||PBnd||_L2 = %.4e \n\n', ...
+        solutionNorms.BoundaryFunctionPvsPL2Norm, solutionNorms.PL2Norm);
     
+    fprintf('||UBndAprox - UBnd||_Inf = %.4e, ||UBnd||_Inf = %.4e \n', ...
+        solutionNorms.boundaryFunctionUvsUInfNorm, solutionNorms.UInfNorm);
+    fprintf('||PBndAprox - PBnd||_Inf = %.4e, ||PBnd||_Inf = %.4e \n\n', ...
+        solutionNorms.BoundaryFunctionPvsPInfNorm, solutionNorms.PInfNorm);
+        
     fn = fieldnames(mu);
 	for k=1:numel(fn)
 	    if( isnumeric(mu.(fn{k})) )
