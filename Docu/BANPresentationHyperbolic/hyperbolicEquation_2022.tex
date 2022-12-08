@@ -83,15 +83,17 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 \frametitle{Цели}
 
 \begin{itemize}
-  \item да се построи числен метод (на Тейлор), който използва диференчни схеми с висок (втори, четвърти и шести) ред на апроксимация, за решението на Парадигматичното уравнение на Бусинеск,
+  \item да се построи числен метод (на Тейлор), който използва диференчни схеми с висок (втори, четвърти и шести) ред на апроксимация, за решението на ПУБ,
   
-  \item да се приложи нов тип начално условие, което е намерено числено (понеже не съществува явна формула) и апроксимацията му отговаря на апроксимацията използвана в метода на Тейлор,
-  
-    \item да се изследва Парадигматичното уравнение на Бусинеск при по-високи скорости близки до допустимия максимум $c \approx \min (1/ \sqrt{\beta_1},1)$, $c < \min (1/ \sqrt{\beta_1},1)$, използвайки гореспоменатото начално условие,
+     \item да се изследват следните свойства на ПУБ при по-високи скорости близки до допустимия максимум $c \approx c_{max}$, $c < c_{max}$
+  \begin{itemize}
+     \item енергия,
+     \item форма,
+     \item максимум,     
+  \end{itemize}
+	използвайки началното условие получено от елиптичната задача, където $c_{max} = \min (1/ \sqrt{\beta_1},1)$,
 
-  \item да се сравнят числените резултати получени с метода на Тейлор и Консервативната схема при втори ред на апроксимация,
-
-  \item да се изследват измененията в максимума и формата на численото решение в зависимост от реда на апроксимация,
+  \item да се сравнят числените резултати получени с метода на Тейлор и Консервативната схема при втори ред на апроксимация
     
 \end{itemize}
 
@@ -112,71 +114,61 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 \end{itemize}
 
 \end{frame}
+
 %---------- frame 06 ----------------
 
 \begin{frame}
-\frametitle{Boussinesq Paradigm Equation}
+\frametitle{Парадигматичното уравнение на Бусинеск - смяна на променливите}
 
-The goal of this talk is to:
-\begin{itemize}
- \item propose numerical method with high approximation order for the solution of BPE,
- \item investigate properties of the resulting waves for velocities, which are close to the maximum $c \approx c_{max}$, $c < c_{max}$:
-	\begin{itemize}
-	 \item energy,
-	 \item shape,
-	 \item maximum,
-	\end{itemize}
-\end{itemize}
-where $c_{max} = min\{1, \sqrt{ \frac{\beta_2}{\beta_1} } \}$.
+\begin{align}
+&u_{tt} - \Delta u -\beta_1  \Delta u_{tt} +\beta_2 \Delta ^2 u + \Delta f(u)=0, \, t\in\RR^+,\label{eq1}
+\\
+&f(u) = u^2 \nonumber \\  \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)  , 
+\\  &u(x,y) \rightarrow 0, \,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{при} \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11} 
+\end{align}
+
 \end{frame}
-
 
 %---------- frame 07 ----------------
 
 \begin{frame}
-\frametitle{Boussinesq Paradigm Equation}
-The following variable change
+\frametitle{Парадигматичното уравнение на Бусинеск - смяна на променливите}
+Следната смяна на променливите 
 \begin{align}
 x = \sqrt{\beta_1} \bar{x}, \quad y = \sqrt{\beta_1} \bar{y}, \quad t = \sqrt{\beta_1} \bar{t}
 \end{align}
 
-transforms (1) into 
+трансформира \rf{eq1} в
 
 \be\label{problemVC}
 \beta(I-\Delta) \frac{\partial^2 u}{\partial t^2}=
   \Delta u -\Delta^2 u +\Delta(-\alpha \beta u^2 + (\beta - 1 )u)
 \ee
 
-where $\beta = \beta_1/\beta_2$.
+където $\beta = \beta_1/\beta_2$.
 
 \end{frame}
 
 
 
-%---------- frame 05 ----------------
+%---------- frame 08 ----------------
 \begin{frame}
-\frametitle{Conservation of the Energy}
-The mass:
-
-\begin{equation}\label{int}
-D(u(t))=D(u(0))=\int_{R^2} u(x,y)dx dy
-\end{equation}
-
-and energy:
+\frametitle{Запазване на енергията}
+\framesubtitle{Енергията за непрекъснатата задача \rf{problemVC}}
 \begin{align}\label{ex-en}
 E(u(t)) = E(u(0)) =&\int_{R^2} u_t \left((A^{-1}+E)u_t\right) dxdy+
 \beta \int_{R^2} u^2 dxdy \nonumber\\
 +& \int_{R^2}u \left(A u\right) dxdy
--\frac{2 \alpha \beta}{3} \int_{R^2} u^3 dxdy =const
+-\frac{2 \alpha \beta}{3} \int_{R^2} u^3 dxdy =const.
 \end{align}
-of the continuous problem \rf{problemVC}. Here $E(u)$ is the exact energy of problem \rf{problemVC} and $Au=-\Delta u$.
+$E(u(t))$ представлява аналитичeн израз за енергията от уравнението \rf{problemVC}, където $Au=-\Delta u$.
 \end{frame}
 
-%-----------------------------------------------------------------
+%------------------------ frame 09 -----------------------------------------
 
 \begin{frame}
-\frametitle{The Computational Domain $\Omega_h$}
-\framesubtitle{Equidistant Grid $h=(h_1, h_2)$}
+\frametitle{Изчислителна област $\Omega_h$}
+\framesubtitle{Равномерна мрежа $h=(h_1, h_2)$}
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.6\linewidth}
 		\includegraphics[width=\linewidth]{Omega_dah.png}
@@ -188,8 +180,9 @@ of the continuous problem \rf{problemVC}. Here $E(u)$ is the exact energy of pro
 %---------- frame ----------------
 
 \begin{frame}
-\frametitle{Conservative FDS}
-The approximation of the differential operators is defined as:
+\frametitle{Консервативна схема}
+\framesubtitle{Дискретизация на вторите производни}
+Апроксимацията на вторите производни се дефинира чрез:
 \begin{equation}
 \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t_k ) = \frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} + O(\tau^2) 
 \end{equation}
@@ -212,13 +205,14 @@ The approximation of the differential operators is defined as:
 %------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Conservative FDS}
-The grid function obtained from [\ref{problemVC}] is defined as:
+\frametitle{Консервативна схема}
+\framesubtitle{Диференчно уравнение}
+Диференчно уравнение с апроксимация от втори ред за \rf{problemVC}:
 \begin{equation}
 \beta (I-\Delta_h)\frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} = (\Delta_h - \Delta_h^2)u^{(k)}_{i,j} + \Delta_h(g(u^{(k)}_{i,j}))
 \end{equation}
 %
-where the non-linear term $g$ is defined as:
+където нелинейния член $g$ е дефиниран чрез:
 \begin{align}
 g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(k-1)}_{i,j})(u^{(k+1)}_{i,j}) + (u^{(k-1)}_{i,j})^2 \right) + \nonumber\\
 +&\frac{ (\beta - 1 )}{ 2 }\left( u^{(k+1)}_{i,j} + u^{(k-1)}_{i,j} \right).
@@ -231,7 +225,42 @@ g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(
 %------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{TS Approach with Method of Lines}
+%C
+\frametitle{Консервативна схема}
+\framesubtitle{Сходимост}
+$T = 10$
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{ }        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{грешки $\Vert E_i\Vert_{L_2}$}  &ред на& \multirow{2  }{*}{грешки $\Vert E_i\Vert_{L_\infty}$}  &ред на  \\
+	                                        &                                                     &                                                                 &  сход. &                                                                       & сход. \\
+   			\hline 
+					\hline 
+  $\beta=3$                  &0.2, 0.1         &                    &                &                  &                   \\
+   c=0.45                      &0.1, 0.05       & 0.989422   &                & 1.043649  &                   \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.025   &0.344818    & 1.52       & 0.355517   &   1.55   \\
+	   \hline
+			\hline 
+       $\beta=1$         & 0.4, 0.2       &                   &           &                 &   \\
+                  c=0.9     & 0.2, 0.1       & 0.200424   &          &0.072726  &   \\
+  $O(h^2+ \tau^2)$  & 0.1, 0.05     & 0.047899   & 2.06  &0.021451  & 1.76 \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Тест на Рунге за сходимост при Консервативната схема с нулево гранично условие и грешки от апроксимацията $O(h^{2} + \tau^2 )$. Грешките $E_i$ са изчислени в $L_2$ и $L_\infty$ норми.}
+\label{tableC}
+\end{table}
+
+\end{frame}
+
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Метод на Тейлор и метод на линиите за ПУБ}
 \begin{center}\vspace{0.25cm}
 	\begin{minipage}[b]{0.45\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/FDS.png}
@@ -504,8 +533,7 @@ It is obtained that:
 %------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Thank You For Your Attention!}
-\framesubtitle{The Wave Evolution}
+\frametitle{Wave Evolution}
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.30\linewidth}
 		\includegraphics[width=\linewidth]{../amitans/figures/Solution_bt3_t=0.png}
