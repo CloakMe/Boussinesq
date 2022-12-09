@@ -49,7 +49,7 @@
 \subsection{Метод на Тейлор и метод на правите}
 \subsubsection{Сходимост}
 \section{Числени резултати}
-\subsection{Дискретните маса и енергия - сравнение между метода на Тейлор и Консервативната схема}
+\subsection{Дискретна енергия и форма - сравнение между метода на Тейлор и Консервативната схема}
 \subsection{Форма и максимум на решението при метода на Тейлор}
 \subsection{Числен тест при $\beta = 3, c=0.3$}
 
@@ -276,7 +276,7 @@ $T = 10$
 
 \end{frame}
 
-%------------------------------------------------------------------
+%------------------------- frame 14 -----------------------------------------
 
 \begin{frame}
 \frametitle{Метод на Тейлор и метод на линиите за ПУБ}
@@ -293,7 +293,7 @@ $T = 10$
 От \rf{problemVC} се получава следната система от ОДУ:
 \be \label{DiscreteEq}
 \beta (I-\Delta_{h,p}) \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t)=
- (\Delta_{h,p} - \Delta_{h,p}^2) u_{i, j}(t) + \Delta_{h,p} ( g( u_{i, j}(t) ) )
+ (\Delta_{h,p} - \Delta_{h,p}^2) u_{i, j}(t) + \Delta_{h,p} ( ( u_{i, j}(t) )^2 )
 \ee
 за $i = 0..N_1$ и $j=0..N_2$. За всяко ОДУ от системата е направено развитие в ред на Тейлор:
 \begin{align} \label{TSe}
@@ -305,7 +305,7 @@ u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_
 
 \end{frame}
 
-%------------------------------------------------------------------
+%---------------------------- frame 15 --------------------------------------
 
 \begin{frame}
 \frametitle{Mетод на Тейлор и метод на линиите за ПУБ}
@@ -327,7 +327,7 @@ u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_
 
 \end{frame}
 
-%------------------------------------------------------------------
+%---------------------------- frame 16 --------------------------------------
 
 \begin{frame}
 \frametitle{Метод на Тейлор и метод на линиите за ПУБ}
@@ -378,7 +378,7 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 
 \end{frame}
 
-%------------------------------------------------------------------
+%----------------------------- frame 17 -------------------------------------
 
 \begin{frame}
 \frametitle{Числени резултати}
@@ -399,11 +399,11 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 Тест 1 and Тест 2 използват нулево гранично условие - по границата на областта се използват несиметрични крайни разлики със същия ред на апроксимация $p$ използван във вътрешността на областта $\Omega_h$.
 \end{frame}
 
-%------------------------------------------------------------------
+%---------------------------------- frame 18 --------------------------------
 
 \begin{frame}
-\frametitle{Results}
-\framesubtitle{Energy for the Conservative scheme and TS method}
+\frametitle{Числени резултати}
+\framesubtitle{Дискретна енергия - сравнение между метода на Тейлор и Консервативната схема}
 
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.49\linewidth}
@@ -414,15 +414,15 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 		
 	\end{minipage}
 \end{center}
-The Energy of the solution for approximation $O(|h|^2 + \tau^2)$ and $T = 10$. Left panel is for Test 1 with $\beta=3$, $c = 0.45$ and right panel is for Test 2 with $\beta=1$, $c = 0.9$.
+Дискретната енергия като функция на времето до $T = 10$ при Тест 1 (ляво) и Тест 2 (дясно) и апроксимация $O(|h|^2 + \tau^2)$.
 \end{frame}
 
 
-
+%---------------------------------- frame 19 --------------------------------
 
 \begin{frame}
-\frametitle{Results}
-\framesubtitle{Wave Comparison}
+\frametitle{Числени резултати}
+\framesubtitle{Форма - сравнение между метода на Тейлор и Консервативната схема при $\beta = 3, c=0.45$}
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.32\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/compare_30_bt3_c045_h020.png}
@@ -434,14 +434,14 @@ The Energy of the solution for approximation $O(|h|^2 + \tau^2)$ and $T = 10$. L
 		\includegraphics[width=\linewidth]{../amitans/figures/compare_30_bt3_c045_h005.png}
 	\end{minipage}
 \end{center}
-Difference between solutions from TS approach and Conservative Scheme at time $T=10$, $O(|h|^2 + \tau^2)$ for Test 1. From Left to right $h=0.2, 0.1, 0.05$. The graphics represent only one nineth of the whole domain $\Omega_h$.
+Разликите в числените решения получени с метода на Тейлор и Консервативната схема за време $T=10$ и апроксимация $O(|h|^2 + \tau^2)$ за Тест 1. От ляво на дясно $h=0.2, 0.1, 0.05$. Графиката представлява само една девета от цялата област $\Omega_h$.
 \end{frame}
 
-%------------------------------------------------------------------
+%---------------------------------- frame 20 --------------------------------
 
 \begin{frame}
-\frametitle{Results}
-\framesubtitle{Wave Comparison}
+\frametitle{Числени резултати}
+\framesubtitle{Форма - сравнение между метода на Тейлор и Консервативната схема при $\beta = 1, c=0.9$}
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.32\linewidth}
 		\includegraphics[width=\linewidth]{../amitans/figures/compare_128_bt1_c09_h040.png}
@@ -453,14 +453,14 @@ Difference between solutions from TS approach and Conservative Scheme at time $T
 		\includegraphics[width=\linewidth]{../amitans/figures/compare_128_bt1_c09_h010.png}		 
 	\end{minipage}
 \end{center}
-Difference between solutions from TS approach and Conservative Scheme at time $T=10$, $O(|h|^2 + \tau^2)$ for Test 2. From Left to right $h=0.4, 0.2, 0.1$. The graphics represent only one nineth of the whole domain $\Omega_h$.
+Разликите в числените решения получени с метода на Тейлор и Консервативната схема за време $T=10$ и апроксимация $O(|h|^2 + \tau^2)$ за Тест 1. От ляво на дясно $h=0.4, 0.2, 0.1$. Графиката представлява само една девета от цялата област $\Omega_h$.
 \end{frame}
 
-%------------------------------------------------------------------
+%---------------------------------- frame 21 --------------------------------
 
 \begin{frame}
-\frametitle{Results}
-\framesubtitle{Solution Maximum, Taylor Series, smallest step sizes}
+\frametitle{Числени резултати}
+\framesubtitle{Максимума на решението при метода на Тейлор и $p=2,4,6$}
 
 \begin{figure}[ht]
 	\centering
@@ -471,33 +471,58 @@ Difference between solutions from TS approach and Conservative Scheme at time $T
 		 \includegraphics[width=\linewidth]{../amitans/figures/maximum_128_bt1_c090_h010.png}
 	\end{minipage}
 
-Evolution of the maximum for Test Wave 1 with $\beta =3$ (left panel) and Test Wave 2 with $\beta=1$ (right panel) for $T=10$.
+Развитието на максимума за време $T=10$, $\tau = h/100$, при Тест 1 (ляво) и Тест 2 (дясно) .
 \end{figure}
 
 \end{frame}
 
-%------------------------------------------------------------------
+%---------------------------------- frame 22 --------------------------------
 
 \begin{frame}
-\frametitle{Results}
-\framesubtitle{Solution Shape, Taylor Series, smallest step sizes, $O(|h|^6+\tau^6)$}
-\begin{figure}[ht]
-	\centering
-	\begin{minipage}[b]{0.49\linewidth}
-		\includegraphics[width=\linewidth]{../amitans/figures/compare_start_end_bt3_c045_T10.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.49\linewidth}
-		 \includegraphics[width=\linewidth]{../amitans/figures/compare_start_end_bt1_c090_T10.png}
-	\end{minipage}
+\frametitle{Числени резултати}
+\framesubtitle{Форма на решението при метода на Тейлор}
 
-Difference between localized wave at time $T=0$ and $T=10$ for Test Wave 1 with $\beta =3$  (left) and Test Wave 2 with $\beta=1$ (right). 
-\end{figure}
-
-It is obtained that:
-\begin{description}
- \item[$\beta = 3$, $c = 0.45$] $||u_h(t=10)-u_h(t=0)|_{L_2} =  0.00000981$
- \item[$\beta = 1$, $c = 0.9$] $||u_h(t=10)-u_h(t=0)|_{L_2} = 0.00000186$
-\end{description}
+\begin{table}[ht]
+\centering
+\small
+\resizebox{8cm}{!}{
+		\begin{tabular}{||c|l|l|l||}
+			\hline
+			\hline
+                  & $h$, $\tau$  & $||u^{(0)} - u^{(N_t)}||_{L_2}$  & $||u^{(0)} - u^{(N_t)}||_{L_\infty}$   \\
+   		\hline 
+			\hline
+  $\beta=3$                &0.2, 0.001            & 1.494351 & 1.533173    \\
+   c=0.45                     &0.1, 0.0005          & 0.466991 & 0.484011       \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.00025   & 0.127641 & 0.132504      \\
+			\hline 
+  $\beta=3$               &0.2, 0.02       &0.220560 & 0.230486       \\
+   c=0.45                    &0.1, 0.01      &0.013762 & 0.014391        \\
+     $O(h^4+ \tau^4)$ &0.05, 0.005&0.000877 & 0.000917         \\
+			\hline 
+  $\beta=3$               &0.2, 0.02        &  0.035965 & 0.038039        \\
+     c=0.45                 &0.1, 0.01        &0.000600 & 0.000633       \\
+     $O(h^6+ \tau^6)$ &0.05, 0.005 &0.000010 & 0.000010          \\
+	   \hline
+			\hline 
+       $\beta=1$       &0.4, 0.002        & 0.244208 & 0.103833 \\
+                  c=0.9    &0.2, 0.001       &  0.057175 & 0.026919  \\
+  $O(h^2+ \tau^2)$ &0.1, 0.0005   & 0.013938 & 0.006622  \\
+			\hline
+      $\beta=1$               &0.4, 0.04     &0.028546 & 0.012203 \\
+       c=0.9                     &0.2, 0.02     & 0.001757 & 0.000958     \\
+       $O(h^4+ \tau^4)$ &0.1, 0.01   & 0.000112 & 0.000061   \\
+    \hline
+  $\beta=1$                  &0.4, 0.04    &0.006415 & 0.002792  \\
+      c=0.9                    &0.2, 0.02   &0.000112 & 0.000065     \\
+     $O(h^6+ \tau^6)$ &0.1, 0.01 & 0.000002 & 0.000001         \\
+	   \hline
+			\hline 
+		\end{tabular}
+		}
+		
+\end{table}
+Разликата между началния $t=0$ и крайния $t=10$ моменти от време.
 \end{frame}
 
 %------------------------------------------------------------------
