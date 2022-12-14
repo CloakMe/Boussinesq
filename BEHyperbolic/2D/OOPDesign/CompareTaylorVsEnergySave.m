@@ -2,8 +2,8 @@ function CompareTaylorVsEnergySave(btString, cString, hString ,orderString, doma
 
     fprintf('c = 0.%s, bt = %s, order = %s \n', cString, btString, orderString);
     
-    [x1,y1,t1,max_v1,EN1,II1,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString, domainLen );
-    [x2,y2,t2,max_v2,EN2,II2,uEnTaylorZeroBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 0, domainLen );
+    [x1,y1,t1,max_v1,EN1,II1,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString, domainLen, 2 );
+    [x2,y2,t2,max_v2,EN2,II2,uEnTaylorZeroBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 2, domainLen );
     
     if( length( x1 ) ~= length( x2 ) || length( y1 ) ~= length( y2 ) )
         fprintf('Different sizes in X, Y or T - dimensions!\n');
@@ -57,8 +57,8 @@ function CompareTaylorVsEnergySave(btString, cString, hString ,orderString, doma
         mesh(xx,yy,(uEnSave(xIndeces,yIndeces) - uEnTaylorZeroBoundary(xIndeces,yIndeces))');
         view( viewTypeX, viewTypeY );
         colorbar;
-        title('solution difference');
-        xlabel('x');            ylabel('y');
+        xlabel('x','FontSize',18);    ylabel('y','FontSize',18);
+        set(gca,'FontSize',18);
 
         figure(figNumber+1)
         plot(t1(2:end),max_v1, 'r', t2(2:end),max_v2, 'b');

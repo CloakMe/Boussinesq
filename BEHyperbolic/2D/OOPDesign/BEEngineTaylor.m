@@ -46,6 +46,9 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
         EN(1) = EN_1;
         II(1) = II_1;
         while( t(k) < this.tEnd )
+            if(t(k) > 10)
+                fprintf('iteration time: %.4f\n', t(k));
+            end
             %[d2vz, d3vz, d4vz, d5vz, d6vz] = calc_der2d(vu,dtv,eigenFinDiffMat,IminusDHdiag,s_idh,vdah, this.h, this.sx,this.alpha,this.beta,this.order);
             [d2vz, d3vz, d4vz, d5vz, d6vz, d7vz] = this.Calc_der2d( vu, dtv, t(k) );
             vu = vu + this.tau*dtv + (this.tau^2/2)*d2vz + (this.tau^3/6)*d3vz +...
@@ -75,12 +78,18 @@ classdef (ConstructOnLoad) BEEngineTaylor < BEEngine
                     t(end)
                  end
             end
-            k=k+1;
-
-            t(k)=(k-1)*this.tau;
-            if((t(k)-floor(t(k)))==0)
-                fprintf('iteration time: %.4f\n', t(k));
+            
+            if(this.tEnd - t(k) + 1e-14 >= this.tau)
+                t(k+1)=(k)*this.tau;
+            else
+                this.tau = this.tEnd - t(k)
+                t(k+1)=t(k)+this.tau;                
             end
+            if((t(k+1)-floor(t(k+1)))==0)
+                fprintf('iteration time: %.4f\n', t(k+1));
+            end
+            
+            k=k+1; 
             vmo = vz; vz = vu; 
         end
         II(k)= this.GetIntegralOf( vu );

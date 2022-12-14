@@ -18,9 +18,10 @@ for i = 1:50
 end
 
 additionalInfo = 2;
-domainLen = '30'; %128, 30
+%domainLen = '30'; %128, 30
 
 if( false )
+    domainLen = '128'; %128, 30
     CompareTaylorVsEnergySave('1', '90', '40' ,'2', domainLen, additionalInfo);
     CompareTaylorVsEnergySave('1', '90', '20' ,'2', domainLen, additionalInfo);
     CompareTaylorVsEnergySave('1', '90', '10' ,'2', domainLen, additionalInfo);
@@ -39,6 +40,7 @@ if( false )
     CompareTaylorVsEnergySave('1', '90', '20' ,'6', domainLen, additionalInfo);
     CompareTaylorVsEnergySave('1', '90', '10' ,'6', domainLen, additionalInfo);
 else
+    domainLen = '30'; %128, 30
     CompareTaylorVsEnergySave('3', '45', '20' ,'2', domainLen, additionalInfo);
     CompareTaylorVsEnergySave('3', '45', '10' ,'2', domainLen, additionalInfo);
     CompareTaylorVsEnergySave('3', '45', '05' ,'2', domainLen, additionalInfo);

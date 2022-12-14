@@ -16,7 +16,11 @@ function CompareStartEndSolitons(btString, cString, hString ,orderString, domain
     %get solution from elliptic problem
     [bigU, c] = GetElipticSol( btString, cString, hString, orderString, 2, domainLen );
     %get solution from hyperbolic problem
-    [x,y,t,max_v,EN,II,vl] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 2, domainLen, additionalInfo );
+     tFix = false;
+%    if(hString == '40')
+%        tFix = true;
+%    end
+    [x,y,t,max_v,EN,II,vl] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 2, domainLen, additionalInfo, tFix );
     
     if( additionalInfo == 2 )
         stepM = ceil(length(max_v)/80);
@@ -46,12 +50,8 @@ function CompareStartEndSolitons(btString, cString, hString ,orderString, domain
     x_idx = GetIdx( x, 0 );
     y_start_idx = GetIdx( y, 0 );
     
-    if( ( strcmp(domainLen, '128') == 1 && strcmp(btString, '1') == 1 && strcmp(hString, '40') == 1 && strcmp(cString, '90') == 1) ...
-            || (strcmp(domainLen, '30') == 1 && strcmp(btString, '3') == 1 && strcmp(hString, '20') == 1 && strcmp(cString, '45') == 1) )
-        y_end_idx = GetIdx( y, (10+t(end))*c );
-    else
-        y_end_idx = GetIdx( y, t(end)*c ) ;
-    end
+    y_end_idx = GetIdx( y, t(end)*c );
+    
     y_half_size = min( length(y) - y_end_idx - 20, floor( (y_end_idx - y_start_idx)/2 ) );
     x_half_size = length(x) - x_idx - 20;
 

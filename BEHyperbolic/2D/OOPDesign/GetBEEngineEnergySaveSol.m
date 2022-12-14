@@ -1,14 +1,29 @@
-function [x,y,t,max_v,EN,II,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString, domainLen )
+function [x,y,t,max_v,EN,II,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString, domainLen, bndType )
 
-    if(nargin == 3)
-        domainLen = '40';
+    if(nargin == 4)
+        bndType = 0;
     end
     
+    if(nargin == 3)
+        domainLen = '40';
+        bndType = 0;
+    end
+    
+    if(bndType ==0)
+        bndDir = 'WithBoundary';
+        bndTypeString = '_ZB0';
+    elseif(bndType == 1)
+        bndDir = 'ZeroBoundary';
+        bndTypeString = '_ZB1';
+    else
+        bndDir = 'ZeroBnd';
+        bndTypeString = '_ZB2';
+    end
     bndCutSizeX = 0;
     bndCutSizeY = 0;
         
-    cellStrEn = strcat('SavedWorkspaces\ZeroBoundary\EnergySave_', domainLen, '_bt', btString, '_c0', cString,...
-        '\EnergySave_', domainLen, '_ZB1_bt',...
+    cellStrEn = strcat('SavedWorkspaces\', bndDir, '\EnergySave_', domainLen, '_bt', btString, '_c0', cString,...
+        '\EnergySave_', domainLen, bndTypeString, '_bt',...
         btString, '_c0', cString, '_h0', hString, '_O(h^2)' );
 
     warning('off','all');
