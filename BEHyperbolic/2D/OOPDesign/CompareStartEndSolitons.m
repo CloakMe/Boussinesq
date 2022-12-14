@@ -1,7 +1,10 @@
-function CompareStartEndSolitons(btString, cString, hString ,orderString, domainLen, additionalInfo, color) 
+function CompareStartEndSolitons(btString, cString, hString ,orderString, domainLen, additionalInfo, color, tFix) 
 
     if( nargin == 6 )
         color = 'k';
+    end
+	if( nargin == 7 )
+        tFix = false;
     end
 %c = 0.9
 %P:\PhDWork\OneSoliton_bt1\ChristovIC_40_80_bt1_c090_h010_O(h^6).mat
@@ -16,10 +19,6 @@ function CompareStartEndSolitons(btString, cString, hString ,orderString, domain
     %get solution from elliptic problem
     [bigU, c] = GetElipticSol( btString, cString, hString, orderString, 2, domainLen );
     %get solution from hyperbolic problem
-     tFix = false;
-%    if(hString == '40')
-%        tFix = true;
-%    end
     [x,y,t,max_v,EN,II,vl] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 2, domainLen, additionalInfo, tFix );
     
     if( additionalInfo == 2 )
