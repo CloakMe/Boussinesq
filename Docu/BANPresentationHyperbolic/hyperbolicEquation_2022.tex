@@ -49,7 +49,7 @@
 \subsection{Метод на Тейлор и метод на правите}
 \subsubsection{Сходимост}
 \section{Числени резултати}
-\subsection{Дискретна енергия и форма - сравнение между метода на Тейлор и Консервативната схема}
+\subsection{Дискретните маса, енергия и форма - сравнение между метода на Тейлор и Консервативната схема}
 \subsection{Форма и максимум на решението при метода на Тейлор}
 \subsection{Числен тест при $\beta = 3, c=0.3$}
 
@@ -87,6 +87,7 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
   
      \item да се изследват следните свойства на решението на ПУБ при по-високи скорости близки до допустимия максимум $c \approx c_{max}$, $c < c_{max}$
   \begin{itemize}
+    \item маса,
      \item енергия,
      \item форма,
      \item максимум,     
@@ -108,9 +109,9 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 Резултатите от численото решение на двумерните стационарно и хиперболични уравнения на Бусинеск са
 публикувани в
 \begin{itemize}
-  \item K. Angelow, N. Kolkovska, Numerical Study of Traveling Wave Solutions to 2D BE, {\it Serdica Journal of Computing},
-  \item K. Angelow, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, {\it International Journal of Applied Mathematics},
-   \item K. Angelow, Comparison Between Two Numerical Methods for Solution of 2D BPE, {\it AIP Conference Proceedings}
+  \item K. Angelow, N. Kolkovska, Numerical Study of Traveling Wave Solutions to 2D BE, {\it Serdica Journal of Computing}, 13 (2019), 1-16
+  \item K. Angelow, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, {\it International Journal of Applied Mathematics}, 32 (2017), 141-154
+   \item K. Angelow, Comparison Between Two Numerical Methods for Solution of 2D BPE, {\it AIP Conference Proceedings}, 2522 (2022), 1
 \end{itemize}
 
 \end{frame}
@@ -397,8 +398,8 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 
 Ред на апроксимация $p$
 \begin{enumerate}
-  \item Conservative FDS with $O(|h|^2 + \tau^2)$
-  \item TS method with $O(|h|^p + \tau^p)$ and $p = 2, 4, 6$
+  \item Консервативна схема с $O(|h|^2 + \tau^2)$
+  \item метод на Тейлор с $O(|h|^p + \tau^p)$ и $p = 2, 4, 6$
 \end{enumerate}
 
 Тест 1 and Тест 2 използват 
@@ -409,6 +410,26 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 \end{frame}
 
 %---------------------------------- frame 18 --------------------------------
+
+\begin{frame}
+\frametitle{Числени резултати}
+\frametitle{Дискретна маса - сравнение между метода на Тейлор и Консервативната схема}
+
+\begin{figure}[ht]\vspace{0.4cm}
+	\begin{minipage}[b]{0.49\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/Mass_bt3_c045_h005_Taylor_Conservative.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.49\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/Mass_bt1_c090_h010_Taylor_Conservative.png}	
+	\end{minipage}
+\caption{Дискретната маса като функция на времето до $T = 10$ при Тест 1 (ляво) и Тест 2 (дясно).}
+\label{Test1En}
+\end{figure}
+
+
+\end{frame}
+
+%------------------------------ frame 19 ------------------------------------
 
 \begin{frame}
 \frametitle{Числени резултати}
@@ -458,26 +479,6 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 \label{tableF}
 \end{table}
 % $\tau = h/100$,
-\end{frame}
-
-%---------------------------------- frame 21 --------------------------------
-
-\begin{frame}
-\frametitle{Числени резултати}
-\framesubtitle{Максимума на решението по метода на Тейлор, при $p=2,4,6$ и $T=10$}
-
-\begin{figure}[ht]
-	\centering
-	\begin{minipage}[b]{0.4\linewidth}
-		\includegraphics[width=\linewidth]{../amitans/figures/maximum_30_bt3_c045_h005.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.4\linewidth}
-		 \includegraphics[width=\linewidth]{../amitans/figures/maximum_128_bt1_c090_h010.png}
-	\end{minipage}
-
-Развитието на максимума за време $T=10$, $\tau = h/100$, при Тест 1 (ляво) и Тест 2 (дясно) .
-\end{figure}
-
 \end{frame}
 
 %---------------------------------- frame 22 --------------------------------
@@ -670,6 +671,15 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 %------------------------------------------------------------------
 
 \begin{frame}
+\frametitle{Край}
+
+Благодаря за вниманието!
+
+\end{frame}
+
+%------------------------------------------------------------------
+
+\begin{frame}
 \frametitle{Wave Evolution}
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.30\linewidth}
@@ -788,6 +798,7 @@ It is obtained that:
 \end{center}
 The Mass of the solution for approximation $O(|h|^6 + \tau^6)$ and $T = 10$ over three nested domains. Left panel is for Test 1 with $\beta=3$, $c = 0.45$ and right panel is for Test 2 with $\beta=1$, $c = 0.9$.
 \end{frame}
+
 
 
 \end{document}
