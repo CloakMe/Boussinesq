@@ -154,11 +154,16 @@ x = \sqrt{\beta_1} \bar{x}, \quad y = \sqrt{\beta_1} \bar{y}, \quad t = \sqrt{\b
 
 %---------- frame 08 ----------------
 \begin{frame}
-\frametitle{Запазване на енергията}
-\framesubtitle{Енергията за непрекъснатата задача \rf{problemVC}}
+\frametitle{Масата и енергията за непрекъснатата задача }
+
+Масата за непрекъснатата задача \rf{problemVC}
+\begin{equation}\label{intM}
+D(u(x,y,t))=\int_{\RR^2} u(x,y,t)dx dy = const.
+\end{equation}
+
 От уравнение \rf{problemVC} се извежда следната енергийна норма
 \begin{align}\label{ex-en}
-E(u(t)) = E(u(0)) =&\int_{R^2} u_t \left((A^{-1}+E)u_t\right) dxdy+
+E(u(x,y,t)) = &\int_{R^2} u_t \left((A^{-1}+E)u_t\right) dxdy+
 \beta \int_{R^2} u^2 dxdy \nonumber\\
 +& \int_{R^2}u \left(A u\right) dxdy
 -\frac{2 \alpha \beta}{3} \int_{R^2} u^3 dxdy =const.
