@@ -109,9 +109,10 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 Резултатите от численото решение на двумерните стационарно и хиперболични уравнения на Бусинеск са
 публикувани в
 \begin{itemize}
+  \item N. Kolkovska, K. Angelow, Numerical computation of the critical energy constant for two dimensional Boussinesq equations, {\it Appl. of Mathematics in Technical and Natural Sciences}, 1684 (2015), SJR
   \item K. Angelow, N. Kolkovska, Numerical Study of Traveling Wave Solutions to 2D BE, {\it Serdica Journal of Computing}, 13 (2019), 1-16
-  \item K. Angelow, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, {\it International Journal of Applied Mathematics}, 32 (2017), 141-154
-   \item K. Angelow, Comparison Between Two Numerical Methods for Solution of 2D BPE, {\it AIP Conference Proceedings}, 2522 (2022), 1
+  \item K. Angelow, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, {\it International Journal of Applied Mathematics}, 32 (2019), 141-154, SJR
+   \item K. Angelow, Comparison Between Two Numerical Methods for Solution of 2D BPE, {\it AIP Conference Proceedings}, 2522 (2022), 1, SJR
 \end{itemize}
 
 \end{frame}
@@ -290,7 +291,7 @@ $T = 10$
 %------------------------- frame 14 -----------------------------------------
 
 \begin{frame}
-\frametitle{Метод на Тейлор и метод на линиите за ПУБ}
+\frametitle{Метод на Тейлор и метод на правите за ПУБ}
 \begin{center}\vspace{0.25cm}
 	\begin{minipage}[b]{0.45\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/FDS.png}
@@ -319,7 +320,7 @@ u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_
 %---------------------------- frame 15 --------------------------------------
 
 \begin{frame}
-\frametitle{Mетод на Тейлор и метод на линиите за ПУБ}
+\frametitle{Mетод на Тейлор и метод на правите за ПУБ}
 \framesubtitle{Изчисляване на реда на Тейлор \rf{TSe}}
 \begin{itemize}
  \item Нач. Условие $\rightarrow$ $u(x_i, y_j, t=0)$, $\frac{ \partial u }{ \partial t }(x_i, y_j, t=0)$,
@@ -341,7 +342,7 @@ u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_
 %---------------------------- frame 16 --------------------------------------
 
 \begin{frame}
-\frametitle{Метод на Тейлор и метод на линиите за ПУБ}
+\frametitle{Метод на Тейлор и метод на правите за ПУБ}
 \framesubtitle{Сходимост}
 
 \begin{table}[ht]
@@ -432,6 +433,22 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 \end{figure}
 
 
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Числени резултати}
+\frametitle{Дискретна маса при по-големи области}
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.49\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/MassTaylor_120_60_30_ZB1_bt3_c045_h020_O(h^6).png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.49\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/MassTaylor_512_256_128_ZB1_bt1_c090_h040_O(h^6).png}
+		
+	\end{minipage}
+\end{center}
+Масата при апроксимация $O(|h|^6 + \tau^6)$ и време $T = 10$ върху три вложени области. Левия панел е при $\beta=3$, $c = 0.45$, а десния при $\beta=1$, $c = 0.9$.
 \end{frame}
 
 %------------------------------ frame 19 ------------------------------------
@@ -652,8 +669,8 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 \framesubtitle{Максимума на решението в зависимост от дискретните стъпки и реда на апроксимация}
 \begin{figure}
 	%\centering
-	\includegraphics[width=0.8\linewidth]{../thesis/Maximum_TaylorZeroBnd_50x50_bt3_c030.png}
-\caption{Развитие на максимума на решението върху времевия интервал $[0, 10]$}
+	\includegraphics[width=0.65\linewidth]{../thesis/Maximum_TaylorZeroBnd_50x50_bt3_c030.png}
+\caption{Развитие на максимума на решението в интервала $[0, 10]$}
 
 \end{figure}
 

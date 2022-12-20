@@ -14,24 +14,26 @@ function CompareStartEndSolitons(btString, cString, hString ,orderString, domain
 %load "C:\Boussinesq\BEHyperbolic\2D\OOPDesign\SavedWorkspaces\Hyperb_40_bt3_c052_h005_O(h^6).mat"
 %load "C:\Boussinesq\BEEliptic\Boussinesq2D\WithBoundary\ChristovIC_40_bt3_c052\Oh6\ChristovIC_40_bt3_c052_h005_O(h^6).mat"
 
-    fprintf('c = 0.%s, bt = %s, order = %s \n', cString, btString, orderString);
     
-    %get solution from elliptic problem
-    [bigU, c] = GetElipticSol( btString, cString, hString, orderString, 2, domainLen );
+    
+    %get solution from elliptic problem.
+    [bigU, c] = GetElipticSol( btString, cString, hString, orderString, 1, domainLen );
     %get solution from hyperbolic problem
-    [x,y,t,max_v,EN,II,vl] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 2, domainLen, additionalInfo, tFix );
+    [x,y,t,max_v,EN,II,vl] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 1, domainLen, additionalInfo, tFix );
+    
+    fprintf('c = 0.%s, bt = %s, order = %s, h = %f, tau = %f \n', cString, btString, orderString, x(2)-x(1), t(2)-t(1));
     
     if( additionalInfo == 2 )
-        stepM = ceil(length(max_v)/80);
+        stepM = 1;%ceil(length(max_v)/40);
         mySlice = 1:stepM:length(max_v);
-        if(orderString == '4')
-            stepM = length(max_v)/10;
-            mySlice = 1:stepM:length(max_v);
-        end
+        %if(orderString == '4')
+        %    stepM = length(max_v)/10;
+        %    mySlice = 1:stepM:length(max_v);
+        %end
         if(mySlice(end) ~= length(max_v) && stepM > 1)
             mySlice = [mySlice length(max_v)];
         end
-        figure(16)
+        figure(17)
         hold on;
         plot(t(mySlice), max_v(mySlice), color ); %t(1:stepM:end-1)
         hold off;
