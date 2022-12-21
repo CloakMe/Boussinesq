@@ -1,8 +1,12 @@
-function [bigUcut, c] = GetElipticSol( btString, cString, hString, orderString, bndType, domainLen )
+function [bigUcut, c, x, y] = GetElipticSol( btString, cString, hString, orderString, bndType, domainLen, bndFolderString )
 
-    if(nargin == 5)
+    if(nargin <= 5)
         domainLen = '40';
+    end    
+    if(nargin <= 6)
+        bndFolderString = domainLen;
     end
+    
     
     bndCutSizeX = 0;
     bndCutSizeY = 0;
@@ -17,7 +21,7 @@ function [bigUcut, c] = GetElipticSol( btString, cString, hString, orderString, 
         bndNumber = '2';
         bndString = 'ZeroBnd';        
     end
-    cellStrTlr = strcat('..\..\..\BEEliptic\Boussinesq2D\', bndString, '\ChristovIC_', domainLen, '_bt', btString, '_c0', cString,...
+    cellStrTlr = strcat('..\..\..\BEEliptic\Boussinesq2D\', bndString, '\ChristovIC_', bndFolderString, '_bt', btString, '_c0', cString,...
             '\Oh', orderString, '\ChristovIC_', domainLen, '_ZB', bndNumber, '_bt',...
             btString, '_c0', cString, '_h0', hString, '_O(h^', orderString, ')' );
         

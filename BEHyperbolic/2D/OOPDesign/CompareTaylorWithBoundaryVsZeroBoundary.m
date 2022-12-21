@@ -3,8 +3,8 @@ function CompareTaylorWithBoundaryVsZeroBoundary(btString, cString, hString ,ord
     fprintf('c = 0.%s, bt = %s, order = %s \n', cString, btString, orderString);
     
     %[x1,y1,t1,EN1,II1,uEnSave] = GetBEEngineEnergySaveSol( btString, cString, hString );
-    [x1,y1,t1,max_v1,EN1,II1,uEnTaylorWithBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 1, domainLen );
-    [x2,y2,t2,max_v2,EN2,II2,uEnTaylorZeroBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 0, domainLen );
+    [x1,y1,t1,max_v1,EN1,II1,uEnTaylorWithBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 0, domainLen );
+    [x2,y2,t2,max_v2,EN2,II2,uEnTaylorZeroBoundary] = GetBEEngineTaylorSol( btString, cString, hString, orderString, 2, domainLen );
     
     if( length( x1 ) ~= length( x2 ) || length( y1 ) ~= length( y2 ) )
         fprintf('Different sizes in X, Y or T - dimensions!\n');
