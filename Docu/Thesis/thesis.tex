@@ -141,7 +141,7 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 
 \textbf{Част \ref{resultsElliptic}}
 
-В този подраздел са направени два числени теста при параметри $\beta = 3, c=0.45$ и $\beta = 1, c=0.9$. За тези примери са показани следните резултати. Първо, резидуала $R$ от последната итерация е представен в серия от графики. Второ, показано е че четвъртите производни на решението, които са пресметнати числено, са сходящи по правилото на Рунге \rf{Runge}. Трето, потвърдени са характерните свойства на получените решения за различни стойности на параметрите $\beta$ и $c$, които са представени първоначално в \cite{ref116,ref15} като например зависимостта на формата на вълната от скоростта $c$ и дисперсията $\beta$ и асимптотичното поведение $\frac{1}{x^2 + y^2}$ на безкрайност. Най-накрая, решението от последната итерация е сравнено с ``best-fit'' апроксимационните формули от \cite{Ch2011}, като това сравнение е все още липсващо в литературата, но се оказва съществен елемент и повратна точка в изследването на хиперболичната задача \rf{eq1}-\rf{eq11}. \\
+В този подраздел са направени два числени теста при параметри $\beta = 3, c=0.45$ и $\beta = 1, c=0.9$. За тези примери са показани следните резултати. Първо, резидуала $R$ от последната итерация е представен в серия от графики. Второ, показано е че четвъртите производни на решението, които са пресметнати числено, са сходящи по правилото на Рунге \rf{Runge}. Трето, потвърдени са характерните свойства на получените решения за различни стойности на параметрите $\beta$ и $c$, които са представени първоначално в \cite{ref116,ref15} като например зависимостта на формата на вълната от скоростта $c$ и дисперсията $\beta$ и асимптотичното поведение $\frac{1}{x^2 + y^2}$ на безкрайност. Най-накрая, решението от последната итерация е сравнено с ``best-fit'' апроксимационните формули от \cite{ref15}, като това сравнение е все още липсващо в литературата, но се оказва съществен елемент и повратна точка в изследването на хиперболичната задача \rf{eq1}-\rf{eq11}. \\
 
 \textbf{Част \ref{newBndHead}}
 
@@ -700,7 +700,7 @@ O(N_x N_y \bar{\epsilon}),
 \section{Формулировка и числено решение на двумерното стационарно уравнение на Бусинеск - Метод на простата итерация}\label{ellipticFormulation}
 В част \ref{simpleIteration}. е описана числената имплементация на метода на простата итерация. Дефинирана е явна диференчна схема за частните диференциални уравнения \rf{eq5}, чийто решение схожда към численото такова на уравненията \rf{eq45}. Показани са два варианта за начални стойности с които започва първата итерация. Описано е как се променя стъпката по времето и какъв е критерия за спиране на итерационния алгоритъм. В последствие са дефинирани алгоритмичните стъпки с които може да се възпроизведе целия итерационен процес и е изведена алгоритмичната сложност. Най-накрая са представени редът на сходимост от метода на простата итерация в табличен вид заедно с графики показващи формата на решението за случаите разгледани в Таблица \ref{tableP}. 
 
-В следващия Раздел \ref{resultsElliptic}. са направени два числени теста при параметри $\beta = 3, c=0.45$ и $\beta = 1, c=0.9$. За тези примери са показани следните резултати. Първо, резидуала $R$ от последната итерация е представен в серия от графики. Второ, показано е че четвъртите производни на решението, които са пресметнати числено, са сходящи по правилото на Рунге \rf{Runge}. Трето,  потвърдени са характерните свойства на получените решения за различни стойности на параметрите $\beta$ и $c$, които са представени първоначално в \cite{ref116,Ch2011} като например зависимостта на формата на вълната от скоростта $c$ и дисперсията $\beta$ и асимптотичното поведение $\frac{1}{x^2 + y^2}$ на безкрайност. Най-накрая, решението от последната итерация е сравнено с ``best-fit'' апроксимационните формули от \cite{Ch2011}, като това сравнение е все още липсващо в литературата, но се оказва съществен елемент и повратна точка в изследването на хиперболичната задача \rf{eq1}-\rf{eq11}. 
+В следващия Раздел \ref{resultsElliptic}. са направени два числени теста при параметри $\beta = 3, c=0.45$ и $\beta = 1, c=0.9$. За тези примери са показани следните резултати. Първо, резидуала $R$ от последната итерация е представен в серия от графики. Второ, показано е че четвъртите производни на решението, които са пресметнати числено, са сходящи по правилото на Рунге \rf{Runge}. Трето,  потвърдени са характерните свойства на получените решения за различни стойности на параметрите $\beta$ и $c$, които са представени първоначално в \cite{ref117,ref116} като например зависимостта на формата на вълната от скоростта $c$ и дисперсията $\beta$ и асимптотичното поведение $\frac{1}{x^2 + y^2}$ на безкрайност. Най-накрая, решението от последната итерация е сравнено с ``best-fit'' апроксимационните формули от \cite{ref15}, като това сравнение е все още липсващо в литературата, но се оказва съществен елемент и повратна точка в изследването на хиперболичната задача \rf{eq1}-\rf{eq11}. 
 
 Част \ref{newBndHead}. се занимава с едно ново гранично условие за елиптичната задача. Разгледана е асимптотиката на всеки един от членовете в стационарното уравнение на Бусинеск \rf{eq3}. В серия от числени експерименти при $\beta=1,3,5$, $c=0.17$ и при $\beta=1$, $c=0.1, 0.5, 0.9$ е показано, че асимптотиката на членовете с четвърти производни и нелинейните такива $- v_{xxxx}, \;  - (2-\beta c^2)v_{xxyy},  \;  - (1-\beta c^2)v_{yyyy}, \;  - \alpha \beta (v^2)_{xx}, \; - \alpha \beta (v^2)_{yy}$ е $O(r^{-6})$, а на членовете с втори производни $\beta v_{xx}, \; \beta (1-c^2) v_{yy}$ е $O(r^{-4})$. Използвайки тази зависимост, членовете с асимптотика $O(r^{-6})$ в \rf{eq3} са пренебрегнати, което улеснява извеждането на следната явна функция за гранично условие
 \be
@@ -778,7 +778,7 @@ $$
 \subsubsection{Начални данни}
 Цикличната процедура описана в \rf{eq555} се нуждае от начални стойности за функиите $\widehat{v},\widehat{w}$. Тук са разгледани два различни варианта, които схождат към едно и също крайно решение. За всички разгледани параметрични случаи резидуала $R$, който е дефиниран в \rf{residual}, за началните данни (от първата итерация) е винаги по-голям от $1.0e-2$ и се извършват между $100,000$ и $10,000,000$ итерации докато се изпълни следното условие: $R<1.0e-9е$. 
  
-В \textbf{първия случай} са избрани "best-fit" формулите от пертурбационното решение в \cite{Ch2011}. Върху тях се прилага същата смяна на променливите $x=\sqrt\beta_1 { \overline x}$, $y=\sqrt\beta_1 { \overline y}$, която е използвана в елиптичното уравнение \rf{eq3}. 
+В \textbf{първия случай} са избрани "best-fit" формулите от пертурбационното решение в \cite{ref15}. Върху тях се прилага същата смяна на променливите $x=\sqrt\beta_1 { \overline x}$, $y=\sqrt\beta_1 { \overline y}$, която е използвана в елиптичното уравнение \rf{eq3}. 
 
 При \textbf{втория случай} е взето численото решението от задачата \rf{eq3} при $c=0$, което също е добро приближение и служи на начални стойности на \rf{eq555} дори когато търсим решение на последното при скорости близки до допустимия максимум $c \approx \min (1/ \sqrt{\beta},1)$, $c < \min (1/ \sqrt{\beta},1)$. Както е известно при по-високи скорости "best-fit" формулите не апроксимират численото решение за елиптичната задача толкова добре. При $c=0$ уравнение \rf{eq3} добива следния вид:
 \be\label{eq3c0}
@@ -946,8 +946,8 @@ $\beta = 1$   	&0.4   &             &           &                & \\
 \end{figure}
 \FloatBarrier
 \subsection{Числени резултати от метода на простата итерация}\label{resultsElliptic}
-В тази част са представени резултатите от приложения числен метод описан по-горе за елиптичното уравнение \rf{eq3}. Потвърждават се и характерните свойства на получените решения за различни стойности на параметрите $\beta$ и $c$, които са представени първоначално в \cite{ref116,Ch2011} като например зависимостта на формата на вълната от скоростта $c$ и дисперсията $\beta$ и асимптотичното поведение $\frac{1}{x^2 + y^2}$ на безкрайност. В допълнение са открити и други релации например за положителните и отрицателните области на решението.
-Също така последното е сравнено с ``best-fit'' апроксимационните формули от \cite{Ch2011}, като това сравнение е все още липсващо в литературата, но се оказва съществен елемент и повратна точка в изследването на хиперболичната задача \rf{eq1}-\rf{eq11}. Тук напомняме на читателя, че ``best-fit'' формулите са използвани за начално условие в итерационния алгоритъм.
+В тази част са представени резултатите от приложения числен метод описан по-горе за елиптичното уравнение \rf{eq3}. Потвърждават се и характерните свойства на получените решения за различни стойности на параметрите $\beta$ и $c$, които са представени първоначално в \cite{ref117,ref116} като например зависимостта на формата на вълната от скоростта $c$ и дисперсията $\beta$ и асимптотичното поведение $\frac{1}{x^2 + y^2}$ на безкрайност. В допълнение са открити и други релации например за положителните и отрицателните области на решението.
+Също така последното е сравнено с ``best-fit'' апроксимационните формули от \cite{ref15}, като това сравнение е все още липсващо в литературата, но се оказва съществен елемент и повратна точка в изследването на хиперболичната задача \rf{eq1}-\rf{eq11}. Тук напомняме на читателя, че ``best-fit'' формулите са използвани за начално условие в итерационния алгоритъм.
 
 \subsubsection{Резидуал}
 
@@ -983,7 +983,7 @@ $\beta = 1$   	&0.4   &             &           &                & \\
 \FloatBarrier
 На Фигури \ref{residOh4} е \ref{residOh6} представен остатъкът \rf{residual}, който е запазен от последната стъпка на итерационната схема \rf{eq555}, като за левия панел  параметрите са $\beta = 3$ и $c = 0.45$, а за десния $\beta = 1$ и $c = 0.9$. И в двата случая $\epsilon \le 1e-9$, а използваните крайни разлики представени на фигурите са от четвърти и шести порядък. Разликите в решенията между последните две итерации е $8.7e-13$ и $3.0e-14$ при $O(h^4)$ и $2.3e-16$ и $2.1e-13$ при $O(h^6)$ съответно за първия и втория пример. Така, диференчната схема \rf{eq55} е удовлетворена с голяма прецизност както от апроксимации на вторите производни с до шести ред, така и от ниския праг $\epsilon \le 1\times10^{-9}$. 
 
-От друга страна разглеждайки формулите от ``best-fit'' апроксимацията от \cite{Ch2011} се вижда, че третите, четвъртите и други производни по пространството от по висок ред са неограничени в околност на нулата $(0,0)$. Така нито елиптичното уравнение \rf{eq3}, нито остатъка \rf{residual} могат да бъдат пресметнати в класическия смисъл и следователно не са удовлетворени от ``best-fit'' формулите!
+От друга страна разглеждайки формулите от ``best-fit'' апроксимацията от \cite{ref15} се вижда, че третите, четвъртите и други производни по пространството от по висок ред са неограничени в околност на нулата $(0,0)$. Така нито елиптичното уравнение \rf{eq3}, нито остатъка \rf{residual} могат да бъдат пресметнати в класическия смисъл и следователно не са удовлетворени от ``best-fit'' формулите!
 
 \subsubsection{Производни на решението}
 \begin{center}
@@ -1096,7 +1096,7 @@ $\beta = 1$   	&0.4   &             &           &                & \\
 		\centerline{$\beta = 1$}
 		\centerline{$c = 0.1, 0.5, 0.9$ (от горе надолу)}
 	\end{minipage}
-	\caption{Разликите между числено решение $v$ на елиптичната задача при $O(h^6)$ апроксимация и ``best-fit'' формулите $v^*$ от \cite{Ch2011}. }
+	\caption{Разликите между числено решение $v$ на елиптичната задача при $O(h^6)$ апроксимация и ``best-fit'' формулите $v^*$ от \cite{ref15}. }
 	\label{fig:difference}
 \end{figure}
 
@@ -1131,10 +1131,10 @@ $\beta$	& c 	& $\|v^*-v \|_{L_2 }$ & $\|v^*-v \|_{L_\infty }$  	& $D^*_{L_2}$	& 
 \hline 
 \hline 
 \end{tabular}
-\caption{Разликите между числено решение $v$ на елиптичната задача с висок ред на апроксимация и ``best-fit'' формулите $v^*$ от \cite{Ch2011} при $\beta=1$ и $c=0.1, 0.3, 0.5, 0.7, 0.9$.}
+\caption{Разликите между числено решение $v$ на елиптичната задача с висок ред на апроксимация и ``best-fit'' формулите $v^*$ от \cite{ref15} при $\beta=1$ и $c=0.1, 0.3, 0.5, 0.7, 0.9$.}
 \label{tab:diff-beta1}
 \end{table}
-От Таблица \ref{tab:diff-beta1} се вижда, че разликата между двете дискретни функции в $L_2$ норма се увеличава от $2.7\%$ до $93.1\%$, а при $L_\infty$ норма - от $1.7\%$ до $121.2\%$, когато параметърът $c$ расте. Формулата $v^*$ представлява числено решение, което използва развитие в ред около скоростта $c$. Затова при по-големи скорости процентът $D^*_{\kappa}$ нараства рязко, както е описано в \cite{Ch2011}.
+От Таблица \ref{tab:diff-beta1} се вижда, че разликата между двете дискретни функции в $L_2$ норма се увеличава от $2.7\%$ до $93.1\%$, а при $L_\infty$ норма - от $1.7\%$ до $121.2\%$, когато параметърът $c$ расте. Формулата $v^*$ представлява числено решение, което използва развитие в ред около скоростта $c$. Затова при по-големи скорости процентът $D^*_{\kappa}$ нараства рязко, както е описано в \cite{ref15}.
 
 %================================================================
 
@@ -1157,7 +1157,7 @@ $\beta$	& c 	& $\|v^*-v \|_{L_2 }$ & $\|v^*-v \|_{L_\infty }$  	& $D^*_{L_2}$	& 
 \hline 
 \hline 
 \end{tabular}
-\caption{Разликите между числено решение $v$ от елиптичната задача с висок ред на апроксимация и ``best-fit'' формулите $v^*$ от \cite{Ch2011} при $\beta=1, 2, 3, 4, 5$ и $c=0.17$.}
+\caption{Разликите между числено решение $v$ от елиптичната задача с висок ред на апроксимация и ``best-fit'' формулите $v^*$ от \cite{ref15} при $\beta=1, 2, 3, 4, 5$ и $c=0.17$.}
 \label{tab:diff-c017}
 \end{table}
 %================================================================
@@ -2123,7 +2123,7 @@ D_h^{**} = 100 \times |D(t=0) - D(t=T)|/D(t=0).
 Отчитайки уточненията направени по-горе, ясно се вижда, че максимумите от Фигура \ref{Maximum} и формата на решението се запазват и при двата числени експеримента, с пренебрежимо малки отклонения, за по-голям времеви интервал $[0, 30]$. 
 
 \subsection{Числен тест за хиперболичната задача при параметри $\beta = 3$ и $c=0.3$} \label{numTestbt3c03}
-Настоящата част разглежда един добре познат в литературата случай за хиперболичната задача \rf{problemVC} ( \cite{ref21, ref20, ref23, ref22} ), при който за начално условие в споменатите трудове винаги са използвани ``best-fit'' апроксимационните формули от \cite{Ch2011}. В настоящата работа, при $t=0$ ще бъде използвано численото решение от елиптичната задача с четвърти и шести ред на апроксимация \rf{eq45} и  ``Симетрично гранично условие по абцисата и ординатата при елиптичната задача'' както е дефинирано в раздел \ref{symBndHead}. Големината на областта $\omega_h$ е $L_x = L_y = 50$, $\alpha = 1$, а използваните крайни разлики за вторите производни са с четвърти и шести ред на апроксимация $p=4, 6$. Поради симетрията на решението по абцисата и ординатата е лесно да се построи началната функция в цялата област $\Omega_h$. При хиперболичната задача (разгледана в $\Omega_h$) е използван метод на Тейлор отново с апроксимационни формули от четвърти и шести ред. Представен е анализ на зависимостта на формата и максимума от реда на апроксимация и големината на дискретните стъпки по пространството и времето - $h, \tau$ - за метода на Тейлор. Разгледан е случай при по голям времеви интервал $T=30$ за който отново са описани поведението на формата и максимума.
+Настоящата част разглежда един добре познат в литературата случай за хиперболичната задача \rf{problemVC} ( \cite{ref21, ref20, ref23, ref22} ), при който за начално условие в споменатите трудове винаги са използвани ``best-fit'' апроксимационните формули от \cite{ref15}. В настоящата работа, при $t=0$ ще бъде използвано численото решение от елиптичната задача с четвърти и шести ред на апроксимация \rf{eq45} и  ``Симетрично гранично условие по абцисата и ординатата при елиптичната задача'' както е дефинирано в раздел \ref{symBndHead}. Големината на областта $\omega_h$ е $L_x = L_y = 50$, $\alpha = 1$, а използваните крайни разлики за вторите производни са с четвърти и шести ред на апроксимация $p=4, 6$. Поради симетрията на решението по абцисата и ординатата е лесно да се построи началната функция в цялата област $\Omega_h$. При хиперболичната задача (разгледана в $\Omega_h$) е използван метод на Тейлор отново с апроксимационни формули от четвърти и шести ред. Представен е анализ на зависимостта на формата и максимума от реда на апроксимация и големината на дискретните стъпки по пространството и времето - $h, \tau$ - за метода на Тейлор. Разгледан е случай при по голям времеви интервал $T=30$ за който отново са описани поведението на формата и максимума.
 
 Разгледани са \textbf{два} случая, които изследват скоростта на сходимост, формата и максимума на численото решение, като при \textbf{първия} крайно време е {\boldmath $T=10$}, стъпка по пространството се мени {\boldmath $h=0.1, 0.2, 0.4$} и стъпката по времето е $\tau = h/2$, а при \textbf{втория} е подбран по-голям времеви интервал {\boldmath $T=30$} и по-малки дискретни стъпки {\boldmath $h=0.05$} и {\boldmath $\tau=0.025$}. 
 
@@ -2269,125 +2269,116 @@ $$
 \FloatBarrier
 До време $t=20$ измерените структурни изменения във формата на решението са пренебрежимо малки независимо от използваната норма $L_2$ или $L_\infty$. След това вълната започва рязка трансформация и се разпада във вид на пръстен. В допълнение към разсъжденията от миналата част, където са изследвани влиянието на големината на стъпките и реда на използваната апроксимация, тук се вижда че при още по-ситни стъпки и $p=6$ резултатите са още по-добри, което създава основания и предпоставки да се търсят такива числени решения на парадигматичното уравнение на Бусинеск, при които грешките от приближенията на вторите производни са възможно най-малки.
 \section{Заключение}
-Fourth and sixth order finite difference schemes are applied for numerical evaluation of the stationary traveling wave solutions to the Boussinesq equation in this paper. The high accuracy of the method applied is demonstrated on several experiments. The numerical solution obtained here performs similarly to the numerical solutions given in \cite{Ch2012,Ch2011} with respect to solution shape and the dependence on the velocity $c$ and relative dispersion $\beta$. 
-The best-fit approximation formulae from \cite{Ch2011} fail to satisfy the initial equation in the classical sense in the neighborhood of the origin. 
+Fourth and sixth order finite difference schemes are applied for numerical evaluation of the stationary traveling wave solutions to the Boussinesq equation in this paper. The high accuracy of the method applied is demonstrated on several experiments. The numerical solution obtained here performs similarly to the numerical solutions given in \cite{ref116,ref15} with respect to solution shape and the dependence on the velocity $c$ and relative dispersion $\beta$. 
+The best-fit approximation formulae from \cite{ref15} fail to satisfy the initial equation in the classical sense in the neighborhood of the origin. 
 In the future, we will exploit the obtained stationary traveling wave solutions as initial data to the corresponding Boussinesq equation in order to seek two dimensional solitary wave solutions to \rf{eq1}.
 
 \bigskip
 За всеки от разработените методи са изчислени масата и енергията върху полученото решение. То, заедно с неговите свойства като маса, енергия и форма са сравнени. Изчисленията са направени върху три вложени мрежи, за да се изследва сходимостта на методите. Показано е, че решенията получени с метода на Тейлор и Консервативната схема са доста близки. Една от целите на статията е да покаже, че метода на Тейлор приложен към уравнението \rf{problemVC} също води до достатъчно добри резултати, а също така може да се приложи с по-висок ред на апроксимация, което води и до по-фино решение.
 
-\bibliographystyle{unsrt}
 \begin{thebibliography}{99}
-
-\bibitem{refHyp} Angelow K., Comparison between two numerical methods for solution of 2D Boussinesq paradigm equation, \emph{AIP Conference Proceedings}, \textbf{2522}, (2022), 090001
-
-\bibitem{bnd}
-Angelow K., New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, 
-{\it International Journal of Applied Mathematics}, \textbf{32,1}, (2019), 141-154.
-
-\bibitem{ref16} Angelow K., Kolkovksa, N., Numercal Study of Traveling Wave Solutions to 2D Boussinesq Equation, {\it Serdica J. Computing}, \textbf{13} (2019), 1-16.
-
 \bibitem{ref01} Boussinesq, J., Theorie de l'intumescence liquide, applelee onnde solitaire ou de translation, se propageant dans un canal rectangulaire, {\it Comptes Rendus de l'Academie des Sciences}, \textbf{72} (1871), 755-759.
 
-\bibitem{ref02} Boussinesq, J., Theorie des ondes et des remous qui se propagent le long d'un canal rectangulaire horizontal, en communiquant au liquide contenu dans ce canal des vitesses sensiblement pareilles de la surface au fond.  {\it Journal de Mathematiques Pures et Appliquees}, \textbf{17} (1872), 55-108.
+	\bibitem{ref02} Boussinesq, J., Theorie des ondes et des remous qui se propagent le long d'un canal rectangulaire horizontal, en communiquant au liquide contenu dans ce canal des vitesses sensiblement pareilles de la surface au fond.  {\it Journal de Mathematiques Pures et Appliquees}, \textbf{17} (1872), 55-108.
 
-\bibitem{ref21} Chertok, A., Christov, C.I., Kurganov, A., Central-Upwind Schemes for the Boussinesq Paradigm Equations,
+	\bibitem{ref1} Christov, C.I., An energy-consistent dispersive shallow-water model,  {\it Wave Motion}, \textbf{34} (2001), 161-174.
+
+	\bibitem{ref20} Christov, C.I., Kolkovska, N., Vasileva, D., On the Numerical Simulation of Un-steady Solutions for the 2D Boussinesq Paragigm Equation,
+{\it In: I. Dimov, S. Dimova, N. Kolkovska (Eds.), Numerical Methods and Applications 2010},
+\emph{Conference Proceedings}, \textbf{6046} (2010), 386–394.
+
+	\bibitem{ref21} Chertok, A., Christov, C.I., Kurganov, A., Central-Upwind Schemes for the Boussinesq Paradigm Equations,
 {\it Computational Science and High Performance Computing IV, Notes Numer. Fluid Mech.}, \textbf{113} (2011), 267-281.
 
-\bibitem{ref13}  Christou M. , Christov C.I.,
+	\bibitem{ref241} M.Dimova, N. Kolkovska, Comparison of some finite difference schemes for Boussinesq Paradigm Equation, 
+{\it Int. Conf. Math. Model. Comput. Phys.}, \emph{Springer}, (2011), 215-220.
+
+	\bibitem{ref23} M.Dimova, D. Vasileva, Comparison of Two Numerical Approaches to Boussinesq Paradigm Equation, 
+{\it Numerical Analysis and Its Applications. NAA 2012. Lecture Notes in Computer Science}, \textbf{8236}, (2013), 255-262.
+
+	\bibitem{ref25} Kolkovska N., Two families of finite difference schemes for multidimensional Boussinesq paradigm equation, In:
+{\it Applications of Mathematics in Technical and Natural Sciences,  Sozopol (Bulgaria)},
+\emph{AIP Conference Proceedings}, \textbf{1301} (2010), 395.
+
+	\bibitem{ref251} Kolkovska N., Four-Level Conservative Finite-Difference Schemes for Boussinesq Paradigm Equation, {\it American Institute of Physics},
+\emph{AIP Conference Proceedings}, \textbf{1561} (2013), 68-74.
+
+	\bibitem{ref252} Kolkovska N., Error Estimates of Four Level Conservative Finite Difference Schemes for Multidimensional Boussinesq  Equation,  {\it Int. Conf. Finite Differ. Methods}, \emph{Springer} (2014), 266-273.
+
+	\bibitem{ref253} Blinkov Y., Gerdt V., Pankratov I., Kotkova E., Construction of a New Implicit Difference Scheme for 2D Boussinesq Paradigm Equation, {\it Int. Workshop Comput. Algebra Sci. Comput.}, \emph{Springer}, (2019), 152-163.
+
+	\bibitem{ref22} Kolkovska N., Angelow K., A Multicomponent Alternating Direction Method for Numerical Solving of Boussinesq Paradigm Equation,
+In: {\it  I. Dimov, I., Farago, I., Vulkov, L. (eds.) NAA 2012},
+\emph{Conference Proceedings}, \textbf{8236} (2013), 371–378.
+
+	\bibitem{ref24} Yuyu He, Hongtao Chen, Efficient algorithm and convergence analysis of conservative SAV compact difference scheme for Boussinesq Paradigm equation, 
+{\it Computers and Mathematics with Applications}, \textbf{125} (2022), 34-50.
+
+	\bibitem{ref254} Vucheva V., Kolkovska N., High Order Symplectic Finite Difference Scheme for Double Dispersion Equations, {\it AIP Publishing LLC}, \emph{AIP Conference Proceedings}, \textbf{2321}, (2021), 030037
+
+	\bibitem{ref15} Christov, C.I., Choudhury, J., Perturbation solution for the 2D Boussinesq equation, {\it Mech. Res. Commun.}, \textbf{38} (2011), 274-281.
+
+	\bibitem{ref117} J. Choudhury, C.I. Christov,
+2D solitary waves of Boussinesq equation, in ISIS International Symposium on Interdisciplinary Science, Natchitoches, October 6-8, 2004, {\it APS Conference Proceedings 755}, Washington, DC, 2005, pp 85-90.
+
+	\bibitem{ref116} C.I. Christov,
+Numerical implementation of the asymptotic boundary conditions for steadily propagating 2D solitons of Boussinesq type equations,
+{\it Mathematics and Computers in Simulation}, \textbf{82} (2012), 1079-1092.
+
+	\bibitem{ref14} Christou M. , Christov C.I.,
+Fourier Galerkin method for 2D solitons of Boussinesq equation,
+{\it Mathematics and Computers in Simulation} \textbf{74} (2007), 82-92.
+
+	\bibitem{ref13} Christou M. , Christov C.I.,
 Galerkin spectral method for the 2D solitary waves of Boussinesq paradigm equation,
 In: {\it Applications of Mathematics in Technical and Natural Sciences, Sozopol (Bulgaria)},
 \emph{AIP Conference Proceedings}, \textbf{1186}, Issue 1 (2009), 217-225.
 
-\bibitem{ref14}  Christou M. , Christov C.I.,
-Fourier Galerkin method for 2D solitons of Boussinesq equation,
-{\it Mathematics and Computers in Simulation} \textbf{74} (2007), 82-92.
-
-\bibitem{ref1} Christov, C.I., An energy-consistent dispersive shallow-water model,  {\it Wave Motion}, \textbf{34} (2001), 161-174.
-
-\bibitem{ref15} Christov, C.I., Choudhury, J., Perturbation solution for the 2D Boussinesq equation, {\it Mech. Res. Commun.}, \textbf{38} (2011), 274-281.
-
-\bibitem{ref116}  C.I. Christov,
-Numerical implementation of the asymptotic boundary conditions for steadily propagating 2D solitons of Boussinesq type equations,
-{\it Mathematics and Computers in Simulation}, \textbf{82} (2012), 1079-1092.
-
-\bibitem{ref117}  J. Choudhury, C.I. Christov,
-2D solitary waves of Boussinesq equation, in ISIS International Symposium on Interdisciplinary Science, Natchitoches, October 6-8, 2004, {\it APS Conference Proceedings 755}, Washington, DC, 2005, pp 85-90.
-
-\bibitem{ref4} Christov, I., Christov, C.I., Physical dynamics of quasi-particles in nonlinear wave equations,
-{\it Physics Letters A}, \textbf{372}, Issue 4 (2008),  841-848.
-
-\bibitem{ref20} Christov, C.I., Kolkovska, N., Vasileva, D., On the Numerical Simulation of Un-steady Solutions for the 2D Boussinesq Paragigm Equation,
-{\it In: I. Dimov, S. Dimova, N. Kolkovska (Eds.), Numerical Methods and Applications 2010},
-\emph{Conference Proceedings}, \textbf{6046} (2010), 386–394.
-
-\bibitem{ref23}
-M.Dimova, D. Vasileva, Comparison of Two Numerical Approaches to Boussinesq Paradigm Equation, 
-{\it Numerical Analysis and Its Applications. NAA 2012. Lecture Notes in Computer Science}, \textbf{8236}, (2013), 255-262.
-
-\bibitem{ref24} Yuyu He, Hongtao Chen, Efficient algorithm and convergence analysis of conservative SAV compact difference scheme for Boussinesq Paradigm equation, 
-{\it Computers and Mathematics with Applications}, \textbf{125} (2022), 34-50.
-
-\bibitem{ref241}
-M.Dimova, N. Kolkovska, Comparison of some finite difference schemes for Boussinesq Paradigm Equation, 
-{\it Int. Conf. Math. Model. Comput. Phys.}, \emph{Springer}, (2011), 215-220.
-
-\bibitem{forn}
-Fornberg, B., Generation of Finite Difference Formulas on Arbitrarily Spaced Grids, 
-Math. Comput., 51(1988),  699 -- 706.
-
-\bibitem{samarski} Samarskii A., The Theory of Difference Schemes, Marcel Dekker Inc., New York, 2001.
-
-\bibitem{ref22} Kolkovska N., Angelow K., A Multicomponent Alternating Direction Method for Numerical Solving of Boussinesq Paradigm Equation,
-In: {\it  I. Dimov, I., Farago, I., Vulkov, L. (eds.) NAA 2012},
-\emph{Conference Proceedings}, \textbf{8236} (2013), 371–378.
-
-\bibitem{ref25} Kolkovska N., Two families of finite difference schemes for multidimensional Boussinesq paradigm equation, In:
-{\it Applications of Mathematics in Technical and Natural Sciences,  Sozopol (Bulgaria)},
-\emph{AIP Conference Proceedings}, \textbf{1301} (2010), 395.
-
-\bibitem{ref251} Kolkovska N., Four-Level Conservative Finite-Difference Schemes for Boussinesq Paradigm Equation, {\it American Institute of Physics},
-\emph{AIP Conference Proceedings}, \textbf{1561} (2013), 68-74.
-
-\bibitem{ref252} Kolkovska N., Error Estimates of Four Level Conservative Finite Difference Schemes for Multidimensional Boussinesq  Equation,  {\it Int. Conf. Finite Differ. Methods}, \emph{Springer} (2014), 266-273.
-
-\bibitem{ref253} Blinkov Y., Gerdt V., Pankratov I., Kotkova E., Construction of a New Implicit Difference Scheme for 2D Boussinesq Paradigm Equation, {\it Int. Workshop Comput. Algebra Sci. Comput.}, \emph{Springer}, (2019), 152-163.
-
-\bibitem{ref254} Vucheva V., Kolkovska N., High Order Symplectic Finite Difference Scheme for Double Dispersion Equations, {\it AIP Publishing LLC}, \emph{AIP Conference Proceedings}, \textbf{2321}, (2021), 030037
-
-\bibitem{ref260} G. H. Golub and C. F. Van Loan, Matrix Computations, 3/e, Johns Hopkins University, Press, Baltimore, 1996.
-
-\bibitem{ref26} 
-Strassen, Volker, Gaussian Elimination is not Optimal,
-{\it Numer. Math.}, \textbf{13 (4)} (1969), 354–356, doi:10.1007/BF02165411. S2CID 121656251
-
-\bibitem{ref27} Coppersmith Don, Winograd Shmuel., Matrix multiplication via arithmetic progressions,
-{\it  Journal of Symbolic Computation}, \textbf{9 (3)} (1990), 251, doi:10.1016/S0747-7171(08)80013-2.
-
-\bibitem{boole}
-Zucker, Ruth, "Chapter 25.4.14: Numerical Interpolation, Differentiation, and Integration - Integration - Numerical Analysis". In Abramowitz, Milton; Stegun, Irene Ann (eds.). Handbook of Mathematical Functions with Formulas, Graphs, and Mathematical Tables. 
-{\it Applied Mathematics Series} \textbf{55}  (1983), ISBN 978-0-486-61272-0.
-
-\bibitem{ref1c00} McLeod, Kevin, James Serrin, Uniqueness of Solutions of Semilinear Poisson Equations, In \it{Proceedings of the National Academy of Sciences of the United States of America}, \textbf{78}, no. 11, (1981), 6592–95. JSTOR, http://www.jstor.org/stable/11173,
-
-\bibitem{ref1c0} Kolkovska N. Angelow K., Numerical computation of the critical energy constant for two-dimensional Boussinesq equations,
+	\bibitem{ref1c0} Kolkovska N. Angelow K., Numerical computation of the critical energy constant for two-dimensional Boussinesq equations,
 {\it Application of Mathematics in Technical and Natural Sciences, Albena (Bulgaria)},
 \emph{AIP Conference Proceedings}  \textbf{1684} (2015), 080007.
 
-\bibitem{ref2c0} Kolkovska N., Numerical Evaluation of 2D Ground States,
+	\bibitem{bnd} Angelow K., New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, 
+{\it International Journal of Applied Mathematics}, \textbf{32,1}, (2019), 141-154.
+
+	\bibitem{refHyp} Angelow K., Comparison between two numerical methods for solution of 2D Boussinesq paradigm equation, \emph{AIP Conference Proceedings}, \textbf{2522}, (2022), 090001
+
+	\bibitem{ref34} T. Lyche, Fast Direct Solution of a Large Linear System,
+\it{Numerical Linear Algebra and Matrix Factorizations, Texts in Computational Science and Engineering}, \textbf{22}, (2020), p 237-250
+
+	\bibitem{forn} Fornberg, B., Generation of Finite Difference Formulas on Arbitrarily Spaced Grids, 
+Math. Comput., 51(1988),  699 -- 706.
+
+	\bibitem{boole} Zucker, Ruth, "Chapter 25.4.14: Numerical Interpolation, Differentiation, and Integration - Integration - Numerical Analysis". In Abramowitz, Milton; Stegun, Irene Ann (eds.). Handbook of Mathematical Functions with Formulas, Graphs, and Mathematical Tables. 
+{\it Applied Mathematics Series} \textbf{55}  (1983), ISBN 978-0-486-61272-0.
+
+	\bibitem{ref260} G. H. Golub and C. F. Van Loan, Matrix Computations, 3/e, Johns Hopkins University, Press, Baltimore, 1996.
+
+	\bibitem{ref27} Coppersmith Don, Winograd Shmuel., Matrix multiplication via arithmetic progressions,
+{\it  Journal of Symbolic Computation}, \textbf{9 (3)} (1990), 251, doi:10.1016/S0747-7171(08)80013-2.
+
+	\bibitem{ref26} Strassen, Volker, Gaussian Elimination is not Optimal,
+{\it Numer. Math.}, \textbf{13 (4)} (1969), 354–356, doi:10.1007/BF02165411. S2CID 121656251
+
+	\bibitem{ref1c00} McLeod, Kevin, James Serrin, Uniqueness of Solutions of Semilinear Poisson Equations, In \it{Proceedings of the National Academy of Sciences of the United States of America}, \textbf{78}, no. 11, (1981), 6592–95. JSTOR, http://www.jstor.org/stable/11173,
+
+	\bibitem{ref2c0} Kolkovska N., Numerical Evaluation of 2D Ground States,
 \emph{ EPJ Web of Conferences}, \textbf{108} (2016), 02032.
 
-\bibitem{ref31} B. Engquist and A. Majda, Absorbing boundary conditions for the numerical simulation of waves, {\it Math. Comp.}, \textbf{31} (1977), 629–651.
+	\bibitem{ref31} B. Engquist and A. Majda, Absorbing boundary conditions for the numerical simulation of waves, {\it Math. Comp.}, \textbf{31} (1977), 629–651.
 
-\bibitem{ref32}  C.I. Goldstein, A finite element method for solving Helmholtz type equations in waveguides and other unbounded domains,
+	\bibitem{ref32} C.I. Goldstein, A finite element method for solving Helmholtz type equations in waveguides and other unbounded domains,
 {\it Math. Comp.}, \textbf{39} (1982), 309–324.
 
-\bibitem{ref33}  H. Han, W. Bao, Error estimates for the finite element approximation of problems in unbounded domains,
+	\bibitem{ref33} H. Han, W. Bao, Error estimates for the finite element approximation of problems in unbounded domains,
 {\it SIAM J. Numer. Anal.} \textbf{37}, \textbf{4} (2000), 1101–1119
 
-\bibitem{ref34} T. Lyche, Fast Direct Solution of a Large Linear System,
-\it{Numerical Linear Algebra and Matrix Factorizations, Texts in Computational Science and Engineering}, \textbf{22}, (2020), p 237-250 
+	\bibitem{samarski} Samarskii A., The Theory of Difference Schemes, Marcel Dekker Inc., New York, 2001.
 
+	\bibitem{ref16} Angelow K., Kolkovksa, N., Numercal Study of Traveling Wave Solutions to 2D Boussinesq Equation, {\it Serdica J. Computing}, \textbf{13} (2019), 1-16.
+
+	\bibitem{ref4} Christov, I., Christov, C.I., Physical dynamics of quasi-particles in nonlinear wave equations,
+{\it Physics Letters A}, \textbf{372}, Issue 4 (2008),  841-848.
 
 \end{thebibliography}
 \end{large}
