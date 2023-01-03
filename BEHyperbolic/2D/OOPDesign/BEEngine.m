@@ -412,7 +412,15 @@ classdef (ConstructOnLoad) BEEngine
         result = hy/3 * ( D(1) + D(end) + 4 * sum( D(2:2:end-1) ) + 2 * sum( D(3:2:end-2) ) );
     end
     
-    function [result] = GetOh6IntegralOf(this, term)        
+    function [result] = GetOh6IntegralOf(this, term)
+        [valx, idxX] = max(term);
+        [yo, idxY] = max(valx);
+        
+        %idxX(idxY), idxY
+        xShift2 = mod(idxX(idxY), 2) + ( 1 - ceil( mod(idxX(idxY), 2)/2 ) )*2;        
+        yShift2 = mod(idxY, 2) + ( 1 - ceil( mod(idxY, 2)/2 ) )*2;
+        xShift4 = mod(idxX(idxY), 4) + ( 1 - ceil( mod(idxX(idxY), 4)/4 ) )*4;
+        yShift4 = mod(idxY, 4) + ( 1 - ceil( mod(idxY, 4)/4 ) )*4;
         if( mod (this.sx - 1, 4) == 1 || mod (this.sy - 1, 4) == 1 )
             error('Argument exception! sx,sy mod 4 == 0 ');
         end
@@ -421,11 +429,11 @@ classdef (ConstructOnLoad) BEEngine
 
         D = zeros(1, this.sy);
         for j=1:this.sy
-            D(j) = 2*hx/45 * ( 7*term(1, j) + 7*term(end, j) + 32 * sum( term(2:2:end-1, j) ) +...
-                12 * sum( term(3:4:end-2,j ) ) + 14 * sum( term(5:4:end-4,j) ) );
+            D(j) = 2*hx/45 * ( 7*term(1, j) + 7*term(end, j) + 32 * sum( term(xShift2:2:end, j) ) +...
+                12 * sum( term(xShift4:4:end,j ) ) + 14 * sum( term(xShift4:4:end,j) ) );
         end
-        result = 2*hy/45 * ( 7*D(1) + 7*D(end) + 32*sum ( D(2:2:end-1) ) +...
-            12*sum( D(3:4:end-2) ) + 14*sum( D(5:4:end-4) ) );
+        result = 2*hy/45 * ( 7*D(1) + 7*D(end) + 32*sum ( D(yShift2:2:end) ) +...
+            12*sum( D(yShift4:4:end) ) + 14*sum( D(yShift4:4:end) ) );
     end
   end
 
