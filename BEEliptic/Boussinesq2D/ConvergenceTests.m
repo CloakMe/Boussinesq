@@ -1,11 +1,13 @@
 clear;
+addpath('..\..\Common');
 %Eliptic
+forthDer = false
 bndCutSizeX = 0;
 bndCutSizeY = 0;
 bndDirectory = 'ZeroBnd\'; % 'ZeroBoundary\' 'WithBoundary\' ZeroBnd
 ICType = 'ChristovIC_'; % 'ChristovIC_' 'Natali_'
-domLength = '30_'; %'80_' '40_' '82_'
-paramString = 'bt3_c045'; %'bt3_c052' 'bt1_c090'
+domLength = '50_'; %'80_' '40_' '82_'
+paramString = 'bt3_c030'; %'bt3_c052' 'bt1_c090'
 orderString = '6';
 %============================================
 fprintf(paramString);
@@ -13,7 +15,7 @@ fprintf('!\n');
 yo(1,:) = '20';
 yo(2,:) = '10';
 yo(3,:) = '05';
-if( strcmp(paramString, 'bt1_c090') == 1 || strcmp(paramString, 'bt1_c080') == 1 || strcmp(paramString, 'bt1_c070') == 1 )
+if( strcmp(paramString, 'bt1_c090') == 1 || strcmp(paramString, 'bt1_c080') == 1 || strcmp(paramString, 'bt3_c030') == 1 )
     yo(1,:) = '40';
     yo(2,:) = '20';
     yo(3,:) = '10';
@@ -53,7 +55,7 @@ for jl = 1:3
 end
 
 clear('jl');
-if(true)
+if(forthDer)
     domainUtils = BEDomainUtils( 1:10, 1:10, str2num(orderString) );
     vb_xxxx = domainUtils.XDerivativeEvenFunZeroBnd( domainUtils.XDerivativeEvenFunZeroBnd(vb)/hb^2)/hb^2;
     vc_xxxx = domainUtils.XDerivativeEvenFunZeroBnd( domainUtils.XDerivativeEvenFunZeroBnd(vc)/hc^2)/hc^2;

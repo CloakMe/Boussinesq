@@ -33,6 +33,38 @@
 
 \begin{document}
 \begin{large}
+
+%titlepage
+\thispagestyle{empty}
+\begin{center}
+\begin{minipage}{0.84\linewidth}
+    \centering
+%University logo
+    \includegraphics[width=0.3\linewidth]{imi.jpg}\par
+    %\rule{0.4\linewidth}{0.15\linewidth}\par
+    \vspace{2cm}
+%Thesis title
+    {\Large ЧИСЛЕНО РЕШЕНИЕ НА ДВУМЕРНОТО ПАРАДИГМАТИЧНО УРАВНЕНИЕ НА БУСИНЕСК\par}
+    \vspace{2cm}
+%Author's name
+    {\Large Красимир Ангелов \par с научен ръководител проф. д-р Наталия Кольковска\par}
+    \vspace{2cm}
+%Degree
+    {\Large Дисертация за присъждане на образователна и научна степен ``Доктор по математика'' със специалност ``Математическо моделиране и приложение на математиката''\par}
+    \vspace{2cm}
+%institute
+{\Large Институт по Математика и Информатика, Българска Академия на Науките, София, България\par}
+    \vspace{2cm}
+%Date
+    {\Large Януари 2023}
+\end{minipage}
+\end{center}
+\clearpage
+
+\shipout\null
+%\stepcounter{page}
+
+
 \tableofcontents
 \newpage
 
@@ -976,7 +1008,7 @@ $\beta = 1$   	&0.4   &             &           &                & \\
 		\includegraphics[width=\linewidth]{residual/residual_bt3c045_Oh6.png}
 		\centerline{$\beta = 3$, $c = 0.45$}	
 	\end{minipage}	
-	\begin{minipage}[b]{0.41625\linewidth}	
+	\begin{minipage}[b]{0.43\linewidth}	
 		 \includegraphics[width=\linewidth]{residual/residual_bt1c090_Oh6.png}
 		\centerline{$\beta = 1$, $c = 0.9$ }
 	\end{minipage}
@@ -2150,7 +2182,7 @@ D_h^{**} = 100 \times |D(t=0) - D(t=T)|/D(t=0).
 
 \hline
   $\beta=3$     		&0.4, 0.2   	&            	&          	&                  &      \\
-      c=0.3                  &0.2, 0.1   	&1.323454   &            &1.258971 &   \\
+      c=0.3                  &0.2, 0.1   	& 1.323454  &            &1.258971 &   \\
  $O(h^6+ \tau^6)$ 	&0.1, 0.05 	&  0.037432 	&5.14  	 &0.038375  & 5.04 \\
 \hline
 \hline 
@@ -2173,9 +2205,12 @@ D_h^{**} = 100 \times |D(t=0) - D(t=T)|/D(t=0).
                   c=0.3    	&0.2, 0.1     		& 0.547493 	&           &0.711457  		&   \\
 $O(h^4+ \tau^4)$ 	&0.1, 0.05   		& 0.008132  	& 6.07  	& 0.018494  		& 5.27 \\
 \hline
-  $\beta=3$     	 	&0.4, 0.2   		&            	&         	&                  	&      \\
-      c=0.3                 	&0.2, 0.1   		&0.594868	&         	& 0.701787      	&       \\
-   $O(h^6+ \tau^6)$ &0.1, 0.05  		& 0.012699 	& 5.55 	& 0.021901  		& 5.00       \\
+%  $\beta=3$     	 	&0.4, 0.2   		&            	&         	&                  	&      \\
+%      c=0.3                 	&0.2, 0.1   		&0.594868	&         	& 0.701787      	&       \\
+%   $O(h^6+ \tau^6)$ &0.1, 0.05  		& 0.012699 	& 5.55 	& 0.021901  		& 5.00       \\
+  $\beta=3$     	 	&0.4, 0.2   		&            	&         	&                  	&             \\
+      c=0.3                 	&0.2, 0.1   		& 8.213254	&         	& 7.354940      	&              \\
+   $O(h^6+ \tau^6)$ &0.1, 0.05  		& 0.246964 	& 5.06 	& 0.271738  		& 4.76       \\
 \hline
 \hline 
 		\end{tabular}
@@ -2190,7 +2225,7 @@ $O(h^4+ \tau^4)$ 	&0.1, 0.05   		& 0.008132  	& 6.07  	& 0.018494  		& 5.27 \\
 
 \begin{figure}\vspace{0.2cm}
 	\centering
-	\includegraphics[width=0.9\linewidth]{Maximum_TaylorZeroBnd_50x50_bt3_c030.png}
+	\includegraphics[width=0.85\linewidth]{Maximum_TaylorZeroBnd_50x50_bt3_c030.png}
 \caption{Развитие на максимума на решението в интервала $[0, 10]$ при $\beta = 3$, $c=0.3$. За резултатите от графиката е използван метода на Тейлор с четвърти и шести порядък на апроксимация и дискретните стъпки $h=0.4, 0.2, 0.1, \tau = h/2$.}
 \label{MultiMaximum}
 \end{figure}
