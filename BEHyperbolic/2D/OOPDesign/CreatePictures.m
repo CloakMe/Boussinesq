@@ -2,8 +2,8 @@ function CreatePictures( viewTypeX, viewTypeY, tt, x, y )
     mag = 120;
     %mag2=mag;
     h = x(2) - x(1);
-    N = 200;
-    M = 750;
+    N = 375;
+    M = 375;
     if(h > 0.15)
         N = 150;
         M = 400;
@@ -40,24 +40,25 @@ function CreatePictures( viewTypeX, viewTypeY, tt, x, y )
 
     %tt = 1:0.1:20;    
     %j = 1:3:size(tt,2)  
-    for j = 0:6:30   
+    for j = 0:4:20   
 
         xxx = x(x_st_idx:x_end_idx);
         lenX = length( xxx );
         yyy = y(y_st_idx:y_end_idx); 
         lenY = length( yyy );
-        load(['SOL\vz_' num2str(j) '.mat']);
+        load(['SOL_bt3_c030\vz_' num2str(j) '.mat']);
         [ crntSx, crntSy ] = size( vz );
         %vv1u = v1u(ij-mag+1:ij+mag-1,lo-mag+1:lo+mag2-1); 
         vvz = vz( x_st_idx:x_end_idx, y_st_idx :y_end_idx );
-        mesh(xxx,yyy,vvz');
+        surf(xxx,yyy,vvz');
+        shading interp
         %mesh(x,y,vu');
-        title(['Solution at time: ',num2str(j)]);
-        xlabel('x'); ylabel('y');
-        
+        title(['t =  ',num2str(j)]);
+        xlabel('t','FontSize',18); % ylabel('FontSize',18);
+        set(gca,'FontSize',18);
         %view(1,90);
         %axis([xxx(1) xxx(end) yyy(1) yyy(end) -.7, 2.5]);
-        colorbar;
+        %colorbar;
         axis tight;
         %caxis([-.7, 1.7]);
         view( viewTypeX, viewTypeY );
