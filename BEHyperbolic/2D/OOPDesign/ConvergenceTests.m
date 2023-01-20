@@ -2,10 +2,10 @@ clear;
 bndCutSizeX = 0;
 bndCutSizeY = 0;
 
-bndDirectory = 'WithBoundary\'; % 'ZeroBoundary\' 'WithBoundary\' ZeroBnd
-name = 'Taylor_'; % 'EnergySave_' 'Taylor_' TaylorZeroBnd_
-domLength = '128_'; %'80_' '40_', '128_'
-paramString = 'bt1_c090'; %'bt3_c052' 'bt1_c090'
+bndDirectory = 'ZeroBnd\'; % 'ZeroBoundary\' 'WithBoundary\' ZeroBnd
+name = 'TaylorZeroBnd_'; % 'EnergySave_' 'Taylor_' TaylorZeroBnd_
+domLength = '50_'; %'80_' '40_', '128_'
+paramString = 'bt3_c030'; %'bt3_c052' 'bt1_c090'
 orderString = '6';
 
 %=======================================================
@@ -14,7 +14,7 @@ fprintf('!\n');
 yo(1,:) = '20';
 yo(2,:) = '10';
 yo(3,:) = '05';
-if( strcmp(paramString, 'bt1_c090') == 1 || strcmp(paramString, 'bt1_c080') == 1 || strcmp(paramString, 'bt1_c070') == 1 )
+if( strcmp(paramString, 'bt1_c090') == 1 || strcmp(paramString, 'bt1_c080') == 1 || strcmp(paramString, 'bt3_c030') == 1 )
     yo(1,:) = '40';
     yo(2,:) = '20';
     yo(3,:) = '10';
@@ -40,8 +40,8 @@ for jl = 1:3
     warning('off','all');
     load (  cellStr{1} );
     warning('on','all');
-    %fprintf('tau = %f\n', tau);
-    %fprintf( 'h = 0.%s \n',  yo{jl});
+    fprintf('tau = %f\n', tau);
+    fprintf( 'h = 0.%s \n',  yo{jl});
     bndPtsRemX = 0.0;
     bndPtsRemY = 0.0;
     if(jl==3)

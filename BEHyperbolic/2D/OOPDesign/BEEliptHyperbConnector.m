@@ -2,11 +2,12 @@
 clear; clc;
 
 addpath('..\..\..\Common');
+return
 bndCutSize = 0;
-inputDirectory = 'WithBoundary'; %ZeroBoundary, ZeroBnd, WithBoundary
+inputDirectory = 'ZeroBnd'; %ZeroBoundary, ZeroBnd, WithBoundary
 fprintf('BoundaryConditionDir = %s \n', inputDirectory);
-partialPath = strcat('BEEliptic\Boussinesq2D\',inputDirectory,'\ChristovIC_128_bt1_c090\Oh6\');
-waveFactory = WaveFactory( partialPath, 'ChristovIC_128_ZB2_bt1_c090_h040_O(h^6)', bndCutSize, 0 ); %
+partialPath = strcat('BEEliptic\Boussinesq2D\',inputDirectory,'\ChristovIC_60_bt3_c045\Oh6\');
+waveFactory = WaveFactory( partialPath, 'ChristovIC_60_ZB2_bt3_c045_h020_O(h^6)', bndCutSize, 0 ); %
 
 %partialPath = 'BEEliptic\Boussinesq2D\ZeroBoundary\ChristovIC_30_bt3_c045\Oh2\';
 %waveFactory = WaveFactory( partialPath, 'ChristovIC_30_ZB1_bt3_c045_h010_O(h^2)', bndCutSize, 0 ); %
@@ -103,8 +104,8 @@ viewTypeX = 0;
 viewTypeY = 90;
 %MovieForBEHyperbolic( viewTypeX, viewTypeY, tt, x, y );
 
-Q = 41;
-i = 20;
+Q = 51;
+i = 30;
 if (false)
     figure(i+1)
     mesh(x, y(1:Q), vl(:,1:Q)');

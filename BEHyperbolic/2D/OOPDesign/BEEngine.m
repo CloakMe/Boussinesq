@@ -413,7 +413,7 @@ classdef (ConstructOnLoad) BEEngine
     end
     
     function [result] = GetOh6IntegralOf(this, term)        
-        if( mod (this.sx - 1, 4) == 1 || mod (this.sy - 1, 4) == 1 )
+        if( mod (this.sx - 1, 4) > 0 || mod (this.sy - 1, 4) > 0 )
             error('Argument exception! sx,sy mod 4 == 0 ');
         end
         hx = this.h;
@@ -421,11 +421,12 @@ classdef (ConstructOnLoad) BEEngine
 
         D = zeros(1, this.sy);
         for j=1:this.sy
-            D(j) = 2*hx/45 * ( 7*term(1, j) + 7*term(end, j) + 32 * sum( term(2:2:end-1, j) ) +...
-                12 * sum( term(3:4:end-2,j ) ) + 14 * sum( term(5:4:end-4,j) ) );
+            D(j) = 2*hx/45 * ( 7*term(1, j) + 7*term(this.sx, j) + 32 * sum( term(2:2:this.sx-1, j) ) +...
+                12 * sum( term(3:4:this.sx-2,j ) ) + 14 * sum( term(5:4:this.sx-4,j) ) );
         end
-        result = 2*hy/45 * ( 7*D(1) + 7*D(end) + 32*sum ( D(2:2:end-1) ) +...
-            12*sum( D(3:4:end-2) ) + 14*sum( D(5:4:end-4) ) );
+        result = 2*hy/45 * ( 7*D(1) + 7*D(end) + 32*sum ( D(2:2:this.sy-1) ) +...
+            12*sum( D(3:4:this.sy-2) ) + 14*sum( D(5:4:this.sy-4) ) );
+        yo = 4;
     end
   end
 
