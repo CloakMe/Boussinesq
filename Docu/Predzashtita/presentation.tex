@@ -6,7 +6,7 @@
 \usepackage[notref,notcite]{showkeys}
 \usepackage{graphicx}
 \usepackage{wrapfig}
-
+\usepackage{multirow}
 \newcommand{\RR}{\mathbb{R}}
 \newcommand{\rf}[1]{(\ref{#1})}
 
@@ -35,7 +35,7 @@
 \begin{align}
 \tilde u(x,t:c) = \frac{3}{2} \frac{c^2-1}{\alpha}sech^2 \left( \frac{1}{2}  \sqrt{ \frac{\beta_1 (c^2-1)}{\beta_1 c^2-\beta_2}} (x-c t \sqrt{\frac{\beta_1}{\beta_2}} ) \right)
 \end{align}
-Солитона е самодвижеща се вълнова композиция, която запазва формата си, докато се разпространява с постоянна скорост. Структурата ѝ се запазва дори след взаимодействие с друг(и) солитон(и).
+Солитон е бягаща със скорост $c$ вълна от вида $\phi(x-ct)$, която е локализирана в пространството и при движение запазва формата си. Структурата ѝ се запазва дори след взаимодействие с друг(и) солитон(и).
 \end{frame}
 
 %==================3======================================
@@ -72,25 +72,6 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 \end{itemize}
 \end{frame}
 
-%==================4======================================
-\begin{frame}
-\frametitle{Смяна на променливите, свойства на новото уравнение } 
- 
-\begin{itemize}
-\item Смяната $x=\sqrt\beta_1 { \overline x}$, $y=\sqrt\beta_1 { \overline y}$, $U(x,y)= v({ \overline x},{ \overline y} )$ в елиптичното уравнение \rf{eq2} води до
- \begin{align}\label{eq3}
-&c^2 \beta (E_1- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2 v - \beta \Delta f(v), \\ 
-&v(\overline x, \overline y) \rightarrow 0,  \Delta v(\overline x, \overline y) \rightarrow 0 ,  \quad \text{за}  \sqrt{\overline x^2 + \overline y^2} \rightarrow \infty, \nonumber
-\end{align}
-\end{itemize}
-\begin{itemize}
-  \item нов дисперсионен параметър $\beta := \beta_1/\beta_2$
-  \item уравнение \rf{eq3} е елиптично (4ти ред) при $c < \min (\sqrt{\beta_2}/ \sqrt{\beta},1)$
-  \item преминаване към система от две уравнения - подобряване на устойчивостта
-  \item скалиране на решението спрямо стойността $v(0,0)$ - търсят се ненулеви решения 
-\end{itemize}
-
-\end{frame}
 
 %==================55======================================
 \begin{frame}
@@ -106,14 +87,34 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 
 \end{frame}
 
-%==================5======================================
-\begin{frame}
-\frametitle{Метод на простата итерация} 
-\begin{itemize}
-  \item  J. Choudhury, C.I. Christov,
-2D solitary waves of Boussinesq equation, in ISIS International Symposium on Interdisciplinary Science, Natchitoches, October 6-8, 2004, {\it APS Conference Proceedings 755}, Washington, DC, 85-90.
-\end{itemize}
+%==================55======================================
 
+\begin{frame}
+\frametitle{Формулировка и числено решение на двумерното стационарно уравнение на Бусинеск - Метод на простата итерация}
+\begin{itemize}
+  \item Метод на простата итерация - характеристики:
+	\begin{itemize}
+	% \item смяна на променливите: $x = \sqrt{\beta_1} \bar{x}, \quad y = \sqrt{\beta_1} \bar{y}$;
+	  \item начални данни;
+	  \item адаптивен метод за контрол на стъпката по времето;
+	  \item стоп критерий за итерационната процедура;
+	\end{itemize}
+  \item Числени резултати;
+  \item Сравнение с ``best-fit'' формулите;
+  \item Извод на ново асимптотично гранично условие.
+\end{itemize}
+\end{frame}
+
+%==================5======================================
+
+\begin{frame}
+\frametitle{Двумерното стационарно уравнение на Бусинеск}
+\framesubtitle{Метод на простата итерация} 
+\begin{itemize}
+  \item  {\footnotesize J. Choudhury, C.I. Christov,
+2D solitary waves of Boussinesq equation, in ISIS International Symposium on Interdisciplinary Science, Natchitoches, October 6-8, 2004, {\it APS Conference Proceedings 755}, Washington, DC, 85-90.}
+\end{itemize}
+Алгоритмични стъпки:
 \begin{itemize}
   \item Въвеждат се две нови функции: $\widehat{v}=v/{\theta} $ и $\widehat{w}=w/{\theta} $, където $v(0,0)=\theta$
 \end{itemize}
@@ -142,7 +143,8 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 
 %==================6======================================
 \begin{frame}
-\frametitle{Метод на простата итерация} 
+\frametitle{Двумерното стационарно уравнение на Бусинеск}
+\framesubtitle{Метод на простата итерация} 
 Дискретизацията на последното уравнение \rf{eq5} води до следната явна схема:
 \begin{equation}\label{eq555}
 \begin{split}
@@ -252,7 +254,8 @@ $\beta = 3$   	&0.2   &            &        &                  &      \\
 
 %==================14=====================================
 \begin{frame}
-\frametitle{Ред на сходимост при Тест 2 - $\beta = 1$, $c=0.9$}
+\frametitle{Двумерното стационарно уравнение на Бусинеск}
+\framesubtitle{Ред на сходимост при Тест 2 - $\beta = 1$, $c=0.9$}
 
 \begin{table}[ht]
 \centering
@@ -284,7 +287,8 @@ $\beta = 1$   	&0.4   &             &           &                & \\
 
 %==================16=====================================
 \begin{frame}
-\frametitle{Форма на решението}
+\frametitle{Двумерното стационарно уравнение на Бусинеск}
+\framesubtitle{Форма на решението}
 \begin{figure}[ht]
 	\begin{minipage}[b]{0.45\linewidth}
 		\raggedleft
@@ -312,7 +316,8 @@ $\beta = 1$   	&0.4   &             &           &                & \\
 
 %==================17=====================================
 \begin{frame}
-\frametitle{Сравнение с ``best-fit'' формулите}
+\frametitle{Двумерното стационарно уравнение на Бусинеск}
+\framesubtitle{Сравнение с ``best-fit'' формулите}
 
 Нека $D^*_{\kappa}$ да дефинира процентната разликата между двете решения  ``Метода на простата итерация'' $v$ и ``best-fit'' $v^*$ в ${L_2 }$ и ${L_\infty}$ норми, върху цялата област $\omega_h$:
 \begin{equation}\label{diffvv}
@@ -322,7 +327,8 @@ D^*_{\kappa} := 100 \times \frac{\Vert v^*-v \Vert_{\kappa} }{ \Vert v \Vert_{\k
 
 %==================18=====================================
 \begin{frame}
-\frametitle{Сравнение с ``best-fit'' формулите}
+\frametitle{Двумерното стационарно уравнение на Бусинеск}
+\framesubtitle{Сравнение с ``best-fit'' формулите}
 \begin{table}[ht]
 \centering
 \begin{tabular}{|l|c|l l|l l|}
@@ -350,7 +356,8 @@ $\beta$	& c 	& $\|v^*-v \|_{L_2 }$ & $\|v^*-v \|_{L_\infty }$  	& $D^*_{L_2}$	& 
 
 %==================19=====================================
 \begin{frame}
-\frametitle{Сравнение с ``best-fit'' формулите}
+\frametitle{Двумерното стационарно уравнение на Бусинеск}
+\framesubtitle{Сравнение с ``best-fit'' формулите}
 \begin{table}
 \centering
 \begin{tabular}{|l|c|l l| c|l|c|l l|}
@@ -377,7 +384,8 @@ $\beta$	& c 	& $\|v^*-v \|_{L_2 }$ & $\|v^*-v \|_{L_\infty }$  	& $D^*_{L_2}$	& 
 
 %==================20=====================================
 \begin{frame}
-\frametitle{Извод на ново гранично условие}
+\frametitle{Двумерното стационарно уравнение на Бусинеск}
+\framesubtitle{Извод на ново асимптотично гранично условие}
 
 \begin{itemize}
   \item  C.I. Christov,
@@ -386,7 +394,7 @@ Numerical implementation of the asymptotic boundary conditions for steadily prop
 \begin{equation}
 v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r>>1
 \end{equation}
-  \item ново гранично условие
+  \item ново асимптотично гранично условие
 \begin{equation}\label{bndK}
 \tilde v(x,y) = \mu_v \frac{ (1-c^2)x^2 - y^2}{ ((1-c^2)x^2 - y^2)^2}, \quad x^2 + y^2 >> 1.
 \end{equation}
@@ -397,9 +405,10 @@ v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r>>1
 
 %==================21=====================================
 \begin{frame}
-\frametitle{Асимптотично поведение на членовете от формула \rf{eq3}}
+\frametitle{Двумерното стационарно уравнение на Бусинеск}
+\framesubtitle{Асимптотично поведение на членовете в уравнението}
 \begin{figure}
-	\includegraphics[width=0.9\linewidth]{../Thesis/AssymptForEachTerm/c017_bt1_5/ChristovIC_AlongX_50_ZB2_bt1_c017_h020_O(h^6).png}
+	\includegraphics[width=0.8\linewidth]{../Thesis/AssymptForEachTerm/c017_bt1_5/ChristovIC_AlongX_50_ZB2_bt1_c017_h020_O(h^6).png}
 	\caption{Решението е получено с ``Метода на простата итерация'' и нулево гранично условие, $\boldsymbol{c=0.17}$ и $\boldsymbol{\beta = 1}$. }
 	\label{fig:assympt_c017bt11}
 \end{figure}
@@ -408,9 +417,10 @@ v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r>>1
 
 %==================22=====================================
 \begin{frame}
-\frametitle{Асимптотично поведение на членовете от формула \rf{eq3}}
+\frametitle{Двумерното стационарно уравнение на Бусинеск}
+\framesubtitle{Асимптотично поведение на членовете в уравнението}
 \begin{figure}
-	\includegraphics[width=0.9\linewidth]{../Thesis/AssymptForEachTerm/c017_bt1_5/ChristovIC_AlongY_50_ZB2_bt1_c017_h020_O(h^6).png}
+	\includegraphics[width=0.8\linewidth]{../Thesis/AssymptForEachTerm/c017_bt1_5/ChristovIC_AlongY_50_ZB2_bt1_c017_h020_O(h^6).png}
 	\caption{ Решението е получено с ``Метода на простата итерация'' и нулево гранично условие, $\boldsymbol{c=0.17}$ и $\boldsymbol{\beta = 1}$. }
 	\label{fig:assympt_c017bt12}
 \end{figure}
@@ -420,8 +430,9 @@ v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r>>1
 
 %==================23=====================================
 \begin{frame}
-\frametitle{Асимптотично поведение на членовете от уравнение \rf{eq3}}
-Представените фигури в предишната част показват, че асимптотиката на членовете с производни от четвърти ред и нелинейните такива с производни от втори ред в \rf{eq3}
+\frametitle{Двумерното стационарно уравнение на Бусинеск}
+\framesubtitle{Асимптотично поведение на членовете в уравнението}
+Представените фигури в предишната част показват, че асимптотиката на членовете с производни от четвърти ред и нелинейните такива с производни от втори ред
 \begin{equation}\label{outliers}
 - v_{xxxx}, \;  - (2-\beta c^2)v_{xxyy},  \;  - (1-\beta c^2)v_{yyyy}, \;  - \alpha \beta (v^2)_{xx}, \; - \alpha \beta (v^2)_{yy}
 \end{equation}
@@ -438,8 +449,78 @@ $$
 Така за големи стойности на $r$, пренебрегвайки частите с по-нисък порядък $O(r^{-6})$, остават два водещи члена:
 \begin{equation}\label{asymptEq}
 \beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) \approx \frac{1}{x^2 + y^2}, \quad x^2 + y^2 >>1,
+\end{equation} 
+взимайки предвид факта, че функцията $v(r)$ има асимптотика $O(r^{-2})$. Следният клас от функции се явява решение на уравнението:
+\begin{equation}\label{bndK}
+\tilde v(x,y) = \mu_v \frac{ (1-c^2)x^2 - y^2}{ ((1-c^2)x^2 - y^2)^2}, \quad x^2 + y^2 >> 1.
 \end{equation}
-взимайки предвид факта, че функцията $v(r)$ има асимптотика $O(r^{-2})$.
+\end{frame}
+
+%==================5======================================
+
+
+\begin{frame}
+\frametitle{Формулировка и числено решение на двумерното Парадигматично уравнение на Бусинеск}
+ 
+\begin{itemize}
+  \item дискретизация;
+  \item нулево гранично условие;
+  \item симетрично гранично условие по абцисата и ординатата при елиптичната задача;
+  \item квадратурни формули за пресмятане на двумерни интеграли;
+  \item бърз директен метод за обръщане на двумерния оператор на Лаплас.
+\end{itemize}
+
+\end{frame}
+
+%---------- frame 08 ----------------
+\begin{frame}
+\frametitle{Масата и енергията за непрекъснатата задача }
+\begin{itemize}
+\item {\footnotesize Christov C., An energy-consistent dispersive shallow-water model, Wave Motion;}
+\item {\footnotesize Todorov M., Nonlinear Waves: Theory, computer simulation, experiment, Two-dimensional Boussinesq equation. Boussinesq paradigm and soliton solutions.}
+\end{itemize}
+Масата:
+\begin{equation}\label{intM}
+M(u(x,y,t))=\int_{\RR^2} u(x,y,t)dx dy = const.
+\end{equation}
+
+Енергията:
+\begin{align}\label{ex-en}
+E(u(x,y,t)) = &\int_{R^2} u_t \left((A^{-1}+E)u_t\right) dxdy+
+\beta \int_{R^2} u^2 dxdy \nonumber\\
++& \int_{R^2}u \left(A u\right) dxdy
+-\frac{2 \alpha \beta}{3} \int_{R^2} u^3 dxdy =const.
+\end{align}
+където $Au=-\Delta u$ и $Au,-\Delta u$ и $u$ са непрекъснати функции.
+
+\end{frame}
+
+%------------------------- frame 14 -----------------------------------------
+
+\begin{frame}
+\frametitle{Метод на Тейлор и метод на правите за ПУБ}
+\begin{center}\vspace{0.25cm}
+	\begin{minipage}[b]{0.45\linewidth}
+		 \includegraphics[width=\linewidth]{../amitans/figures/FDS.png}
+	\end{minipage}	
+\end{center}
+Нека $u_{i,j}(t)$ е апроксимацията на $u(x_i, y_j, t)$ в точка от мрежата $(x_i, y_j)$.
+\\
+Нека $\Delta_{h,p} u_{i,j}$ е диференчния оператор, който апроксимира $\Delta u$ с грешкa $O(|h|^p)$ (p=2, 4, 6).
+\\
+%here99
+От  се получава следната система от ОДУ:
+\begin{equation}\label{DiscreteEq}
+\beta (I-\Delta_{h,p}) \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t)=
+ (\Delta_{h,p} - \Delta_{h,p}^2) u_{i, j}(t) + \Delta_{h,p} ( ( u_{i, j}(t) )^2 )
+\end{equation}
+за $i = 0..N_1$ и $j=0..N_2$. За всяко ОДУ от системата е направено развитие в ред на Тейлор:
+\begin{align} \label{TSe}
+u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_i, y_j, t)  + ... 
+%\nonumber
+%\\
+\frac{ \tau^p }{ p! } \frac{ \partial^p u }{ \partial t^p }(x_i, y_j, t) + O(\tau^{p+1})
+\end{align}
 
 \end{frame}
 
