@@ -189,6 +189,34 @@ classdef (ConstructOnLoad) BEDomainUtils
         [ zeroMatrix ] = YDerivativeCommonPart( this, M, zeroMatrix, mid, sizeFD );
 
     end
+	
+	function [ zeroMatrix ] = YDerivativeEvenFunOnly( this, M ) 
+
+        zeroMatrix = zeros( size( M ) );
+        %left boundary elements
+        mid = (this.order+2)/2;
+        sizeFD = size( this.mFiniteDiff, 2 ) - 1;
+        for j = 1:mid-1
+            zeroMatrix(:,j) =  M(:,1:mid-1+j)*this.mFiniteDiff(mid,mid+1-j:end)'  + M(:,2:mid+1-j)*this.mFiniteDiff(mid,mid+j:end)';
+        end
+        
+        %internal
+        for j=mid:size(M,2)-mid+1
+            zeroMatrix(:,j) = M(:,j-mid+1:j+mid-1)*this.mFiniteDiff(mid,:)';
+        end
+		
+		%right boundary elements
+        jfd = mid+1;
+        for j=size(M,2)-mid+2:size(M,2)
+            zeroMatrix(:,j) = M(:,end-sizeFD+1:end)*this.mFiniteDiff(jfd,2:end)';
+            jfd = jfd+1;
+        end
+		
+        jfd = mid+1;
+        for j=size(M,2)-mid+2:size(M,2)
+            zeroMatrix(:,j) =  M(:,1:mid-1+j)*this.mFiniteDiff(mid,mid+1-j:end)'  + M(:,2:mid+1-j)*this.mFiniteDiff(mid,mid+j:end)';
+        end
+    end
     
     function [ zeroMatrix ] = XDerivativeEvenFunZeroBnd( this, M ) 
 

@@ -183,9 +183,22 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
     [muU, muP]=FindBoundaryConstants(Uup,Pup,innerBoundaryUF,innerBoundaryPF,step);
     mu = struct('muU',{muU},'muP',{muP});
     
-    bigU = thetaVector(iterCounter)*transf2qD(U,x,y,zeroX,zeroY);    
-    domainUtils1Der = BEDomainUtils( x, y, length(derivative.first)-1, 1 );    
-    bigUTimeDerivative = -c * domainUtils1Der.YDerivativeZeroBnd(bigU)/h;
+	domainUtils1Der = BEDomainUtils( x, y, length(derivative.first)-1, 1 ); 
+	if( prmtrs.useZeroBoundary == 2 )
+	
+		bigU = thetaVector(iterCounter)*transf2qD(U,x,y,zeroX,zeroY);
+		   
+		bigUTimeDerivative = -c * domainUtils1Der.YDerivativeZeroBnd(bigU)/h;
+	elseif( prmtrs.useZeroBoundary == 3 )
+
+		RD = U(2:end,:);
+		RD = flipud(RD);
+		bigU = [RD; U];
+		
+		bigUTimeDerivative = -c * domainUtils1Der.YDerivativeEvenFunZeroBnd(bigU)/h;
+	end
+   
+
     
     [solutionNorms] = CalculateSolutionNorms(U,Uup,P,Pup,UvsUupInfNorm,crrntResidual,...
         residualInfNorm,muU*innerBoundaryUF,muP*innerBoundaryPF,subCounter,thetaVector(iterCounter),step,h);

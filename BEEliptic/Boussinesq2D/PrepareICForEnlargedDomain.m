@@ -9,25 +9,42 @@ function [bigU,bigUTimeDerivative,P,U,newBigIC,solutionNorms,theta,mu,tauVector,
     c12 = 1-c^2;
     if(prmtrs.useZeroBoundary > 0)
         mu.muU = 0;
-    end   
+    end
     newBigIC = mu.muU * lastTheta*(c12 * X.^2 - Y.^2)./(c12*X.^2 + Y.^2).^2;
     %newBigIC = c1*lastTheta*(c12^2* X.^4 - 6*c12 * X.^2 .* Y.^2 + Y.^4)./(c12*X.^2+Y.^2).^4;
     points = FindOldGrid(compBox.x_st,compBox.x_end,compBox.y_st,compBox.y_end,x,y);
     newBigIC(points(1):points(2),points(3):points(4)) = oldBigU;
 
-    NewIC = newBigIC(zeroX:end,zeroY:end);
-    thet = abs(NewIC(1,1));
-    NewIC = NewIC/thet;
-    quater = floor(length(compBox.x_end:prmtrs.h:compBox.x_end2));
-    PlotJunctionPoints(x,y,newBigIC, quater);
-
-    if(prmtrs.useZeroBoundary == 2)
+	if(prmtrs.useZeroBoundary == 2)
+		NewIC = newBigIC(zeroX:end,zeroY:end);
+		thet = abs(NewIC(1,1));
+		NewIC = NewIC/thet;
+		quater = floor(length(compBox.x_end:prmtrs.h:compBox.x_end2));
+		PlotJunctionPoints(x,y,newBigIC, quater);
+    
+        [bigU,bigUTimeDerivative,P,U,theta,mu,solutionNorms,tauVector,angl,sw_div] =...
+            sol_ch_v8ZeroBnd(NewIC,x,y,prmtrs,bt1,bt2,al,c,thet,derivative);
+    elseif(prmtrs.useZeroBoundary == 3)
+	
+		NewIC = newBigIC(zeroX:end,:);
+		thet = abs(newBigIC(zeroX,zeroY));
+		NewIC = NewIC/thet;
+		quater = floor(length(compBox.x_end:prmtrs.h:compBox.x_end2));
+		PlotJunctionPoints(x,y,newBigIC, quater);
+		
+		    figure(2)
+		mesh(x(zeroX:end),y,NewIC');
+		%mesh(x,y,newBigIC');
+		xlabel('x');ylabel('y');
+		title('Junction Points');
+		
         [bigU,bigUTimeDerivative,P,U,theta,mu,solutionNorms,tauVector,angl,sw_div] =...
             sol_ch_v8ZeroBnd(NewIC,x,y,prmtrs,bt1,bt2,al,c,thet,derivative);
     else
+
+        NewIC = newBigIC(zeroX:end,zeroY:end);
         [bigU,bigUTimeDerivative,P,U,theta,mu,solutionNorms,tauVector,angl,sw_div] =...
             sol_ch_v8(NewIC,x,y,prmtrs,bt1,bt2,al,c,thet,derivative);
     end
-    
        
 end
