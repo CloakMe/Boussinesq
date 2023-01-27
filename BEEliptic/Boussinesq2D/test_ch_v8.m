@@ -2,9 +2,9 @@
 addpath('..\..\Common');
 clear;clc;
 tic
-x_st = -12.0;    y_st = -12.0;
+x_st = -12.0;    y_st = -1.0;
 x_end = 12.0;    y_end = 12.0;
-x_st2 = -20.0;   y_st2 = -20.0;
+x_st2 = -20.0;   y_st2 = -1.0;
 x_end2 = 20.0;   y_end2 = 20.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
@@ -12,18 +12,18 @@ compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
 
 UseExtendedDomain=1;
 
-h = 0.5;
+h = 0.2;
 x=x_st2:h:x_end2; 
 y=y_st2:h:y_end2; 
 %tau = 0.00114425*8;% getTau(h,x_end,y_end)/20;
-tau = getTau(h,x_end,y_end)/20;
+tau = getTau(h,x_end,y_end)/50;
 
 sx = (length(x)+1)/2
 sy = (length(y)+1)/2
    
    al = -1;%99979 izb
-   bt1 = 3;bt2 = 1; bt = bt1/bt2;
-   c = 0.45;
+   bt1 = 1;bt2 = 1; bt = bt1/bt2;
+   c = 0.9;
    iterMax = 9000000;
    %eps = 1/max(y_end^6,((1-c^2)*x_end^2)^3);
    eps = 5.0e-06;%5.0e-09;
@@ -34,7 +34,7 @@ sy = (length(y)+1)/2
    % 0 -> use points (one, two, three for p=2,4,6 ) outside the domain with nonzero boundary function
    % 1 -> use points (one, two, three for p=2,4,6 ) outside the domain with zero boundary function
    % 2 -> use non-symetric finite differences without points outside the domain   
-   useZeroBoundary  = 0;
+   useZeroBoundary  = 3;
    plotResidual  = 0;
    plotBoundary  = 0;
    checkBoundary = 0;
