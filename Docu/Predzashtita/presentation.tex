@@ -87,6 +87,35 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 
 \end{frame}
 
+%==================7.2======================================
+\begin{frame}
+\frametitle{Основни числени инструменти}
+
+Матриците $\Delta_{h,2,s,x}$ и $\Delta_{h,2,s,y}$ при $p=2$
+\[
+\frac{1}{h^2}
+\begin{bmatrix}
+    -2	       & 2        &     \dots   &   \dots        & 0   \\
+    1               & -2            &   1           &   0               & \vdots    \\
+        0           & \ddots        &    \ddots    &   \ddots       &  0 \\ 
+    \vdots       &     0            &  1     	& -2    	   & 1 \\
+    0               & \dots          &  \dots         & 1  	   & -2 \\
+\end{bmatrix}
+\]
+
+Матриците $\Delta_{h,2,x}$ и $\Delta_{h,2,y}$ при $p=2$
+\[
+\frac{1}{h^2}
+\begin{bmatrix}
+    -2	       & 1        &     \dots   &   \dots        & 0   \\
+    1               & -2            &   1           &   0               & \vdots    \\
+        0           & \ddots        &    \ddots    &   \ddots       &  0 \\ 
+    \vdots       &     0            &  1     	& -2    	   & 1 \\
+    0               & \dots          &  \dots         & 1  	   & -2 \\
+\end{bmatrix}
+\]
+\end{frame}
+
 %==================55======================================
 
 \begin{frame}
@@ -160,64 +189,6 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U),
 \end{equation}
 \end{frame}
 
-
-%==================7.2======================================
-\begin{frame}
-\frametitle{Метод на простата итерация}
-\framesubtitle{Втори ред на апроксимация на вторите производни ($p=2$)}
-Матриците $\Delta_{h,2,s,x}$ и $\Delta_{h,2,s,y}$ при $p=2$
-\[
-\frac{1}{h^2}
-\begin{bmatrix}
-    -2	       & 2        &     \dots   &   \dots        & 0   \\
-    1               & -2            &   1           &   0               & \vdots    \\
-        0           & \ddots        &    \ddots    &   \ddots       &  0 \\ 
-    \vdots       &     0            &  1     	& -2    	   & 1 \\
-    0               & \dots          &  \dots         & 1  	   & -2 \\
-\end{bmatrix}
-\]
-\end{frame}
-
-%==================8======================================
-\begin{frame}
-\frametitle{Метод на простата итерация}
-\framesubtitle{Четвърти ред на апроксимация на вторите производни ($p=4$)}
-Матриците $\Delta_{h,4,s,x}$ и $\Delta_{h,4,s,y}$ при $p=4$
-\[
-\Delta_{h,4,s,x} = \frac{1}{h^2}
-\begin{bmatrix}
-     -\frac{5}{2}	& \frac{8}{3}       & -\frac{1}{6}	&    0     			&    \dots      	   &   0           & 0    \\
-    \frac{4}{3}          &-\frac{31}{12}    	& \frac{4}{3}	&   -\frac{1}{12}	  	&   \dots      	  &   0	           & \vdots  \\
-    -\frac{1}{12}	& \frac{4}{3}         	& -\frac{5}{2}	&  \frac{4}{3}    	 &   -\frac{1}{12}	  &      0           &\vdots    \\
-        0           		& \ddots        	&    \ddots   		 &   \ddots      	 &     \ddots      	  &  \ddots        &    0 \\	
-\\
-   \vdots      		 & 0           		 &  -\frac{1}{12}	& \frac{4}{3}    	& -\frac{5}{2}	&  \frac{4}{3}   &   -\frac{1}{12} \\
-    0      		 &  \dots           	 &   0     		& -\frac{1}{12} 	 & \frac{4}{3} 	 & -\frac{5}{2}  &  \frac{4}{3}\\
-    0              		 & \dots          	&  0              		 &\frac{1}{120} 	 &  -\frac{2}{15} 	& \frac{29}{20} & -\frac{38}{15}\\
-\end{bmatrix}
-\]
-\end{frame}
-
-%==================9======================================
-\begin{frame}
-\frametitle{Метод на простата итерация}
-\framesubtitle{Шести ред на апроксимация на вторите производни ($p=6$) }
-Матриците $\Delta_{h,6,s,x}$ и $\Delta_{h,6,s,y}$ при $p=6$
-\[
-\frac{1}{h^2}
-\begin{bmatrix}
-   -\frac{49}{18}		& \frac{3}{1}			&   -\frac{3}{10}		& \frac{1}{45}    		 &  0					& 0	   					&    0      	   	&   \dots           & 0    \\
-    \frac{3}{2}    	&-\frac{517}{180}    	&    \frac{68}{45}     & -\frac{3}{20}  	 		& \frac{1}{90} 		&  0					 &   0      	   	&   \dots	       & \vdots  \\
-    -\frac{3}{20}		& \frac{68}{45}         	& -\frac{49}{18} 	&  \frac{3}{2}		&  -\frac{3}{20}    	 &   \frac{1}{90}    	 &  0			&     \dots         &\vdots    \\
-    \frac{1}{90}		& -\frac{3}{20}		& \frac{3}{2}         	& -\frac{49}{18} 	&  \frac{3}{2}		&  -\frac{3}{20}    	 &   \frac{1}{90} &     \dots         &\vdots    \\
-        0           		& \ddots        		&         \ddots           	& \ddots        		&    \ddots   		&   \ddots      		 &     \ddots    	&  \ddots          &    0 \\	
-\\
-   \vdots      		&            		 	&    	0	      		& \frac{1}{90}		& -\frac{3}{20}		& \frac{3}{2}         	& -\frac{49}{18}	&  \frac{3}{2}  &  -\frac{3}{20} \\
-    0      			&              	 	&    0      		&   -\frac{11}{11340}	 	&    \frac{2}{105} 	&  -\frac{5}{28} 	& \frac{884}{567} &-\frac{235}{84} &  \frac{54}{35}\\
-    0              	& 	          		&    0              	&  -\frac{77}{13331}    		&  \frac{19}{420}&-\frac{1}{7}	 &  \frac{167}{1134} 	& \frac{191}{168}  &  -\frac{327}{140}\\
-\end{bmatrix}
-\]
-\end{frame}
 
 %==================13=====================================
 \begin{frame}
@@ -388,9 +359,9 @@ $\beta$	& c 	& $\|v^*-v \|_{L_2 }$ & $\|v^*-v \|_{L_\infty }$  	& $D^*_{L_2}$	& 
 \framesubtitle{Извод на ново асимптотично гранично условие}
 
 \begin{itemize}
-  \item  C.I. Christov,
+ {\footnotesize \item  C.I. Christov,
 Numerical implementation of the asymptotic boundary conditions for steadily propagating 2D solitons of Boussinesq type equations,
-{\it Mathematics and Computers in Simulation}, \textbf{82} (2012), 1079-1092.
+{\it Mathematics and Computers in Simulation}, \textbf{82} (2012), 1079-1092.}
 \begin{equation}
 v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r>>1
 \end{equation}
@@ -445,7 +416,8 @@ $$
 
 %==================24=====================================
 \begin{frame}
-\frametitle{Извод на ново гранично условие}
+\frametitle{Двумерното стационарно уравнение на Бусинеск}
+\framesubtitle{Извод на ново гранично условие}
 Така за големи стойности на $r$, пренебрегвайки частите с по-нисък порядък $O(r^{-6})$, остават два водещи члена:
 \begin{equation}\label{asymptEq}
 \beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) \approx \frac{1}{x^2 + y^2}, \quad x^2 + y^2 >>1,
@@ -463,11 +435,19 @@ $$
 \frametitle{Формулировка и числено решение на двумерното Парадигматично уравнение на Бусинеск}
  
 \begin{itemize}
-  \item дискретизация;
-  \item нулево гранично условие;
-  \item симетрично гранично условие по абцисата и ординатата при елиптичната задача;
-  \item квадратурни формули за пресмятане на двумерни интеграли;
-  \item бърз директен метод за обръщане на двумерния оператор на Лаплас.
+  \item смяна на променливите:
+$
+x = \sqrt{\beta_1} \bar{x}, \quad y = \sqrt{\beta_1} \bar{y}, \quad t = \sqrt{\beta_1} \bar{t};
+$
+  \item Консервативна схема;
+  \item метод на Тейлор в комбинация с метод на правите;
+  \item Числени резултати за двата метода:
+  \begin{itemize}
+	  \item ред на сходимост по правилото на Рунге;  
+	  \item сравнение между метода на Тейлор и Консервативната схема за енергията, масата и формата;
+	  \item резултати за формата и максимума при по-голям времеви интервал [0, 30].
+	\end{itemize}
+  \item Числен тест за хиперболичната задача при параметри $\beta = 3$ и $c=0.3$.
 \end{itemize}
 
 \end{frame}
