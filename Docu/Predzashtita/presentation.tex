@@ -198,31 +198,38 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 
 \begin{frame}
 \frametitle{Двумерното стационарно уравнение на Бусинеск}
-\framesubtitle{Метод на простата итерация} 
-\begin{itemize}
-  \item  {\footnotesize J. Choudhury, C.I. Christov,
-2D solitary waves of Boussinesq equation, in ISIS International Symposium on Interdisciplinary Science, Natchitoches, October 6-8, 2004, {\it APS Conference Proceedings 755}, Washington, DC, 85-90.}
-\end{itemize}
+\framesubtitle{Метод на простата итерация [J. Choudhury, C.I. Christov, 2004]} 
+ \begin{align}\label{eq3}
+&c^2 \beta (E_1- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2 v - \beta \Delta f(v)
+\end{align}
 Алгоритмични стъпки:
-\begin{itemize}
-  \item Въвеждат се две нови функции: $\widehat{v}=v/{\theta} $ и $\widehat{w}=w/{\theta} $, където $v(0,0)=\theta$
-\end{itemize}
-\begin{equation}\label{eq45}
-\begin{split}
+\begin{itemize} %две нови функции
+  \item Въвеждат се: $\widehat{v}=v/{\theta} $ и $\widehat{w}=w/{\theta} $, където $v(0,0)=\theta$
+%\end{itemize}
+\begin{align}\label{eq45}
+\small
  &- (1 - c^2 \beta) \widehat{v}_{yy} -\widehat{v}_{xx} + \beta (1-c^2) \widehat{v} - \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
  &- \Delta \widehat{w} =  c^2 \beta \widehat{v}_{xx}.
-\end{split}
-\end{equation}
-
-\begin{itemize}
-  \item Численото решение на системата \rf{eq45} се намира чрез метода на простата итерация като изкуствено се добавят производни по времето както следва:
-\end{itemize}
+\end{align}
+%Численото решение на системата \rf{eq45} се намира чрез метода на простата итерация като изкуствено се добавят производни по времето както следва:
+%\begin{itemize}
+  \item Изкуствено се добавят производни по времето:
+%\end{itemize}
 \begin{align}\label{eq5}
+\small
 \begin{split}
  &\frac {\partial \widehat{v}}{\partial t} - (1 - c^2 \beta) \widehat{v}_{yy} -\widehat{v}_{xx} + \beta (1-c^2) \widehat{v} - \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
  &\frac {\partial \widehat{w}}{\partial t} - \Delta \widehat{w} =  c^2 \beta \widehat{v}_{xx}. 
 \end{split}
 \end{align}
+%\begin{itemize}
+\item Стойността на $\theta$:
+%\end{itemize}
+\begin{equation}\label{eqtheta}
+\small
+\theta = \frac{ (1-c^2 \beta) \widehat{v}_{yy} + \widehat{v}_{xx} - \beta (1-c^2) \widehat{v} +\widehat{w}}{\alpha \beta \widehat{v}^2 } |_{x=0,y=0}.
+\end{equation}
+\end{itemize}
 %По този начин стационарната системата от двете уравнения \rf{eq45} се заменя с преходните във времето уравнения дефинирани в \rf{eq5} с условието, че решенията $\widehat{v}$ и $\widehat{w}$ схождат линейно спрямо времето към решенията на \rf{eq45}.
 
 
@@ -230,24 +237,24 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 \end{frame}
 
 
-%==================6======================================
-\begin{frame}
-\frametitle{Двумерното стационарно уравнение на Бусинеск}
-\framesubtitle{Метод на простата итерация} 
-Дискретизацията на последното уравнение \rf{eq5} води до следната явна схема:
-\begin{equation}\label{eq555}
-\begin{split}
-\frac {\widehat{v}^{(k+1)}-\widehat{v}^{(k)}}{\tau}- (1-c^2 \beta) \widehat{v}^{(k)}  (\Delta_{h,p,s,y})^T - \quad\quad\quad\;&\\
--\Delta_{h,p,s,x}  \widehat{v}^{(k)}+ \beta (1-c^2 ) \widehat{v}^{(k)} - \beta \theta f(\widehat{v}^{(k)}) &= \widehat{w}^{(k)}, \\
-\frac  {\widehat{w}^{(k+1)} -\widehat{w}^{(k)}} {\tau} - \Delta_{h,p,s,x}  \widehat{w}^{(k)} - \widehat{w}^{(k)}  (\Delta_{h,p,s,y})^T &=  c^2 \beta \Delta_{h,p,s,x}  \widehat{v}^{(k)}.
-\end{split}
-\end{equation}
-
-Стойността на $\theta$ се намира използвайки следната зависимост
-\begin{equation}\label{eqtheta}
-\theta = \frac{ (1-c^2 \beta) \widehat{v}_{yy} + \widehat{v}_{xx} - \beta (1-c^2) \widehat{v} +\widehat{w}}{\alpha \beta \widehat{v}^2 } |_{x=0,y=0}.
-\end{equation}
-\end{frame}
+%%==================6======================================
+%\begin{frame}
+%\frametitle{Двумерното стационарно уравнение на Бусинеск}
+%\framesubtitle{Метод на простата итерация} 
+%Дискретизацията на последното уравнение \rf{eq5} води до следната явна схема:
+%\begin{equation}\label{eq555}
+%\begin{split}
+%\frac {\widehat{v}^{(k+1)}-\widehat{v}^{(k)}}{\tau}- (1-c^2 \beta) \widehat{v}^{(k)}  (\Delta_{h,p,s,y})^T - \quad\quad\quad\;&\\
+%-\Delta_{h,p,s,x}  \widehat{v}^{(k)}+ \beta (1-c^2 ) \widehat{v}^{(k)} - \beta \theta f(\widehat{v}^{(k)}) &= \widehat{w}^{(k)}, \\
+%\frac  {\widehat{w}^{(k+1)} -\widehat{w}^{(k)}} {\tau} - \Delta_{h,p,s,x}  \widehat{w}^{(k)} - \widehat{w}^{(k)}  (\Delta_{h,p,s,y})^T &=  c^2 \beta \Delta_{h,p,s,x}  \widehat{v}^{(k)}.
+%\end{split}
+%\end{equation}
+%
+%Стойността на $\theta$ се намира използвайки следната зависимост
+%\begin{equation}\label{eqtheta}
+%\theta = \frac{ (1-c^2 \beta) \widehat{v}_{yy} + \widehat{v}_{xx} - \beta (1-c^2) \widehat{v} +\widehat{w}}{\alpha \beta \widehat{v}^2 } |_{x=0,y=0}.
+%\end{equation}
+%\end{frame}
 
 
 %==================13=====================================
@@ -284,37 +291,37 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 
 
 %==================14=====================================
-%\begin{frame}
-%\frametitle{Двумерното стационарно уравнение на Бусинеск}
-%\framesubtitle{Ред на сходимост при Тест 2 - $\beta = 1$, $c=0.9$}
-%
-%\begin{table}[ht]
-%\centering
-%		\begin{tabular}{||c|l|ll|ll||}
-%			\hline
-%			\hline
-%             & $h$  &  	$\Vert \bar{ E_i} \Vert_{L_2}$ 	& сход.	& $\Vert \bar{ E_i}\Vert_{L_\infty}$  		&сход.   \\
-%   					\hline 					
-%			\hline 	
-%$\beta = 1$   	&0.4   &             &           &                & \\
-%     $c=0.9$     &0.2   &  0.043898  &             & 0.017906      &    \\
-%     $O(h^2)$	&0.1  & 0.009999 & 2.13       & 0.004348      & 2.04  \\
-%\hline 	
-% $\beta = 1$   	&0.4  &            &               &               &     \\
-%     $c=0.9$  	&0.2   & 0.006309  &              & 0.002965      &        \\
-%     $O(h^4)$	&0.1  &  0.000432 &3.87        & 0.000200 &  3.89        \\
-%    \hline
-% $\beta = 1$	&0.4   &             &        &               &        \\
-%   $ c=0.9$  	&0.2   &  0.001423  &        & 0.000728      &       \\
-%       $O(h^6)$	&0.1  &   0.000121 &3.56  & 0.000015 &   5.57       \\
-%	   \hline
-%			\hline 
-%		\end{tabular}
-%		\caption{Ред на сходимост при Метода на простата итерация с апроксимации $O(h^{2})$, $O(h^{4})$ и $O(h^{6})$ и Тест 2. Грешките $\bar{ E_i}$ са пресметнати в $L_2$ и $L_\infty$ норми.}
-%\label{tab:aB}
-%\end{table}
-%
-%\end{frame}
+\begin{frame}
+\frametitle{Двумерното стационарно уравнение на Бусинеск}
+\framesubtitle{Ред на сходимост при $\beta = 1$, $c=0.9$}
+
+\begin{table}[ht]
+\centering
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+             & $h$  &  	$\Vert \bar{ E_i} \Vert_{L_2}$ 	& сход.	& $\Vert \bar{ E_i}\Vert_{L_\infty}$  		&сход.   \\
+   					\hline 					
+			\hline 	
+$\beta = 1$   	&0.4   &             &           &                & \\
+     $c=0.9$     &0.2   &  0.043898  &             & 0.017906      &    \\
+     $O(h^2)$	&0.1  & 0.009999 & 2.13       & 0.004348      & 2.04  \\
+\hline 	
+ $\beta = 1$   	&0.4  &            &               &               &     \\
+     $c=0.9$  	&0.2   & 0.006309  &              & 0.002965      &        \\
+     $O(h^4)$	&0.1  &  0.000432 &3.87        & 0.000200 &  3.89        \\
+    \hline
+ $\beta = 1$	&0.4   &             &        &               &        \\
+   $ c=0.9$  	&0.2   &  0.000088  &        & 0.000115      &       \\
+       $O(h^6)$	&0.1  &   0.000002 &5.35  & 0.000003 &   5.04       \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Ред на сходимост при Метода на простата итерация с апроксимации $O(h^{2})$, $O(h^{4})$ и $O(h^{6})$ и Тест 2. Грешките $\bar{ E_i}$ са пресметнати в $L_2$ и $L_\infty$ норми.}
+\label{tab:aB}
+\end{table}
+
+\end{frame}
 
 %==================16=====================================
 \begin{frame}
@@ -450,30 +457,51 @@ v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r>>1
 \begin{frame}
 \frametitle{Двумерното стационарно уравнение на Бусинеск}
 \framesubtitle{Асимптотично поведение на членовете в уравнението}
-Фигурата в предишната част показват, че асимптотиката на членовете с производни от четвърти ред и нелинейните такива с производни от втори ред
-\begin{equation}\label{outliers}
-- v_{xxxx}, \;  - (2-\beta c^2)v_{xxyy},  \;  - (1-\beta c^2)v_{yyyy}, \;  - \alpha \beta (v^2)_{xx}, \; - \alpha \beta (v^2)_{yy}
-\end{equation}
-e $O(r^{-6})$, а за останалите от втори ред
-$$
-\beta v_{xx}, \; \beta (1-c^2) v_{yy}
-$$
-асимптотиката е $O(r^{-4})$. Това дава основание да пренебрегнем членовете описани в \rf{outliers} от стационарното уравнение и да търсим точно решение на останалата част.
+
+Елиптично уравнение на Бусинеск:
+\begin{align}\label{outliers}
+- v_{xxxx}  - (2-\beta c^2)&v_{xxyy}  - (1-\beta c^2)v_{yyyy} - \alpha \beta (v^2)_{xx} - \alpha \beta (v^2)_{yy} \nonumber \\
+&+\beta v_{xx} + \beta (1-c^2) v_{yy} = 0
+\end{align}
+Пренебрегваме членовете с $O(r^{-6})$ асимптотика:
+\begin{equation}\label{asymptEq}
+\beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) \approx \frac{1}{x^2 + y^2}, \quad x^2 + y^2 >>1.
+\end{equation} 
 \end{frame}
 
+%==================23=====================================
+%\begin{frame}
+%\frametitle{Двумерното стационарно уравнение на Бусинеск}
+%\framesubtitle{Асимптотично поведение на членовете в уравнението}
+%
+%Членовете с производни от четвърти ред и нелинейните такива с производни от втори ред
+%\begin{equation}\label{outliers}
+%- v_{xxxx}, \;  - (2-\beta c^2)v_{xxyy},  \;  - (1-\beta c^2)v_{yyyy}, \;  - \alpha \beta (v^2)_{xx}, \; - \alpha \beta (v^2)_{yy}
+%\end{equation}
+%e $O(r^{-6})$, а за останалите от втори ред
+%$$
+%\beta v_{xx}, \; \beta (1-c^2) v_{yy}
+%$$
+%асимптотиката е $O(r^{-4})$. 
+%
+%\begin{equation}\label{asymptEq}
+%\beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) \approx \frac{1}{x^2 + y^2}, \quad x^2 + y^2 >>1,
+%\end{equation} 
+%\end{frame}
+
 %==================24=====================================
-\begin{frame}
-\frametitle{Двумерното стационарно уравнение на Бусинеск}
-\framesubtitle{Извод на ново гранично условие}
-Така за големи стойности на $r$, пренебрегвайки частите с по-нисък порядък $O(r^{-6})$, остават два водещи члена:
-\begin{equation}\label{asymptEq}
-\beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) \approx \frac{1}{x^2 + y^2}, \quad x^2 + y^2 >>1,
-\end{equation} 
-взимайки предвид факта, че функцията $v(r)$ има асимптотика $O(r^{-2})$. Следният клас от функции се явява решение на уравнението:
-\begin{equation}\label{bndK}
-\tilde v(x,y) = \mu_v \frac{ (1-c^2)x^2 - y^2}{ ((1-c^2)x^2 - y^2)^2}, \quad x^2 + y^2 >> 1.
-\end{equation}
-\end{frame}
+%\begin{frame}
+%\frametitle{Двумерното стационарно уравнение на Бусинеск}
+%\framesubtitle{Извод на ново гранично условие}
+%Така за големи стойности на $r$, пренебрегвайки частите с по-нисък порядък $O(r^{-6})$, остават два водещи члена:
+%\begin{equation}\label{asymptEq}
+%\beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) \approx \frac{1}{x^2 + y^2}, \quad x^2 + y^2 >>1,
+%\end{equation} 
+%взимайки предвид факта, че функцията $v(r)$ има асимптотика $O(r^{-2})$. Следният клас от функции се явява решение на уравнението:
+%\begin{equation}\label{bndK}
+%\tilde v(x,y) = \mu_v \frac{ (1-c^2)x^2 - y^2}{ ((1-c^2)x^2 - y^2)^2}, \quad x^2 + y^2 >> 1.
+%\end{equation}
+%\end{frame}
 
 %==================5======================================
 
@@ -492,6 +520,7 @@ $
   \begin{itemize}
 	  \item ред на сходимост по правилото на Рунге;  
 	  \item сравнение между метода на Тейлор и Консервативната схема за енергията, масата и формата;
+	  \item изследване на масата върху по-големи области;
 	  \item резултати за формата и максимума при по-голям времеви интервал [0, 30].
 	\end{itemize}
   \item Числен тест за хиперболичната задача при параметри $\beta = 3$ и $c=0.3$.
@@ -504,8 +533,7 @@ $
 \frametitle{Двумерното Парадигматично уравнение на Бусинеск}
 \framesubtitle{Масата и енергията за непрекъснатата задача }
 \begin{itemize}
-\item {\footnotesize Christov C., An energy-consistent dispersive shallow-water model, Wave Motion;}
-\item {\footnotesize Todorov M., Nonlinear Waves: Theory, computer simulation, experiment, Two-dimensional Boussinesq equation. Boussinesq paradigm and soliton solutions.}
+\item {\footnotesize Christov C., An energy-consistent dispersive shallow-water model;}
 \end{itemize}
 Масата:
 \begin{equation}\label{intM}
@@ -514,13 +542,26 @@ M(u(x,y,t))=\int_{\RR^2} u(x,y,t)dx dy = const.
 
 Енергията:
 \begin{align}\label{ex-en}
-E(u(x,y,t)) = &\int_{R^2} u_t \left((A^{-1}+E)u_t\right) dxdy+
+E(u(x,y,t)) = &\int_{R^2} u_t \left((-\Delta^{-1}+E)u_t\right) dxdy+
 \beta \int_{R^2} u^2 dxdy \nonumber\\
-+& \int_{R^2}u \left(A u\right) dxdy
+-& \int_{R^2}u \left(\Delta u\right) dxdy
 -\frac{2 \alpha \beta}{3} \int_{R^2} u^3 dxdy =const.
 \end{align}
-където $Au=-\Delta u$ и $Au,-\Delta u$ и $u$ са непрекъснати функции.
 
+\end{frame}
+
+%---------------------------- frame 15 --------------------------------------
+\begin{frame}
+\frametitle{Двумерното Парадигматично уравнение на Бусинеск}
+\framesubtitle{Консервативна схема}
+\begin{equation}\label{consFDS}
+\beta (E_1-\Delta_h)\frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} = (\Delta_h - \Delta_h^2)u^{(k)}_{i,j} + \Delta_h(g(u^{(k)}_{i,j})),
+\end{equation}
+където:
+\begin{align}
+g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(k-1)}_{i,j})(u^{(k+1)}_{i,j}) + (u^{(k-1)}_{i,j})^2 \right) + \nonumber\\
++&\frac{ (\beta - 1 )}{ 2 }\left( u^{(k+1)}_{i,j} + u^{(k-1)}_{i,j} \right).
+\end{align}
 \end{frame}
 
 %------------------------- frame 14 -----------------------------------------
@@ -552,7 +593,6 @@ u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_
 \end{align}
 
 \end{frame}
-
 
 %---------------------------- frame 15 --------------------------------------
 
