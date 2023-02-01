@@ -554,6 +554,11 @@ E(u(x,y,t)) = &\int_{R^2} u_t \left((-\Delta^{-1}+E)u_t\right) dxdy+
 \begin{frame}
 \frametitle{Двумерното Парадигматично уравнение на Бусинеск}
 \framesubtitle{Консервативна схема}
+\begin{itemize}
+\footnotesize
+\item Kolkovksa, N., Dimova, M., {\it Cent. Eur. J. Math.}, 2012
+\end{itemize}
+
 \begin{equation}\label{consFDS}
 \beta (E_1-\Delta_h)\frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} = (\Delta_h - \Delta_h^2)u^{(k)}_{i,j} + \Delta_h(g(u^{(k)}_{i,j})),
 \end{equation}
@@ -690,7 +695,23 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 \end{table}
 
 \end{frame}
+%------------------------------ frame 19 ------------------------------------
 
+\begin{frame}
+\frametitle{Двумерното Парадигматично уравнение на Бусинеск}
+\framesubtitle{Дискретна енергия - сравнение между метода на Тейлор и Консервативната схема}
+
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.49\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt3_c045_h005.png}
+	\end{minipage}	
+	\begin{minipage}[b]{0.49\linewidth}
+		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt1_c090_h010.png}
+		
+	\end{minipage}
+\end{center}
+Дискретната енергия като функция на времето до $T = 10$ при Тест 1 (ляво) и Тест 2 (дясно) и апроксимация $O(|h|^2 + \tau^2)$.
+\end{frame}
 %---------------------------------- frame 18 --------------------------------
 
 \begin{frame}
@@ -727,23 +748,6 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 Масата при апроксимация $O(|h|^6 + \tau^6)$ и време $T = 10$ върху три вложени области. Левия панел е при $\beta=3$, $c = 0.45$, а десния при $\beta=1$, $c = 0.9$.
 \end{frame}
 
-%------------------------------ frame 19 ------------------------------------
-
-\begin{frame}
-\frametitle{Двумерното Парадигматично уравнение на Бусинеск}
-\framesubtitle{Дискретна енергия - сравнение между метода на Тейлор и Консервативната схема}
-
-\begin{center}\vspace{0.4cm}
-	\begin{minipage}[b]{0.49\linewidth}
-		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt3_c045_h005.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.49\linewidth}
-		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt1_c090_h010.png}
-		
-	\end{minipage}
-\end{center}
-Дискретната енергия като функция на времето до $T = 10$ при Тест 1 (ляво) и Тест 2 (дясно) и апроксимация $O(|h|^2 + \tau^2)$.
-\end{frame}
 
 %---------------------------------- frame 20 --------------------------------
 
