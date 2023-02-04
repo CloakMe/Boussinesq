@@ -3,7 +3,7 @@
 \usepackage[bulgarian]{babel}
 \usepackage{amsfonts,amsmath}
 \usepackage{lmodern}
-\usepackage[notref,notcite]{showkeys}
+%\usepackage[notref,notcite]{showkeys}
 \usepackage{graphicx}
 \usepackage{wrapfig}
 \usepackage{multirow}
@@ -51,10 +51,10 @@
 \begin{frame}
 \frametitle{ Двумерното $(x,y) \in \RR^2$ парадигматично уравнение на Бусинеск }
 \begin{align}
-&u_{tt} - \Delta u -\beta_1  \Delta u_{tt} +\beta_2 \Delta ^2 u + \Delta f(u)=0, \, t\in\RR^+,\label{eq1}
+&u_{tt} - \Delta u -\beta_1  \Delta u_{tt} +\beta_2 \Delta ^2 u +\alpha \Delta f(u)=0, \, t\in\RR^+,\label{eq1}
 \\
-&f(u) = u^2 \nonumber \\  \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)  , 
-\\  &u(x,y) \rightarrow 0, \,  \Delta u(x,y) \rightarrow 0 ,  \quad \text{при} \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11} 
+&f(u) =  u^2 \nonumber \\  \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)  , 
+\\  &u(x,y) \rightarrow 0, \,  \Delta u(x,y) \rightarrow 0 ,  \text {при } \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11} 
 \end{align}
 \begin{itemize}
   \item Извеждане на {\color{red}стационарно} уравнение чрез полагането $U(x,y-ct)=u(x,y,t)$ в \rf{eq1}
@@ -70,13 +70,13 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U)
 \begin{frame}
 \frametitle{ Едномерното парадигматично уравнение на Бусинеск }
 \begin{align}
-&u_{tt} - u_{xx} -\beta_1  u_{ttxx} +\beta_2 u_{xxxx} + f(u)_{xx}=0   \quad \text{при} \,  x \in \RR, \, t\in\RR^+,\label{eq1D}
-\\ \nonumber &u(x,0)=u_0(x), \, u_t(x,0)=u_1(x)   \quad\text{при} \, x \in \RR,
-\\  &u(x) \rightarrow 0,  u(x)_{xx} \rightarrow 0 ,  \quad \text{при} \, x \rightarrow \infty, \label{eq1d1}
+&u_{tt} - u_{xx} -\beta_1  u_{ttxx} +\beta_2 u_{xxxx} + \alpha f(u)_{xx}=0   \text{ при } x \in \RR, \, t\in\RR^+,\label{eq1D}
+\\ \nonumber &u(x,0)=u_0(x), \, u_t(x,0)=u_1(x)   \text{ при } x \in \RR,
+\\  &u(x) \rightarrow 0,  u(x)_{xx} \rightarrow 0  \text{ при } x \rightarrow \infty, \label{eq1d1}
 \end{align}
 Точно решение от тип солитон при $u =\tilde u(x-ct)$:
 \begin{align}
-\tilde u(x,t:c) = \frac{3}{2} \frac{c^2-1}{\alpha}sech^2 \left( \frac{1}{2}  \sqrt{ \frac{\beta_1 (c^2-1)}{\beta_1 c^2-\beta_2}} (x-c t \sqrt{\frac{\beta_1}{\beta_2}} ) \right)
+\tilde u(x,t:c) = \frac{3}{2} \frac{c^2-1}{\alpha}\text{sech}^2 \left( \frac{1}{2}  \sqrt{ \frac{\beta_1 (c^2-1)}{\beta_1 c^2-\beta_2}} (x-c t \sqrt{\frac{\beta_1}{\beta_2}} ) \right)
 \end{align}
 Солитон е бягаща със скорост $c$ вълна от вида $\phi(x-ct)$, която е локализирана в пространството и при движение запазва формата си. Структурата ѝ се запазва дори след взаимодействие с друг(и) солитон(и).
 \end{frame}
@@ -94,10 +94,10 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
   \item 2011, Chertok, A., Christov, C.I., Kurganov, A., Central-Upwind Schemes for the BPEs,
 {\it Computational Science and High Performance Computing IV},
 
-  \item 2012, Kolkovska, N., Angelow K., A Multicomponent Alternating Direction Method for Numerical Solving of Boussinesq Paradigm Equation, {\it In:  I. Dimov, I., Farago, I., Vulkov, L. (eds.) NAA},
-  
   \item 2013, Dimova M., Vasileva D., Comparison of Two Numerical Approaches to Boussinesq Paradigm Equation,  {\it Lect. Notes Comput. Sci.}, 
-  
+
+  \item 2013, Kolkovska, N., Angelow K., A Multicomponent Alternating Direction Method for Numerical Solving of Boussinesq Paradigm Equation, {\it In:  I. Dimov, I., Farago, I., Vulkov, L. (eds.) NAA},
+    
   \item 2022, Yuyu He, Hongtao Chen, Efficient algorithm and convergence analysis of conservative SAV compact difference scheme for Boussinesq Paradigm equation, {\it Computers and Mathematics with Applications}
 \end{itemize}
 
@@ -110,8 +110,8 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 {%\footnotesize
  \item построяване на диференчни схеми с висок ред на апроксимация (втори, четвърти и шести) върху равномерна мрежа за решаването на двумерните стационарно и хиперболично уравнения на Бусинеск;
   \item изследване на измененията в свойствата (енергията, масата, максимума и формата) на численото решение в зависимост от реда на апроксимация;
-  \item сравнение между численото решение, получено за елиптичната задача, с шести ред на апроксимация, и ``best-fit'' формулите от Пертурбационното решение на проф. Христов;
-  %\item построяване на ново асимптотично гранично условие за решаването на елиптичната задача;
+ % \item сравнение между численото решение, получено за елиптичната задача, с шести ред на апроксимация, и ``best-fit'' формулите от Пертурбационното решение на проф. Христов;
+  \item построяване на ново асимптотично гранично условие за решаването на елиптичната задача;
   %\item изследване на числените решения на хиперболичното уравнение \rf{eq1} при по-високи скорости $c$ близки до допустимия максимум $c \approx \min (\sqrt{\beta_2}/ \sqrt{\beta_1},1)$, $c < \min (\sqrt{\beta_2}/ \sqrt{\beta_1},1)$ с начално условие, получено от численото решение на елиптичната задача;
   %\item сравнение между числените резултати, получени с метода на Тейлор и други известни в литературата решения, използващи консервативни схеми с втори ред на апроксимация на вторите производни за хиперболичната задача.
   }
@@ -126,30 +126,12 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
   %\item построяване на диференчни схеми с висок ред на апроксимация (втори, четвърти и шести) върху равномерна мрежа за решаването на двумерните стационарно и хиперболично уравнения на Бусинеск;
   %\item изследване на измененията в свойствата (енергията, масата, максимума и формата) на численото решение в зависимост от реда на апроксимация;
   %\item сравнение между численото решение, получено за елиптичната задача, с шести ред на апроксимация, и ``best-fit'' формулите от Пертурбационното решение на проф. Христов;
-  \item построяване на ново асимптотично гранично условие за решаването на елиптичната задача;
-  \item изследване на числените решения на хиперболичното уравнение \rf{eq1} при по-високи скорости $c$ близки до допустимия максимум $c \approx \min (\sqrt{\beta_2}/ \sqrt{\beta_1},1)$, $c < \min (\sqrt{\beta_2}/ \sqrt{\beta_1},1)$ с начално условие, получено от численото решение на елиптичната задача;
+  %\item построяване на ново асимптотично гранично условие за решаването на елиптичната задача;
+  \item изследване на числените решения на хиперболичното уравнение \rf{eq1} при по-високи скорости $c$ близки до допустимия максимум $c^2 \approx \min ({\beta_2}/ {\beta_1},1)$, $c^2 < \min ({\beta_2}/ {\beta_1},1)$ с начално условие, получено от численото решение на елиптичната задача;
   \item сравнение между числените резултати, получени с метода на Тейлор и други известни в литературата решения, използващи консервативни схеми с втори ред на апроксимация на вторите производни за хиперболичната задача.
   }
 \end{itemize}
 \end{frame}
-
-
-%---------- frame 05 ----------------
-
-\begin{frame}
-\frametitle{Публикации}
-
-Резултатите от численото решение на двумерните стационарно и хиперболични уравнения на Бусинеск са
-публикувани в
-\begin{itemize}
-  \item N. Kolkovska, K. Angelow, Numerical computation of the critical energy constant for two dimensional Boussinesq equations, {\it Appl. of Mathematics in Technical and Natural Sciences}, 1684 (2015), SJR
-  \item K. Angelow, N. Kolkovska, Numerical Study of Traveling Wave Solutions to 2D BE, {\it Serdica Journal of Computing}, 13 (2019), 1-16
-  \item K. Angelow, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, {\it International Journal of Applied Mathematics}, 32 (2019), 141-154, SJR
-   \item K. Angelow, Comparison Between Two Numerical Methods for Solution of 2D BPE, {\it AIP Conference Proceedings}, 2522 (2022), 1, SJR
-\end{itemize}
-
-\end{frame}
-
 
 %==================55======================================
 \begin{frame}
@@ -194,23 +176,23 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 \]
 \end{frame}
 
-%==================55======================================
-
-\begin{frame}
-\frametitle{Формулировка и числено решение на двумерното стационарно уравнение на Бусинеск - Метод на простата итерация}
-\begin{itemize}
-  \item Метод на простата итерация - характеристики:
-	\begin{itemize}
-	% \item смяна на променливите: $x = \sqrt{\beta_1} \bar{x}, \quad y = \sqrt{\beta_1} \bar{y}$;
-	  \item начални данни;
-	  \item адаптивен метод за контрол на стъпката по времето;
-	  \item стоп критерий за итерационната процедура;
-	\end{itemize}
-  \item Числени резултати;
-  \item Сравнение с ``best-fit'' формулите;
-  \item Извод на ново асимптотично гранично условие.
-\end{itemize}
-\end{frame}
+%%==================55======================================
+%
+%\begin{frame}
+%\frametitle{Формулировка и числено решение на двумерното стационарно уравнение на Бусинеск - Метод на простата итерация}
+%\begin{itemize}
+%  \item Метод на простата итерация - характеристики:
+%	\begin{itemize}
+%	% \item смяна на променливите: $x = \sqrt{\beta_1} \bar{x}, \quad y = \sqrt{\beta_1} \bar{y}$;
+%	  \item начални данни;
+%	  \item адаптивен метод за контрол на стъпката по времето;
+%	  \item стоп критерий за итерационната процедура;
+%	\end{itemize}
+%  \item Числени резултати;
+%  \item Сравнение с ``best-fit'' формулите;
+%  \item Извод на ново асимптотично гранично условие.
+%\end{itemize}
+%\end{frame}
 
 %==================5======================================
 
@@ -218,14 +200,12 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 \frametitle{Двумерното стационарно уравнение на Бусинеск}
 \framesubtitle{Метод на простата итерация [J. Choudhury, C.I. Christov, 2004]} 
  \begin{align}\label{eq3}
-&c^2 \beta (E_1- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2 v - \beta \Delta f(v)
+&c^2 \beta (E_1- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2 v - \beta \Delta f(v), \quad \beta = \frac{\beta_1}{\beta_2}
 \end{align}
 Алгоритмични стъпки:
 \begin{itemize} %две нови функции
   \item Въвеждат се: $\widehat{v}=v/{\theta} $ и $\widehat{w}=w/{\theta} $, където $v(0,0)=\theta$
-%\end{itemize}
 \begin{align}\label{eq45}
-\small
  &- (1 - c^2 \beta) \widehat{v}_{yy} -\widehat{v}_{xx} + \beta (1-c^2) \widehat{v} - \alpha \beta \theta \widehat{v}^2 = \widehat{w}, \\
  &- \Delta \widehat{w} =  c^2 \beta \widehat{v}_{xx}.
 \end{align}
@@ -444,18 +424,24 @@ $\beta = 1$   	&0.4   &             &           &                & \\
 \framesubtitle{Извод на ново асимптотично гранично условие}
 
 \begin{itemize}
- {\footnotesize \item  C.I. Christov,
-Numerical implementation of the asymptotic boundary conditions for steadily propagating 2D solitons of Boussinesq type equations,
-{\it Mathematics and Computers in Simulation}, \textbf{82} (2012), 1079-1092.}
+ {\footnotesize \item  C.I. Christov,{\it Mathematics and Computers in Simulation}, 2012.}
 \begin{equation}
-v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r>>1
+v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r\gg1
+\end{equation}
+\item стационарно уравнение на Бусинеск:
+\begin{align}\label{outliers}
+- v_{xxxx}  - (2-\beta c^2)&v_{xxyy}  - (1-\beta c^2)v_{yyyy} - \alpha \beta (v^2)_{xx} - \alpha \beta (v^2)_{yy} \nonumber \\
+&+\beta v_{xx} + \beta (1-c^2) v_{yy} = 0
+\end{align}
+ \item членовете с $O(r^{-6})$ асимптотика са пренебрегнати:
+\begin{equation}\label{asymptEq}
+\beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) \approx \frac{1}{x^2 + y^2}, \quad x^2 + y^2 \gg 1.
 \end{equation}
   \item ново асимптотично гранично условие
 \begin{equation}\label{bndK}
-\tilde v(x,y) = \mu_v \frac{ (1-c^2)x^2 - y^2}{ ((1-c^2)x^2 - y^2)^2}, \quad x^2 + y^2 >> 1.
+\tilde v(x,y) = \mu_v \frac{ (1-c^2)x^2 - y^2}{ ((1-c^2)x^2 - y^2)^2}, \quad x^2 + y^2 \gg 1.
 \end{equation}
 \end{itemize}
- 
 
 \end{frame}
 
@@ -464,27 +450,11 @@ v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r>>1
 \frametitle{Двумерното стационарно уравнение на Бусинеск}
 \framesubtitle{Асимптотично поведение на членовете в уравнението}
 \begin{figure}
-	\includegraphics[width=0.8\linewidth]{../Thesis/AssymptForEachTerm/c017_bt1_5/ChristovIC_AlongX_50_ZB2_bt1_c017_h020_O(h^6).png}
+	\includegraphics[width=0.8\linewidth]{../Thesis/AssymptForEachTerm/c017_bt1_5/ChristovIC_AlongY_50_ZB2_bt1_c017_h020_O(h^6).png}
 	\caption{Решението е получено с ``Метода на простата итерация'' и нулево гранично условие, $\boldsymbol{c=0.17}$ и $\boldsymbol{\beta = 1}$. }
 	\label{fig:assympt_c017bt11}
 \end{figure}
 
-\end{frame}
-
-%==================23=====================================
-\begin{frame}
-\frametitle{Двумерното стационарно уравнение на Бусинеск}
-\framesubtitle{Асимптотично поведение на членовете в уравнението}
-
-Елиптично уравнение на Бусинеск:
-\begin{align}\label{outliers}
-- v_{xxxx}  - (2-\beta c^2)&v_{xxyy}  - (1-\beta c^2)v_{yyyy} - \alpha \beta (v^2)_{xx} - \alpha \beta (v^2)_{yy} \nonumber \\
-&+\beta v_{xx} + \beta (1-c^2) v_{yy} = 0
-\end{align}
-Пренебрегваме членовете с $O(r^{-6})$ асимптотика:
-\begin{equation}\label{asymptEq}
-\beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) \approx \frac{1}{x^2 + y^2}, \quad x^2 + y^2 >>1.
-\end{equation} 
 \end{frame}
 
 %==================23=====================================
@@ -503,7 +473,7 @@ v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r>>1
 %асимптотиката е $O(r^{-4})$. 
 %
 %\begin{equation}\label{asymptEq}
-%\beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) \approx \frac{1}{x^2 + y^2}, \quad x^2 + y^2 >>1,
+%\beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) \approx \frac{1}{x^2 + y^2}, \quad x^2 + y^2 \gg1,
 %\end{equation} 
 %\end{frame}
 
@@ -513,11 +483,11 @@ v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r>>1
 %\framesubtitle{Извод на ново гранично условие}
 %Така за големи стойности на $r$, пренебрегвайки частите с по-нисък порядък $O(r^{-6})$, остават два водещи члена:
 %\begin{equation}\label{asymptEq}
-%\beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) \approx \frac{1}{x^2 + y^2}, \quad x^2 + y^2 >>1,
+%\beta \tilde v_{xx} + \beta (1-c^2) \tilde v_{yy} =0, \quad \tilde v(x,y) \approx \frac{1}{x^2 + y^2}, \quad x^2 + y^2 \gg1,
 %\end{equation} 
 %взимайки предвид факта, че функцията $v(r)$ има асимптотика $O(r^{-2})$. Следният клас от функции се явява решение на уравнението:
 %\begin{equation}\label{bndK}
-%\tilde v(x,y) = \mu_v \frac{ (1-c^2)x^2 - y^2}{ ((1-c^2)x^2 - y^2)^2}, \quad x^2 + y^2 >> 1.
+%\tilde v(x,y) = \mu_v \frac{ (1-c^2)x^2 - y^2}{ ((1-c^2)x^2 - y^2)^2}, \quad x^2 + y^2 \gg 1.
 %\end{equation}
 %\end{frame}
 
@@ -551,7 +521,7 @@ $
 \frametitle{Двумерното Парадигматично уравнение на Бусинеск}
 \framesubtitle{Масата и енергията за непрекъснатата задача }
 \begin{itemize}
-\item {\footnotesize Christov C., An energy-consistent dispersive shallow-water model;}
+\item {\footnotesize Christov C., An energy-consistent dispersive shallow-water model.}
 \end{itemize}
 Масата:
 \begin{equation}\label{intM}
@@ -560,7 +530,7 @@ M(u(x,y,t))=\int_{\RR^2} u(x,y,t)dx dy = const.
 
 Енергията:
 \begin{align}\label{ex-en}
-E(u(x,y,t)) = &\int_{R^2} u_t \left((-\Delta^{-1}+E)u_t\right) dxdy+
+E(u(x,y,t)) = &\int_{R^2} u_t \left(((-\Delta)^{-1}+E)u_t\right) dxdy+
 \beta \int_{R^2} u^2 dxdy \nonumber\\
 -& \int_{R^2}u \left(\Delta u\right) dxdy
 -\frac{2 \alpha \beta}{3} \int_{R^2} u^3 dxdy =const.
@@ -609,6 +579,7 @@ g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(
 \end{equation}
 за $i = 0..N_1$ и $j=0..N_2$. За всяко ОДУ от системата е направено развитие в ред на Тейлор:
 \begin{align} \label{TSe}
+\small
 u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_i, y_j, t)  + ... 
 %\nonumber
 %\\
@@ -721,10 +692,10 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 
 \begin{center}\vspace{0.4cm}
 	\begin{minipage}[b]{0.49\linewidth}
-		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt3_c045_h005.png}
+		\includegraphics[width=\linewidth]{Energy_bt3_c045_h005.png}
 	\end{minipage}	
 	\begin{minipage}[b]{0.49\linewidth}
-		\includegraphics[width=\linewidth]{../amitans/figures/Energy_bt1_c090_h010.png}
+		\includegraphics[width=\linewidth]{Energy_bt1_c090_h010.png}
 		
 	\end{minipage}
 \end{center}
@@ -747,9 +718,9 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 \label{Test1En}
 \end{figure}
 
-
 \end{frame}
 
+%---------------------------------- frame 20 --------------------------------
 
 \begin{frame}
 \frametitle{Двумерното Парадигматично уравнение на Бусинеск}
@@ -809,10 +780,10 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 
 \begin{figure}[ht]
 	\centering
-	\begin{minipage}[b]{0.40\linewidth}
+	\begin{minipage}[b]{0.45\linewidth}
 		\includegraphics[width=\linewidth]{../amitans/figures/maximum_30_T30_bt3_c045_h005.png}
 	\end{minipage}	
-	\begin{minipage}[b]{0.40\linewidth}
+	\begin{minipage}[b]{0.45\linewidth}
 		 \includegraphics[width=\linewidth]{../amitans/figures/maximum_30_T30_bt1_c090_h020.png}
 	\end{minipage}
 \caption{Максимума на решението върху по-голям интервал от време $[0, 30]$ при Тест 1 (ляв панел) и Тест 2 (десен панел). Използвана е апроксимация от шести ред $p=6$ със стъпки $h=0.05$, $\tau = 0.001$ при Тест 1 и $h=0.2$,  $\tau=0.02$ при Тест 2.}
@@ -909,6 +880,32 @@ $O(h^4+ \tau^4)$	&0.05, 0.025	&0.013036 	& 3.88   	&0.013664   	& 3.83       \\
 %    \item Показали сме, че началното условие, получено чрез итерационен метод с висок ред на апроксимация за решаване на стационарното уравнение, превъзхожда ``best-fit'' апроксимационните формули, когато се изследва солитонният характер на вълната в ПУБ, защото нейните форма и максимум се запазват за по-дълъг период от време;
 }
 \end{itemize}
+
+\end{frame}
+
+%---------- frame 05 ----------------
+
+\begin{frame}
+\frametitle{Публикации}
+
+Резултатите от численото решение на двумерните стационарно и хиперболични уравнения на Бусинеск са
+публикувани в
+\begin{itemize}
+  \item N. Kolkovska, K. Angelow, Numerical computation of the critical energy constant for two dimensional Boussinesq equations, {\it Appl. of Mathematics in Technical and Natural Sciences}, 1684 (2015), SJR
+  \item K. Angelow, N. Kolkovska, Numerical Study of Traveling Wave Solutions to 2D BE, {\it Serdica Journal of Computing}, 13 (2019), 1-16
+  \item K. Angelow, New Boundary Condition for the Two Dimensional Stationary Boussinesq Paradigm Equation, {\it International Journal of Applied Mathematics}, 32 (2019), 141-154, SJR
+   \item K. Angelow, Comparison Between Two Numerical Methods for Solution of 2D BPE, {\it AIP Conference Proceedings}, 2522 (2022), 1, SJR
+\end{itemize}
+
+\end{frame}
+
+%---------- frame 05 ----------------
+
+\begin{frame}
+%\frametitle{}
+
+{\Large \center Благодаря за вниманието!}
+
 
 \end{frame}
 

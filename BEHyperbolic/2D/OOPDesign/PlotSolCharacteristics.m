@@ -29,8 +29,10 @@ function PlotSolCharacteristics(btString, cString, hString ,orderString, domainL
         bndCutSizeX = 0;
         bndCutSizeY = 0;
         shortBndString = '_ZB0';
-        if( strcmp( bndString(i), 'ZeroBoundary' ) == true || strcmp( bndString(i), 'ZeroBnd' ) == true )
+        if( strcmp( bndString(i), 'ZeroBoundary' ) == true  )
             shortBndString = '_ZB1';
+        elseif(  strcmp( bndString(i), 'ZeroBnd' ) == true )
+            shortBndString = '_ZB2';
         end
         cellStrEn = strcat('SavedWorkspaces\', bndString(i), '\', solTypeString(i), '_', domainLenString(i),...
             '_bt', btString(i), '_c0', cString(i),...
