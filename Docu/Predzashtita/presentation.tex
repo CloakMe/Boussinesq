@@ -46,28 +46,9 @@
 \section{Научни приноси}
 \end{frame}
 
-%==================3======================================
-\begin{frame}
-\frametitle{ Двумерното $(x,y) \in \RR^2$ Парадигматично уравнение на Бусинеск }
-\begin{align}
-&u_{tt} - \Delta u -\beta_1  \Delta u_{tt} +\beta_2 \Delta ^2 u +\alpha \Delta f(u)=0, \, t\in\RR^+,\label{eq1}
-\\
-&f(u) =  u^2 \nonumber \\  \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)  , 
-\\  &u(x,y) \rightarrow 0, \,  \Delta u(x,y) \rightarrow 0 ,  \text {при } \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11} 
-\end{align}
-\begin{itemize}
-  \item Извеждане на {\color{red}стационарно} уравнение чрез полагането $U(x,y-ct)=u(x,y,t)$ в \rf{eq1}
-\end{itemize}
-\color{red}
-\begin{equation}
-c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U)
-\end{equation}
-
-\end{frame}
-
 %==================2======================================
 \begin{frame}
-\frametitle{ Едномерното парадигматично уравнение на Бусинеск }
+\frametitle{ Едномерното Парадигматично уравнение на Бусинеск }
 \begin{align}
 &u_{tt} - u_{xx} -\beta_1  u_{ttxx} +\beta_2 u_{xxxx} + \alpha f(u)_{xx}=0   \text{ при } x \in \RR, \, t\in\RR^+,\label{eq1D}
 \\ \nonumber &u(x,0)=u_0(x), \, u_t(x,0)=u_1(x)   \text{ при } x \in \RR,
@@ -80,6 +61,31 @@ c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U)
 Солитон е бягаща със скорост $c$ вълна от вида $\phi(x-ct)$, която е локализирана в пространството и при движение запазва формата си. Структурата ѝ се запазва дори след взаимодействие с друг(и) солитон(и).
 \end{frame}
 
+%==================3======================================
+\begin{frame}
+\frametitle{ Двумерното $(x,y) \in \RR^2$ Парадигматично уравнение на Бусинеск }
+\begin{align}
+&u_{tt} - \Delta u -\beta_1  \Delta u_{tt} +\beta_2 \Delta ^2 u +\alpha \Delta f(u)=0, \, t\in\RR^+,\label{eq1}
+\\
+&f(u) =  u^2 \nonumber \\  \nonumber &u(x,y,0)=u_0(x,y), \, u_t(x,y,0)=u_1(x,y)  , 
+\\  &u(x,y) \rightarrow 0, \,  \Delta u(x,y) \rightarrow 0 ,  \text {при } \sqrt{x^2 + y^2} \rightarrow \infty, \label{eq11} 
+\end{align}
+
+\begin{itemize}
+
+  \item Извеждане на {\color{red}стационарно} уравнение чрез полагането $U(x,y-ct)=u(x,y,t)$ в \rf{eq1}
+
+{\color{red}
+\begin{equation}
+c^2 (E_1-\beta_1 \Delta) U_{yy} = \Delta U -\beta_2 \Delta^2 U - \Delta f(U)
+\end{equation}
+}%
+  \item смяна на променливите:
+$
+x = \sqrt{\beta_1} \bar{x}, \; y = \sqrt{\beta_1} \bar{y}, \; t = \sqrt{\beta_1} \bar{t}.
+$
+\end{itemize}
+\end{frame}
 
 
 %---------- frame 03 ----------------
@@ -150,29 +156,15 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 \begin{frame}
 \frametitle{Основни числени инструменти}
 
-Матриците $\Delta_{h,2,s,x}$ и $\Delta_{h,2,s,y}$ при $p=2$
-\[
-\frac{1}{h^2}
-\begin{bmatrix}
-    -2	       & 2        &     \dots   &   \dots        & 0   \\
-    1               & -2            &   1           &   0               & \vdots    \\
-        0           & \ddots        &    \ddots    &   \ddots       &  0 \\ 
-    \vdots       &     0            &  1     	& -2    	   & 1 \\
-    0               & \dots          &  \dots         & 1  	   & -2 \\
-\end{bmatrix}
-\]
+\begin{figure}
+	\includegraphics[width=0.99\linewidth]{FDS.png}
+	\caption{Три шаблона с апроксимации $O(h^2)$, $O(h^4)$ и $O(h^6)$ за оператора на Лаплас. }
+	\label{fig:aproxLap}
+\end{figure}
 
-Матриците $\Delta_{h,2,x}$ и $\Delta_{h,2,y}$ при $p=2$
-\[
-\frac{1}{h^2}
-\begin{bmatrix}
-    -2	       & 1        &     \dots   &   \dots        & 0   \\
-    1               & -2            &   1           &   0               & \vdots    \\
-        0           & \ddots        &    \ddots    &   \ddots       &  0 \\ 
-    \vdots       &     0            &  1     	& -2    	   & 1 \\
-    0               & \dots          &  \dots         & 1  	   & -2 \\
-\end{bmatrix}
-\]
+\begin{equation}\label{fdx}
+\Delta_{h,p}u_{i,j} :=  \frac{1}{h^2} \sum\limits_{q=-p/2}^{p/2} d_q u(x_i+qh, y_j)+d_q u(x_i, y_j+qh), \; p=2,4,6.
+\end{equation}
 \end{frame}
 
 %%==================55======================================
@@ -199,7 +191,7 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 \frametitle{Двумерното стационарно уравнение на Бусинеск}
 \framesubtitle{Метод на простата итерация [J. Choudhury, C.I. Christov, 2004]} 
  \begin{align}\label{eq3}
-&c^2 \beta (E_1- \Delta) v_{{\overline y}{\overline y}} = \beta \Delta v - \Delta^2 v - \beta \Delta f(v), \quad \beta = \frac{\beta_1}{\beta_2}
+&c^2 \beta (E_1- \Delta) v_{{ y}{ y}} = \beta \Delta v - \Delta^2 v - \beta \Delta f(v), \quad \beta = \frac{\beta_1}{\beta_2}
 \end{align}
 Алгоритмични стъпки:
 \begin{itemize} %две нови функции
@@ -228,8 +220,6 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 \end{equation}
 \end{itemize}
 %По този начин стационарната системата от двете уравнения \rf{eq45} се заменя с преходните във времето уравнения дефинирани в \rf{eq5} с условието, че решенията $\widehat{v}$ и $\widehat{w}$ схождат линейно спрямо времето към решенията на \rf{eq45}.
-
-
 
 \end{frame}
 
@@ -492,29 +482,6 @@ v(x,y) = v(r) ~ \frac{C_u}{r^2}, \quad r\gg1
 
 %==================5======================================
 
-
-\begin{frame}
-\frametitle{Двумерното Парадигматично уравнение на Бусинеск}
- 
-\begin{itemize}
-  \item смяна на променливите:
-$
-x = \sqrt{\beta_1} \bar{x}, \quad y = \sqrt{\beta_1} \bar{y}, \quad t = \sqrt{\beta_1} \bar{t};
-$
-  \item Консервативна схема;
-  \item метод на Тейлор в комбинация с метод на правите;
-  \item Числени резултати за двата метода:
-  \begin{itemize}
-	  \item ред на сходимост по правилото на Рунге;  
-	  \item сравнение между метода на Тейлор и Консервативната схема за енергията, масата и формата;
-	  \item изследване на масата върху по-големи области;
-	  \item резултати за формата и максимума при по-голям времеви интервал [0, 30].
-	\end{itemize}
-  \item Числен тест за хиперболичната задача при параметри $\beta = \frac{\beta_1}{\beta_2} = 3$ и $c=0.3$.
-\end{itemize}
-
-\end{frame}
-
 %---------- frame 08 ----------------
 \begin{frame}
 \frametitle{Двумерното Парадигматично уравнение на Бусинеск}
@@ -546,9 +513,10 @@ E(u(x,y,t)) = &\int_{R^2} u_t \left(((-\Delta)^{-1}+E)u_t\right) dxdy+
 \item Kolkovksa, N., Dimova, M., {\it Cent. Eur. J. Math.}, 2012
 \end{itemize}
 
-\begin{equation}\label{consFDS}
-\beta (E_1-\Delta_h)\frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} = (\Delta_h - \Delta_h^2)u^{(k)}_{i,j} + \Delta_h(g(u^{(k)}_{i,j})),
-\end{equation}
+\begin{align}\label{consFDS}
+\beta (E_1-\Delta_{h,2})&\frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} =  \nonumber \\
+&=(\Delta_{h,2} - \Delta_{h,2}^2)u^{(k)}_{i,j} + \Delta_{h,2}(g(u^{(k)}_{i,j})),
+\end{align}
 където:
 \begin{align}
 g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(k-1)}_{i,j})(u^{(k+1)}_{i,j}) + (u^{(k-1)}_{i,j})^2 \right) + \nonumber\\
@@ -561,17 +529,8 @@ g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(
 \begin{frame}
 \frametitle{Двумерното Парадигматично уравнение на Бусинеск}
 \framesubtitle{Метод на Тейлор и метод на правите за ПУБ}
-\begin{center}\vspace{0.25cm}
-	\begin{minipage}[b]{0.45\linewidth}
-		 \includegraphics[width=\linewidth]{../amitans/figures/FDS.png}
-	\end{minipage}	
-\end{center}
-Нека $u_{i,j}(t)$ е апроксимацията на $u(x_i, y_j, t)$ в точка от мрежата $(x_i, y_j)$.
-\\
-Нека $\Delta_{h,p} u_{i,j}$ е диференчния оператор, който апроксимира $\Delta u$ с грешкa $O(|h|^p)$ (p=2, 4, 6).
-\\
-%here99
-От  се получава следната система от ОДУ:
+
+Дискретизация по пространството води до следната система от ОДУ:
 \begin{equation}\label{DiscreteEq}
 \beta (I-\Delta_{h,p}) \frac{\partial^2 u}{\partial t^2}(x_i, y_j, t)=
  (\Delta_{h,p} - \Delta_{h,p}^2) u_{i, j}(t) + \Delta_{h,p} ( ( u_{i, j}(t) )^2 )
@@ -579,9 +538,10 @@ g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(
 за $i = 0..N_1$ и $j=0..N_2$, и $\beta = \frac{\beta_1}{\beta_2}$. За всяко ОДУ от системата е направено развитие в ред на Тейлор:
 \begin{align} \label{TSe}
 \small
-u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_i, y_j, t)  + ... 
-%\nonumber
-%\\
+u(x_i, y_j, {\small t+\tau}%
+) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_i, y_j, t)  +  \frac{\tau^2}{2} \frac{ \partial^2 u }{ \partial t^2 }(x_i, y_j, t)  + ... 
+\nonumber
+\\
 \frac{ \tau^p }{ p! } \frac{ \partial^p u }{ \partial t^p }(x_i, y_j, t) + O(\tau^{p+1})
 \end{align}
 
@@ -590,15 +550,18 @@ u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_
 %---------------------------- frame 15 --------------------------------------
 
 \begin{frame}
-\frametitle{Двумерното Парадигматично уравнение на Бусинеск}
-\framesubtitle{Изчисляване на реда на Тейлор \rf{TSe}}
-\begin{itemize}
- \item Нач. Условие $\rightarrow$ $u(x_i, y_j, t=0)$, $\frac{ \partial u }{ \partial t }(x_i, y_j, t=0)$,
- \item \rf{DiscreteEq} $\rightarrow$ $\frac{ \partial^2 u }{ \partial t^2 }(x_i, y_j, t=0)$ ,
- \item Диференциране на уравнение $\frac{ \partial^{p-2} u }{ \partial t^{p-2} }$ \rf{DiscreteEq} $\rightarrow$  $\frac{ \partial^p u }{ \partial t^p }(x_i, y_j, t)$,
- \item Заместване на изчислените производни в реда на Тейлор \rf{TSe}.
-\end{itemize}
-
+\frametitle{Производни от реда на Тейлор}
+Третата производна по времето:
+\begin{align*}
+ &\frac{\partial^3}{\partial t^3}u_{i,j}(t) = \frac{1}{\beta}\Delta_{h,p} \frac{\partial}{\partial t}u_{i, j}(t) + \nonumber\\
+&+ \frac{1}{\beta} (E_1-\Delta_{h,p})^{-1}\Delta_{h,p} \left( -2 \alpha \beta \: u_{i, j}(t) \frac{\partial}{\partial t}u_{i, j}(t) +  (\beta-1) \frac{\partial}{\partial t} u_{i, j}(t) \right).
+\end{align*}
+Четвъртата производна по времето:
+\begin{align*} 
+&\frac{\partial^4}{\partial t^4}u_{i,j}(t) = \frac{1}{\beta}\Delta_{h,p} \frac{\partial^2}{\partial t^2}u_{i, j}(t) +   \nonumber\\
+& \frac{1}{\beta}(E_1-\Delta_{h,p})^{-1}\Delta_{h,p} \left( -2 \alpha \beta \:  u_{i, j}(t)\frac{\partial^2}{\partial t^2}u_{i, j}(t) -2 \alpha \beta \: \left( \frac{\partial}{\partial t}u_{i, j}(t) \right)^2 + \right. \nonumber\\
+&\quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \left. +  (\beta-1) \frac{\partial^2}{\partial t^2} u_{i, j}(t) \right) .
+\end{align*}
 
 Така се получават следните апроксимации
 \begin{description}
@@ -612,7 +575,7 @@ u(x_i, y_j, t+\tau) = u(x_i, y_j, t) + \tau \frac{ \partial u }{ \partial t }(x_
 \frametitle{Двумерното Парадигматично уравнение на Бусинеск}
 \framesubtitle{Числени резултати - параметри}
 
-Дисперсионен параметър $\beta$, скорост $c$, време $T$ и големина на областта
+Дисперсионен параметър $\beta= \frac{\beta_1}{\beta_2}$, скорост $c$, време $T$ и големина на областта
 \begin{description}
  \item[Тест 1] $\beta = 3$, $c = 0.45$, $\Omega = [-30, 30] \times [-27, 27]$, $T = 10$
  \item[Тест 2] $\beta = 1$, $c = 0.9$, $\Omega = [-128, 128] \times [-58, 58]$, $T = 10$
