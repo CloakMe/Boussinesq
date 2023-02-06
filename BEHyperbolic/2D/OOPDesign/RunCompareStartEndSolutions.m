@@ -1,6 +1,6 @@
 %return;
 clear;clc;
-
+addpath('..\..\..\Common');
 %btString = '1';
 %cString = '90';
 %hString = '40';
@@ -17,14 +17,14 @@ clear;clc;
 %     end
 % end
 
-additionalInfo = 1; % 2 - maksimum, 1 - forma
-domainLen = '128'; %128, 30, 50
+additionalInfo = 2; % 2 - maksimum, 1 - forma
+domainLen = '50'; %128, 30, 50
 % legendString = { 'h=0.4, {\tau} = 0.04', 'h=0.2, {\tau} = 0.02', 'h=0.1, {\tau} = 0.01'};
 % legend(legendString);
 tFix = false;
-CompareStartEndSolitons('1', '90', '20' ,'6', '128x90', additionalInfo, 'k', tFix );
+%CompareStartEndSolitons('1', '90', '20' ,'6', '128x90', additionalInfo, 'k', tFix );
 %CompareStartEndSolitons('3', '45', '05' ,'6', '30x45', additionalInfo, 'k', tFix );
-return;
+%return;
 if( strcmp(domainLen,'50') == 1 )
     CompareStartEndSolitons('3', '30', '40' ,'4', domainLen, additionalInfo, 'ro', tFix ) 
     CompareStartEndSolitons('3', '30', '20' ,'4', domainLen, additionalInfo, 'go' ) 
@@ -64,5 +64,5 @@ if( strcmp(domainLen,'30') == 1 )
     %CompareStartEndSolitons('3', '45', '10' ,'6', domainLen, additionalInfo, 'mx' ) 
     %CompareStartEndSolitons('3', '45', '05' ,'6', domainLen, additionalInfo, 'md' )     
 end
-legendString = { 'p=2', 'p=4', 'p=6'}; %
-    legend(legendString); 
+%legendString = { 'p=2', 'p=4', 'p=6'}; %
+%    legend(legendString); 
