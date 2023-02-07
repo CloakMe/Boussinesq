@@ -13,7 +13,7 @@
 \title{ЧИСЛЕНО ИЗСЛЕДВАНЕ НА\\ ДВУМЕРНОТО УРАВНЕНИЕ НА БУСИНЕСК}
 \author{докторант: Красимир Ангелов 
 \newline \newline научен ръководител: Наталия Кольковска}
-\institute[IMI -- BAS]{Институт по Информатика и Математика\\ Българска Академия на Науките, София, България,\\ e-mail: angelow@math.bas.bg}
+\institute[IMI -- BAS]{Институт по Математика и Информатика\\ Българска Академия на Науките, София, България,\\ e-mail: angelow@math.bas.bg}
 \usetheme{default}
 \begin{document}
 
@@ -50,7 +50,9 @@
 \begin{frame}
 \frametitle{ Едномерното Парадигматично уравнение на Бусинеск }
 \begin{align}
-&u_{tt} - u_{xx} -\beta_1  u_{ttxx} +\beta_2 u_{xxxx} + \alpha f(u)_{xx}=0   \text{ при } x \in \RR, \, t\in\RR^+,\label{eq1D}
+&u_{tt} - u_{xx} -\beta_1  u_{ttxx} +\beta_2 u_{xxxx} + \alpha f(u)_{xx}=0, x \in \RR, \, t\in\RR^+,\label{eq1D}
+\\
+&f(u) =  u^2 \nonumber 
 \\ \nonumber &u(x,0)=u_0(x), \, u_t(x,0)=u_1(x)   \text{ при } x \in \RR,
 \\  &u(x) \rightarrow 0,  u(x)_{xx} \rightarrow 0  \text{ при } x \rightarrow \infty, \label{eq1d1}
 \end{align}
@@ -158,7 +160,7 @@ steady Solutions for the 2D BPE, {\it In: Numerical Methods and Applications},
 
 \begin{figure}
 	\includegraphics[width=0.99\linewidth]{FDS.png}
-	\caption{Три шаблона с апроксимации $O(h^2)$, $O(h^4)$ и $O(h^6)$ за оператора на Лаплас. }
+	\caption{Три шаблона с апроксимации $O(h^2)$, $O(h^4)$ и $O(h^6)$ за оператора на Лаплас, където $u_{i,j}:=u(x_i,y_j)$ }
 	\label{fig:aproxLap}
 \end{figure}
 
