@@ -11,20 +11,21 @@ function [bigU,bigUTimeDerivative,P,U,bigIC,solutionNorms,theta,mu,tauVector,ang
     [X,Y]=Domain(x,y);
     
     if(prmtrs.ICSwitch == 1)
-       [bigIC,IC] = pola2cart_v5(x, y, gamma1, gamma2);%, ode_name, IC);
+        yNew=-compBox.y_end:prmtrs.h:compBox.y_end;
+       [bigIC,IC] = pola2cart_v5(x, yNew, gamma1, gamma2);%, ode_name, IC);
     else
        bigIC = u_ex2d_mat_vc(X,Y,c,bt);
        IC = bigIC(zeroX:end,zeroY:end);
     end
-    th = abs(IC(1,1));
+    th = max(max(abs(IC)));
     IC = IC/th;
     
     if(prmtrs.useZeroBoundary == 2)
         [bigU,bigUTimeDerivative,P,U,theta,mu,solutionNorms,tauVector,angl,sw_div] =...
             sol_ch_v8ZeroBnd(IC,x,y,prmtrs,bt1,bt2,al,c,th,derivative);
     elseif(prmtrs.useZeroBoundary == 3)
-        
-		IC_half = bigIC(zeroX:end,:)/th;
+        idx = find(yNew==compBox.y_st);
+		IC_half = bigIC(zeroX:end,idx:end)/th;
         figure(2); mesh(x(zeroX:end),y,IC_half');
         
         [bigU,bigUTimeDerivative,P,U,theta,mu,solutionNorms,tauVector,angl,sw_div] =...

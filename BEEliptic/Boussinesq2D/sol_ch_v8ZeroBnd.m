@@ -69,7 +69,7 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
      subCounter=1;
      Usquare = U .^2; %
      %thetaVector(iterCounter) = (P(1,1) - bt*(1-c^2)*U(1,1) + (1-bt*c^2)*( Uyy(1,1) + Uxx(1,1)) )/(al*bt*Usquare(1,1));
-     thetaVector(iterCounter) = (P(zeroX,zeroY) - bt*(1-c^2)*U(zeroX,zeroY) + (1-bt*c^2)*Uyy(zeroX,zeroY) + Uxx(zeroX,zeroY) )/(al*bt*Usquare(zeroX,zeroY));
+     thetaVector(iterCounter) = (P(1,zeroY) - bt*(1-c^2)*U(1,zeroY) + (1-bt*c^2)*Uyy(1,zeroY) + Uxx(1,zeroY) )/(al*bt*Usquare(1,zeroY));
      
      mid = floor(length(derivative.second)/2);
      crrntResidual = Get2DResidual(al,bt,c,theta,iterCounter,U,Usquare,...
@@ -110,7 +110,7 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
             Uup = U + tau*( Pup - (al*bt*thetaVector(iterCounter) )*Usquare +...
                 ((1 - bt*c^2))* (Uxx+Uyy) - (bt*(1 - c^2))*U );
         else 
-            thetaVector(iterCounter) = (P(zeroX,zeroY) - bt*(1-c^2)*U(zeroX,zeroY) + (1-bt*c^2)*Uyy(zeroX,zeroY) + Uxx(zeroX,zeroY) )/(al*bt*Usquare(zeroX,zeroY));
+            thetaVector(iterCounter) = (P(1,zeroY) - bt*(1-c^2)*U(1,zeroY) + (1-bt*c^2)*Uyy(1,zeroY) + Uxx(1,zeroY) )/(al*bt*Usquare(1,zeroY));
             Pup = P + (tau)*(domainUtils.YDerivativeEvenFunZeroBnd(P)/h^2 +...
                 domainUtils.XDerivativeEvenFunZeroBnd(P)/h^2 + bt*c^2*Uxx );  
 
@@ -119,7 +119,7 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
         end
         
         UvsUupInfNorm(iterCounter) = max(max(abs(U-Uup)));
-        figure(2); mesh(x(zeroX:end),y,U');
+        %figure(12); mesh(x(zeroX:end),y,U');
         if(mod(iterCounter,10) ==0)        
            
            crrntResidual = Get2DResidual(al,bt,c,thetaVector,iterCounter,U,Usquare,Uxx+Uyy,...
@@ -131,8 +131,9 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
 
            [flag, Px, Py] = StopCriteria(x, y, zeroX, zeroY, U, ax, ay, minResidual, eps);
            
-           if(mod(iterCounter,50) ==0)
-               figure(2); mesh(x(zeroX:end),y,U');
+           if(mod(iterCounter,500) ==0)
+               %figure(2); mesh(x(zeroX:end),y,U');
+               %view( -91, 16);
                fprintf('%d \n',iterCounter);
                fprintf('||R||_Inf = %.4e \n', residualInfNorm(subCounter));
                fprintf('tau = %.4e \n', tau);
@@ -142,13 +143,13 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
                %    fprintf('stop at sum(tauVector) = %.4f \n', sum(tauVector(1:iterCounter)));
                %end
                if(prmtrs.plotResidual)
-                   PlotResidual(x(zeroX:end),y(zeroY:end),crrntResidual*thetaVector(iterCounter));
+                   PlotResidual(x(zeroX:end),y,crrntResidual*thetaVector(iterCounter));
                end
                if(prmtrs.plotBoundary)
-                   PlotBoundary(x,y,zeroX, U, muU*outerTopBoundaryF);
+                   PlotBoundary(x(zeroX:end),y, U, muU*outerTopBoundaryF, domainUtils, al, bt, c, crrntResidual);
                end
                if(prmtrs.plotAssympt)
-                   PlotAssymptVsSolu( x(zeroX:end), y(zeroY:end), h, 1, 1, U, muU*thetaVector(iterCounter), c);
+                   PlotAssymptVsSolu( x(zeroX:end), y, h, 1, 1, U, muU*thetaVector(iterCounter), c);
                end
                
                manualStop = Stop(fig9,manualStop);
@@ -163,9 +164,9 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
         end
         
         tauVector(iterCounter) = tau;        
-        [tau, tauMax, tauIncreasedIteration, tauDecreasedIteration] =...
-        DefineCurrentTau(prmtrs.tau, subCounter, iterCounter, iterMax, tau,  tauMax, tauIncreasedIteration,...
-           tauDecreasedIteration, residualInfNorm,UvsUupInfNorm, minResidual, angl , manualStop, flag, crrntResidual);
+        %[tau, tauMax, tauIncreasedIteration, tauDecreasedIteration] =...
+        %DefineCurrentTau(prmtrs.tau, subCounter, iterCounter, iterMax, tau,  tauMax, tauIncreasedIteration,...
+        %   tauDecreasedIteration, residualInfNorm,UvsUupInfNorm, minResidual, angl , manualStop, flag, crrntResidual);
         
         if( flag == 1 )
            afterCounter = afterCounter - 1; 
@@ -192,23 +193,22 @@ function [bigU,bigUTimeDerivative,Pup,Uup,thetaVector,mu,solutionNorms,tauVector
 		   
 		bigUTimeDerivative = -c * domainUtils1Der.YDerivativeZeroBnd(bigU)/h;
 	elseif( prmtrs.useZeroBoundary == 3 )
+        y_stNew = y(1)-y(end);
+        y_endNew = -y_stNew;
+        y = y_stNew:h:y_endNew;
+        bigU = thetaVector(iterCounter)*transf2qD(U,x,y,zeroX,zeroY);
 
-		RD = U(2:end,:);
-		RD = flipud(RD);
-		bigU = [RD; U];
-		
-		bigUTimeDerivative = -c * domainUtils1Der.YDerivativeEvenFunZeroBnd(bigU)/h;
+		UTimeDerivative = -c * domainUtils1Der.YDerivativeEvenFunZeroBnd(thetaVector(iterCounter)*U)/h;
+		bigUTimeDerivative = transf2qD(UTimeDerivative,x,y,zeroX,zeroY);
+		%bigUTimeDerivative = -c * domainUtils1Der.YDerivativeEvenFunZeroBnd(bigU)/h;
         muU = 0;
         muP = 0;
     end
     mu = struct('muU',{muU},'muP',{muP});
 
-    if( prmtrs.useZeroBoundary == 2 )
-        [solutionNorms] = CalculateSolutionNorms(U,Uup,P,Pup,UvsUupInfNorm,crrntResidual,...
+    [solutionNorms] = CalculateSolutionNorms(U,Uup,P,Pup,UvsUupInfNorm,crrntResidual,...
             residualInfNorm,muU*innerBoundaryUF,muP*innerBoundaryPF,subCounter,thetaVector(iterCounter),step,h);
-    else
-        solutionNorms = 0;
-    end
+
 end
 
 %z1 = YDerivativeEvenFunctions2(P,zeroMatrix,yDerBnd,derivative.second);

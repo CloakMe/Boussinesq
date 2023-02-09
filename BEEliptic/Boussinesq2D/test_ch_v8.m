@@ -2,21 +2,21 @@
 addpath('..\..\Common');
 clear;clc;
 tic
-x_st = -12.0;    y_st = -1.0;
-x_end = 12.0;    y_end = 12.0;
-x_st2 = -20.0;   y_st2 = -1.0;
-x_end2 = 20.0;   y_end2 = 20.0;
+x_st = -40.0;    y_st = -3.0;
+x_end = 40.0;    y_end = 29.0;
+x_st2 = -40.0;   y_st2 = -32.0;
+x_end2 = 40.0;   y_end2 = 32.0;
 
 compBox = struct('x_st',{x_st},'x_end',{x_end},'y_st',{y_st},'y_end',...
     {y_end},'x_st2',{x_st2},'x_end2',{x_end2},'y_st2',{y_st2},'y_end2',{y_end2});
 
-UseExtendedDomain=1;
+UseExtendedDomain=0;
 
 h = 0.2;
 x=x_st2:h:x_end2; 
 y=y_st2:h:y_end2; 
 %tau = 0.00114425*8;% getTau(h,x_end,y_end)/20;
-tau = getTau(h,x_end,y_end)/50;
+tau = getTau(h,x_end,x_end)/50;
 
 sx = (length(x)+1)/2
 sy = (length(y)+1)/2
@@ -29,7 +29,7 @@ sy = (length(y)+1)/2
    eps = 5.0e-06;%5.0e-09;
    % IC_switch = 0 ->christov sech formula
    % IC_switch = 1 ->nat42 formula
-   ICSwitch=0;   
+   ICSwitch=1;   
    %useZeroBoundary:
    % 0 -> use points (one, two, three for p=2,4,6 ) outside the domain with nonzero boundary function
    % 1 -> use points (one, two, three for p=2,4,6 ) outside the domain with zero boundary function
@@ -69,6 +69,18 @@ sy = (length(y)+1)/2
       '_h0' num2str(h * 100,'%.02d') '_O(h^' num2str(  size( secondDerivative, 2 ) - 1  ) ')']);
   
 fprintf('elapsed time = %d \n', toc);
+figure(3);
+mesh(x,y,bigU');
+xlabel('x');    ylabel('y');
+title('end solution')
+
+figure(3);
+mesh(x,y,bigUTimeDerivative');
+xlabel('x');    ylabel('y');
+title('end bigUTimeDerivative')
+
+    
+return;
 PlotResidualInfNormTauAndUvsUpInfNorm(solutionNorms,tauVector,angl);
 PrintResults(solutionNorms,mu);
 PlotAssymptVsSolu( x, y, h, bigU, mu.muU*theta(end), c, 2);
@@ -77,7 +89,7 @@ return;
 % Continue from lasth iteration:
 lastTheta=theta(end); lastU=U; lastP = P;  last_tau = tauVector(end); 
 
-if(prmtrs.useZeroBoundary == 2)    
+if(prmtrs.useZeroBoundary >= 2)    
     [bigU,bigUTimeDerivative,P,U,thetaCont,mu,solutionNormsCont,tauVecCont,anglCont,sw_div] =...
         sol_ch_v8ZeroBnd(lastU,x,y,prmtrs,bt1,bt2,al,c,lastTheta,derivative,lastP);
 else
@@ -231,8 +243,6 @@ PlotAssymptVsSolu( x, y, h, bigU, mu.muU*theta(end), c/sqrt(bt), 2 );
 PlotAssymptotics(x,y,h,zeroX,zeroY,bigU);
 DrawDerivativesOfSolution(bigU,compBox,x,y,h,zeroX,zeroY,c,derivative);
 return;
-
-
 
     [X,Y]=Domain(x,y);
 

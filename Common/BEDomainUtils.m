@@ -206,15 +206,16 @@ classdef (ConstructOnLoad) BEDomainUtils
         end
 		
 		%right boundary elements
-        jfd = mid+1;
-        for j=size(M,2)-mid+2:size(M,2)
-            zeroMatrix(:,j) = M(:,end-sizeFD+1:end)*this.mFiniteDiff(jfd,2:end)';
-            jfd = jfd+1;
-        end
-		
-        jfd = mid+1;
-        for j=size(M,2)-mid+2:size(M,2)
-            zeroMatrix(:,j) =  M(:,1:mid-1+j)*this.mFiniteDiff(mid,mid+1-j:end)'  + M(:,2:mid+1-j)*this.mFiniteDiff(mid,mid+j:end)';
+        %jfd = mid+1;
+        %for j=size(M,2)-mid+2:size(M,2)
+        %    zeroMatrix(:,j) = M(:,end-sizeFD+1:end)*this.mFiniteDiff(jfd,2:end)';
+        %    jfd = jfd+1;
+        %end
+		%jfd = 1;
+        for j = 1:mid-1
+            flipped = fliplr(M(:,end-mid-j:end));
+            zeroMatrix(:,end-j+1) =  flipped(:,1:mid-1+j)*this.mFiniteDiff(mid,mid+1-j:end)'  + flipped(:,2:mid+1-j)*this.mFiniteDiff(mid,mid+j:end)';
+            %zeroMatrix(:,j) =  fliplr(zeroMatrix(:,j));
         end
     end
     
