@@ -22,7 +22,7 @@ function PlotSolCharacteristics(btString, cString, hString ,orderString, domainL
     if( length(bndString) == 1 )
        bndString = CreateMultiArrString( bndString(1), len );
     end
-    colors = { 'k', 'g', 'm', 'r', 'b', 'c'}; %
+    colors = {  'k', 'g', 'mo', 'r', 'b', 'c'}; % 'bo',
     figNum = 20;
     figure(figNum)
     for i=1:len
@@ -52,27 +52,35 @@ function PlotSolCharacteristics(btString, cString, hString ,orderString, domainL
         figure(figNum)
         hold on;
         if( strcmp( additionalInfo, 'maximum' ) )
-            ylabel('max|u_h|','FontSize',18);
+            ylabel('max|u_h|','FontSize',16);
             plot(t(1:end-1),max_v, colors{i} );    
             
         elseif( strcmp( additionalInfo, 'mass' ) )
-            ylabel('Mass','FontSize',18);
+            ylabel('Mass','FontSize',16);
             [indeces, shift] = BEUtilities.GetCommonIndexArray( t, II );
             indeces(1) = [];
-            plot(t(indeces+shift),II(indeces),colors{i} );
+            if(i == len)
+                newIndeces = indeces(1):20:indeces(end);
+                if(indeces(end)~=newIndeces(end))
+                    newIndeces(end+1) = indeces(end);
+                end
+                indeces = newIndeces;
+            end
+            plot(t(indeces+shift),II(indeces),colors{i}, 'LineWidth', 3 ); % , 'MarkerSize',9
             hold off;
             
         elseif( strcmp( additionalInfo, 'energy' ) )
-            ylabel('E_h','FontSize',18);
+            ylabel('E_h','FontSize',16);
             [indeces, shift] = BEUtilities.GetCommonIndexArray( t, EN );
             indeces(1) = [];
-            plot( t(1:end-1),EN,colors{i} );            
+            plot( t(1:end-1),EN,colors{i}, 'LineWidth', 6 );            
         end
+        
         hold off;
     end
     legend(legendString);    
-    xlabel('t','FontSize',18);  
-    set(gca,'FontSize',18);
+    xlabel('t','FontSize',16);  
+    set(gca,'FontSize',16);
 
 end
 

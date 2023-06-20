@@ -2,9 +2,9 @@ clear;clc;
 % constants
 % st ; end
 %-20 ; 15
-start_x=-80; end_x = 120;
+start_x=-50; end_x = 50;
 pw = 0;
-h = 0.05/(2)^pw;  tau = 0.05/2^pw;  x = start_x:h:end_x;  t_end=10; 
+h = 0.1/(2)^pw;  tau = 0.05/2^pw;  x = start_x:h:end_x;  t_end=10; 
 beta1=1.5;   beta2=0.5;  alpha=3; beta=beta1/beta2;
 %sgm=(4-h^2/tau^2)/12;
 
@@ -29,5 +29,12 @@ estep = max(floor((1/tau)/20),1); %zapazwat se 20 stypki za edinitsa vreme
     dudt_t02 =dudt_ex(x+shift,35,c,alpha,beta1,beta2);% + dudt_ex(x(l)-shift,0,-1.5);
     
     
-    figure(1)
-    plot(x,u_t0,'g',x,dudt_t0,'r',x,u_t02,'co',x,dudt_t02,'k+')
+    %figure(1)
+    %plot(x,u_t0,'g',x,dudt_t0,'r',x,u_t02,'co',x,dudt_t02,'k+')
+    
+ic_utils = IC_2Waves();     
+[u00, dudt00] = ic_utils.GetInitialCondition(x,20);
+
+
+    figure(2)
+    plot(x,u00,'g',x,dudt00,'r')

@@ -38,8 +38,8 @@ function CompareStartEndSolitons(btString, cString, hString ,orderString, domain
         plot(t(mySlice), max_v(mySlice), color ); %t(1:stepM:end-1)
         hold off;
         %title('Evolution of the maximum');
-        xlabel('t','FontSize',18);  ylabel('max(v_h)','FontSize',18); 
-        set(gca,'FontSize',18);
+        xlabel('t','FontSize',16);  ylabel('max(v_h)','FontSize',16); 
+        set(gca,'FontSize',16);
         return;
     end
     

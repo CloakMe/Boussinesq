@@ -18,13 +18,13 @@ clear;clc;
 % end
 
 additionalInfo = 1; % 2 - maksimum, 1 - forma
-domainLen = '128'; %128, 30, 50
+domainLen = '30'; %128, 30, 50
 % legendString = { 'h=0.4, {\tau} = 0.04', 'h=0.2, {\tau} = 0.02', 'h=0.1, {\tau} = 0.01'};
 % legend(legendString);
 tFix = false;
-CompareStartEndSolitons('1', '90', '20' ,'6', '128x90', additionalInfo, 'k', tFix );
+%CompareStartEndSolitons('1', '90', '20' ,'6', '128x90', additionalInfo, 'k', tFix );
 %CompareStartEndSolitons('3', '45', '05' ,'6', '30x45', additionalInfo, 'k', tFix );
-return;
+%return;
 if( strcmp(domainLen,'50') == 1 )
     CompareStartEndSolitons('3', '30', '40' ,'4', domainLen, additionalInfo, 'ro', tFix ) 
     CompareStartEndSolitons('3', '30', '20' ,'4', domainLen, additionalInfo, 'go' ) 
@@ -52,8 +52,8 @@ if( strcmp(domainLen,'128') == 1 )
 end
 
 if( strcmp(domainLen,'30') == 1 )
-    CompareStartEndSolitons('3', '45', '20' ,'2', domainLen, additionalInfo, 'k', tFix ) 
-    %CompareStartEndSolitons('3', '45', '10' ,'2', domainLen, additionalInfo, 'kx' ) 
+    %CompareStartEndSolitons('3', '45', '20' ,'2', domainLen, additionalInfo, 'k', tFix ) 
+    CompareStartEndSolitons('3', '45', '10' ,'2', domainLen, additionalInfo, 'kx' ) 
     %CompareStartEndSolitons('3', '45', '05' ,'2', domainLen, additionalInfo, 'kd' ) 
     
     CompareStartEndSolitons('3', '45', '20' ,'4', domainLen, additionalInfo, '-bx', tFix ) 
