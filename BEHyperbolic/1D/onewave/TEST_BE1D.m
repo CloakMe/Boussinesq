@@ -1,9 +1,9 @@
 clear;clc;
 % constants
 
-start_x=-60; end_x = 60;
+start_x=-200; end_x = 200;
 pw = 0;
-h = 0.1;  tau = 0.01;  x = start_x:h:end_x;  t_end=5;
+h = 0.1;  tau = 0.005;  x = start_x:h:end_x;  t_end=5;
 beta1=1;   beta2=1;  alpha=-3; beta=beta1/beta2;
 sgm = 1/2;
 %sgm=(1-h^2/tau^2)/12;
@@ -23,8 +23,9 @@ estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
     %  dudt_t0 =dudt_ex(x+shift,0,c,alpha,beta1,beta2); 
     % dudt_t0 = dudt_ex(x+shift,0,c,alpha,beta1,beta2)+dudt_ex(x-shift,0,-c,alpha,beta1,beta2);
     
-    ic_utils = IC_2Waves();     
+    ic_utils = IC_2Waves();
     [u_t0, dudt_t0] = ic_utils.GetInitialCondition(x,20);
+    dudt_t0 = -dudt_t0;
     
     figure(1);plot(x,u_t0,'g',x,dudt_t0,'b');
     title('Initial Condition - u,dudt');
@@ -57,7 +58,12 @@ estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
 % Taylor v2  -   O(tau^4 + h^4)
     %dh = [1 -2 1]/h^2 se zamenq s dh = [-1 16 -30 16 -1]/(12*h^2) i
     %podobrqwame reda na sxodimost w prostranstwenite koordinati
-    [v,dtv,va,tt,II] = BE1D_tv2(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,alpha,estep,u_t0,dudt_t0);
+    %[v,dtv,va,tt,II] = BE1D_tv2(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,alpha,estep,u_t0,dudt_t0);
+
+% Taylor v2  -   O(tau^4 + h^4) -> Vasil Vassilev Equation without u_xxtt derivative
+    %dh = [1 -2 1]/h^2 se zamenq s dh = [-1 16 -30 16 -1]/(12*h^2) i
+    %podobrqwame reda na sxodimost w prostranstwenite koordinati
+    [v,dtv,va,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,alpha,estep,u_t0,dudt_t0);    
 %==========================================================================================    
     %figure(2)
     %uex2 =  u_ex(x+shift,tt(end),c,alpha,beta1,beta2);% + u_ex(x(l)-5,t_end,-1.5);

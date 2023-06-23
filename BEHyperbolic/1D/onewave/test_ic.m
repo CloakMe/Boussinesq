@@ -33,7 +33,7 @@ estep = max(floor((1/tau)/20),1); %zapazwat se 20 stypki za edinitsa vreme
     %plot(x,u_t0,'g',x,dudt_t0,'r',x,u_t02,'co',x,dudt_t02,'k+')
     
 ic_utils = IC_2Waves();     
-[u00, dudt00] = ic_utils.GetInitialCondition(x,20);
+[u00, dudt00] = ic_utils.GetInitialCondition(x, 20);
 
 
     figure(2)
