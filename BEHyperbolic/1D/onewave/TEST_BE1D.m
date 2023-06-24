@@ -1,9 +1,9 @@
 clear;clc;
 % constants
 
-start_x=-200; end_x = 200;
+start_x=-100; end_x = 100;
 pw = 0;
-h = 0.1;  tau = 0.005;  x = start_x:h:end_x;  t_end=5;
+h = 0.1;  tau = 0.00002;  x = start_x:h:end_x;  t_end=25;
 beta1=1;   beta2=1;  alpha=-3; beta=beta1/beta2;
 sgm = 1/2;
 %sgm=(1-h^2/tau^2)/12;
@@ -24,8 +24,7 @@ estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
     % dudt_t0 = dudt_ex(x+shift,0,c,alpha,beta1,beta2)+dudt_ex(x-shift,0,-c,alpha,beta1,beta2);
     
     ic_utils = IC_2Waves();
-    [u_t0, dudt_t0] = ic_utils.GetInitialCondition(x,20);
-    dudt_t0 = -dudt_t0;
+    [u_t0, dudt_t0] = ic_utils.GetInitialCondition(x,-10);
     
     figure(1);plot(x,u_t0,'g',x,dudt_t0,'b');
     title('Initial Condition - u,dudt');
@@ -88,6 +87,11 @@ estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
         xlabel('time t={t}_j_=_1_._.^T'); ylabel('{I}_j_=_1_._.^T');
     end
 
+    figure(3)
+    mesh(x, tt, va')
+    xlabel('x')
+    ylabel('t')
+    return;
     %movie
     [maxvalv, max_err, min_err] = xtrct_prop(x+shift,tt,u_t0,v(:,end));
    % maxvalv = 3;

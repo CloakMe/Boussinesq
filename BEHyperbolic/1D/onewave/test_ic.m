@@ -1,8 +1,8 @@
-clear;clc;
+%clear;clc;
 % constants
 % st ; end
 %-20 ; 15
-start_x=-50; end_x = 50;
+start_x=-100; end_x = 100;
 pw = 0;
 h = 0.1/(2)^pw;  tau = 0.05/2^pw;  x = start_x:h:end_x;  t_end=10; 
 beta1=1.5;   beta2=0.5;  alpha=3; beta=beta1/beta2;
@@ -34,7 +34,24 @@ estep = max(floor((1/tau)/20),1); %zapazwat se 20 stypki za edinitsa vreme
     
 ic_utils = IC_2Waves();     
 [u00, dudt00] = ic_utils.GetInitialCondition(x, 20);
-
-
-    figure(2)
+%t = 10:-0.1:0.0;
+t = tt(end):-0.1:tt(1);
+sol2d = zeros(length(x), length(t));
+for p=1:length(t)
+    sol2d(:,p) = ic_utils.GetInitialCondition(x, t(p));
+end
+    
+    figure(4)
+    mesh(x,t, sol2d')
+    xlabel('x')
+    
+    figure(5)
+    mesh(x,t, (sol2d-va(:,1:end-1))')
+    xlabel('x')
+    
+        figure(2)
     plot(x,u00,'g',x,dudt00,'r')
+    return;
+    k=-1:0.05:1;
+    figure(10)
+    plot( k, sqrt((k .^ 2 .* (1 - k .^ 2))), 'c')

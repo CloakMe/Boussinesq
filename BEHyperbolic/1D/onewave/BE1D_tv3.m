@@ -10,9 +10,12 @@ beta = beta1/beta2;
 x = start_x:h:end_x;
 sx = size(x,2);
 
-    dh = deltaOh4(7);
-    sdh = dh(3,1:5);
-    sdh11 = dh(1,1);
+    %dh = deltaOh4(7);
+    %sdh = dh(3,1:5);
+    %sdh11 = dh(3,3);
+    dh = deltah(7);
+    sdh = dh(2,1:3);
+    sdh11 = dh(2,2);
     Idh = h^2*eye(7) - deltaOh4(7);
     sIdh = Idh(3,1:5);
     sIdh11 = Idh(1,1);
@@ -31,13 +34,15 @@ sx = size(x,2);
     %plot(x,v1,'b',x,dv1,'g',x,d2v1,'y',x,d3v1,'r',x,d4v1,'k');
     %xlabel('x');    ylabel('u');
     t(1)=0;t(2)=tau;
-    E(1)=0;II(1) = 0;dE=0;dII = 0;
+    E(1)=0;dE=0;dII = 0;
     k=2;
     s=1; e=1;
     vmo=v1; vz = v2;
     dvmo=dv1; dvz = dv2;
-    v = zeros(sx,20*t_end-1);
-    dtv = zeros(sx,20*t_end-1);
+    tt = zeros(1,t_end*10);
+    II = zeros(1,t_end*10);
+    v = zeros(sx,10*t_end-1);
+    dtv = zeros(sx,10*t_end-1);
 
     while(t(k)<t_end)
         
@@ -50,8 +55,8 @@ sx = size(x,2);
 
         if(mod(k,estep)==0)
             tt(e)=k*tau;
-            v(:,e) = vu;
-            dtv(:,e) = dvu;
+            v(:,e) = vz;
+            dtv(:,e) = dvz;
             II(e)=sum(vz)*h;
             %EL(e)=LE(vmo,vz,vu,sdh,sIdh,sdh11,sIdh11,h,tau,sgm);
             %E(e) = EL(e) + NLE(vz,vu,sx,h,alpha,beta);

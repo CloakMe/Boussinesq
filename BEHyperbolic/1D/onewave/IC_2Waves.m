@@ -3,11 +3,11 @@ classdef (ConstructOnLoad) IC_2Waves
 methods( Access = public )
   function [ u, dudt ] = GetInitialCondition(this, x, t, k, b, a1, a2, a12)
     if(nargin == 3)
-          k = (0.1);
+          k = sqrt(1/8);
           b = 0;
-          a1 = .1; 
-          a2 = .2; 
-          a12 = .2;
+          a1 = 1; 
+          a2 = 1; 
+          a12 = 1;
     end
     u = 0.2e1 * (a1 * (k ^ 2) * exp((k * x) + sqrt((k ^ 2 * (1 - k ^ 2))) * t + b) + a2 * (k ^ 2) * exp(-(k * x) +...
         sqrt((k ^ 2 * (1 - k ^ 2))) * t + b)) ./...
