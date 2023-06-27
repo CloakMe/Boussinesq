@@ -35,7 +35,7 @@ estep = max(floor((1/tau)/20),1); %zapazwat se 20 stypki za edinitsa vreme
 ic_utils = IC_2Waves();     
 [u00, dudt00] = ic_utils.GetInitialCondition(x, 20);
 %t = 10:-0.1:0.0;
-t = tt(end):-0.1:tt(1);
+t = tt-10;
 sol2d = zeros(length(x), length(t));
 for p=1:length(t)
     sol2d(:,p) = ic_utils.GetInitialCondition(x, t(p));
@@ -44,10 +44,16 @@ end
     figure(4)
     mesh(x,t, sol2d')
     xlabel('x')
-    
+    ylabel('t')
+    colorbar;
+    caxis([-.1 .1]);
+    view(0,90);
     figure(5)
-    mesh(x,t, (sol2d-va(:,1:end-1))')
+    mesh(x,t, ((sol2d)-va(:,1:end))')
+    colorbar;
+    view(0,90);
     xlabel('x')
+    ylabel('t')
     
         figure(2)
     plot(x,u00,'g',x,dudt00,'r')
