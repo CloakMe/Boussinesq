@@ -6,8 +6,8 @@ start_x=-100; end_x = 100;
 pw = 0;
 %h=.2   .0005
 %h = 0.2;  tau = 0.000001;
-h = 0.2;  tau = 0.001;  x = start_x:h:end_x;
-t_start = -15;
+h = 0.05;  tau = 0.00001;  x = start_x:h:end_x;
+t_start = -20;
 t_interval=10;
 
 beta1=1;   beta2=1;  alpha=-3; beta=beta1/beta2;
@@ -67,10 +67,10 @@ estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
     %[v,dtv,va,tt,II] = BE1D_tv2(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,alpha,estep,u_t0,dudt_t0);
     %name = 'Taylor_v2_O(tau^4 + h^4)_';
 
-% Taylor v3  -   O(tau^4 + h^4) -> Vasil Vassilev Equation without u_xxtt derivative
+% Taylor v3  -   O(tau^4 + h^4)/O(tau^4 + h^2) -> Vasil Vassilev Equation without u_xxtt derivative
     %dh = [1 -2 1]/h^2 se zamenq s dh = [-1 16 -30 16 -1]/(12*h^2) i
     %podobrqwame reda na sxodimost w prostranstwenite koordinati
-    [v,dtv,va,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_interval,beta1,beta2,alpha,estep,u_t0,dudt_t0);    
+    [v,dtv,va,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_interval,beta1,beta2,alpha,estep,u_t0,dudt_t0,2);
     name = 'Taylor_v3_NoMixedDer_O(tau^4 + h^2)_';
     
     fprintf('elapsed time = %d \n', toc);
