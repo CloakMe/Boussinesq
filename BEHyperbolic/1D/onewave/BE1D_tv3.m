@@ -1,4 +1,4 @@
-function [vu,dvu,v,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,alpha,estep,u_t0,dudt_t0)
+function [vu,dvu,v,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,alpha,estep,u_t0,dudt_t0,hOrder)
 %A solution using Taylor Series Approach
 %The function returns the solution "v", the time derivative "dtv" and the times "tt" for which the
 %solution "v" has been saved
@@ -6,16 +6,21 @@ function [vu,dvu,v,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,a
 % dII = max(II) - min(II);
 % Here E stands for the energy values and II stands for the integral values along
 % different time layers "tt".
+if(nargin == 12)
+    hOrder = 2;
+end
 beta = beta1/beta2;
 x = start_x:h:end_x;
 sx = size(x,2);
-
-    %dh = deltaOh4(7);
-    %sdh = dh(3,1:5);
-    %sdh11 = dh(3,3);
-    dh = deltah(7);
-    sdh = dh(2,1:3);
-    sdh11 = dh(2,2);
+    if(hOrder == 2)
+        dh = deltah(7);
+        sdh = dh(2,1:3);
+        sdh11 = dh(2,2);
+    else
+        dh = deltaOh4(7);
+        sdh = dh(3,1:5);
+        sdh11 = dh(3,3);
+    end
     Idh = h^2*eye(7) - deltaOh4(7);
     sIdh = Idh(3,1:5);
     sIdh11 = Idh(1,1);
