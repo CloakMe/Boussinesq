@@ -1,4 +1,4 @@
-%clear;clc;
+clear;clc;
 % constants
 % st ; end
 %-20 ; 15
@@ -33,12 +33,12 @@ estep = max(floor((1/tau)/20),1); %zapazwat se 20 stypki za edinitsa vreme
     %plot(x,u_t0,'g',x,dudt_t0,'r',x,u_t02,'co',x,dudt_t02,'k+')
     
 ic_utils = IC_2Waves();     
-[u00, dudt00] = ic_utils.GetInitialCondition(x, 20);
-t = 10:-0.1:0.0;
+[u00, dudt00] = ic_utils.GetInitialCondition2w(x, 20);
+t = -20:0.2:10.0;
 %t = tt-10;
 sol2d = zeros(length(x), length(t));
 for p=1:length(t)
-    sol2d(:,p) = ic_utils.GetInitialCondition(x, t(p));
+    sol2d(:,p) = ic_utils.GetInitialCondition2w(x, t(p));
 end
     
     figure(4)
