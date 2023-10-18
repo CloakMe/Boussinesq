@@ -78,3 +78,18 @@ end
 
 figure(2)
 plot(x, u_t0, 'r', x, vUp, 'b');
+
+x = -100:0.5:100;
+
+k = sqrt(1/8);
+b = 0;
+a0 = 1;
+a1 = 1; 
+a2 = 1; 
+a12 = 1;
+c = sqrt((k ^ 2 * (1 - k ^ 2)));
+t = 20;
+y = 1./(a0+a1*exp(k*x-c*t)+a2*exp(k*x+c*t)+a12*exp(2*k*x));
+%1/(a_0 + a_1 exp(k x-sqrt((k ^ 2 * (1 - k ^ 2)))t) + a_2 exp(k x + sqrt((k ^ 2 * (1 - k ^ 2)))t) + a_12 exp(2 k x ) )
+figure(4)
+plot(x, y, 'r');

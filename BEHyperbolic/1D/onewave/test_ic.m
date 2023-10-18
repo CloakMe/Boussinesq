@@ -34,8 +34,8 @@ estep = max(floor((1/tau)/20),1); %zapazwat se 20 stypki za edinitsa vreme
     
 ic_utils = IC_2Waves();     
 [u00, dudt00] = ic_utils.GetInitialCondition(x, 20);
-%t = 10:-0.1:0.0;
-t = tt-10;
+t = 10:-0.1:0.0;
+%t = tt-10;
 sol2d = zeros(length(x), length(t));
 for p=1:length(t)
     sol2d(:,p) = ic_utils.GetInitialCondition(x, t(p));
@@ -48,6 +48,7 @@ end
     colorbar;
     caxis([-.1 .1]);
     view(0,90);
+    return;
     figure(5)
     mesh(x,t, ((sol2d)-va(:,1:end))')
     colorbar;
@@ -57,7 +58,14 @@ end
     
         figure(2)
     plot(x,u00,'g',x,dudt00,'r')
+    
+    figure(12)
+    plot(x, u00 .* exp(-sqrt(1/8)*x),'g')
     return;
+    
     k=-1:0.05:1;
     figure(10)
     plot( k, sqrt((k .^ 2 .* (1 - k .^ 2))), 'c')
+    
+    [u_end, dudt_00] = ic_utils.GetInitialCondition(x, 15);
+    plot(x, u_end, 'g', x, u_t0, 'r');
