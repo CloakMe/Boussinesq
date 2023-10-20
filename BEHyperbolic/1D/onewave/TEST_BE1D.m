@@ -6,9 +6,9 @@ start_x=-100; end_x = 100;
 pw = 0;
 %h=.2   .0005
 %h = 0.2;  tau = 0.000001;
-h = 0.05;  tau = 0.00001;  x = start_x:h:end_x;
+h = 0.4;  tau = 0.0005;  x = start_x:h:end_x;
 t_start = -20;
-t_interval=10;
+t_interval=10.0;
 
 beta1=1;   beta2=1;  alpha=-3; beta=beta1/beta2;
 sgm = 1/2;
@@ -30,7 +30,7 @@ estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
     % dudt_t0 = dudt_ex(x+shift,0,c,alpha,beta1,beta2)+dudt_ex(x-shift,0,-c,alpha,beta1,beta2);
     
     ic_utils = IC_2Waves();
-    [u_t0, dudt_t0] = ic_utils.GetInitialCondition(x,t_start);
+    [u_t0, dudt_t0] = ic_utils.GetInitialCondition2w(x,t_start);
     
     figure(1);plot(x,u_t0,'g',x,dudt_t0,'b');
     title('Initial Condition - u,dudt');
@@ -70,10 +70,10 @@ estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
 % Taylor v3  -   O(tau^4 + h^4)/O(tau^4 + h^2) -> Vasil Vassilev Equation without u_xxtt derivative
     %dh = [1 -2 1]/h^2 se zamenq s dh = [-1 16 -30 16 -1]/(12*h^2) i
     %podobrqwame reda na sxodimost w prostranstwenite koordinati
-    [v,dtv,va,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_interval,beta1,beta2,alpha,estep,u_t0,dudt_t0,2);
-    name = 'Taylor_v3_NoMixedDer_O(tau^4 + h^2)_';
+    [v,dtv,va,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_interval,beta1,beta2,alpha,estep,u_t0,dudt_t0,4);
+    name = 'Taylor_v3_NoMixedDer_O(tau^4 + h^4)_';
     
-    fprintf('elapsed time = %d \n', toc);
+    fprintf('elapsed time = %d min\n', toc/60.0);
     save (['SavedWorkspaces\Sol_' name num2str(floor(end_x)) '_tau' num2str(tau * 1000000,'%.07d') '_h0' num2str(h * 100,'%.02d') ]);
 %==========================================================================================    
     %figure(2)
@@ -107,8 +107,8 @@ estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
     view(0,90);
     
     figure(5)
-    u_end = ic_utils.GetInitialCondition(x, t_start+t_interval);
-    plot(x, v, 'g', x(1:5:end), u_end(1:5:end), 'ro');
+    u_end = ic_utils.GetInitialCondition2w(x, t_start+t_interval);
+    plot(x, v, 'g', x(1:5:end), u_end(1:5:end), 'b');
     title('End solution');
     return;
     %movie
