@@ -1,28 +1,28 @@
 clear;
 bndCutSizeX = 0;
 bndCutSizeY = 0;
-
+%Sol_vesi_O(tau^2 + h^2)_100_tau0000500_h020
 bndDirectory = ''; % 'ZeroBoundary\' 'WithBoundary\' ZeroBnd
-nameN = 'Sol_Taylor_v3_NoMixedDer'; % 'Sol_Taylor_v3_' 'Taylor_' TaylorZeroBnd_
-domLength = '100_'; %'80_' '40_', '128_'
-tauOrderString = '4';
-hOrderString = '4';
+nameN = 'Sol_Taylor_v3_org'; % 'Sol_Taylor_v3_' 'Taylor_' Sol_Taylor_v3_NoMixedDer
+domLength = '60_'; %'80_' '40_', '128_'
+tauOrderString = '4'; %4 2 4 
+hOrderString = '4'; %4 2 4
 %=======================================================
 % 
 % yo(1,:) = 'tau0000500_h020';
 % yo(2,:) = 'tau0000250_h020';
 % yo(3,:) = 'tau0000125_h020';
 
-%yo(1,:) = 'h040';
-%yo(2,:) = 'h020';
-%yo(3,:) = 'h010';
+yo(1,:) = 'h080';
+yo(2,:) = 'h040';
+yo(3,:) = 'h010';
 
-yo(1,:) = 'tau0001000_';
-yo(2,:) = 'tau0000500_';
-yo(3,:) = 'tau0000500_';
+%yo(1,:) = 'tau0000500_';
+%yo(2,:) = 'tau0000500_';
+%yo(3,:) = 'tau0000500_';
 
-tauString = 'tau0000100_';
-hString = 'h040';
+tauString = 'tau0000001_'; %tau0000001_ tau0000250_  tau0000062_
+hString = '';
 yo = cellstr(yo);
 useExactSolution = 1;
 
@@ -116,6 +116,7 @@ fprintf('Conv_L2 = %.8e \n\n', conv_L2);
 
 norm0402_Inf = max(max(abs(res_1(:))));
 norm0201_Inf = max(max(abs(res_2(:))));
+
 fprintf('||v_04 - v_02||_Inf = %.10f \n', norm0402_Inf);
 fprintf('||v_02 - v_01||_Inf = %.10f \n', norm0201_Inf);
 conv_Inf = log(abs(norm0402_Inf/norm0201_Inf))/log(2);

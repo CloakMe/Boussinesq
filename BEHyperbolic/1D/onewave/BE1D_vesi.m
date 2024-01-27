@@ -40,7 +40,7 @@ N=length(x);
 t_end = T - T0;
 e = 1;
 tt = zeros(1,t_end*estep);
-va = zeros(N,t_end*estep);
+va = zeros(N,t_end*estep-1);
 
 %nachalni danni
 %u0 = vesi_GetInitialCondition(x, T0, k,b, a1, a2, a12)';
