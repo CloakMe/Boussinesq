@@ -13,16 +13,19 @@ hOrderString = '4';
 % yo(2,:) = 'tau0000250_h020';
 % yo(3,:) = 'tau0000125_h020';
 
-%yo(1,:) = 'h040';
-%yo(2,:) = 'h020';
-%yo(3,:) = 'h010';
+hString = ''; %'h020'
+if(isempty(hString))
+    yo(1,:) = 'h020';
+    yo(2,:) = 'h010';
+    yo(3,:) = 'h010';
+else
+    yo(1,:) = 'tau0001000_';
+    yo(2,:) = 'tau0000500_';
+    yo(3,:) = 'tau0000500_';
+end
 
-yo(1,:) = 'tau0001000_';
-yo(2,:) = 'tau0000500_';
-yo(3,:) = 'tau0000500_';
+tauString = 'tau0000010_';
 
-tauString = 'tau0000100_';
-hString = 'h040';
 yo = cellstr(yo);
 useExactSolution = 1;
 
@@ -63,25 +66,18 @@ for jl = 1:3
     if(jl==3)
         if(~isempty(hString))
             taud = tauc/2
-            if(useExactSolution == 1)
-                ic_utils = IC_2Waves();
-                x = x_stN:h:x_endN;
-                vd = ic_utils.GetInitialCondition2w(x, endTime)';
-            else
-                vd = v;
-            end
+            hd = h;
         else
             hd=hc/2
-            if(useExactSolution == 1)
-                ic_utils = IC_2Waves();
-                x = x_stN:hd:x_endN;
-                vd = ic_utils.GetInitialCondition2w(x, endTime)';
-            else
-                vd = v; 
-            end
             taud = tau;
         end
-        
+        if(useExactSolution == 1)
+            ic_utils = IC_2Waves();
+            x = x_stN:hd:x_endN;
+            vd = ic_utils.GetInitialCondition2w(x, endTime)';
+        else
+            vd = v; 
+        end
     end
     clear('v');clear('cellStr');
 end
