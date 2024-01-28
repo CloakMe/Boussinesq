@@ -1,4 +1,4 @@
-function [vu,dvu,v,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,alpha,estep,u_t0,dudt_t0,hOrder)
+function [vu,dvu,v,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,alpha,estep,u_t0,dudt_t0,hOrder,tauOrder)
 %A solution using Taylor Series Approach
 %The function returns the solution "v", the time derivative "dtv" and the times "tt" for which the
 %solution "v" has been saved
@@ -8,6 +8,9 @@ function [vu,dvu,v,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,a
 % different time layers "tt".
 if(nargin == 12)
     hOrder = 2;
+end
+if(nargin == 13)
+    tauOrder = 4;
 end
 beta = beta1/beta2;
 x = start_x:h:end_x;
@@ -29,8 +32,8 @@ sx = size(x,2);
     dv1  = dudt_t0';
     [d2v1, d3v1, d4v1, d5v1] = calc_der_sub(v1,dv1,sdh,sIdh,sdh11,sIdh11,h,alpha,beta);
         
-    v2  = v1  + tau*dv1  + tau^2*d2v1/2 + tau^3*d3v1/6 + tau^4*d4v1/24; 
-    dv2 = dv1 + tau*d2v1 + tau^2*d3v1/2 + tau^3*d4v1/6 + tau^4*d5v1/24;
+    v2  = v1  + tau*dv1  + tau^2*d2v1/2 + (tauOrder == 4) * tau^3*d3v1/6 + (tauOrder == 4) * tau^4*d4v1/24; 
+    dv2 = dv1 + tau*d2v1 + tau^2*d3v1/2 + (tauOrder == 4) * tau^3*d4v1/6 + (tauOrder == 4) * tau^4*d5v1/24;
     
     %figure(1)
     %plot(x,dv1,'g',x,dv2,'y',x,v1,'b',x,v2,'r');%<^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -53,8 +56,8 @@ sx = size(x,2);
         
         [d2vz, d3vz, d4vz, d5vz] = calc_der_sub(vz,dvz,sdh,sIdh,sdh11,sIdh11,h,alpha,beta);
     
-        vu  =  vz +  tau*dvz + tau^2*d2vz/2 + tau^3*d3vz/6 + tau^4*d4vz/24; 
-        dvu = dvz + tau*d2vz + tau^2*d3vz/2 + tau^3*d4vz/6 + tau^4*d5vz/24;
+        vu  =  vz +  tau*dvz + tau^2*d2vz/2 + (tauOrder == 4) * tau^3*d3vz/6 + (tauOrder == 4) * tau^4*d4vz/24; 
+        dvu = dvz + tau*d2vz + tau^2*d3vz/2 + (tauOrder == 4) * tau^3*d4vz/6 + (tauOrder == 4) * tau^4*d5vz/24;
         
         %vu = SIT_m1(invdh,dh,tau,vz,vmo,alpha,beta);
 

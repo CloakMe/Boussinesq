@@ -2,15 +2,15 @@ clear;clc;
 tic;
 % constants
 
-start_x=-100; end_x = 100;
+start_x=-60; end_x = 60;
 pw = 0;
 %h=.2   .0005
-h = 0.2;  tau = 0.0005;
+h = 0.4;  tau = 0.0000001;
 %h=0.1; tau=0.01;
 %h = 0.4;  tau = 0.0005;  
 x = start_x:h:end_x;
 t_start = -20;
-t_interval=10.0;
+t_interval=10;
 
 beta1=1;   beta2=1;  alpha=-3; beta=beta1/beta2;
 sgm = 0.75;
@@ -18,7 +18,7 @@ sgm = 0.75;
 
 c=3;   shift = 30;
 vers = 3;
-estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
+estep = max(floor((1/tau)/200),1); %zapazwat se 20 stypki za edinitsa vreme
 
     %if beta1, beta2 and alpha not specified then beta1 = 1.5; beta2 = 0.5, alpha = 3.
     
@@ -72,14 +72,14 @@ estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
 % Taylor v3  -   O(tau^4 + h^4)/O(tau^4 + h^2) -> Vasil Vassilev Equation without u_xxtt derivative
     %dh = [1 -2 1]/h^2 se zamenq s dh = [-1 16 -30 16 -1]/(12*h^2) i
     %podobrqwame reda na sxodimost w prostranstwenite koordinati
-    %[v,dtv,va,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_interval,beta1,beta2,alpha,estep,u_t0,dudt_t0,4);
-    %name = 'Taylor_v3_NoMixedDer_O(tau^4 + h^4)_';
+    [v,dtv,va,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_interval,beta1,beta2,alpha,estep,u_t0,dudt_t0,4,4);
+    name = 'Taylor_v3_org_O(tau^4 + h^4)_';
     
 % Vesi  -   O(tau^2 + h^2)
     %dh = [1 -2 1]/h^2 se zamenq s dh = [-1 16 -30 16 -1]/(12*h^2) i
-    [u_t1, dudt_t1] = ic_utils.GetInitialCondition2w(x, t_start + tau);
-    [v,dtv,va,tt,II] = BE1D_vesi(start_x,end_x,h,tau,sgm,t_start + t_interval,beta1,beta2,alpha,estep,u_t0,u_t1, t_start);
-    name = 'vesi_O(tau^2 + h^2)_';
+    %[u_t1, dudt_t1] = ic_utils.GetInitialCondition2w(x, t_start + tau);
+    %[v,dtv,va,tt,II] = BE1D_vesi(start_x,end_x,h,tau,sgm,t_start + t_interval,beta1,beta2,alpha,estep,u_t0,u_t1, t_start);
+    %name = 'vesi_O(tau^2 + h^2)_';
     
     fprintf('elapsed time = %d min\n', toc/60.0);
     save (['SavedWorkspaces\Sol_' name num2str(floor(end_x)) '_tau' num2str(tau * 1000000,'%.07d') '_h0' num2str(h * 100,'%.02d') ]);
@@ -115,10 +115,28 @@ estep = max(floor((1/tau)/10),1); %zapazwat se 20 stypki za edinitsa vreme
     view(0,90);
     
     figure(5)
-    u_end = ic_utils.GetInitialCondition2w(x, t_start+t_interval);
+    u_end = ic_utils.GetInitialCondition2w(x, t_start+t_interval)';
     plot(x, v, 'g', x(1:5:end), u_end(1:5:end), 'b');
     title('End solution');
+    
+    fprintf('|u_{ex}-u_h|_L2 = %.10f\n', h*norm(v-u_end,2));
+    fprintf('|u_{ex}-u_h|_Inf = %.10f\n', norm(v-u_end,Inf));    
     return;
+    %vesi
+    %|u_{ex}-u_h|_L2 =  0.000131
+    %|u_{ex}-u_h|_Inf = 0.000028
+    %|u_{ex}-u_h|_L2 =  0.000020
+    %|u_{ex}-u_h|_Inf = 0.000003
+    %taylor Oh2
+    %|u_{ex}-u_h|_L2 =  0.0001390706
+    %|u_{ex}-u_h|_Inf = 0.0001499872
+    %|u_{ex}-u_h|_L2 =  0.0000240849
+    %|u_{ex}-u_h|_Inf = 0.0000367083
+    %Oh4
+    %|u_{ex}-u_h|_L2 =  0.0000085258
+    %|u_{ex}-u_h|_Inf = 0.0000061886
+    %|u_{ex}-u_h|_L2 =  0.0000010984
+    %|u_{ex}-u_h|_Inf = 0.0000010516
     %movie
     [maxvalv, max_err, min_err] = xtrct_prop(x+shift,tt,u_t0,v(:,end));
    % maxvalv = 3;
