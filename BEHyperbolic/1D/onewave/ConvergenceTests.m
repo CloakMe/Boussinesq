@@ -15,8 +15,8 @@ hOrderString = '4'; %4 2 4
 
 hString = ''; %'h020'
 if(isempty(hString))
-    yo(1,:) = 'h020';
-    yo(2,:) = 'h010';
+    yo(1,:) = 'h040';
+    yo(2,:) = 'h020';
     yo(3,:) = 'h010';
 else
     yo(1,:) = 'tau0001000_';
@@ -56,12 +56,17 @@ for jl = 1:3
        taub = tau;
     end
     if(jl==2)
-       vc = v;
-       hc=h;
-       tauc = tau;
-       x_stN = start_x; 
-       x_endN = end_x;
-       endTime = t_start + t_interval;
+        vc = v;
+        hc=h;
+        tauc = tau;
+        x_stN = start_x; 
+        x_endN = end_x;
+        endTime = t_start + t_interval;
+        if(useExactSolution == 1)
+            ic_utils = IC_2Waves();
+            x = x_stN:hc:x_endN;
+            vc_exact = ic_utils.GetInitialCondition2w(x, endTime)';
+        end
     end
     if(jl==3)
         if(~isempty(hString))
@@ -86,13 +91,16 @@ end
 % E2 = norm(v_h05(1:2:end) - v_h025(1:4:end),2)
 % 
 % conv = (log(E1)-log(E2))/log(2)
-
+vcx = vc;
+if(useExactSolution == 1)
+    vcx = vc_exact;
+end
 clear('jl');
 if(isempty(hString))
-    res_1 = (vb - vc(1:2:end));
+    res_1 = (vb - vcx(1:2:end));
     res_2 = (vc - vd(1:2:end));
 else
-    res_1 = (vb - vc);
+    res_1 = (vb - vcx);
     res_2 = (vc - vd);
 end
 
