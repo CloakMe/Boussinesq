@@ -65,7 +65,11 @@ sx = size(x,2);
             tt(e)=k*tau;
             v(:,e) = vz;
             dtv(:,e) = dvz;
-            II(e)=sum(vz)*h;
+            if(hOrder == 2)
+                II(e)=h/2 * (vz(1) + vz(end)) + h*sum(vz(2:end-1));
+            else
+                II(e)=h/3 * (vz(1) + vz(end)) + 5*h/3 * (vz(2) + vz(end-1)) + 3 * sum(vz(3:end-2))*h;
+            end
             %EL(e)=LE(vmo,vz,vu,sdh,sIdh,sdh11,sIdh11,h,tau,sgm);
             %E(e) = EL(e) + NLE(vz,vu,sx,h,alpha,beta);
             if(abs(tt(e)-t_end) <= 2*tau)
