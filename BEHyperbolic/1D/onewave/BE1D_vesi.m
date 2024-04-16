@@ -74,12 +74,14 @@ tic
         if(abs(tt(e)-t_end) <= 2*tau)
             TEND = tt(e)
         end
+        II(e)=h/2 * (U(1) + U(end)) + h*sum(U(2:end-1));
         e=e+1;
     end
  end
 toc
+U = U';
 dvu = U;
-II = tt;
+%II = tt;
 psi=max(greshka);
 end
     %plot(x,U,'r',x,TR,'k')
