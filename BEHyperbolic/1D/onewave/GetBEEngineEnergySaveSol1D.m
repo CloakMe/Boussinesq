@@ -18,6 +18,6 @@ function [x,tt,max_v,EN,II,uEnSave] = GetBEEngineEnergySaveSol1D( tauSrting, hSt
     bndPtsRemX = bndCutSizeX/current_hx;
 
     uEnSave = v( bndPtsRemX+1:end-bndPtsRemX );
-    max_v = max(uEnSave);
+    max_v = max(va);
     EN = 0;
 end

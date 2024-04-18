@@ -17,23 +17,14 @@ for i = 1:50
     end
 end
 
-additionalInfo = 2;
+additionalInfo = 3;
 %domainLen = '30'; %128, 30
 
-if( false )
-    domainLen = '128'; %128, 30
-    CompareTaylorVsEnergySave1D('1', '90', '40' ,'2', domainLen, additionalInfo);
-    CompareTaylorVsEnergySave1D('1', '90', '20' ,'2', domainLen, additionalInfo);
-    CompareTaylorVsEnergySave1D('1', '90', '10' ,'2', domainLen, additionalInfo);
-    if(useSecondOrderOnly == 1)
-        return;
-    end
-    fprintf('=========================\n'); 
-    fprintf('=========================\n\n');
-    CompareTaylorVsEnergySave1D('1', '90', '40' ,'4', domainLen, additionalInfo);
-    CompareTaylorVsEnergySave1D('1', '90', '20' ,'4', domainLen, additionalInfo);
-    CompareTaylorVsEnergySave1D('1', '90', '10' ,'4', domainLen, additionalInfo);
-
+if( true )
+    domainLen = '60'; %128, 30
+    CompareTaylorVsEnergySave1D('0000250', '40' ,domainLen, additionalInfo);
+    CompareTaylorVsEnergySave1D('0000250', '20' ,domainLen, additionalInfo);
+    %CompareTaylorVsEnergySave1D('1', '90', '10' ,domainLen);
 else
     domainLen = '30'; %128, 30
     CompareTaylorVsEnergySave1D('3', '45', '20' ,'2', domainLen, additionalInfo);

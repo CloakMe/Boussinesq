@@ -1,13 +1,13 @@
-function CompareTaylorVsEnergySave1D(btString, cString, hString ,orderString, domainLen, additionalInfo) 
+function CompareTaylorVsEnergySave1D(tauString, hString, domainLen, additionalInfo) 
 
-    fprintf('c = 0.%s, bt = %s, order = %s \n', cString, btString, orderString);
-    [x1,t1,max_v1,EN1,II1,uEnSave] = GetBEEngineEnergySaveSol1D( btString, cString, hString, domainLen, 2 );
-    [x2,t2,max_v2,EN2,II2,uEnTaylorZeroBoundary] = GetBEEngineTaylorSol1D( btString, cString, hString, orderString, 2, domainLen );
+    fprintf('tau = 0.%s, h = %s, domLen = %s \n', tauString, hString, domainLen);
+    [x1,t1,max_v1,EN1,II1,uEnSave] = GetBEEngineEnergySaveSol1D( tauString, hString, domainLen );
+    [x2,t2,max_v2,EN2,II2,uEnTaylorZeroBoundary] = GetBEEngineTaylorSol1D( tauString, hString, domainLen );
     
-    if( length( x1 ) ~= length( x2 ) || length( y1 ) ~= length( y2 ) )
-        fprintf('Different sizes in X, Y or T - dimensions!\n');
+    if( length( x1 ) ~= length( x2 ) )
+        fprintf('Different sizes in X or T - dimensions!\n');
         return;
-    elseif( sum( x1 ~= x2 ) && sum( y1 ~= y2 ) && t1(end) ~= t2(end) )
+    elseif( sum( x1 ~= x2 ) && t1(end) ~= t2(end) )
         fprintf('Different values in x, y, t dimension vectors!\n');
         return;
     end
@@ -47,20 +47,16 @@ function CompareTaylorVsEnergySave1D(btString, cString, hString ,orderString, do
         viewTypeX = 0;
         viewTypeY = 90;
         figure(figNumber)
-        [zeroX,zeroY]=GetZeroNodes(x1,y1);
+        zeroX=(length(x1)+1)/2;
         magX = floor( (x1(end)-x1(zeroX)) / (3*h) );
-        magY = floor( (y1(end)-y1(zeroY)) / (3*h) );
         xIndeces = zeroX-magX+1:zeroX+magX-1;
-        yIndeces = zeroY-magY+1:zeroY+magY-1;
-        xx=x1(xIndeces); yy=y1(yIndeces); 
-        mesh(xx,yy,(uEnSave(xIndeces,yIndeces) - uEnTaylorZeroBoundary(xIndeces,yIndeces))');
-        view( viewTypeX, viewTypeY );
-        colorbar;
-        xlabel('x','FontSize',18);    ylabel('y','FontSize',18);
+        xx=x1(xIndeces); 
+        plot(xx,(uEnSave(xIndeces) - uEnTaylorZeroBoundary(xIndeces))');
+        xlabel('x','FontSize',18);   
         set(gca,'FontSize',18);
 
         figure(figNumber+1)
-        plot(t1(2:end),max_v1, 'r', t2(2:end),max_v2, 'b');
+        plot(t1,max_v1, 'r', t2,max_v2, 'b');
         title('solution maximums');
         xlabel('t');            %ylabel('solution maximums');
         legend('EnergySave','Taylor');
@@ -68,14 +64,14 @@ function CompareTaylorVsEnergySave1D(btString, cString, hString ,orderString, do
 
     elseif( additionalInfo == 3 || additionalInfo == 4 )
 
-        [minEN1, maxEN1, meanEN1] = GetValues(EN1);
-        [minEN2, maxEN2, meanEN2] = GetValues(EN2);
+        %[minEN1, maxEN1, meanEN1] = GetValues(EN1);
+        %[minEN2, maxEN2, meanEN2] = GetValues(EN2);
         [minII1, maxII1, meanII1] = GetValues(II1);
         [minII2, maxII2, meanII2] = GetValues(II2);
-        fprintf('========================================\n');  
-        fprintf('Energy   min          max        |diff|       \n');
-        fprintf('EnSave %4.6f & %4.6f & %4.6f\n', minEN1, maxEN1, maxEN1 - minEN1 );
-        fprintf('Taylor %4.6f & %4.6f & %4.6f\n', minEN2, maxEN2, maxEN2 - minEN2 );
+        %fprintf('========================================\n');  
+        %fprintf('Energy   min          max        |diff|       \n');
+        %fprintf('EnSave %4.6f & %4.6f & %4.6f\n', minEN1, maxEN1, maxEN1 - minEN1 );
+        %fprintf('Taylor %4.6f & %4.6f & %4.6f\n', minEN2, maxEN2, maxEN2 - minEN2 );
         fprintf('----------------------------------------\n');
         fprintf('Mass       min        max        |diff|       \n');
         fprintf('EnSave: %4.6f  & %4.6f  & %4.6f  \n', minII1, maxII1, maxII1 - minII1 );

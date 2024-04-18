@@ -15,6 +15,6 @@ function [x,tt,max_v,EN,II,uEnTaylor] = GetBEEngineTaylorSol1D( tauSrting, hStri
     bndPtsRemX = bndCutSizeX/current_hx;
     
     uEnTaylor = v( bndPtsRemX+1:end-bndPtsRemX );
-    max_v = max(uEnTaylor);
+    max_v = max(va);
     EN = 0;
 end
