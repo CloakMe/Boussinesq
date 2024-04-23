@@ -3,7 +3,7 @@ function CompareTaylorVsEnergySave1D(tauString, hString, domainLen, additionalIn
     fprintf('tau = 0.%s, h = %s, domLen = %s \n', tauString, hString, domainLen);
     [x1,t1,max_v1,EN1,II1,uEnSave] = GetBEEngineEnergySaveSol1D( tauString, hString, domainLen );
     [x2,t2,max_v2,EN2,II2,uEnTaylorZeroBoundary] = GetBEEngineTaylorSol1D( tauString, hString, domainLen );
-    
+   
     if( length( x1 ) ~= length( x2 ) )
         fprintf('Different sizes in X or T - dimensions!\n');
         return;
@@ -11,7 +11,10 @@ function CompareTaylorVsEnergySave1D(tauString, hString, domainLen, additionalIn
         fprintf('Different values in x, y, t dimension vectors!\n');
         return;
     end
-
+    
+    ic_utils = IC_2Waves();
+    u_end = ic_utils.GetInitialCondition2w(x1, t_start+t_interval)';
+    
     h = (x1(end) - x1(1))/ (length( x1 ) - 1);
     tau_enSave = (t1(end) - t1(1))/ (length( t1 ) - 1);
     fprintf('h   = %f\n',  h);
@@ -24,14 +27,22 @@ function CompareTaylorVsEnergySave1D(tauString, hString, domainLen, additionalIn
     end
     
     if( additionalInfo == 1 || additionalInfo == 2 )
-        difference = (uEnTaylorZeroBoundary - uEnSave);
+        
+        difference = (u_end - uEnTaylorZeroBoundary);
         normDifference_L2 = h*norm(difference(:),2);
-        fprintf('||v_Taylor - v_EnSave||_L2  = %.3e \n', normDifference_L2);
-
         normDifference_Inf = max(max(abs(difference(:))));
-        fprintf('||v_Taylor - v_EnSave||_Inf = %.3e \n', normDifference_Inf);
-
-        fprintf('||v_EnSave||_Inf            = %.6f \n', max(max(abs(uEnSave(:)))));
+        fprintf('|u_{ex}-u_Taylor|_L2 = %.3e\n', normDifference_L2);
+        fprintf('|u_{ex}-u_Taylor|_Inf = %.3e\n', normDifference_Inf);
+        
+        
+        difference = (u_end - uEnSave);
+        normDifference_L2 = h*norm(difference(:),2);
+        normDifference_Inf = max(max(abs(difference(:))));
+        fprintf('|u_{ex}-u_EnSave|_L2 = %.3e\n', normDifference_L2);
+        fprintf('|u_{ex}-u_EnSave|_Inf = %.3e\n', normDifference_Inf);
+        
+        fprintf('||u_{ex}||_Inf            = %.6f \n', max(max(abs(u_end(:)))));
+   
         fprintf('=========================\n\n');    
 
         if(additionalInfo == 1)
