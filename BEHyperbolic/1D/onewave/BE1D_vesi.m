@@ -49,7 +49,7 @@ u0 = u_t0;
 u1 = u_t1;
 U=u0*0;
 figure(1)
-plot(x,u0, 'r', x, u1, 'g')
+plot(x,u0, 'r', x, u1, 'g');
 
 greshka=zeros(floor(M),1);
 tic
@@ -69,6 +69,7 @@ tic
       %  U(1:end)=(2*u1-u0+tau*tau*(deltah(u1,h)-delta2h(u1,h)+3*deltah(F,h)))';
    %     TR = vesi_GetInitialCondition(x, T0+(j+1)*tau, k,b, a1, a2, a12)';
   %  greshka(j)=max(abs(U-TR));
+    u_1 = u0;
     u0=u1;
     u1=U;
     if(j==M)
@@ -82,17 +83,23 @@ tic
         end
         II(e)=h/2 * (U(1) + U(end)) + h*sum(U(2:end-1));
         %================= energy
-        vt = (vkpo - vkmo)/(tau*2);
-        sumv = (vk+ vkpo);
+        dh=deltah(7);
+        Idh=(h^2*eye(7)-dh);
+        sdh = dh(2,1:3);
+        sIdh = Idh(2,1:3);
+        sIdh11 = Idh(1,1);
+        sdh11 = dh(1,1);
+        vt = (u1 - u_1)'/(tau*2);
+        sumv = (u0 + u1)';
         svt = size(vt,1);
             
-        Idhvt = BMM(sIdh,vt',sIdh11);     dhsumv = BMM(-sdh,sumv',-sdh11);
+        Idhvt = BMM(sIdh,vt',sIdh11);     
+        dhsumv = BMM(-sdh,sumv',-sdh11);
    
-        s_isdh = size(sIdh,1)*size(sIdh,2);
         vec1 = diag3solv(-sdh/h^2,vt);
-        res=h*(vec1')*vt + h*(vt')*vt + tau^2*(sgm-1/4)*(Idhvt*vt)/h +...
+        res=h*(vec1')*vt + tau^2*(sgm-1/4)*(Idhvt*vt)/h +...
            h*(( sumv + dhsumv'/h^2)')*sumv/4;
-        E(e) = res + h*((al*bt*(sum(vk.^3)))/3
+        E(e) = 1/2 * ( res + h*((alpha*(sum(u0.^3)))/3 + (alpha*(sum(u1.^3)))/3) ); 
         e=e+1;
     end
  end
