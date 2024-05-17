@@ -17,7 +17,7 @@ for i = 1:50
     end
 end
 
-additionalInfo = 3;
+additionalInfo = 1;
 %domainLen = '30'; %128, 30
 
 if( true )

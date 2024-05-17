@@ -1,12 +1,18 @@
-function [x,tt,max_v,EN,II,uEnTaylor] = GetBEEngineTaylorSol1D( tauSrting, hString, domainLen )
+function [x,tt,max_v,EN,II,uEnTaylor, t_start, t_interval] = GetBEEngineTaylorSol1D( tauSrting, hString, domainLen, orderT )
 
+    if(nargin == 3)
+        orderT = 2;
+    end
     if(nargin == 2)
         domainLen = '60';
+        orderT = 2;
     end
       
     bndCutSizeX = 0;
-    
     cellStrTlr = strcat('SavedWorkspaces\Sol_Taylor_v3_org_O(tau^2 + h^2)_', domainLen, '_tau', tauSrting, '_h0', hString );
+    if(orderT == 4)
+        cellStrTlr = strcat('SavedWorkspaces\Sol_Taylor_v3_org_O(tau^4 + h^4)_', domainLen, '_tau', tauSrting, '_h0', hString );
+    end
     warning('off','all');
     load (  cellStrTlr );
     warning('on','all');

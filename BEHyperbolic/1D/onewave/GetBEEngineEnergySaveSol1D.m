@@ -1,4 +1,4 @@
-function [x,tt,max_v,EN,II,uEnSave] = GetBEEngineEnergySaveSol1D( tauSrting, hString, domainLen )
+function [x,tt,max_v,EN,II,uEnSave, t_start, t_interval] = GetBEEngineEnergySaveSol1D( tauSrting, hString, domainLen )
 %v,dtv,va,tt,II
    
     if(nargin == 2)

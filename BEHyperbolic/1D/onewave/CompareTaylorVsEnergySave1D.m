@@ -1,19 +1,27 @@
-function CompareTaylorVsEnergySave1D(tauString, hString, domainLen, additionalInfo) 
+function CompareTaylorVsEnergySave1D(tauString, hString, domainLen, additionalInfo, orderT) 
 
+    if(nargin == 4)
+        orderT = 2;
+    end
     fprintf('tau = 0.%s, h = %s, domLen = %s \n', tauString, hString, domainLen);
-    [x1,t1,max_v1,EN1,II1,uEnSave] = GetBEEngineEnergySaveSol1D( tauString, hString, domainLen );
-    [x2,t2,max_v2,EN2,II2,uEnTaylorZeroBoundary] = GetBEEngineTaylorSol1D( tauString, hString, domainLen );
+    [x1,t1,max_v1,EN1,II1,uEnSave, t_start1, t_interval1] = GetBEEngineEnergySaveSol1D( tauString, hString, domainLen );
+    [x2,t2,max_v2,EN2,II2,uTaylorZB, t_start2, t_interval2] = GetBEEngineTaylorSol1D( tauString, hString, domainLen, orderT );
    
     if( length( x1 ) ~= length( x2 ) )
         fprintf('Different sizes in X or T - dimensions!\n');
         return;
-    elseif( sum( x1 ~= x2 ) && t1(end) ~= t2(end) )
+    elseif( (sum( x1 ~= x2 ) && t1(end) ~= t2(end)) )
         fprintf('Different values in x, y, t dimension vectors!\n');
         return;
+    elseif( sum( t_start1 ~= t_start2 ) || t_interval1 ~= t_interval2 )
+        fprintf('t_start1 = %f, t_interval1 = %f\n', t_start1, t_interval1);
+        fprintf('t_start2 = %f, t_interval2 = %f\n', t_start2, t_interval2);
+        fprintf('Different start times or time intervals!\n');
+        return;        
     end
     
     ic_utils = IC_2Waves();
-    u_end = ic_utils.GetInitialCondition2w(x1, t_start+t_interval)';
+    u_end = ic_utils.GetInitialCondition2w(x1, t_start1+t_interval1)';
     
     h = (x1(end) - x1(1))/ (length( x1 ) - 1);
     tau_enSave = (t1(end) - t1(1))/ (length( t1 ) - 1);
@@ -25,21 +33,22 @@ function CompareTaylorVsEnergySave1D(tauString, hString, domainLen, additionalIn
         tau_Taylor = (t2(end) - t2(1))/ (length( t2 ) - 1);
         fprintf('tau Taylor = %f\n', tau_Taylor);
     end
-    
+    figure(11)
+    plot(x1, uTaylorZB, 'g', x1(1:5:end), u_end(1:5:end), 'b');
+    title('End solution');
     if( additionalInfo == 1 || additionalInfo == 2 )
         
-        difference = (u_end - uEnTaylorZeroBoundary);
+        difference = (u_end - uTaylorZB);
         normDifference_L2 = h*norm(difference(:),2);
         normDifference_Inf = max(max(abs(difference(:))));
-        fprintf('|u_{ex}-u_Taylor|_L2 = %.3e\n', normDifference_L2);
-        fprintf('|u_{ex}-u_Taylor|_Inf = %.3e\n', normDifference_Inf);
-        
-        
+        fprintf('|u_{ex}-u_Taylor2|_L2 = %.7e\n', normDifference_L2);
+        fprintf('|u_{ex}-u_Taylor2|_Inf = %.7e\n', normDifference_Inf);
+      
         difference = (u_end - uEnSave);
         normDifference_L2 = h*norm(difference(:),2);
         normDifference_Inf = max(max(abs(difference(:))));
-        fprintf('|u_{ex}-u_EnSave|_L2 = %.3e\n', normDifference_L2);
-        fprintf('|u_{ex}-u_EnSave|_Inf = %.3e\n', normDifference_Inf);
+        fprintf('|u_{ex}-u_EnSave |_L2 = %.7e\n', normDifference_L2);
+        fprintf('|u_{ex}-u_EnSave |_Inf = %.7e\n', normDifference_Inf);
         
         fprintf('||u_{ex}||_Inf            = %.6f \n', max(max(abs(u_end(:)))));
    
@@ -62,7 +71,7 @@ function CompareTaylorVsEnergySave1D(tauString, hString, domainLen, additionalIn
         magX = floor( (x1(end)-x1(zeroX)) / (3*h) );
         xIndeces = zeroX-magX+1:zeroX+magX-1;
         xx=x1(xIndeces); 
-        plot(xx,(uEnSave(xIndeces) - uEnTaylorZeroBoundary(xIndeces))');
+        plot(xx,(uEnSave(xIndeces) - uTaylorZB(xIndeces))');
         xlabel('x','FontSize',18);   
         set(gca,'FontSize',18);
 
