@@ -1,4 +1,4 @@
-function [U,dvu,va,tt,II] = BE1D_vesi(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,alpha,estep,u_t0,u_t1,t_start)
+function [U,dvu,va,tt,II, E] = BE1D_vesi(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,alpha,estep,u_t0,u_t1,t_start)
 %h = 0.1;  tau = 0.00001;
 %''Good" Boussinesq Equation
 % with periodic boundary conditions
@@ -58,8 +58,14 @@ tic
 
  for j = 1:M % sloeve po vremeto
      
-   rightside=(2*u1-u0-2*sigma*tau*tau*vesi_deltah(u1,h)+sigma*tau*tau*vesi_deltah(u0,h)+2*sigma*tau*tau*vesi_delta2h(u1,h)-sigma*tau*tau*vesi_delta2h(u0,h)+tau*tau*(vesi_deltah(u1,h)-vesi_delta2h(u1,h)+alpha*vesi_deltah(u1.*u1,h)))';
-    U(1:end)=A\rightside;       
+   rightside=( 2*u1 - u0 - 2*sigma*tau*tau*vesi_deltah(u1,h) + ...
+       sigma*tau*tau*vesi_deltah(u0,h) + ...
+       2*sigma*tau*tau*vesi_delta2h(u1,h) - ...
+       sigma*tau*tau*vesi_delta2h(u0,h) + ...
+       tau*tau*(vesi_deltah(u1,h) - ...
+       vesi_delta2h(u1,h) + ...
+       alpha*vesi_deltah(u1.*u1,h)))';
+    U(1:end)=A\rightside;
       %  U(1:end)=(2*u1-u0+tau*tau*(deltah(u1,h)-delta2h(u1,h)+3*deltah(F,h)))';
    %     TR = vesi_GetInitialCondition(x, T0+(j+1)*tau, k,b, a1, a2, a12)';
   %  greshka(j)=max(abs(U-TR));
@@ -75,6 +81,18 @@ tic
             TEND = tt(e)
         end
         II(e)=h/2 * (U(1) + U(end)) + h*sum(U(2:end-1));
+        %================= energy
+        vt = (vkpo - vkmo)/(tau*2);
+        sumv = (vk+ vkpo);
+        svt = size(vt,1);
+            
+        Idhvt = BMM(sIdh,vt',sIdh11);     dhsumv = BMM(-sdh,sumv',-sdh11);
+   
+        s_isdh = size(sIdh,1)*size(sIdh,2);
+        vec1 = diag3solv(-sdh/h^2,vt);
+        res=h*(vec1')*vt + h*(vt')*vt + tau^2*(sgm-1/4)*(Idhvt*vt)/h +...
+           h*(( sumv + dhsumv'/h^2)')*sumv/4;
+        E(e) = res + h*((al*bt*(sum(vk.^3)))/3
         e=e+1;
     end
  end
