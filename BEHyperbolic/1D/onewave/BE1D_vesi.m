@@ -1,7 +1,10 @@
-function [U,dvu,va,tt,II, E] = BE1D_vesi(start_x,end_x,h,tau,sgm,t_end,beta1,beta2,alpha,estep,u_t0,u_t1,t_start)
+function [U,dvu,va,tt,II, E] = BE1D_vesi(start_x, end_x, h, tau, sgm, t_end, beta1, beta2, alpha, estep, u_t0, u_t1, t_start, picard)
 %h = 0.1;  tau = 0.00001;
 %''Good" Boussinesq Equation
 % with periodic boundary conditions
+if(nargin == 13)
+    picard = true;
+end
 L1=start_x;L2=end_x;
 T0=t_start; 
 T=t_end;  
@@ -55,17 +58,25 @@ greshka=zeros(floor(M),1);
 tic
    
 [A,detA]=vesi_create_matrix(N,sigma,h,tau);
-
+max_sit = 0;
+min_sit = 1;
+all_sit = 0;
  for j = 1:M % sloeve po vremeto
-     
-   rightside=( 2*u1 - u0 - 2*sigma*tau*tau*vesi_deltah(u1,h) + ...
-       sigma*tau*tau*vesi_deltah(u0,h) + ...
-       2*sigma*tau*tau*vesi_delta2h(u1,h) - ...
-       sigma*tau*tau*vesi_delta2h(u0,h) + ...
-       tau*tau*(vesi_deltah(u1,h) - ...
-       vesi_delta2h(u1,h) + ...
-       alpha*vesi_deltah(u1.*u1,h)))';
-    U(1:end)=A\rightside;
+    if(picard == true)
+        [U(1:end), sit_count] = SIT_v4_vesi(A,sigma,u1,u0,h,tau,alpha);
+        max_sit = max(max_sit, sit_count);
+        min_sit = min(min_sit, sit_count);
+        all_sit = all_sit + sit_count;
+    else
+        rightside=( 2*u1 - u0 - 2*sigma*tau*tau*vesi_deltah(u1,h) + ...
+            sigma*tau*tau*vesi_deltah(u0,h) + ...
+            2*sigma*tau*tau*vesi_delta2h(u1,h) - ...
+            sigma*tau*tau*vesi_delta2h(u0,h) + ...
+            tau*tau*(vesi_deltah(u1,h) - ...
+            vesi_delta2h(u1,h) + ...
+            alpha*vesi_deltah(u1.*u1,h)))';
+         U(1:end)=A\rightside;
+    end
       %  U(1:end)=(2*u1-u0+tau*tau*(deltah(u1,h)-delta2h(u1,h)+3*deltah(F,h)))';
    %     TR = vesi_GetInitialCondition(x, T0+(j+1)*tau, k,b, a1, a2, a12)';
   %  greshka(j)=max(abs(U-TR));
@@ -78,9 +89,14 @@ tic
     if(mod(j,estep)==0)
         tt(e)=j*tau;
         va(:,e) = U;
+        if((tt(e)-floor(tt(e)))==0)
+            fprintf('time = %f\n', tt(e));
+            fprintf('picard iterations = %d\n', sit_count);
+        end
         if(abs(tt(e)-t_end) <= 2*tau)
             TEND = tt(e)
         end
+        
         II(e)=h/2 * (U(1) + U(end)) + h*sum(U(2:end-1));
         %================= energy
         dh=deltah(7);
@@ -102,12 +118,19 @@ tic
         E(e) = 1/2 * ( res + h*((alpha*(sum(u0.^3)))/3 + (alpha*(sum(u1.^3)))/3) ); 
         e=e+1;
     end
+    
+
  end
-toc
-U = U';
-dvu = U;
-%II = tt;
-psi=max(greshka);
+    toc
+    U = U';
+    dvu = U;
+    %II = tt;
+    psi=max(greshka);
+    if(picard == true)
+        fprintf('max picard iterations = %d\n', max_sit);
+        fprintf('min picard iterations = %d\n', min_sit);
+        fprintf('average picard iterations = %d\n', all_sit/M);
+    end
 end
     %plot(x,U,'r',x,TR,'k')
     %figure(3)
