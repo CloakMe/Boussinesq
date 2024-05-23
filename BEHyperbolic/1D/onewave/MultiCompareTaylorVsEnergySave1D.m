@@ -24,6 +24,10 @@ if( true )
     domainLen = '60'; %128, 30
     CompareTaylorVsEnergySave1D('0000250', '40' ,domainLen, additionalInfo);
     CompareTaylorVsEnergySave1D('0000250', '20' ,domainLen, additionalInfo);
+    CompareTaylorVsEnergySave1D('0000001', '40' ,domainLen, additionalInfo, 4);
+    CompareTaylorVsEnergySave1D('0000001', '20' ,domainLen, additionalInfo, 4);
+    CompareTaylorVsEnergySave1D('0000062', '80' ,domainLen, additionalInfo, 4);
+    CompareTaylorVsEnergySave1D('0000062', '40' ,domainLen, additionalInfo, 4);    
     %CompareTaylorVsEnergySave1D('1', '90', '10' ,domainLen);
 else
     domainLen = '30'; %128, 30

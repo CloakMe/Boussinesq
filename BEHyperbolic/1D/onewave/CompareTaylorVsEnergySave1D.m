@@ -48,7 +48,7 @@ function CompareTaylorVsEnergySave1D(tauString, hString, domainLen, additionalIn
         fprintf('|u_{ex}-u_EnSave|_L2 = %6e\n', normDifference_L2);
         fprintf('|u_{ex}-u_EnSave|_Inf = %6e\n', normDifference_Inf);
 
-        fprintf('||u_{ex}||_Inf            = %.6f \n', max(max(abs(u_end(:)))));
+        fprintf('||u_{ex}||_Inf            = %.6e \n', max(max(abs(u_end(:)))));
    
         fprintf('=========================\n\n');    
 
