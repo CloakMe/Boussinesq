@@ -44,8 +44,8 @@ cp,
 \begin{abstract}
 In this paper we evaluate propagating wave solutions to the one-dimensional good Boussinesq Equation (BE).
 Two numerical methods are used to obtain a solution. The first is a conservative finite difference scheme, and the second exploits Taylor series expansions around the time variable $t$. 
-The solutions are computed over nested meshes to examine the convergence of both approaches. The main tool for testing the convergence rate of all examined finite difference schemes and Taylor expansions is the Runge's method. It is shown that for a fixed time interval the numerical methods preserve the shape, mass and maximum of the solution. The waves obtained by the two methods are compared with the exact solution.
-Both methods produce similar results in case of $O(h^{2} + \tau^2 )$ approximation order, with errors measured in $L_2$ and $L_\infty$ norms which are 100 times or less than the solution maximum. 
+The solutions are computed over nested meshes to examine the convergence of both approaches. The main tool for testing the convergence rate of all examined finite difference schemes and Taylor expansions is the Runge's method. It is shown that for a fixed time interval the numerical methods preserve the shape and mass of the solution. The waves obtained by the two methods are compared with the exact solution.
+Both methods produce similar results in case of $O(h^{2} + \tau^2 )$ approximation order, with errors measured in $L_2$ and $L_\infty$ norms which are 100 times or less than the solution maximum.
 \end{abstract}
 
 \section{\label{sec:level1}Introduction}
@@ -193,14 +193,20 @@ u(x,t) &= -2 \frac{\partial ln F(x,t)}{\partial x^2},
 \\
  F(x,t) = a_0 + a_1 e^{k_1 x + \omega_1 t + b_1} &+ a_2 e^{k_2 x + \omega_2 t + b_2}  + a_{12} e^{(k_1 + k_2) x + (\omega_1 + \omega_2)  t + b_1 + b_2}, \nonumber
 \\
-|k_i| < 1, \; \omega_i &= \sqrt{k^2_i(1-k^2_i) }, \; k_i \neq 0, \quad i = 1,2 \nonumber
+|k_i| < 1, \; \omega_i &= \sqrt{k^2_i(1-k^2_i) }, \; k_i \neq 0, \quad i = 1,2. \nonumber
 \end{align}
 Most of the work for the derivation of the exact solution could be found in \cite{exactSol1, exactSol2}. Some additional calculations were done by Vasil Vasilev where he provided formulas \rf{orgBsqSol} (private communication). 
 The parameters in \rf{orgBsqSol} for the numerical tests are defined as:
-\be
+\be\label{params}
         k_1 = 1/3,  \;\; k_2 = -1/2,  \;\; b_1 = b_2 = 0,  \;\; a_1 = a_2 = a_{12} = 1.
 \ee
-The exact solution with the above parameters is tested against the differential equation \rf{orgBsq}, using free software mathematical applications, which justified the validity of \rf{orgBsqSol}.
+The exact solution with the above parameters (see Figure \rf{ex_sol}) is tested against the differential equation \rf{orgBsq}, using free software mathematical applications, which justified the validity of \rf{orgBsqSol}.
+\begin{figure}[ht]\vspace{0.2cm}
+  \centering
+  \includegraphics[width=0.5\linewidth]{IC.png}
+\caption{The exact solution \rf{orgBsqSol} and its time derivative with parameters defined in \rf{params}. These are the two waves which move against each other. }
+\label{ex_sol}
+\end{figure}
 
 The numerical tests for both, the Conservative FDS and Taylor method, show that the time step needs to be smaller than the space step squared $\tau < h^2 < 1$. Otherwise, the solution diverges and becomes non-smooth (e.g. the graph is jagged for T>10) and there is no convergence. The last explains the choice of $h, \tau$ when measuring the convergence speed in Table \rf{tableC}, Table \rf{tableD} and Table \rf{tableA}. A short numerical analysis on the this statement could be found in Table \rf{tableConvSeq}, where we measure the effect of decreasing the time step on the convergence speed. It is also inapplicable to measure the time convergence as the space errors are much higher ( $\tau < h^2 < 1$ ).
 
@@ -231,7 +237,11 @@ The numerical tests for both, the Conservative FDS and Taylor method, show that 
 	\label{gridsT}
 \end{table}
 
-The numerical methods described in the article are tested (at least) on six different grids defined in Table \rf{gridsT}. The Conservative FDS uses second approximation order on all grids while the Taylor method uses second approximation order on Grid 1 and fourth on Grid 2 and Grid 3. Later, other combinations of $h$ and $\tau$ are also used and are explicitly defined. All computations are done with $-L_1 = L_2 = 60$.
+The numerical methods described in the article are tested (at least) on six different grids defined in Table \rf{gridsT}. The Conservative FDS uses second approximation order on all grids while the Taylor method uses second approximation order on Grid 1 and fourth on Grid 2 and Grid 3. Later, other combinations of $h$ and $\tau$ are also used and are explicitly defined.
+
+The discrete time interval for the numerical simulations is $[0, 10]$ unless stated otherwise. For that time, the two waves move against each other and at the moment $T=10$ are seen just before their collision. There is one additional experiment, with a time interval [0, 35], where the waves pass each other (i.e. collide) and the distance between them at the final moment $T$ is approximately the same as at the initial moment $T_0$. 
+
+All computations are done with $-L_1 = L_2 = 60$.
 Zero boundary condition is used on the computational edges of the space domain $[L_1, L_2]$. In case of $p=4$ the finite difference stencil extends an extra point outside the $L_1$ and $L_2$ boundaries and there the numerical solution is approximated again with $0$. This decision is taken because, the unknown function near the computational boundaries is calculated to be lower than $1e-10$ (using \rf{orgBsqSol}). Furthermore, it is confirmed that
 this approximation does not affect the convergence speed caclulated with Runge's rule (see Table \rf{tableA}).
 
@@ -360,7 +370,7 @@ $O(h^4 + \tau^ 4)$    &0.4, 1e-03          &0.221571623 &            & 0.084116 
 		\caption{Effect of decreasing the time step $\tau$. Errors $E_i$ ($O(h^{4})$) are measured in $L_2$ and $L_\infty$ norms}
 \label{tableConvSeq}
 \end{table}
-Table \ref{tableConvSeq} shows the effect of modifing the time step on the solution convergence. By increasing it $\tau>1e-4$, the stability of the Taylor Series method breaks as the $L_2$ and $L_\infty$ errors become much higher compared to the maximum of the solution wave. The solution diverges and becomes non-smooth (e.g. the graph is jagged for T=30) and there is no convergence. On the other hand, if the step $\tau<1e-5$ decreases, the accumulation of errors from numerical calculations amplifies, and thus the convergence decreases.
+Table \ref{tableConvSeq} shows the effect of modifing the time step on the solution convergence. By increasing it $\tau>1e-4$, the stability of the Taylor Series method breaks as the $L_2$ and $L_\infty$ errors become much higher compared to the maximum of the solution wave $|u_h|_\infty$. The solution diverges and becomes non-smooth (e.g. the graph is jagged for T=30) and there is no convergence. On the other hand, if the step $\tau<1e-5$ decreases, the accumulation of errors from numerical calculations amplifies, and thus the convergence decreases.
 
 \subsection{Numerical Results for the Mass}
 The mass is compared on six different grids with space and time steps defined in Table \rf{gridsT}. It is computed using the soluitons from Conservative FDS and Taylor method. For the cases with 
@@ -398,67 +408,11 @@ Taylor                &  3b (0.4, 6.25e-5) & 1.666666e+00 &  3.002585e-08 & -2.8
 One could see that all deviations are lower (at least 10 times) than the errors measured when comparing the numerical solution with the exact one (see Table \rf{tableC} and Table \rf{tableA}). On Figure \rf{massFig} one could see the Mass plotted for Grid 1. The values of the Mass for Grid 2 and 3 are similar and thus are omitted. Table \rf{tableMass} and Figure \rf{massFig} confirm that the Mass is constant over a fixed interval time ([0, 10]).
 
 \begin{figure}[ht]\vspace{0.2cm}
-	\begin{minipage}[b]{0.4\linewidth}
-		 \includegraphics[width=\linewidth]{mass.png}
-	\end{minipage}	
+  \centering
+  \includegraphics[width=0.5\linewidth]{mass.png}
 \caption{The Mass of the solution on Grid 1, using the solutions from both Conservative FDS and Taylor method.}
 \label{massFig}
 \end{figure}
-\iffalse
-Figure \ref{Test1En} shows the discrete Mass and Energy for Test 1 calculated using solutions from the Conservative FDS and Taylor method. Figure \ref{Test2En} shows analogous results for Test 2. In case of $O(|h|^2 +\tau^2)$ the Mass and Energy realized by both methods for Test 1 and Test 2 overlap (dark line and blue circles). The Energy graphs are constant functions over the time interval.
-\begin{figure}[ht]\vspace{0.2cm}
-	\begin{minipage}[b]{0.4\linewidth}
-		 \includegraphics[width=\linewidth]{Mass_bt3_c045_h005_Taylor_Conservative.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.4\linewidth}
-		\includegraphics[width=\linewidth]{Energy_bt3_c045_h005_Taylor_Conservative.png}	
-	\end{minipage}
-\caption{The Mass (left) and Energy (right) of the solution for Test 1, $O(|h|^2 + \tau^2)$ and $T=10$.}
-\label{Test1En}
-\end{figure}
-
-The Mass increases slightly over the time interval but the gain is neglectable compared to the initial value. For Test 1 the increase with respect to the initial Mass is $0.33\%$ and for Test 2 is $1.8\%$.
-
-\begin{figure}[ht]\vspace{0.2cm}
-	\begin{minipage}[b]{0.4\linewidth}
-		 \includegraphics[width=\linewidth]{Mass_bt1_c090_h010_Taylor_Conservative.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.4\linewidth}
-		\includegraphics[width=\linewidth]{Energy_bt1_c090_h010_Taylor_Conservative.png}
-		
-	\end{minipage}
-\caption{The Mass (left) and Energy (right) of the solution for Test 2, $O(|h|^2 + \tau^2)$ and $T=10$.}
-\label{Test2En}
-\end{figure}
-
-For the Taylor Method, the discrete Mass and Energy in Figure \ref{Test1En} and \ref{Test2En} are calculated with three different approximations, namely, trapezoidal formula \rf{quadr2} with $O(h^2)$, Simpson's Rule \rf{quadr4} with $O(h^4)$ and Boole's Rule \rf{quadr6-2D} with $O(h^6)$. It is observed that increasing the order of approximation does not affect the gain for the Mass. It is also confirmed that decreasing the step size $h$ produces similar result, i.e. the graph is slightly shifted upwards or downwards. In the next computations, in order to validate the proper behaviour of the Mass, only the size of the domain is changed whereas the approximation order and discrete steps are fixed.
-%----------------------------------------------------------------------------------------------------------------------------------------------
-\iffalse
-\begin{figure}[ht]\vspace{0.4cm}
-	\begin{minipage}[b]{0.33\linewidth}
-		 \includegraphics[width=\linewidth]{figures/Mass_bt1_c090_h010_x3O.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.33\linewidth}
-		\includegraphics[width=\linewidth]{figures/Energy_bt1_c090_h010_x3O.png}
-		
-	\end{minipage}
-\caption{The Mass (left) and Energy (right) of the Taylor solution for Test 1, $O(|h|^2 + \tau^2)$, $O(|h|^4 + \tau^4)$, $O(|h|^6 + \tau^6)$ and $T=10$.}
-\label{Test1TEn}
-\end{figure}
-\begin{figure}[ht]\vspace{0.4cm}
-	\begin{minipage}[b]{0.33\linewidth}
-		 \includegraphics[width=\linewidth]{figures/Mass_bt3_c045_h005_x3O.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.33\linewidth}
-		\includegraphics[width=\linewidth]{figures/Energy_bt1_c090_h010_x3O.png}
-		
-	\end{minipage}
-\caption{The Mass (left) and Energy (right) of the Taylor solution for Test 2, $O(|h|^2 + \tau^2)$, $O(|h|^4 + \tau^4)$, $O(|h|^6 + \tau^6)$ and $T=10$.}
-\label{Test2TEn}
-\end{figure}
-\fi
-%----------------------------------------------------------------------------------------------------------------------------------------------
-\fi
 
 \subsection{Numerical Results for the shape of the solution}
 
@@ -490,25 +444,44 @@ Thus, the Conservative scheme produces six numerical solutions with second appro
 	\label{compareTable}
 \end{table}
 
-Table \rf{compareTable} compares the numerical solutions from the Taylor method and the Conservative FDS with the exact formula \rf{orgBsqSol}. The first two columns define the type of used grid. The next two columns show the errors of both methods in $L_2$ norms and the next two - errors in $L_\infty$ norms. The last column displays the maximum of the soluiton on the used grid. Decreasing the time or space steps leads to smaller errors
+Table \rf{compareTable} compares the numerical solutions from the Taylor method and the Conservative FDS with the exact formula \rf{orgBsqSol}. The first two columns define the type of used grid. The next two columns show the errors of both methods in $L_2$ norms and the next two - errors in $L_\infty$ norms. The last column displays the maximum of the soluiton (at $T=10$) on the used grid. Decreasing the time or space steps leads to smaller errors
 for both methods. For the Grid 1 we used only second approximation order $p=2$ and thus the errors for both methods are similar. Nevertheless for Grid 2 and Grid 3 the Taylor method uses fourth approximation order whereas 
 the Conservative FDS uses only second. Thus, the errors measured with the Taylor method are at least $151$ times (or much) smaller on Grid 2 and at least $23$ times (or much) smaller on Grid 3 when compared to the errors from the Conservative FDS. In conclusion, the Taylor method produces finer results with smaller error when $p=4$. Nevertheless, the Conservative FDS is between 100 and 1000 times faster when using bigger time steps $\tau < h^2$ which is not possibible in the case of the Taylor method with $p=4$ because of stability restrictions (see Table \rf{tableConvSeq}).
 
-\iffalse
+\subsection{Numerical Results for the shape of the solution and its Mass and Energy on a longer time interval $T = 35$}
+
+Here, we present results for a longer time interval $[0, 35]$, obtained using the Conservative FDS and Taylor method. On Figure \rf{sol35} one could see the evolution of the shape for that time, using the Conservative FDS. An analogous picture is obtained for the Taylor method and is omitted. The results discussed below are summarized in Table \rf{final35}. 
 
 \begin{figure}[H]\vspace{0.2cm}
 	\centering
-	\begin{minipage}[b]{0.40\linewidth}
-		\includegraphics[width=\linewidth]{maximum_30_T30_bt3_c045_h005.png}
-	\end{minipage}	
-	\begin{minipage}[b]{0.40\linewidth}
-		 \includegraphics[width=\linewidth]{maximum_30_T30_bt1_c090_h020.png}
-	\end{minipage}
-\caption{Evolution of the maximum over a larger time interval $[0, 30]$ for Test 1 (left panel) and Test 2 (right panel).}
-\label{Maximum}
+	\includegraphics[width=0.7\linewidth]{solution2.png}
+\caption{Evolution of the shape over a larger time interval $[0, 35]$. The soluiton is produced using the Conservative FDS.}
+\label{sol35}
 \end{figure}
+The errors measured in $L_2$ and $L_\infty$ norms for the Conservative FDS are $0.001257$ and $0.000640$. The space and time steps are as follow: $h = 0.4$ and  $\tau = 0.05$, with $\sigma = 0.75$. The initial energy equals $0.89$ and its maximum deviation from the initial value equals $1.4076e-04$. The initial mass equals $1.66$ and its maximum deviation from the initial value equals $2.3608e-04$.
 
-\fi
+The errors measured in $L_2$ and $L_\infty$ norms for the Taylor method are $0.000629$ and $0.000385$. The space and time steps are as follow: $h = 0.4$ and  $\tau = 0.001$. The initial mass equals $1.66$ and its maximum deviation from the initial value equals $1.1196e-05$.
+
+
+
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{|c|l|l|l|l|l|l|}
+			\hline
+Method                    & $(h, \tau)$   &    $|u_{ex}-u_{h}|_{L2}$  &    $|u_{ex}-u_{h}|_{\infty}$  &   $|E_{h}-E_1|_{\infty}$ &   $|M_{h}-M_1|_{\infty}$       \\
+			\hline
+           Cons FDS          &  $(0.4,0.05)$  &  $ 0.001207$       &     $0.000640$               &     $1.4076e-04$           &               $2.3608e-04$     \\
+			\hline
+           Taylor, $p=4$       & $(0.4,0.001)$  &  $0.000629$     &      $0.000385$               &            ---           &               $1.1196e-05$     \\
+			\hline
+  		\end{tabular}
+	\caption{Error norms of the solution, energy (in case of Conservative FDS) and mass.}
+	\label{final35}
+\end{table}
+
+At the final moment, the difference between the exact and numerical solutions, measured in $L_2$ and $L_\infty$ norms, is at least 100 times less than the maximum of the wave $|u_h|_\infty = 0.1248$. For that longer time period, the energy and mass norms are also preserved with high accuracy.
+
 \section{Conclusion}
 
 \begin{thebibliography}{99} \normalsize
