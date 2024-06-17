@@ -74,9 +74,11 @@ The mass of the solution is defined by
 M(u(x,t))=\int_{\RR} u(x,t)dx,
 \end{equation}
 Equation \rf{orgBsq} is equivalent to the BPE if the mixed time and space derivative is omited. E.g. if we set $\beta_1 = 0$, $\beta_2 = 1$ and $\alpha = 3$ in equation (2) from article \cite{ref21} (Chertock, Christov, Kurganov) then it is equivalent to \rf{orgBsq} defined above. Equation \rf{orgBsq} obtains two wave soliton solution (see formula \rf{orgBsqSol} defined in section Numerical Results).
-The soliton is localized wave, which moves at constant velocity ($\omega_i, \: i=1,2$ in case of \rf{orgBsqSol}) and maintains its shape. When a soliton interacts with another soliton, it emerges from the "collision" unchanged, i.e. its amplitude, shape, and velocity are conserved. The results and observations in the conducted numerical analysis for the good Boussinesq equation \rf{orgBsq} could be further used in order to find a two wave solitary solution for the 1D and 2D BPE.
+The soliton is localized wave, which moves at constant velocity ($\omega_i, \: i=1,2$ in case of \rf{orgBsqSol}) and maintains its shape. When a soliton interacts with another soliton, it emerges from the "collision" unchanged, i.e. its amplitude, shape, and velocity are conserved. 
 
-The paper is organized as follows. Section 2 introduces the numerical methods that are used for equation \rf{orgBsq}: Method with Conservative FDS and Taylor Method which uses TS expansions around the time variable $t$. Furthermore, for each method the mass of the solution is calculated. The solution and its properties from the two methods are compared. The numerical calculations are done over nested meshes to examine the convergence of both methods. The goal is to justify the TS approach by showing that both methods exhibit similar results. Furthermore the TS method could be used with higher approximation order which produces a finer solution. Section 3 concerns the numerical results. Section 3.1 shows the convergence speed of the Conservative FDS measured when using Rugne's rule. The next section shows the convergence speed of the Taylor method. Then, the Mass and the shape of the numerical solution obtained from both methods are compared against the exact solution. The last section gives an overview of the achieved goals and summarize the results.
+The goal of the article is to show that one could obtain a numerical solution for the 1D problem \rf{orgBsq} in the frame of two solitary waves moving towards each other. Furthermore, the numerical analysis shows that increasing the approximation order and decreasing the space step, produces  numerical solution with smaller error norms. The mass and the energy (in case of the Conservative FDS) norms are perserved with the same accuracy as the numerical solution. The results and observations for the good Boussinesq equation \rf{orgBsq} could be further used in order to find a two wave solitary solution for the 1D and 2D BPE.
+
+The paper is organized as follows. Section 2 introduces the numerical methods that are used for equation \rf{orgBsq}: Method with Conservative FDS and Taylor Method which uses TS expansions around the time variable $t$. Furthermore, for each method the mass of the solution is calculated. The solution and its properties from the two methods are compared. The numerical calculations are done over nested meshes to examine the convergence of both methods. The goal is to justify the TS approach by showing that both methods exhibit similar results. Furthermore the TS method could be used with higher approximation order which produces a finer solution. Section 3 concerns the numerical results. It states the initial condition, boundary condition, space and time domains.  Section 3.1 shows the convergence speed of the Conservative FDS and energy measured with Rugne's rule. The next section shows the convergence speed of the Taylor method. Then, the Mass and the shape of the numerical solution obtained from both methods are compared against the exact solution. The last section gives an overview of the achieved goals and summarize the results.
 
 \section{Numerical Methods}
 
@@ -117,7 +119,7 @@ where $N_x$ is the number of points in $\Omega_h$ and $N_t = T/\tau$. The most t
 
 $$\left[ \dfrac{\sigma\tau^2}{h^4}, \left(-4\dfrac{\sigma\tau^2}{h^4}-\dfrac{\sigma\tau^2}{h^2}\right), \left(1+6\dfrac{\sigma\tau^2}{h^4}+2\dfrac{\sigma\tau^2}{h^2}\right), \left(-4\dfrac{\sigma\tau^2}{h^4}-\dfrac{\sigma\tau^2}{h^2}\right), \dfrac{\sigma\tau^2}{h^4} \right]$$
 
-which results from equation \rf{mainConsScheme}. Inverting it is an operation with $ O( N_x ) $ algorithmic complexity. The use of Picard iterations (which are not more than six per time step) affects complexity by a constant.
+which results from equation \rf{mainConsScheme}. This is an operation with $ O( N_x ) $ algorithmic complexity. The use of Picard iterations (which are not more than six per time step) affects complexity by a constant.
 \subsection{Discrete energy}
 
 Let $E_h (y^k)$ be the discrete energy, which is defined in the following way:
@@ -448,7 +450,7 @@ Table \rf{compareTable} compares the numerical solutions from the Taylor method 
 for both methods. For the Grid 1 we used only second approximation order $p=2$ and thus the errors for both methods are similar. Nevertheless for Grid 2 and Grid 3 the Taylor method uses fourth approximation order whereas 
 the Conservative FDS uses only second. Thus, the errors measured with the Taylor method are at least $151$ times (or much) smaller on Grid 2 and at least $23$ times (or much) smaller on Grid 3 when compared to the errors from the Conservative FDS. In conclusion, the Taylor method produces finer results with smaller error when $p=4$. Nevertheless, the Conservative FDS is between 100 and 1000 times faster when using bigger time steps $\tau < h^2$ which is not possibible in the case of the Taylor method with $p=4$ because of stability restrictions (see Table \rf{tableConvSeq}).
 
-\subsection{Numerical Results for the shape of the solution and its Mass and Energy on a longer time interval $T = 35$}
+\subsection{Numerical Results for the shape of the solution and its mass and energy on a longer time interval $T = 35$}
 
 Here, we present results for a longer time interval $[0, 35]$, obtained using the Conservative FDS and Taylor method. On Figure \rf{sol35} one could see the evolution of the shape for that time, using the Conservative FDS. An analogous picture is obtained for the Taylor method and is omitted. The results discussed below are summarized in Table \rf{final35}. 
 
@@ -469,14 +471,14 @@ The errors measured in $L_2$ and $L_\infty$ norms for the Taylor method are $0.0
 \small
 		\begin{tabular}{|c|l|l|l|l|l|l|}
 			\hline
-Method                    & $(h, \tau)$   &    $|u_{ex}-u_{h}|_{L2}$  &    $|u_{ex}-u_{h}|_{\infty}$  &   $|E_{h}-E_1|_{\infty}$ &   $|M_{h}-M_1|_{\infty}$       \\
+Method                    & $(h, \tau)$   &    $|u_{ex}-u_{h}|_{L2}$  &    $|u_{ex}-u_{h}|_{\infty}$  &   $|E_{h}-E_0|_{\infty}$ &   $|M_{h}-M_0|_{\infty}$       \\
 			\hline
            Cons FDS          &  $(0.4,0.05)$  &  $ 0.001207$       &     $0.000640$               &     $1.4076e-04$           &               $2.3608e-04$     \\
 			\hline
            Taylor, $p=4$       & $(0.4,0.001)$  &  $0.000629$     &      $0.000385$               &            ---           &               $1.1196e-05$     \\
 			\hline
   		\end{tabular}
-	\caption{Error norms of the solution, energy (in case of Conservative FDS) and mass.}
+	\caption{Error norms of the solution, energy (in case of Conservative FDS) and mass. Here $u_{ex}$ is the exact solution \rf{orgBsqSol} and $u_{h}$ is the numerical solution obtained either with the Conservative FDS or with the Taylor method, which is defined in the first column.}
 	\label{final35}
 \end{table}
 
