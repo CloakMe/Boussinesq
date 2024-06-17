@@ -50,9 +50,9 @@ Both methods produce similar results in case of $O(h^{2} + \tau^2 )$ approximati
 
 \section{\label{sec:level1}Introduction}
 
-The Boussinesq type equations are famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics, etc. For the numerical interaction of 2D Boussinesq traveling waves (TW) one needs the shape of a stationary wave in order to build the Initial Condition (IC) $u_0$, $u_1$.
+The Boussinesq type equations are famous with the approximation of shallow water waves or also weakly non--linear long waves. It is often used for simulation of various physical processes e.g. turbulence in fluid mechanics, vibrations in acoustics, etc. For the numerical interaction of Boussinesq traveling waves (TW) one needs the shape of a stationary wave in order to build the Initial Condition (IC) $u_0$, $u_1$.
 
-The shallow water model developed by Boussinesq and the equaitons he derived in this conjuction were first described in \cite{ref0}. The equation is known to have an explicit solution in the case of one moving solitary wave. It is also known that it has a solution with two solitary waves that results in their temporary combination and subsequent reemergence in their original forms after the interaction. An improvement of the Boussinesq model was done by Christov's "energy-consistent approximation" \cite{ref1} a.k.a the Boussinesq Paradigm Equation (BPE). Christov states that the original model with the initial value problem defined by Boussinesq is incorect in the sense of Hadamard (see \cite{ref1}), i.e. even small perturbations in the initial or boundary conditions could lead to significant differences in the behavior of the solution over time. Unfortunately the BPE is not known to posses an explicit solution in the case of two solitary waves. We would like to compare the numerical and the exact solutions in the case of two solitary waves. This could be done in the case of the original (a.k.a good) Boussinesq model:
+The shallow water model developed by Boussinesq and the equaitons he derived in this conjuction were first described in \cite{ref0}. The equation is known to have an explicit solution in the case of one moving solitary wave. It is also known that it has a solution with two solitary waves that results in their temporary combination and subsequent reemergence in their original forms after the interaction \cite{exactSol1, exactSol2}. An improvement of the Boussinesq model was done by Christov's "energy-consistent approximation" \cite{ref1} a.k.a the Boussinesq Paradigm Equation (BPE). Christov states that the original model with the initial value problem defined by Boussinesq is incorect in the sense of Hadamard (see \cite{ref1}), i.e. even small perturbations in the initial or boundary conditions could lead to significant differences in the behavior of the solution over time. Unfortunately the BPE is not known to posses an explicit solution in the case of two solitary waves. We would like to compare the numerical and the exact solutions in the case of two solitary waves. This could be done in the case of the original (a.k.a good) Boussinesq model:
 \begin{align}\label{orgBsq}
 &\frac{\partial^2 }{\partial t^2}u(x,t)= \frac{\partial^2}{\partial x^2}u(x,t) -  \frac{\partial^4}{\partial x^4}u(x,t) - 3\frac{\partial^2}{\partial x^2} f(u(x,t))
 \\
@@ -67,7 +67,7 @@ where $f(u) = u^2$. The domain of the unknown function $u$ is defined by:
 where $\Omega \equiv (-\infty, \infty)$ and $T>0$. The continuous energy of the solution is defined by
 \begin{eqnarray}\label{con-cont2}
 E\left( u(x,t)\right)=	\frac{1}{2} \left\|(-\partial^2_x)^{-1/2} \frac{\partial u}{\partial t}(x,t)\right\|^2 + \frac{1}{2}  \left\|u (x,t)\right\|^2 
-+ \frac{1}{2}\left\| \nabla u(x,t) \right\|^2+ \int _{R}  \frac{1}{3} u(x,t)^3 ds dx.
++ \frac{1}{2}\left\| \nabla u(x,t) \right\|^2+ \int _{R} u(x,t)^3 dx.
 \end{eqnarray}
 The mass of the solution is defined by
 \begin{equation}\label{intM}
@@ -76,13 +76,11 @@ M(u(x,t))=\int_{\RR} u(x,t)dx,
 Equation \rf{orgBsq} is equivalent to the BPE if the mixed time and space derivative is omited. E.g. if we set $\beta_1 = 0$, $\beta_2 = 1$ and $\alpha = 3$ in equation (2) from article \cite{ref21} (Chertock, Christov, Kurganov) then it is equivalent to \rf{orgBsq} defined above. Equation \rf{orgBsq} obtains two wave soliton solution (see formula \rf{orgBsqSol} defined in section Numerical Results).
 The soliton is localized wave, which moves at constant velocity ($\omega_i, \: i=1,2$ in case of \rf{orgBsqSol}) and maintains its shape. When a soliton interacts with another soliton, it emerges from the "collision" unchanged, i.e. its amplitude, shape, and velocity are conserved. 
 
-The goal of the article is to show that one could obtain a numerical solution for the 1D problem \rf{orgBsq} in the frame of two solitary waves moving towards each other. Furthermore, the numerical analysis shows that increasing the approximation order and decreasing the space step, produces  numerical solution with smaller error norms. The mass and the energy (in case of the Conservative FDS) norms are perserved with the same accuracy as the numerical solution. The results and observations for the good Boussinesq equation \rf{orgBsq} could be further used in order to find a two wave solitary solution for the 1D and 2D BPE.
+The goal of the article is to show that one could obtain a numerical solution for the 1D problem \rf{orgBsq} in the frame of two solitary waves moving towards each other. Furthermore, the numerical analysis shows that increasing the approximation order and decreasing the space step, produces  numerical solution with smaller error norms. The mass and the energy (in case of the Conservative Finite Difference Scheme) norms are preserved with the same accuracy as the numerical solution. The results and observations for the good Boussinesq equation \rf{orgBsq} could be further used in order to find a two wave solitary solution for the 1D and 2D BPE.
 
-The paper is organized as follows. Section 2 introduces the numerical methods that are used for equation \rf{orgBsq}: Method with Conservative FDS and Taylor Method which uses TS expansions around the time variable $t$. Furthermore, for each method the mass of the solution is calculated. The solution and its properties from the two methods are compared. The numerical calculations are done over nested meshes to examine the convergence of both methods. The goal is to justify the TS approach by showing that both methods exhibit similar results. Furthermore the TS method could be used with higher approximation order which produces a finer solution. Section 3 concerns the numerical results. It states the initial condition, boundary condition, space and time domains.  Section 3.1 shows the convergence speed of the Conservative FDS and energy measured with Rugne's rule. The next section shows the convergence speed of the Taylor method. Then, the Mass and the shape of the numerical solution obtained from both methods are compared against the exact solution. The last section gives an overview of the achieved goals and summarize the results.
+The paper is organized as follows. Section 2 introduces the numerical methods that are used for equation \rf{orgBsq}: Method with Conservative Finite Difference Scheme (FDS) and Taylor method which uses TS expansions around the time variable $t$. Section 3 concerns the numerical results. It states the initial condition, boundary condition, space and time domains. The numerical calculations are done over nested meshes to examine the convergence of both methods. The goal is to justify the TS approach by showing that both methods exhibit similar results. Furthermore the TS method could be used with higher approximation order which produces a finer solution. Subsection 3.1 shows the convergence speed of the Conservative FDS and energy measured with Rugne's rule. The next section shows the convergence speed of the Taylor method. Furthermore, for each method, the mass of the solution is calculated which is described in Subsection 3.3. In Subsection 3.4, the shape of the numerical solution, obtained from both methods, is compared against the exact solution. In Subsection 3.5, the shape, mass and energy of the solution are investigated one more time, over a larger time interval, where the solitary waves pass through each other. The last section gives an overview of the achieved goals and summarize the results.
 
 \section{Numerical Methods}
-
-
 
 The space domain $(-\infty,\infty)$ is replaced with a finite  interval $[L_1,L_2]$, where $|L_i|$, $i=1,2$ are sufficiently large numbers, so that the exact solution to \rf{orgBsq} and its derivatives are negligible outside this interval. A uniform grid $x_i$,  $i=0,1,\cdots N$ is introduced with step $h=|L_2-L_1|/(N-1)$ in the interval $[L_1,L_2]$. The space domain is one dimensional, and the $\Delta_h$ operator below denotes the approximation of the second derivative $\partial^2/\partial x^2$.
 Let $\tau$ be the time step in $[T_0,T]$ and $T=T_0+K \tau$ be the final time. 
@@ -108,7 +106,7 @@ g(y_i^k) = \frac{1}{3} \frac{(y_i^{k+1})^3 - (y_i^{k-1})^3}{y_i^{k+1} - y_i^{k-1
 This leads to the following Conservative finite difference scheme:
 \begin{eqnarray}\label{mainConsScheme}
 \dfrac{\sigma\tau^2}{h^4}y_{i-2}^{k+1}+\left(-4\dfrac{\sigma\tau^2}{h^4}-\dfrac{\sigma\tau^2}{h^2}\right)y_{i-1}^{k+1}+\left(1+6\dfrac{\sigma\tau^2}{h^4}+2\dfrac{\sigma\tau^2}{h^2}\right)y_{i}^{k+1}+\left(-4\dfrac{\sigma\tau^2}{h^4}-\dfrac{\sigma\tau^2}{h^2}\right)y_{i+1}^{k+1}+\dfrac{\sigma\tau^2}{h^4}y_{i+2}^{k+1}=\nonumber\\
-=2y_i^k-y_i^{k-1}-2\sigma\tau^2\Delta_h y_i^k+\sigma\tau^2\Delta_hy_i^{k-1}+2\sigma\tau^2\Delta_h^2y_i^k-\sigma\tau^2\Delta_h^2y_i^{k-1}+\tau^2\left(\Delta_hy_i^k-\Delta_h^2y_i^k+\Delta_h g(y_i^k)\right).
+=2y_i^k-y_i^{k-1}-2\sigma\tau^2\Delta_h y_i^k+\sigma\tau^2\Delta_hy_i^{k-1}+2\sigma\tau^2\Delta_h^2y_i^k-\sigma\tau^2\Delta_h^2y_i^{k-1}+\tau^2\left(\Delta_hy_i^k-\Delta_h^2y_i^k+3\Delta_h g(y_i^k)\right).
 \end{eqnarray}
 
 The last equation needs to be resolved for the upper time layer $y^{k+1}$ and the nonlinear term also depends on $y^{k+1}$, which makes \rf{mainConsScheme} implicit. For this, we do Piccard iterations at each time step.
@@ -124,7 +122,7 @@ which results from equation \rf{mainConsScheme}. This is an operation with $ O( 
 
 Let $E_h (y^k)$ be the discrete energy, which is defined in the following way:
 \begin{eqnarray}\label{energy1}
-E_h (y^k):=E_{h,L} (y^k) +\frac{1}{6}((y^{k+1})^3+(y^{k})^3,1).
+E_h (y^k):=E_{h,L} (y^k) +\frac{1}{2}((y^{k+1})^3+(y^{k})^3,1).
 \end{eqnarray}
 The linear part $E_{h,L}$ is given by
 \begin{align*}\label{den}
@@ -185,22 +183,24 @@ where $N_x$ is the number of points in $\Omega_h$ and $N_t = T/\tau$. Current ch
 
 \section{Numerical Results}
 
-The convergence rates for the Conservative FDS and Taylor method are calculated. At the end, the properties of the solution that are obtained numerically by the two different mechanisms are compared. The Mass is a vector of size $N_t$ and is calculated for each iteration step. The tool for testing the convergence rate $\xi$ of all examined finite difference schemes and TS expansions is the Runge's Method
+The convergence rates for the Conservative FDS and Taylor method are calculated. At the end, the properties of the solution that are obtained numerically by the two different mechanisms are compared. The mass is a vector of size $N_t$ and is calculated for each iteration step. The tool for testing the convergence rate $\xi$ of all examined finite difference schemes and TS expansions is the Runge's Method
 \begin{equation}\label{Runge}
 \xi = ln  \frac{\Vert u_{h} - u^*_{h/2} \Vert_\kappa } {\Vert  u_{h/2} - u^*_{h/4} \Vert_\kappa  } | / ln(2).
 \end{equation}
 For the finer meshes $u^*_{h/4}$ and $u^*_{h/2}$, the exact solution with two solitary waves is calculated using:
 \begin{align}\label{orgBsqSol}
-u(x,t) &= -2 \frac{\partial ln F(x,t)}{\partial x^2},
+u(x,t) =& -2 \frac{\partial ln F(x,t)}{\partial x^2},
 \\
- F(x,t) = a_0 + a_1 e^{k_1 x + \omega_1 t + b_1} &+ a_2 e^{k_2 x + \omega_2 t + b_2}  + a_{12} e^{(k_1 + k_2) x + (\omega_1 + \omega_2)  t + b_1 + b_2}, \nonumber
+ F(x,t) =& a_0 + a_1 e^{k_1 x + \omega_1 t + b_1} + a_2 e^{k_2 x + \omega_2 t + b_2}  + a_{12} e^{(k_1 + k_2) x + (\omega_1 + \omega_2)  t + b_1 + b_2}, \nonumber
 \\
-|k_i| < 1, \; \omega_i &= \sqrt{k^2_i(1-k^2_i) }, \; k_i \neq 0, \quad i = 1,2. \nonumber
+|k_i| <& 1, \; \omega_i = \sqrt{k^2_i(1-k^2_i) }, \; k_i \neq 0, \quad i = 1,2, \nonumber
+\\
+a_0 =& \frac{a_1 a_2}{a_{12}}\frac{4k_1^4 + 4k_2^4 - 3k_1^2 - 3k_2^2 - 2k_1^2 k_2^2 + 6\sqrt{k_1^2-k_1^4}\sqrt{k_2^2-k_2^4} }{(k_1 + k_2)^2 (4(k_1^2 + k_1 k_2 + k_2^2) - 3)}.\nonumber
 \end{align}
 Most of the work for the derivation of the exact solution could be found in \cite{exactSol1, exactSol2}. Some additional calculations were done by Vasil Vasilev where he provided formulas \rf{orgBsqSol} (private communication). 
 The parameters in \rf{orgBsqSol} for the numerical tests are defined as:
 \be\label{params}
-        k_1 = 1/3,  \;\; k_2 = -1/2,  \;\; b_1 = b_2 = 0,  \;\; a_1 = a_2 = a_{12} = 1.
+        k_1 = 1/3,  \;\; k_2 = -1/2,  \;\; b_1 = -20\sqrt{(k_1^ 2  (1 - k_1 ^ 2))}, \;\; b_2 = -20\sqrt{(k_2^ 2  (1 - k_2^2))},  \;\; a_1 = a_2 = a_{12} = 1.
 \ee
 The exact solution with the above parameters (see Figure \rf{ex_sol}) is tested against the differential equation \rf{orgBsq}, using free software mathematical applications, which justified the validity of \rf{orgBsqSol}.
 \begin{figure}[ht]\vspace{0.2cm}
@@ -241,7 +241,7 @@ The numerical tests for both, the Conservative FDS and Taylor method, show that 
 
 The numerical methods described in the article are tested (at least) on six different grids defined in Table \rf{gridsT}. The Conservative FDS uses second approximation order on all grids while the Taylor method uses second approximation order on Grid 1 and fourth on Grid 2 and Grid 3. Later, other combinations of $h$ and $\tau$ are also used and are explicitly defined.
 
-The discrete time interval for the numerical simulations is $[0, 10]$ unless stated otherwise. For that time, the two waves move against each other and at the moment $T=10$ are seen just before their collision. There is one additional experiment, with a time interval [0, 35], where the waves pass each other (i.e. collide) and the distance between them at the final moment $T$ is approximately the same as at the initial moment $T_0$. 
+The discrete time interval for the numerical simulations is $[0, 10]$ unless stated otherwise. For that time, the two waves move against each other and at the moment $T=10$ are seen just before their collision. There is one additional experiment, with a time interval [0, 35], where the waves pass through each other (i.e. collide) and the distance between them at the final moment $T$ is approximately the same as at the initial moment $T_0$. 
 
 All computations are done with $-L_1 = L_2 = 60$.
 Zero boundary condition is used on the computational edges of the space domain $[L_1, L_2]$. In case of $p=4$ the finite difference stencil extends an extra point outside the $L_1$ and $L_2$ boundaries and there the numerical solution is approximated again with $0$. This decision is taken because, the unknown function near the computational boundaries is calculated to be lower than $1e-10$ (using \rf{orgBsqSol}). Furthermore, it is confirmed that
@@ -289,12 +289,12 @@ Table \ref{tableC} measures the convergence speed based on the results of the nu
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{ Convergence speed for the discrete Energy using the Conservative FDS and approximation errors $O(h^{2})$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms. }
+		\caption{ Convergence speed for the discrete energy using the Conservative FDS and approximation errors $O(h^{2})$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms. }
 \label{tableD}
 \end{table}
-The Conservative FDS applies only second approximation order, thus $p=2$ for all completed tests. Four nested meshes are used with different step sizes which are present in the second column. The next two columns show the errors $\Vert u_{h,\tau} - u^*_{(h/2,\tau)} \Vert_\kappa$, $\Vert  u_{(h/2,\tau)} - u^*_{(h/4,\tau)} \Vert_\kappa$ and convergence speed $\xi$ from \rf{Runge} which are measured in $L_2$ and infinity norms. 
+The Conservative FDS applies only second approximation order, thus $p=2$ for all completed tests in this subsection. Four nested meshes are used with different step sizes which are present in the second column. The next two columns show the errors $\Vert u_{h,\tau} - u^*_{(h/2,\tau)} \Vert_\kappa$, $\Vert  u_{(h/2,\tau)} - u^*_{(h/4,\tau)} \Vert_\kappa$ and convergence speed $\xi$ from \rf{Runge} which are measured in $L_2$ and infinity norms. 
 
-Table \ref{tableD} is analogous to Table \ref{tableC} and measures the convergence speed based on the results of the discrete Energy \rf{energy1}. The convergence rate of both solution and Energy is found to be in correspondence with the second spatial order approximation that is used.
+Table \ref{tableD} is analogous to Table \ref{tableC} and measures the convergence speed based on the results of the discrete energy \rf{energy1}. The convergence rate of both solution and energy is found to be in correspondence with the second spatial order approximation that is used.
 
 The value of the initial energy is $0.0889$ and is computed using formula \rf{energy1}. The maximum deviation from the initial value equals $8.6644e-07$ for $h=0.4$, $8.6649e-07$ for $h=0.2$ and $8.6490e-07$ for $h=0.1$. Those differences are in correspondence with the errors $|E_i|_{L_2}$ and $|E_i|_{L_\infty}$ measured in Table \rf{tableD}.
 
@@ -376,7 +376,7 @@ Table \ref{tableConvSeq} shows the effect of modifing the time step on the solut
 
 \subsection{Numerical Results for the Mass}
 The mass is compared on six different grids with space and time steps defined in Table \rf{gridsT}. It is computed using the soluitons from Conservative FDS and Taylor method. For the cases with 
-$p=2$, we use Trapezoidal rule for integration. In case of $p=4$ and Taylor method, we use Simpson (1/3) rule. The results are displayed in Table \rf{tableMass}. The first column shows the method which is used. The second column displays the grid variant that is used (see table \rf{gridsT}). The next three columns display the initial Mass value $I_0$, maximum deviation above $I_0$ and maximum deviation below $I_0$.
+$p=2$, we use Trapezoidal rule for integration. In case of $p=4$ and Taylor method, we use Simpson (1/3) rule. The results are displayed in Table \rf{tableMass}. The first column shows the method which is used. The second column displays the grid variant that is used (see table \rf{gridsT}). The next three columns display the initial mass value $I_0$, maximum deviation above $I_0$ and maximum deviation below $I_0$.
 %D
 \begin{table}[ht]
 \centering
@@ -404,15 +404,15 @@ Taylor                &  3b (0.4, 6.25e-5) & 1.666666e+00 &  3.002585e-08 & -2.8
 			\hline 
 			\hline
 		\end{tabular}
-		\caption{ The Mass and its deviations from initial value measured on different grids. }
+		\caption{ The mass and its deviations from initial value measured on different grids. }
 \label{tableMass}
 \end{table}
-One could see that all deviations are lower (at least 10 times) than the errors measured when comparing the numerical solution with the exact one (see Table \rf{tableC} and Table \rf{tableA}). On Figure \rf{massFig} one could see the Mass plotted for Grid 1. The values of the Mass for Grid 2 and 3 are similar and thus are omitted. Table \rf{tableMass} and Figure \rf{massFig} confirm that the Mass is constant over a fixed interval time ([0, 10]).
+One could see that all deviations are lower (at least 10 times) than the errors measured when comparing the numerical solution with the exact one (see Table \rf{tableC} and Table \rf{tableA}). On Figure \rf{massFig} one could see the mass plotted for Grid 1. The values of the mass for Grid 2 and 3 are similar and thus are omitted. Table \rf{tableMass} and Figure \rf{massFig} confirm that the mass is constant over a fixed interval time ([0, 10]).
 
 \begin{figure}[ht]\vspace{0.2cm}
   \centering
   \includegraphics[width=0.5\linewidth]{mass.png}
-\caption{The Mass of the solution on Grid 1, using the solutions from both Conservative FDS and Taylor method.}
+\caption{The mass of the solution on Grid 1, using the solutions from both Conservative FDS and Taylor method.}
 \label{massFig}
 \end{figure}
 

@@ -1,0 +1,369 @@
+\documentclass{beamer}
+
+
+%\beamertemplateshadingbackground{yellow!100}{white}
+\usepackage[english]{babel}
+\usepackage{amsfonts,amsmath}
+\usepackage{graphicx}
+\usepackage{sansmathaccent}
+\pdfmapfile{+sansmathaccent.map}
+\usepackage{multirow}
+%\usetheme{Warsaw}
+\usetheme[secheader]{Madrid}
+
+\usepackage{multimedia}
+\logo{\includegraphics[height=0.5cm]{imi.jpg}}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\rf}[1]{(\ref{#1})}
+\newcommand{\RR}{\mathbb{R}}
+\newtheorem{thm}{Theorem}
+\newtheorem{lm}{Lemma}
+
+%\def\ra#1\{\renewcommand{\arraystretch}{#1}
+\begin{document}
+ %[propagating wave solutions to the 2D BPE]
+\title{Numerical Study of the good 1D Boussinesq Equation}
+
+\author[angelow@math.bas.bg]{{\underline{Krassimir Angelow}}, Veselina Vucheva}
+\institute[IMI -- BAS]{Institute of Mathematics and Informatics\\ Bulgarian Academy of Sciences, Sofia, Bulgaria,\\ e-mail: angelow@math.bas.bg}
+\date[2021]{AMITANS, June 21-26  2024,  Albena, Bulgaria}
+
+
+%---------- frame 01 ----------------
+\begin{frame}
+ \titlepage
+
+\end{frame}
+
+%---------- frame 02 ----------------
+\begin{frame}
+\tableofcontents 
+\setbeamertemplate{table of contents shaded}[default]
+\section{Good Boussinesq Equation}
+\section{Numerical Methods}
+\subsection{Conservative Finite Difference Scheme (FDS) }
+\subsection{Taylor Series (TS) Approach with Method of Lines }
+
+
+\section{Convergence}
+
+\section{Comparison Between numerical solution (TS or Conservative Scheme) with the exact solution}
+
+\section{Discrete energy and mass}
+
+%\tableofcontents 
+\end{frame}
+
+%---------- frame 03 ----------------
+\begin{frame}
+\frametitle{Boussinesq Paradigm Equation}
+
+
+The one dimensional good Boussinesq equation is
+
+\begin{align}\label{problem}
+ \frac{\partial^2 u}{\partial t^2}= \Delta u -  \Delta^2 u +  3 \Delta (u^2)
+\\
+u(x,0) = u_0(x), \quad \frac{\partial u}{\partial t}(x,0)=u_1(x), \nonumber
+\\
+u(x,t) \rightarrow 0, \quad \Delta u(x, t) \rightarrow 0 \quad \text{for} \quad x \rightarrow \infty \nonumber
+\end{align}
+where $\Delta$ is the second space derivative. The domain of the unknown function $u$ is defined by:
+\be
+ u:\Omega \times [0, T] \rightarrow R
+\ee
+where $\Omega \in R$ and $T>0$.
+\end{frame}
+
+%---------- frame 04 ----------------
+
+
+\begin{frame}
+\frametitle{Good Boussinesq Equation}
+%The results and observations for the good Boussinesq equation \rf{orgBsq} could be further used in order to find a two wave solitary solution for the 1D and 2D BPE.
+The goal of this talk is to show that:
+\begin{itemize}
+ \item one could obtain a numerical solution for the good BE in the frame of two solitary waves moving towards each other;
+ \item by increasing the approximation order or decreasing the space step, the numerical methods produce  solutions with smaller error norms;
+ \item the mass and the energy (in case of the Conservative Finite Difference Scheme) norms are preserved with the same accuracy as the numerical solution.
+\end{itemize}
+
+\end{frame}
+
+
+%---------- frame 05 ----------------
+\begin{frame}
+\frametitle{Conservation of the Energy}
+The mass:
+
+\begin{equation}\label{int}
+M(u(t))=M(u(0))=\int_{R} u(x)dx 
+\end{equation}
+
+and energy:
+\begin{align}\label{ex-en}
+E(u(t)) = E(u(0)) =&\frac{1}{2} \left\|(-\partial^2_x)^{-1/2} \frac{\partial u}{\partial t}(x,t)\right\|^2 + \frac{1}{2}  \left\|u (x,t)\right\|^2 
+ \nonumber\\
++& \frac{1}{2}\left\| \nabla u(x,t) \right\|^2+ \int _{R} u(x,t)^3 ds dx = const
+\end{align}
+of the continuous problem \rf{problemVC}. Here $E(u)$ is the exact energy of problem \rf{problemVC} and $Au=-\Delta u$.
+\end{frame}
+
+%-----------------------------------------------------------------
+
+\begin{frame}
+\frametitle{The Computational Domain $\Omega_h$}
+\framesubtitle{Equidistant Grid $h=(h_1, h_2)$}
+\begin{center}\vspace{0.4cm}
+	\begin{minipage}[b]{0.6\linewidth}
+		\includegraphics[width=\linewidth]{Omega_dah.png}
+	\end{minipage}
+\end{center}
+
+\end{frame}
+
+%---------- frame ----------------
+
+\begin{frame}
+\frametitle{Conservative FDS}
+The approximation of the differential operators is defined as:
+\begin{equation}
+\frac{\partial^2 u}{\partial t^2}(x_i, y_j, t_k ) = \frac{ u^{(k+1)}_{i, j} - 2u^{(k)}_{i,j} + u^{(k-1)}_{i,j} }{\tau^2} + O(\tau^2) 
+\end{equation}
+
+\begin{equation}
+\frac{\partial^2 u}{\partial x^2}(x_i, y_j, t_k ) = \frac{ u^{(k)}_{i+1, j} - 2u^{(k)}_{i,j} + u^{(k)}_{i-1,j} }{h_1^2} + O(h_1^2) 
+\end{equation}
+
+\begin{equation}
+\frac{\partial^2 u}{\partial y^2}(x_i, y_j, t_k ) = \frac{ u^{(k)}_{i, j+1} - 2u^{(k)}_{i,j} + u^{(k)}_{i,j-1} }{h_2^2} + O(h_2^2) 
+\end{equation}
+
+
+\begin{equation}
+\Delta_h u(x_i, y_j, t_k )  = \frac{ u^{(k)}_{i+1, j} - 2u^{(k)}_{i,j} + u^{(k)}_{i-1,j} }{h_1^2} + \frac{ u^{(k)}_{i, j+1} - 2u^{(k)}_{i,j} + u^{(k)}_{i,j-1} }{h_2^2}
+\end{equation}
+
+\end{frame}
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Conservative FDS}
+The grid function obtained from [\ref{problemVC}] is defined as:
+\begin{equation}
+\frac{ u^{(k+1)}_{i} - 2u^{(k)}_{i} + u^{(k-1)}_{i} }{\tau^2} = (\Delta_h - \Delta_h^2)u^{(k)}_{i} + \Delta_h(g(u^{(k)}_{i}))
+\end{equation}
+%
+where the non-linear term $g$ is defined as:
+\begin{align}
+g(u^{(k)}_{i,j})=& -\frac{\alpha \beta} { 3 } \left( (u^{(k+1)}_{i,j})^2 + (u^{(k-1)}_{i,j})(u^{(k+1)}_{i,j}) + (u^{(k-1)}_{i,j})^2 \right) + \nonumber\\
++&\frac{ (\beta - 1 )}{ 2 }\left( u^{(k+1)}_{i,j} + u^{(k-1)}_{i,j} \right).
+\end{align}
+
+
+\end{frame}
+
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{TS Approach with Method of Lines}
+
+Let $\Delta_h u_{i}$ be the approximation of $\Delta u$ with $O(|h|^2)$, $O(|h|^4)$.
+\\
+Let $u_{i}(t)$ be the approximation of $u(x_i, t)$ at grid point $(x_i)$.
+\\
+%here99
+From [\ref{problemVC}] one obtains a system of ODEs:
+\be \label{DiscreteEq}
+\beta (I-\Delta_h) \frac{\partial^2 u}{\partial t^2}(x_i, t)=
+ (\Delta_h - \Delta_h^2) u_{i}(t) + \Delta_h ( g( u_{i}(t) ) )
+\ee
+for $i = 0..N_1$. For each ODE in the system we do TS expansion:
+\begin{align} \label{TSe}
+u(x_i, t+\tau) = u(x_i, t) + \tau \frac{ \partial u }{ \partial t }(x_i, t)  + ... 
+%\nonumber
+%\\
+\frac{ \tau^p }{ p! } \frac{ \partial^p u }{ \partial t^p }(x_i, t) + O(\tau^{p+1})
+\end{align}
+for some natural number $p \ge 2$.
+\end{frame}
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{TS Approach with Method of Lines}
+Evaluating formula [\ref{TSe}]
+\begin{itemize}
+ \item IC $\rightarrow$ $u(x_i, y_j, t=0)$, $\frac{ \partial u }{ \partial t }(x_i, y_j, t=0)$,
+ \item $[$\ref{DiscreteEq}$]$ $\rightarrow$ $\frac{ \partial^2 u }{ \partial t^2 }(x_i, y_j, t=0)$ ,
+ \item Differentiating equation $\frac{ \partial^{p-2} u }{ \partial t^{p-2} }$ [\ref{DiscreteEq}] $\rightarrow$  $\frac{ \partial^p u }{ \partial t^p }(x_i, y_j, t)$,
+ \item Substitute the evaluated derivatives in formula $[$ \ref{TSe} $]$.
+\end{itemize}
+
+
+Thus one gets the following approximations
+\begin{description}
+ \item[$p=2$] $O(|h|^2 + \tau^2)$,
+ \item[$p=4$] $O(|h|^4 + \tau^4)$,
+ \item[$p=6$] $O(|h|^6 + \tau^6)$.
+\end{description}
+%The complexity of the algorithm is
+%$$ O( N_1 N_2 N_3 p ) $$
+%where $N_1 N_2$ is the number of points in $\Omega_h$ and $N_3 = T/\tau$.
+\end{frame}
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Validation and Results}
+Two parameters sets are used:
+\begin{description}
+ \item[Test 1] $\beta = 3$, $c = 0.45$, $\Omega = [-30, 30] \times [-27, 27]$, $T = 10$
+ \item[Test 2] $\beta = 1$, $c = 0.9$, $\Omega = [-128, 128] \times [-58, 58]$, $T = 10$
+\end{description}
+
+Numerical methods applied for each Test:
+\begin{enumerate}
+  \item Conservative FDS with $O(|h|^2 + \tau^2)$
+  \item TS method with $O(|h|^p + \tau^p)$ and $p = 2, 4, 6$
+\end{enumerate}
+
+Test 1 and Test 2 use zero boundary condition, i.e. values of the finite difference stencil outside the numerical domain $\Omega_h$ are zeros.
+\end{frame}
+
+%------------------------------------------------------------------
+
+\begin{frame}
+%C
+\frametitle{Convergence for Conservative FDS}
+$T = 10$
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
+   			\hline 
+					\hline 
+  $\beta=3$                &0.2, 0.001         &                    &                &                  &                   \\
+   c=0.45                     &0.1, 0.0005         & 0.989422   &                & 1.043649  &                   \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.00025  &0.344818    & 1.52       & 0.355517   &   1.55   \\
+	   \hline
+			\hline 
+       $\beta=1$           & 0.4, 0.002       &                   &           &                 &   \\
+                  c=0.9       & 0.2, 0.001        & 0.200424   &          &0.072726  &   \\
+  $O(h^2+ \tau^2)$  & 0.1, 0.0005       & 0.047899   & 2.06  &0.021451  & 1.76 \\
+	   \hline
+			\hline 
+		\end{tabular}
+		\caption{Convergence tests for the Conservative FDS method with zero boundary and approximation errors $O(h^{2} + \tau^2 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+\label{tableC}
+\end{table}
+
+\end{frame}
+
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Convergence for TS Approach}
+%A
+$T = 10$
+\begin{table}[ht]
+\centering
+\small
+\resizebox{0.6\linewidth}{!}{%
+		\begin{tabular}{||c|l|ll|ll||}
+			\hline
+			\hline
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+	         &                    &                               & Rate   &                                        & Rate \\
+   			\hline 
+					\hline 
+  $\beta=3$                &0.2, 0.001          &              &              &                     &      \\
+   c=0.45                     &0.1, 0.0005          &0.989414 &            &1.043641    &       \\
+     $O(h^2 + \tau^ 2)$ &0.05, 0.00025   & 0.344813 & 1.52    &0.355511    &  1.55      \\
+			\hline 
+  $\beta=3$               &0.2, 0.02       &              &            &                     &      \\
+   c=0.45                    &0.1, 0.01      &0.191224 &            &0.193874    &       \\
+     $O(h^4+ \tau^4)$ &0.05, 0.005&0.013029 & 3.87   &0.013656     &3.82       \\
+			\hline 
+  $\beta=3$               &0.2, 0.02       &                &            &                     &      \\
+     c=0.45                 &0.1, 0.01        &0.032671 &            &  0.033626    &       \\
+     $O(h^6+ \tau^6)$ &0.05, 0.005 &0.000598 &5.77     & 0.000635    & 5.72       \\
+	   \hline
+			\hline 
+       $\beta=1$       &0.4, 0.002        &             &            &           &   \\
+                  c=0.9    &0.2, 0.001       &  0.20366   &            &0.075854 &   \\
+  $O(h^2+ \tau^2)$ &0.1, 0.0005   &0.048320   &2.07  &0.022307  & 1.77 \\
+			\hline
+      $\beta=1$               &0.4, 0.04    &            &               &             &    \\
+       c=0.9                     &0.2, 0.02     & 0.028275   &        &  0.013518   &   \\
+       $O(h^4+ \tau^4)$ &0.1, 0.01   &0.001812 & 3.96  & 0.000971  & 3.80  \\
+    \hline
+  $\beta=1$     &0.4, 0.04   &            &          &                  &      \\
+      c=0.9                    &0.2, 0.02   &0.006734 &           & 0.003338      &       \\
+     $O(h^6+ \tau^6)$ &0.1, 0.01 & 0.000232 &4.86 & 0.000069  & 5.60        \\
+	   \hline
+			\hline 
+		\end{tabular}
+		}%
+		\caption{Convergence tests for Taylor method with zero boundary and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+\label{table:A}
+\end{table}
+
+\end{frame}
+
+%------------------------------------------------------------------
+
+
+\begin{frame}
+\frametitle{Results}
+\framesubtitle{Solution Shape, Taylor Series, smallest step sizes, $O(|h|^6+\tau^6)$}
+
+%\begin{figure}[ht]
+%	\centering
+%	\begin{minipage}[b]{0.49\linewidth}
+%		\includegraphics[width=\linewidth]{figures/compare_start_end_bt3_c045_T10.png}
+%	\end{minipage}	
+%	\begin{minipage}[b]{0.49\linewidth}
+%		 \includegraphics[width=\linewidth]{figures/compare_start_end_bt1_c090_T10.png}
+%	\end{minipage}
+
+Difference between localized wave at time $T=0$ and $T=10$ for Test Wave 1 with $\beta =3$  (left) and Test Wave 2 with $\beta=1$ (right). 
+%\end{figure}
+
+It is obtained that:
+\begin{description}
+ \item[$\beta = 3$, $c = 0.45$] $||u_h(t=10)-u_h(t=0)|_{L_2} =  0.00000981$
+ \item[$\beta = 1$, $c = 0.9$] $||u_h(t=10)-u_h(t=0)|_{L_2} = 0.00000186$
+\end{description}
+\end{frame}
+
+%------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Conclusion}
+
+\begin{description}
+ \item[-] 2D BPE is solved using TS method with high approximation orders $O(|h|^k+\tau^k)$, $k=2,4,6$
+ \item[-] the results are compared with the Conservative Scheme for $O(|h|^2+\tau^2)$
+ \item[-] the Energy of the TS solution is saved with high accuracy over the time interval $[0, 10]$
+ \item[-] the numerical solutions for wave speeds near the upper limit $c_{max} = min\{1, \sqrt{\beta_2/\beta_1} \}$ are stable in form and their maximums change with small errors over the time interval $[0, 10]$.
+\item[-] the obtained solutions show soliton behavior!
+\end{description}
+
+\end{frame}
+
+%------------------------------------------------------------------
+
+
+
+\end{document}
+
