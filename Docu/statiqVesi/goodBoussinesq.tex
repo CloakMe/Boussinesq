@@ -44,7 +44,7 @@ cp,
 \begin{abstract}
 In this paper we evaluate propagating wave solutions to the one-dimensional good Boussinesq Equation (BE).
 Two numerical methods are used to obtain a solution. The first is a conservative finite difference scheme, and the second exploits Taylor series expansions around the time variable $t$. 
-The solutions are computed over nested meshes to examine the convergence of both approaches. The main tool for testing the convergence rate of all examined finite difference schemes and Taylor expansions is the Runge's method. It is shown that for a fixed time interval the numerical methods preserve the shape and mass of the solution. The waves obtained by the two methods are compared with the exact solution.
+The solutions are computed over nested meshes to examine the convergence of both approaches. The main tool for testing the convergence rate of all examined finite difference schemes and Taylor expansions is the Runge's method. It is shown that for a fixed time interval the numerical methods preserve the shape of the waves after interaction and mass of the solution. The waves obtained by the two methods are compared with the exact solution.
 Both methods produce similar results in case of $O(h^{2} + \tau^2 )$ approximation order, with errors measured in $L_2$ and $L_\infty$ norms which are 100 times or less than the solution maximum.
 \end{abstract}
 
@@ -96,7 +96,7 @@ y_{\bar{t}t,i}^k=\dfrac{y_i^{k+1}-2y_i^k+y_i^{k-1}}{\tau^2},~~\Delta_h y_i^k=\df
 \end{equation}
 Here $y_{i}^k$ denotes the approximation of the unknown function $u$, on node $x_i$, at moment $t_k = T_0 + k \tau$, i.e. $y_{i}^k \approx u(x_i,t_k)$. Replacing the derivatives \rf{secDerfd} and \rf{forDerfd} in \rf{orgBsq} leads to the following equation:
 \begin{equation}\label{scheme1}
-y_{\bar{t}t,i}^k=\Delta_h y_i^{\sigma,k}-\Delta_h^2 y_i^{\sigma,k} +3\Delta_h g(y_i^k).
+y_{\bar{t}t,i}^k=\Delta_h y_i^{\sigma,k}-\Delta_h^2 y_i^{\sigma,k} - 3\Delta_h g(y_i^k).
 \end{equation}
 Here $ y_i^{\sigma,k}= y_i^{k}+\sigma \tau^2 y_{\bar{t}t,i}^k$ and the nonlinear term is approximated as in \cite{consCitat} with:
 \begin{equation}\label{nonLin}
@@ -106,7 +106,7 @@ g(y_i^k) = \frac{1}{3} \frac{(y_i^{k+1})^3 - (y_i^{k-1})^3}{y_i^{k+1} - y_i^{k-1
 This leads to the following Conservative finite difference scheme:
 \begin{eqnarray}\label{mainConsScheme}
 \dfrac{\sigma\tau^2}{h^4}y_{i-2}^{k+1}+\left(-4\dfrac{\sigma\tau^2}{h^4}-\dfrac{\sigma\tau^2}{h^2}\right)y_{i-1}^{k+1}+\left(1+6\dfrac{\sigma\tau^2}{h^4}+2\dfrac{\sigma\tau^2}{h^2}\right)y_{i}^{k+1}+\left(-4\dfrac{\sigma\tau^2}{h^4}-\dfrac{\sigma\tau^2}{h^2}\right)y_{i+1}^{k+1}+\dfrac{\sigma\tau^2}{h^4}y_{i+2}^{k+1}=\nonumber\\
-=2y_i^k-y_i^{k-1}-2\sigma\tau^2\Delta_h y_i^k+\sigma\tau^2\Delta_hy_i^{k-1}+2\sigma\tau^2\Delta_h^2y_i^k-\sigma\tau^2\Delta_h^2y_i^{k-1}+\tau^2\left(\Delta_hy_i^k-\Delta_h^2y_i^k+3\Delta_h g(y_i^k)\right).
+=2y_i^k-y_i^{k-1}-2\sigma\tau^2\Delta_h y_i^k+\sigma\tau^2\Delta_hy_i^{k-1}+2\sigma\tau^2\Delta_h^2y_i^k-\sigma\tau^2\Delta_h^2y_i^{k-1}+\tau^2\left(\Delta_hy_i^k-\Delta_h^2y_i^k-3\Delta_h g(y_i^k)\right).
 \end{eqnarray}
 
 The last equation needs to be resolved for the upper time layer $y^{k+1}$ and the nonlinear term also depends on $y^{k+1}$, which makes \rf{mainConsScheme} implicit. For this, we do Piccard iterations at each time step.
@@ -165,7 +165,7 @@ The weights $d_i$ are defined below in Table \rf{table:A00}.
 E.g. if $p=2$, then \rf{fd} is equivalent to the spatial finite difference in \rf{secDerfd}.  The approximation error of formulas \rf{fd} is $O(h^p)$. Let $u_{i}(t)$ and $u_{i, \widehat{xx}, p}(t)$ be the approximations of the unknown function $u$ and its second derivative $u_{xx}$ at arbitrary mesh point $(x_i)$ for arbitrary time $t$. Then one obtains a system of ODEs:
 \be \label{DiscreteEq}
 \frac{\partial^2 }{\partial t^2}u(x_i, t) =
-(u_{i} - u_{i, \widehat{xx}, p} + 3u^2_{i})_{\widehat{xx}, p}(t) 
+(u_{i} - u_{i, \widehat{xx}, p} - 3u^2_{i})_{\widehat{xx}, p}(t) 
 \ee
 for all mesh points $i = 0..N_x$. For each ODE in the system we do TS expansion along the time variable:
 \begin{align} \label{TSe}
@@ -210,7 +210,7 @@ The exact solution with the above parameters (see Figure \rf{ex_sol}) is tested 
 \label{ex_sol}
 \end{figure}
 
-The numerical tests for both, the Conservative FDS and Taylor method, show that the time step needs to be smaller than the space step squared $\tau < h^2 < 1$. Otherwise, the solution diverges and becomes non-smooth (e.g. the graph is jagged for T>10) and there is no convergence. The last explains the choice of $h, \tau$ when measuring the convergence speed in Table \rf{tableC}, Table \rf{tableD} and Table \rf{tableA}. A short numerical analysis on the this statement could be found in Table \rf{tableConvSeq}, where we measure the effect of decreasing the time step on the convergence speed. It is also inapplicable to measure the time convergence as the space errors are much higher ( $\tau < h^2 < 1$ ).
+The numerical tests for both, the Conservative FDS and Taylor method, show that the time step needs to be smaller than the space step squared $\tau < h^2 < 1$. Otherwise, the solution diverges and becomes non-smooth (e.g. the graph is jagged for T>10) and there is no convergence. The last explains the choice of $h, \tau$ when measuring the convergence speed in Table \rf{tableC}, Table \rf{tableD} and Table \rf{tableA}. A short numerical analysis on the this statement could be found in Subsection 3.2 and Figure \rf{figConvSeq}, where we measure the effect of decreasing the time step on the convergence speed. It is also inapplicable to measure the time convergence as the space errors are much higher ( $\tau < h^2 < 1$ ).
 
 %0
 \begin{table}[ht]
@@ -332,7 +332,7 @@ Table \ref{tableA} measures the convergence rate based on the results of the num
 \end{table}
 
 %------------------------------------------------------------------------------------------------------
-
+\iffalse
 \begin{table}[ht]
 \centering
 \small
@@ -372,7 +372,15 @@ $O(h^4 + \tau^ 4)$    &0.4, 1e-03          &0.221571623 &            & 0.084116 
 		\caption{Effect of decreasing the time step $\tau$. Errors $E_i$ ($O(h^{4})$) are measured in $L_2$ and $L_\infty$ norms}
 \label{tableConvSeq}
 \end{table}
-Table \ref{tableConvSeq} shows the effect of modifing the time step on the solution convergence. By increasing it $\tau>1e-4$, the stability of the Taylor Series method breaks as the $L_2$ and $L_\infty$ errors become much higher compared to the maximum of the solution wave $|u_h|_\infty$. The solution diverges and becomes non-smooth (e.g. the graph is jagged for T=30) and there is no convergence. On the other hand, if the step $\tau<1e-5$ decreases, the accumulation of errors from numerical calculations amplifies, and thus the convergence decreases.
+\fi
+
+\begin{figure}[ht]\vspace{0.2cm}
+  \centering
+  \includegraphics[width=0.5\linewidth]{ConvergenceDecreaseTau.png}
+\caption{Effect of decreasing the time step $\tau$. Errors $E_i$ are measured in $L_\infty$ norms and fourth approximation order ($p=4$). The green values mark the convergence speed, measured with Runge's rule \rf{Runge}, based on the measured errors $E_i$.}
+\label{figConvSeq}
+\end{figure}
+Figure \ref{figConvSeq} shows the effect of modifing the time step $\tau$ on the solution convergence. For $\tau>1e-4$, the stability of the Taylor Series method breaks as the $L_2$ and $L_\infty$ errors become much higher compared to the maximum of the solution wave $|u_h|_\infty$. The solution diverges and becomes non-smooth (e.g. the graph is jagged for t>30) and there is no convergence. On the other hand, if the step decreases and $\tau<1e-5$, the accumulation of errors from numerical calculations amplifies, and thus the convergence speed decreases. The respective convergence speeds and results when using the $L_2$ error norms are similar and are omitted.
 
 \subsection{Numerical Results for the Mass}
 The mass is compared on six different grids with space and time steps defined in Table \rf{gridsT}. It is computed using the soluitons from Conservative FDS and Taylor method. For the cases with 
@@ -448,7 +456,7 @@ Thus, the Conservative scheme produces six numerical solutions with second appro
 
 Table \rf{compareTable} compares the numerical solutions from the Taylor method and the Conservative FDS with the exact formula \rf{orgBsqSol}. The first two columns define the type of used grid. The next two columns show the errors of both methods in $L_2$ norms and the next two - errors in $L_\infty$ norms. The last column displays the maximum of the soluiton (at $T=10$) on the used grid. Decreasing the time or space steps leads to smaller errors
 for both methods. For the Grid 1 we used only second approximation order $p=2$ and thus the errors for both methods are similar. Nevertheless for Grid 2 and Grid 3 the Taylor method uses fourth approximation order whereas 
-the Conservative FDS uses only second. Thus, the errors measured with the Taylor method are at least $151$ times (or much) smaller on Grid 2 and at least $23$ times (or much) smaller on Grid 3 when compared to the errors from the Conservative FDS. In conclusion, the Taylor method produces finer results with smaller error when $p=4$. Nevertheless, the Conservative FDS is between 100 and 1000 times faster when using bigger time steps $\tau < h^2$ which is not possibible in the case of the Taylor method with $p=4$ because of stability restrictions (see Table \rf{tableConvSeq}).
+the Conservative FDS uses only second. Thus, the errors measured with the Taylor method are at least $151$ times (or much) smaller on Grid 2 and at least $23$ times (or much) smaller on Grid 3 when compared to the errors from the Conservative FDS. In conclusion, the Taylor method produces finer results with smaller error when $p=4$. Nevertheless, the Conservative FDS is between 100 and 1000 times faster when using bigger time steps $\tau < h^2$ which is not possibible in the case of the Taylor method with $p=4$ because of stability restrictions (see Figure \rf{figConvSeq}).
 
 \subsection{Numerical Results for the shape of the solution and its mass and energy on a longer time interval $T = 35$}
 

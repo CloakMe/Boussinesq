@@ -95,7 +95,7 @@ The goal of this talk is to show that:
 
 %---------- frame 05 ----------------
 \begin{frame}
-\frametitle{Conservation of the Energy}
+\frametitle{Conservation of the mass and energy}
 The mass:
 
 \begin{equation}\label{int}
@@ -138,7 +138,7 @@ y_{\bar{t}t,i}^k=\dfrac{y_i^{k+1}-2y_i^k+y_i^{k-1}}{\tau^2},
 \frametitle{Conservative FDS}
 Replacing the derivatives \rf{secDer}, \rf{secDerfd} and \rf{forDerfd} in the good BE leads to:
 \begin{equation}\label{scheme1}
-y_{\bar{t}t,i}^k=\Delta_h y_i^{\sigma,k}-\Delta_h^2 y_i^{\sigma,k} +3\Delta_h g(y_i^k).
+y_{\bar{t}t,i}^k=\Delta_h y_i^{\sigma,k}-\Delta_h^2 y_i^{\sigma,k} -3\Delta_h g(y_i^k).
 \end{equation}
 Here $ y_i^{\sigma,k}= y_i^{k}+\sigma \tau^2 y_{\bar{t}t,i}^k$, where the nonlinear term is approximated with:
 \begin{equation}\label{nonLin}
@@ -161,7 +161,7 @@ Let $u_{i}(t)$ be the approximation of $u(x_i, t)$ at grid point $(x_i)$.
 Then, inserting the above approximations into the good BE, one obtains a system of ODEs:
 \be \label{DiscreteEq}
 \frac{\partial^2 }{\partial t^2}u(x_i, t)  =
-(u_{i} - u_{i, \widehat{xx}, p} + 3u^2_{i})_{\widehat{xx}, p}(t)
+(u_{i} - u_{i, \widehat{xx}, p} - 3u^2_{i})_{\widehat{xx}, p}(t)
 \ee
 for $i = 0..N$. For each ODE in the system we do TS expansion:
 \begin{align} \label{TSe}

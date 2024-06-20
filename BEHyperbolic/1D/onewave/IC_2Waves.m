@@ -23,8 +23,8 @@ methods( Access = public )
     if(nargin == 3)
         k1 = 1/3;
         k2 = -1/2;
-        b1 = 0;
-        b2 = 0;
+        b1 = -sqrt((k1 .^ 2 .* (1 - k1 ^ 2)))*20;
+        b2 = -sqrt((k2 .^ 2 .* (1 - k2 ^ 2)))*20;
         a1 = 1; 
         a2 = 1; 
         a12 = 1;
