@@ -108,7 +108,7 @@ E(u(t)) = E(u(0)) =&\frac{1}{2} \left\|(-\partial^2_x)^{-1/2} \frac{\partial u}{
  \nonumber\\
 +& \frac{1}{2}\left\| \nabla u(x,t) \right\|^2+ \int _{R} u(x,t)^3  dx = const
 \end{align}
-of the continuous problem, where $Au=-\Delta u$.
+of the continuous problem.
 \end{frame}
 
 
@@ -259,18 +259,14 @@ $T = 10$
 	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
    			\hline 
 					\hline 
-  $\beta=3$                &0.2, 0.001         &                    &                &                  &                   \\
-   c=0.45                     &0.1, 0.0005         & 0.989422   &                & 1.043649  &                   \\
-     $O(h^2 + \tau^ 2)$ &0.05, 0.00025  &0.344818    & 1.52       & 0.355517   &   1.55   \\
-	   \hline
-			\hline 
-       $\beta=1$           & 0.4, 0.002       &                   &           &                 &   \\
-                  c=0.9       & 0.2, 0.001        & 0.200424   &          &0.072726  &   \\
-  $O(h^2+ \tau^2)$  & 0.1, 0.0005       & 0.047899   & 2.06  &0.021451  & 1.76 \\
+                                   &0.4, 0.001         &                    &                &                  &                   \\
+                                   &0.2, 0.001         & 0.0007711747   &                & 0.0005850814  &                   \\
+     $O(h^2 + \tau^ 2)$ &0.1, 0.001       & 0.0001231543  & 2.65       & 0.0001279704   &    2.19   \\
+                                    &0.05, 0.001     & 0.0000193704    & 2.67     & 0.0000236392   &   2.44   \\
 	   \hline
 			\hline 
 		\end{tabular}
-		\caption{Convergence tests for the Conservative FDS method with zero boundary and approximation errors $O(h^{2} + \tau^2 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+		\caption{Space convergence speed for the solution obtained by the Conservative FDS with zero boundary conditions and approximation errors $O(h^{2})$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
 \label{tableC}
 \end{table}
 
@@ -286,44 +282,29 @@ $T = 10$
 \begin{table}[ht]
 \centering
 \small
-\resizebox{0.6\linewidth}{!}{%
 		\begin{tabular}{||c|l|ll|ll||}
 			\hline
 			\hline
-      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+      \multirow{2  }{*}{TS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
 	         &                    &                               & Rate   &                                        & Rate \\
    			\hline 
 					\hline 
-  $\beta=3$                &0.2, 0.001          &              &              &                     &      \\
-   c=0.45                     &0.1, 0.0005          &0.989414 &            &1.043641    &       \\
-     $O(h^2 + \tau^ 2)$ &0.05, 0.00025   & 0.344813 & 1.52    &0.355511    &  1.55      \\
+                                    &0.4, 2.5e-04          &              &              &                     &      \\
+      $O(h^2 + \tau^ 2)$ &0.2, 2.5e-04          &0.0017022652 &            &0.0012462726    &       \\
+                                   &0.1, 2.5e-04   & 0.0002766992 & 2.62    &0.0002926296    &  2.09      \\
 			\hline 
-  $\beta=3$               &0.2, 0.02       &              &            &                     &      \\
-   c=0.45                    &0.1, 0.01      &0.191224 &            &0.193874    &       \\
-     $O(h^4+ \tau^4)$ &0.05, 0.005&0.013029 & 3.87   &0.013656     &3.82       \\
-			\hline 
-  $\beta=3$               &0.2, 0.02       &                &            &                     &      \\
-     c=0.45                 &0.1, 0.01        &0.032671 &            &  0.033626    &       \\
-     $O(h^6+ \tau^6)$ &0.05, 0.005 &0.000598 &5.77     & 0.000635    & 5.72       \\
-	   \hline
-			\hline 
-       $\beta=1$       &0.4, 0.002        &             &            &           &   \\
-                  c=0.9    &0.2, 0.001       &  0.20366   &            &0.075854 &   \\
-  $O(h^2+ \tau^2)$ &0.1, 0.0005   &0.048320   &2.07  &0.022307  & 1.77 \\
+                                  &0.4, 1.0e-06        &             &            &           &   \\
+   $O(h^4+ \tau^4)$   &0.2, 1.0e-06       &  0.0000091188  &            &0.0000070642 &   \\
+                                  &0.1, 1.0e-06  &0.0000003715   &4.61  &0.0000003563  & 4.31 \\
 			\hline
-      $\beta=1$               &0.4, 0.04    &            &               &             &    \\
-       c=0.9                     &0.2, 0.02     & 0.028275   &        &  0.013518   &   \\
-       $O(h^4+ \tau^4)$ &0.1, 0.01   &0.001812 & 3.96  & 0.000971  & 3.80  \\
+                                 &0.8, 6.25e-05    &            &               &             &    \\
+ $O(h^4+ \tau^4)$    &0.4, 6.25e-05     & 0.0001962184   &        &  0.0001058293   &   \\
+                                &0.2, 6.25e-05   &0.0000104438 & 4.23  & 0.0000068085  & 3.96  \\
     \hline
-  $\beta=1$     &0.4, 0.04   &            &          &                  &      \\
-      c=0.9                    &0.2, 0.02   &0.006734 &           & 0.003338      &       \\
-     $O(h^6+ \tau^6)$ &0.1, 0.01 & 0.000232 &4.86 & 0.000069  & 5.60        \\
-	   \hline
 			\hline 
 		\end{tabular}
-		}%
-		\caption{Convergence tests for Taylor method with zero boundary and different approximation errors $O(h^{2} + \tau^2 )$, $O(h^{4} + \tau^4 )$ and $O(h^{6} + \tau^6 )$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
-\label{table:A}
+		\caption{Space convergence rate for the solution obtained by the Taylor method with zero boundary conditions and approximation errors $E_i$ of second and fourth order - $O(h^{2})$ and $O(h^{4})$ - measured in $L_2$ and $L_\infty$ norms.}
+\label{tableA}
 \end{table}
 
 \end{frame}

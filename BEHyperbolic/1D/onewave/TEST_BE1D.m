@@ -5,13 +5,13 @@ tic;
 start_x=-60; end_x = 60;
 pw = 0;
 %h=.2   .0005
-h = 0.1;  tau = 0.01;
+h = 0.4;  tau = 0.01;
 %h=0.1; tau=0.01;
 %h = 0.4;  tau = 0.0005;  
 x = start_x:h:end_x;
-t_start = -20;
-t_interval=10;
-t_end = 10;
+t_start = 0;
+t_interval=7.0;
+t_end = 7.0;
 
 beta1=1;   beta2=1;  alpha=-3; beta=beta1/beta2;
 sgm = 0.75;
@@ -23,7 +23,22 @@ estep = max(floor((1/tau)/200),1); %zapazwat se 20 stypki za edinitsa vreme
 ic_new = true;
 if(ic_new)
     ic_utils = IC_2Waves();
-    [u_t0, dudt_t0] = ic_utils.GetInitialCondition2w(x, t_start);
+    k1 = 1/3;
+    k2 = -1/2;
+    a1 = 1; 
+    a2 = 1; 
+    a12 = 1;
+    
+    %t_start = -20; 
+    %b1 = 0;
+    %b2 = 0;
+    %[u_t0, dudt_t0] = ic_utils.GetInitialCondition2w(x, t_start, k1, k2, b1, b2, a1, a2, a12);
+    b1 = -sqrt((k1 .^ 2 .* (1 - k1 ^ 2)))*20;
+    b2 = -sqrt((k2 .^ 2 .* (1 - k2 ^ 2)))*20;
+    [u_t0, dudt_t0] = ic_utils.GetInitialCondition2w(x, t_start, k1, k2, b1, b2, a1, a2, a12);
+    if(nargin == 3)
+        
+    end
 else
     %if beta1, beta2 and alpha not specified then beta1 = 1.5; beta2 = 0.5, alpha = 3.
     
@@ -42,6 +57,7 @@ end
     title('Initial Condition - u,dudt');
     pause(.1);
     gg=0;
+    
 %==========================================================================================   
 % vz - v-zero layer
 % NM --> g_0; O(tau^2 + h^2); 
@@ -78,15 +94,15 @@ end
 % Taylor v3  -   O(tau^4 + h^4)/O(tau^4 + h^2) -> Vasil Vassilev Equation without u_xxtt derivative
     %dh = [1 -2 1]/h^2 se zamenq s dh = [-1 16 -30 16 -1]/(12*h^2) i
     %podobrqwame reda na sxodimost w prostranstwenite koordinati
-    %[v,dtv,va,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_interval,beta1,beta2,alpha,estep,u_t0,dudt_t0,4,4);
-    %name = 'Taylor_v3_org_O(tau^4 + h^4)_';
+    [v,dtv,va,tt,II] = BE1D_tv3(start_x,end_x,h,tau,sgm,t_interval,beta1,beta2,alpha,estep,u_t0,dudt_t0,4,4);
+    name = 'Taylor_v3_org_O(tau^4 + h^4)_';
     
 % Vesi  -   O(tau^2 + h^2)
     %dh = [1 -2 1]/h^2 se zamenq s dh = [-1 16 -30 16 -1]/(12*h^2) i
-    [u_t1, dudt_t1] = ic_utils.GetInitialCondition2w(x, t_start + tau);
-    [v,dtv,va,tt,II, E] = BE1D_vesi(start_x,end_x,h,tau,sgm,t_start + t_interval,beta1,beta2,alpha,estep,u_t0,u_t1, t_start);
-    name = 'vesi_O(tau^2 + h^2)_';
-    vers = 1;
+    %[u_t1, dudt_t1] = ic_utils.GetInitialCondition2w(x, t_start + tau, k1, k2, b1, b2, a1, a2, a12);
+    %[v,dtv,va,tt,II, E] = BE1D_vesi(start_x,end_x,h,tau,sgm,t_start + t_interval,beta1,beta2,alpha,estep,u_t0,u_t1, t_start);
+    %name = 'vesi_O(tau^2 + h^2)_';
+    %vers = 1;
     
     fprintf('elapsed time = %d min\n', toc/60.0);
     save (['SavedWorkspaces\Sol_' name num2str(floor(end_x)) '_tau' num2str(tau * 1000000,'%.07d') '_h0' num2str(h * 100,'%.02d') ]);
@@ -122,12 +138,15 @@ end
     view(0,90);
     figure(5)
     plot(x, v, 'g');
-    title('End solution');
+    
+    %title('End solution');
     if(ic_new)
         hold on;
-        u_end = ic_utils.GetInitialCondition2w(x, t_start+t_interval)';
-        plot(x(1:5:end), u_end(1:5:end), 'b');
+        u_end = ic_utils.GetInitialCondition2w(x, t_start+t_interval, k1, k2, b1, b2, a1, a2, a12)';
+        plot(x(1:10:end), u_end(1:10:end), 'bo');
         hold off;
+        set(gca,'FontSize',14);
+        legend('numerical solution', 'exact solution');
         fprintf('|u_{ex}-u_h|_L2 = %.10f\n', h*norm(v-u_end,2));
         fprintf('|u_{ex}-u_h|_Inf = %.10f\n', norm(v-u_end,Inf));
     end
@@ -198,3 +217,30 @@ end
       camva('manual');
       axis('tight')
       view(0,82);
+      
+      xcon = [ 1e-07,1e-06,1e-05,1e-04,1e-03];
+      ycon = [ 3.97, 3.98, 4.16, 3.28,     0.1];
+      yerr1 = [0.0001119103,     0.0001118226,    0.0001109456, 0.0001021745, 0.084116];
+      yerr2 = [0.0000071520,     0.0000070642,    0.000006186, 0.0000105484, 0.000104696];
+      
+      figure(20)
+%       subplot(2,1,1);
+%       semilogx(xcon,ycon,'bo')
+%       
+%         xlabel('\tau');
+%         ylabel('Conv speed');
+%       subplot(2,1,2);  
+      loglog(xcon,yerr1,'d','MarkerFaceColor','r');
+      hold on;
+      loglog(xcon,yerr2,'kd','MarkerFaceColor','k');
+      hold off;
+      legend('|u_{0.8} - u^*_{0.4}|_\infty', '|u_{0.4} - u^*_{0.2}|_\infty');
+      text(1e-07, yerr1(1) + 4e-4, '3.97', 'Color', 'green','FontSize',14);
+      text(1e-06, yerr1(2) + 4e-4, '3.98', 'Color', 'green','FontSize',14);
+      text(1e-05, yerr1(3) + 4e-4, '4.16', 'Color', 'green','FontSize',14);
+      text(1e-04, yerr1(4) + 4e-4, '3.28', 'Color', 'green','FontSize',14);
+      text(5e-04, yerr1(5) - 4e-2, 'none', 'Color', 'green','FontSize',14);
+        xlabel('\tau','FontSize',14);
+        ylabel('Errors in L_\infty norms','FontSize',14);
+        set(gca,'FontSize',14);
+        

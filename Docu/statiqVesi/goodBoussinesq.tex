@@ -210,7 +210,7 @@ The exact solution with the above parameters (see Figure \rf{ex_sol}) is tested 
 \label{ex_sol}
 \end{figure}
 
-The numerical tests for both, the Conservative FDS and Taylor method, show that the time step needs to be smaller than the space step squared $\tau < h^2 < 1$. Otherwise, the solution diverges and becomes non-smooth (e.g. the graph is jagged for T>10) and there is no convergence. The last explains the choice of $h, \tau$ when measuring the convergence speed in Table \rf{tableC}, Table \rf{tableD} and Table \rf{tableA}. A short numerical analysis on the this statement could be found in Subsection 3.2 and Figure \rf{figConvSeq}, where we measure the effect of decreasing the time step on the convergence speed. It is also inapplicable to measure the time convergence as the space errors are much higher ( $\tau < h^2 < 1$ ).
+The numerical tests for both, the Conservative FDS and Taylor method, show that the time step needs to be smaller than the space step squared $\tau < h^2 < 1$. Otherwise, the solution diverges and becomes non-smooth (e.g. the graph is jagged) and there is no convergence (see Figure \ref{figConvSeq}b)). The last explains the choice of $h, \tau$ when measuring the convergence speed in Table \rf{tableC}, Table \rf{tableD} and Table \rf{tableA}. A short numerical analysis on the this statement could be found in Subsection 3.2 and Figure \rf{figConvSeq}, where we measure the effect of decreasing the time step on the convergence speed. It is also inapplicable to measure the time convergence as the space errors are much higher ( $\tau < h^2 < 1$ ).
 
 %0
 \begin{table}[ht]
@@ -244,7 +244,7 @@ The numerical methods described in the article are tested (at least) on six diff
 The discrete time interval for the numerical simulations is $[0, 10]$ unless stated otherwise. For that time, the two waves move against each other and at the moment $T=10$ are seen just before their collision. There is one additional experiment, with a time interval [0, 35], where the waves pass through each other (i.e. collide) and the distance between them at the final moment $T$ is approximately the same as at the initial moment $T_0$. 
 
 All computations are done with $-L_1 = L_2 = 60$.
-Zero boundary condition is used on the computational edges of the space domain $[L_1, L_2]$. In case of $p=4$ the finite difference stencil extends an extra point outside the $L_1$ and $L_2$ boundaries and there the numerical solution is approximated again with $0$. This decision is taken because, the unknown function near the computational boundaries is calculated to be lower than $1e-10$ (using \rf{orgBsqSol}). Furthermore, it is confirmed that
+Zero boundary condition is used on the computational edges of the space domain $[L_1, L_2]$. In case of the second derivative, with fourth approximation order, used inside the Taylor method, the finite difference stencil extends an extra point outside the $L_1$ and $L_2$ boundaries and the numerical solution is approximated again with $0$. The same is also valid for the fourth spatial derivative, with second approximation order, used in the Conservative FDS. This decision is taken because, the unknown function near the computational boundaries is calculated to be lower than $1e-10$ (using \rf{orgBsqSol}). Furthermore, it is confirmed that
 this approximation does not affect the convergence speed caclulated with Runge's rule (see Table \rf{tableA}).
 
 \subsection{Convergence Rate for the Conservative FDS}
@@ -373,14 +373,30 @@ $O(h^4 + \tau^ 4)$    &0.4, 1e-03          &0.221571623 &            & 0.084116 
 \label{tableConvSeq}
 \end{table}
 \fi
+\begin{figure}%{r}{50mm}
+	\begin{minipage}[b]{0.46\linewidth}
+		\raggedleft
+		\includegraphics[width=\linewidth]{ConvergenceDecreaseTau.png}
+		\centerline{\ref{figConvSeq}a) }
+	\end{minipage}	
+	\begin{minipage}[b]{0.46\linewidth}
+		\raggedright
+		 \includegraphics[width=\linewidth]{endSolNumSolDiverg.png}
+		\centerline{\ref{figConvSeq}b) }
+	\end{minipage}
 
-\begin{figure}[ht]\vspace{0.2cm}
-  \centering
-  \includegraphics[width=0.5\linewidth]{ConvergenceDecreaseTau.png}
-\caption{Effect of decreasing the time step $\tau$. Errors $E_i$ are measured in $L_\infty$ norms and fourth approximation order ($p=4$). The green values mark the convergence speed, measured with Runge's rule \rf{Runge}, based on the measured errors $E_i$.}
-\label{figConvSeq}
+	\caption{\ref{figConvSeq}a) On the left panel we see the effect of decreasing the time step $\tau$. Errors $E_i$ are measured in $L_\infty$ norms and fourth approximation order ($p=4$). The green values mark the convergence speed, measured with Runge's rule \rf{Runge}, based on the measured errors $E_i$. 
+\ref{figConvSeq}b) On the right panel, the solution diverges as the time step is bigger than $h$ squared $\tau > h^2$. This is numerical example, using the TS approach, with $h=0.4$, $\tau = 0.01$ and end time $T=7$.}
+	\label{figConvSeq}
 \end{figure}
-Figure \ref{figConvSeq} shows the effect of modifing the time step $\tau$ on the solution convergence. For $\tau>1e-4$, the stability of the Taylor Series method breaks as the $L_2$ and $L_\infty$ errors become much higher compared to the maximum of the solution wave $|u_h|_\infty$. The solution diverges and becomes non-smooth (e.g. the graph is jagged for t>30) and there is no convergence. On the other hand, if the step decreases and $\tau<1e-5$, the accumulation of errors from numerical calculations amplifies, and thus the convergence speed decreases. The respective convergence speeds and results when using the $L_2$ error norms are similar and are omitted.
+
+%\begin{figure}[ht]\vspace{0.2cm}
+  %\centering
+ % \includegraphics[width=0.5\linewidth]{ConvergenceDecreaseTau.png}
+%\caption{On the left panel we see the effect of decreasing the time step $\tau$. Errors $E_i$ are measured in $L_\infty$ norms and fourth approximation order ($p=4$). The green values mark the convergence speed, measured with Runge's rule \rf{Runge}, based on the measured errors $E_i$. On the right panel the solution diverges as the time step is bigger than $h$ squared $\tau > h^2$.}
+%\label{figConvSeq}
+%\end{figure}
+Figure \ref{figConvSeq} shows the effect of modifing the time step $\tau$ on the solution convergence. The nested space grids obtain the following step sizes: $h=0.8, 0.4, 0.2$, with end time $T=10$. For $\tau>1e-4$, the stability of the Taylor Series method breaks as the $L_2$ and $L_\infty$ errors become much higher compared to the maximum of the solution wave $|u_h|_\infty$. The solution diverges and becomes non-smooth (e.g. the graph is jagged) and there is no convergence. On the other hand, if the step decreases and $\tau<1e-5$, convergence speed is near 4 which reflects the fourth order approximation that is used. The respective convergence speeds and results when using the $L_2$ error norms are similar and are omitted.
 
 \subsection{Numerical Results for the Mass}
 The mass is compared on six different grids with space and time steps defined in Table \rf{gridsT}. It is computed using the soluitons from Conservative FDS and Taylor method. For the cases with 
