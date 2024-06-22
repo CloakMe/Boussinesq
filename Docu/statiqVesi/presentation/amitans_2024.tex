@@ -23,7 +23,6 @@
 
 %\def\ra#1\{\renewcommand{\arraystretch}{#1}
 \begin{document}
- %[propagating wave solutions to the 2D BPE]
 \title{Numerical Study of the good Boussinesq Equation}
 
 \author[angelow@math.bas.bg]{{\underline{Krassimir Angelow}}, Veselina Vucheva}
@@ -58,7 +57,7 @@
 
 %---------- frame 03 ----------------
 \begin{frame}
-\frametitle{Boussinesq Paradigm Equation}
+\frametitle{Good Boussinesq Equation}
 
 
 The one dimensional good Boussinesq equation is
@@ -82,7 +81,7 @@ where $\Omega \in R$ and $T>0$.
 
 \begin{frame}
 \frametitle{Good Boussinesq Equation}
-%The results and observations for the good Boussinesq equation \rf{orgBsq} could be further used in order to find a two wave solitary solution for the 1D and 2D BPE.
+
 The goal of this talk is to show that:
 \begin{itemize}
  \item one could obtain a numerical solution for the good BE in the frame of two solitary waves moving towards each other;
@@ -95,7 +94,7 @@ The goal of this talk is to show that:
 
 %---------- frame 05 ----------------
 \begin{frame}
-\frametitle{Conservation of the mass and energy}
+\frametitle{Conservation of the Mass and Energy}
 The mass:
 
 \begin{equation}\label{int}
@@ -198,7 +197,7 @@ Thus one gets the following approximations
 
 %------------------------------------------------------------------
 \begin{frame}
-\frametitle{Exact Solution of the good BE}
+\frametitle{Exact Solution of the Good BE}
 \begin{align}\label{orgBsqSol}
 u(x,t) =& -2 \frac{\partial ln F(x,t)}{\partial x^2},
 \\
@@ -218,7 +217,7 @@ The parameters used for the numerical tests are defined as:
 %------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Exact Solution of the good BE}
+\frametitle{Exact Solution of the Good BE}
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.84\linewidth]{../IC.png}
@@ -259,10 +258,9 @@ $T = 10$
 	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
    			\hline 
 					\hline 
-                                   &0.4, 0.001         &                    &                &                  &                   \\
-                                   &0.2, 0.001         & 0.0007711747   &                & 0.0005850814  &                   \\
-     $O(h^2 + \tau^ 2)$ &0.1, 0.001       & 0.0001231543  & 2.65       & 0.0001279704   &    2.19   \\
-                                    &0.05, 0.001     & 0.0000193704    & 2.67     & 0.0000236392   &   2.44   \\
+                                   &0.4, 0.001         & 0.0007711747   &                & 0.0005850814  &           \\
+   $O(h^2 + \tau^ 2)$  &0.2, 0.001         & 0.0001231543   & 2.65       & 0.0001279704   &    2.19   \\
+                                   &0.1, 0.001        & 0.0000193704    & 2.67     & 0.0000236392   &   2.44   \\
 	   \hline
 			\hline 
 		\end{tabular}
@@ -289,17 +287,14 @@ $T = 10$
 	         &                    &                               & Rate   &                                        & Rate \\
    			\hline 
 					\hline 
-                                    &0.4, 2.5e-04          &              &              &                     &      \\
-      $O(h^2 + \tau^ 2)$ &0.2, 2.5e-04          &0.0017022652 &            &0.0012462726    &       \\
-                                   &0.1, 2.5e-04   & 0.0002766992 & 2.62    &0.0002926296    &  2.09      \\
+                                    &0.4, 2.5e-04          &0.0017022652 &            &0.0012462726    &      \\
+      $O(h^2 + \tau^ 2)$ &0.2, 2.5e-04          &0.0002766992 & 2.62    &0.0002926296    &  2.09       \\
 			\hline 
-                                  &0.4, 1.0e-06        &             &            &           &   \\
-   $O(h^4+ \tau^4)$   &0.2, 1.0e-06       &  0.0000091188  &            &0.0000070642 &   \\
-                                  &0.1, 1.0e-06  &0.0000003715   &4.61  &0.0000003563  & 4.31 \\
+                                  &0.4, 1.0e-06        &  0.0000091188  &            &0.0000070642 &   \\
+   $O(h^4+ \tau^4)$   &0.2, 1.0e-06          &0.0000003715   &4.61  &0.0000003563  & 4.31 \\
 			\hline
-                                 &0.8, 6.25e-05    &            &               &             &    \\
- $O(h^4+ \tau^4)$    &0.4, 6.25e-05     & 0.0001962184   &        &  0.0001058293   &   \\
-                                &0.2, 6.25e-05   &0.0000104438 & 4.23  & 0.0000068085  & 3.96  \\
+                                 &0.8, 6.25e-05    & 0.0001962184   &        &  0.0001058293   &   \\
+ $O(h^4+ \tau^4)$    &0.4, 6.25e-05     &0.0000104438 & 4.23  & 0.0000068085  & 3.96  \\
     \hline
 			\hline 
 		\end{tabular}
@@ -313,26 +308,77 @@ $T = 10$
 
 
 \begin{frame}
-\frametitle{Results}
-\framesubtitle{Solution Shape, Taylor Series, smallest step sizes, $O(|h|^6+\tau^6)$}
+\frametitle{Numerical Results for the Mass}
+\begin{table}[ht]
+\centering
+\small
+		\begin{tabular}{||c|l|l|l|l||}
+			\hline
+method        & ($h,\tau$)& $I_0$ &   $max(I-I_0)$ & $min(I-I_0)$  \\
+   			\hline 
+Cons FDS            &  (0.4, 2.5e-4) & 1.666666e+00 &  4.948717e-09 & -1.959443e-07                    \\
+ Taylor               &  (0.4, 2.5e-4) & 1.666666e+00 &  4.659617e-08 & 0.000000e+00                \\
+Cons FDS            &  (0.2, 2.5e-4) & 1.666666e+00 & 3.963669e-10 & -3.424187e-07             \\
+ Taylor               &  (0.2, 2.5e-4) & 1.666666e+00 & 3.499779e-08 & -1.063058e-09               \\
+	   		\hline
+			\hline
+Cons FDS             & (0.4, 1.0e-6) & 1.666666e+00 & 4.960991e-09 & -4.339504e-08                    \\
+ Taylor                & (0.4, 1.0e-6) & 1.666666e+00 & 4.708513e-08 & 0.000000e+00                   \\
+Cons FDS            & (0.2, 1.0e-6) & 1.666666e+00 & 3.831861e-10 & -6.643357e-08                  \\
+ Taylor                & (0.2, 1.0e-6) & 1.666666e+00 & 2.260040e-08 & -9.728958e-09                      \\
+	   		\hline
+			\hline
+Cons FDS           &  (0.8, 6.25e-5) & 1.666667e+00 & 8.198307e-07 & 0.000000e+00                    \\
+Taylor                &  (0.8, 6.25e-5) & 1.666666e+00 &  3.720412e-08 & 0.000000e+00                      \\
+Cons FDS           &  (0.4, 6.25e-5) & 1.666667e+00 &  2.714807e-06 & -5.367586e-09                     \\
+Taylor                &  (0.4, 6.25e-5) & 1.666666e+00 &  3.002585e-08 & -2.842618e-09                      \\
+			\hline 
+			\hline
+		\end{tabular}
+		\caption{ The mass and its deviations from initial value measured on different grids. }
+\label{tableMass}
+\end{table}
+\end{frame}
 
-%\begin{figure}[ht]
-%	\centering
-%	\begin{minipage}[b]{0.49\linewidth}
-%		\includegraphics[width=\linewidth]{figures/compare_start_end_bt3_c045_T10.png}
-%	\end{minipage}	
-%	\begin{minipage}[b]{0.49\linewidth}
-%		 \includegraphics[width=\linewidth]{figures/compare_start_end_bt1_c090_T10.png}
-%	\end{minipage}
+%------------------------------------------------------------------
 
-Difference between localized wave at time $T=0$ and $T=10$ for Test Wave 1 with $\beta =3$  (left) and Test Wave 2 with $\beta=1$ (right). 
-%\end{figure}
 
-It is obtained that:
-\begin{description}
- \item[$\beta = 3$, $c = 0.45$] $||u_h(t=10)-u_h(t=0)|_{L_2} =  0.00000981$
- \item[$\beta = 1$, $c = 0.9$] $||u_h(t=10)-u_h(t=0)|_{L_2} = 0.00000186$
-\end{description}
+\begin{frame}
+\frametitle{Numerical Results for the Shape}
+T = 35
+
+\begin{table}[ht]
+\centering
+\small
+		\resizebox{\textwidth}{!}{\begin{tabular}{|c|l|l|l|l|l|l|}
+			\hline
+Method                    & $(h, \tau)$   &    $|u_{ex}-u_{h}|_{L2}$  &    $|u_{ex}-u_{h}|_{\infty}$  &   $|E_{h}-E_0|_{\infty}$ &   $|M_{h}-M_0|_{\infty}$       \\
+			\hline
+           Cons FDS          &  $(0.4,0.05)$  &  $1.207e-03$       &     $6.4e-04$               &     $1.4076e-04$           &               $2.3608e-04$     \\
+			\hline
+           Taylor, $p=4$       & $(0.4,0.001)$  &  $6.29e-04$     &      $3.85e-04$               &            ---           &               $1.1196e-05$     \\
+			\hline
+  		\end{tabular}}
+	\caption{Error norms of the solution, energy (in case of Conservative FDS) and mass. Here $u_{ex}$ is the exact solution \rf{orgBsqSol} and $u_{h}$ is the numerical solution obtained either with the Conservative FDS or with the Taylor method, which is defined in the first column.}
+	\label{final35}
+\end{table}
+
+\end{frame}
+
+%------------------------------------------------------------------
+
+
+\begin{frame}
+\frametitle{Numerical Results for the Shape}
+
+
+\begin{figure}[H]\vspace{0.2cm}
+	\centering
+	\includegraphics[width=0.7\linewidth]{../solution2.png}
+\caption{Evolution of the shape over a larger time interval $[0, 35]$. The soluiton is produced using the Conservative FDS.}
+\label{sol35}
+\end{figure}
+
 \end{frame}
 
 %------------------------------------------------------------------
