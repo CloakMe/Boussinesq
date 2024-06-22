@@ -98,7 +98,7 @@ The goal of this talk is to show that:
 The mass:
 
 \begin{equation}\label{int}
-M(u(t))=M(u(0))=\int_{R} u(x)dx 
+M(u(t))=M(u(0))=\int_{R} u(x)dx = const
 \end{equation}
 
 and energy:
@@ -135,16 +135,16 @@ y_{\bar{t}t,i}^k=\dfrac{y_i^{k+1}-2y_i^k+y_i^{k-1}}{\tau^2},
 
 \begin{frame}
 \frametitle{Conservative FDS}
-Replacing the derivatives \rf{secDer}, \rf{secDerfd} and \rf{forDerfd} in the good BE leads to:
+Replacing the 2nd order approximations \rf{secDer}, \rf{secDerfd} and \rf{forDerfd} in the good BE leads to:
 \begin{equation}\label{scheme1}
 y_{\bar{t}t,i}^k=\Delta_h y_i^{\sigma,k}-\Delta_h^2 y_i^{\sigma,k} -3\Delta_h g(y_i^k).
 \end{equation}
-Here $ y_i^{\sigma,k}= y_i^{k}+\sigma \tau^2 y_{\bar{t}t,i}^k$, where the nonlinear term is approximated with:
+Here, $ y_i^{\sigma,k}= y_i^{k}+\sigma \tau^2 y_{\bar{t}t,i}^k$ defines the weight.
+The nonlinear term is approximated with:
 \begin{equation}\label{nonLin}
 g(y_i^k) = \frac{1}{3} \frac{(y_i^{k+1})^3 - (y_i^{k-1})^3}{y_i^{k+1} - y_i^{k-1}}.
 \end{equation}
-
-
+Thus \rf{scheme1} is implicit with respect to the upper time layer $y_i^{k+1}$ and we use Picard iterations.
 \end{frame}
 
 
