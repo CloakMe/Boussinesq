@@ -251,19 +251,19 @@ $T = 10$
 \begin{table}[ht]
 \centering
 \small
-		\begin{tabular}{||c|l|ll|ll||}
+		\resizebox{\textwidth}{!}{\begin{tabular}{||c|l|ll|ll|l||}
 			\hline
 			\hline
-      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
-	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate \\
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv. & \multirow{2  }{*}{ $|E(u(0)) - E(u(t^k))|_\infty$}  \\
+	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate &  \\
    			\hline 
 					\hline 
-                                   &0.4, 0.001         & 0.0007711747   &                & 0.0005850814  &           \\
-   $O(h^2 + \tau^ 2)$  &0.2, 0.001         & 0.0001231543   & 2.65       & 0.0001279704   &    2.19   \\
-                                   &0.1, 0.001        & 0.0000193704    & 2.67     & 0.0000236392   &   2.44   \\
+                                   &0.4, 0.001         & 0.0007711747   &                & 0.0005850814  &               &  8.6644e-07\\
+   $O(h^2 + \tau^ 2)$  &0.2, 0.001         & 0.0001231543   & 2.65       & 0.0001279704   &    2.19  & 8.6649e-07 \\
+                                   &0.1, 0.001        & 0.0000193704    & 2.67     & 0.0000236392   &   2.44   & 8.6490e-07  \\
 	   \hline
 			\hline 
-		\end{tabular}
+		\end{tabular}}
 		\caption{Space convergence speed for the solution obtained by the Conservative FDS with zero boundary conditions and approximation errors $O(h^{2})$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
 \label{tableC}
 \end{table}
@@ -289,6 +289,9 @@ $T = 10$
 					\hline 
                                     &0.4, 2.5e-04          &0.0017022652 &            &0.0012462726    &      \\
       $O(h^2 + \tau^ 2)$ &0.2, 2.5e-04          &0.0002766992 & 2.62    &0.0002926296    &  2.09       \\
+			\hline 
+                                   &0.4, 1.0e-06        &0.0007969647 &            &0.0006080163    &      \\
+      $O(h^2 + \tau^ 2)$ &0.2, 1.0e-06          &0.0001398547 & 2.51   &0.0001508256    &  2.01       \\
 			\hline 
                                   &0.4, 1.0e-06        &  0.0000091188  &            &0.0000070642 &   \\
    $O(h^4+ \tau^4)$   &0.2, 1.0e-06          &0.0000003715   &4.61  &0.0000003563  & 4.31 \\
@@ -387,11 +390,11 @@ Method                    & $(h, \tau)$   &    $|u_{ex}-u_{h}|_{L2}$  &    $|u_{
 \frametitle{Conclusion}
 
 \begin{description}
- \item[-] 2D BPE is solved using TS method with high approximation orders $O(|h|^k+\tau^k)$, $k=2,4,6$
- \item[-] the results are compared with the Conservative Scheme for $O(|h|^2+\tau^2)$
- \item[-] the Energy of the TS solution is saved with high accuracy over the time interval $[0, 10]$
- \item[-] the numerical solutions for wave speeds near the upper limit $c_{max} = min\{1, \sqrt{\beta_2/\beta_1} \}$ are stable in form and their maximums change with small errors over the time interval $[0, 10]$.
-\item[-] the obtained solutions show soliton behavior!
+ \item[-] good BE is solved using Conservative FDS and the energy is preserved;
+ \item[-] good BE is solved using Taylor method with 4th approximation order $O(|h|^4+\tau^4)$;
+ \item[-] decreasing the space step or increasing the approximation order of the numerical method leads to a solution with smaller error norms;
+ \item[-] the mass of the solution is perserved;
+\item[-] the solution shape (mass and energy) is perserved over a longer time interval $[0, 35]$, where the two solitons pass through each other and emerge from the collision unchanged.
 \end{description}
 
 \end{frame}
