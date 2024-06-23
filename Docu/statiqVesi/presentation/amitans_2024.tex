@@ -63,13 +63,13 @@
 The one dimensional good Boussinesq equation is
 
 \begin{align}\label{problem}
- \frac{\partial^2 u}{\partial t^2}= \Delta u -  \Delta^2 u +  3 \Delta (u^2)
+ \frac{\partial^2 u}{\partial t^2}= \Delta u -  \Delta^2 u +  3 \Delta g(u)
 \\
 u(x,0) = u_0(x), \quad \frac{\partial u}{\partial t}(x,0)=u_1(x), \nonumber
 \\
 u(x,t) \rightarrow 0, \quad \Delta u(x, t) \rightarrow 0 \quad \text{for} \quad x \rightarrow \infty \nonumber
 \end{align}
-where $\Delta$ is the second space derivative. The domain of the unknown function $u$ is defined by:
+where $g(u) = u^2$ and $\Delta$ is the second $x$ derivative. The domain of the unknown function $u$ is defined by:
 \be
  u:\Omega \times [0, T] \rightarrow R
 \ee
@@ -116,15 +116,21 @@ of the continuous problem.
 
 \begin{frame}
 \frametitle{Conservative FDS}
-The approximation of the differential operators is defined as:
+The space grid is defined on the interval $[L_1, L_2]$:
+\begin{equation}
+ \{x_i =L_2 +  i h : i = 0,..,(N_x-1) \}, \; h = (L_2-L_1)/(N_x-1)
+\end{equation}
+The time grid is defined on the interval $[0, T]$:
+\begin{equation}
+ \{t^k = k \tau: i = 0,..,(N_t-1) \}, \; \tau = T/(N_t-1)
+\end{equation}
+The notation $y_i^k$ is used for the approximation of the unknown function $u(x_i, t^k)$. Then, the approximation of the differential operators is defined as:
 \begin{equation}\label{secDer}
 y_{\bar{t}t,i}^k=\dfrac{y_i^{k+1}-2y_i^k+y_i^{k-1}}{\tau^2},
 \end{equation}
-
 \begin{equation}\label{secDerfd}
 \Delta_h y_i^k=\dfrac{y_{i+1}^k-2y_i^k+y_{i-1}^k}{h^2}
 \end{equation}
-
 \begin{equation}\label{forDerfd}
 \Delta_h^2 y_i^k=\dfrac{y_{i+2}^k-4y_{i+1}^k+6y_{i}^k-4y_{i-1}^k+y_{i-2}^k}{h^4}.
 \end{equation}
@@ -162,7 +168,7 @@ Then, inserting the above approximations into the good BE, one obtains a system 
 \frac{\partial^2 }{\partial t^2}u(x_i, t)  =
 (u_{i} - u_{i, \widehat{xx}, p} - 3u^2_{i})_{\widehat{xx}, p}(t)
 \ee
-for $i = 0..N$. For each ODE in the system we do TS expansion:
+for $i = 0..N_x-1$. For each ODE in the system we do TS expansion:
 \begin{align} \label{TSe}
 u(x_i, t+\tau) = u(x_i, t) + \tau \frac{ \partial u }{ \partial t }(x_i, t)  + ... 
 %\nonumber
@@ -199,7 +205,7 @@ Thus one gets the following approximations
 \begin{frame}
 \frametitle{Exact Solution of the Good BE}
 \begin{align}\label{orgBsqSol}
-u(x,t) =& -2 \frac{\partial ln F(x,t)}{\partial x^2},
+u(x,t) =& -2 \frac{\partial^2 }{\partial x^2} ln (F(x,t)),
 \\
  F(x,t) =& a_0 + a_1 e^{k_1 x + \omega_1 t + b_1} + a_2 e^{k_2 x + \omega_2 t + b_2}  + a_{12} e^{(k_1 + k_2) x + (\omega_1 + \omega_2)  t + b_1 + b_2}, \nonumber
 \\
@@ -254,7 +260,7 @@ $T = 10$
 		\resizebox{\textwidth}{!}{\begin{tabular}{||c|l|ll|ll|l||}
 			\hline
 			\hline
-      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv. & \multirow{2  }{*}{ $|E(u(0)) - E(u(t^k))|_\infty$}  \\
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv. & \multirow{2  }{*}{ $max|E(y^{0}) - E(y^k)|$}  \\
 	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate &  \\
    			\hline 
 					\hline 
@@ -317,24 +323,24 @@ $T = 10$
 \small
 		\begin{tabular}{||c|l|l|l|l||}
 			\hline
-method        & ($h,\tau$)& $I_0$ &   $max(I-I_0)$ & $min(I-I_0)$  \\
+method        & ($h,\tau$)& $M(y^0)$ &   $max \vert M(y^0) - M(y^k) \vert$   \\
    			\hline 
-Cons FDS            &  (0.4, 2.5e-4) & 1.666666e+00 &  4.948717e-09 & -1.959443e-07                    \\
- Taylor               &  (0.4, 2.5e-4) & 1.666666e+00 &  4.659617e-08 & 0.000000e+00                \\
-Cons FDS            &  (0.2, 2.5e-4) & 1.666666e+00 & 3.963669e-10 & -3.424187e-07             \\
- Taylor               &  (0.2, 2.5e-4) & 1.666666e+00 & 3.499779e-08 & -1.063058e-09               \\
+Cons FDS            &  (0.4, 2.5e-4) & 1.666666e+00 &  1.959443e-07                \\
+ Taylor               &  (0.4, 2.5e-4) & 1.666666e+00 &  4.659617e-08                 \\
+Cons FDS            &  (0.2, 2.5e-4) & 1.666666e+00 & 3.424187e-07               \\
+ Taylor               &  (0.2, 2.5e-4) & 1.666666e+00 & 3.499779e-08                \\
 	   		\hline
 			\hline
-Cons FDS             & (0.4, 1.0e-6) & 1.666666e+00 & 4.960991e-09 & -4.339504e-08                    \\
- Taylor                & (0.4, 1.0e-6) & 1.666666e+00 & 4.708513e-08 & 0.000000e+00                   \\
-Cons FDS            & (0.2, 1.0e-6) & 1.666666e+00 & 3.831861e-10 & -6.643357e-08                  \\
- Taylor                & (0.2, 1.0e-6) & 1.666666e+00 & 2.260040e-08 & -9.728958e-09                      \\
+Cons FDS             & (0.4, 1.0e-6) & 1.666666e+00 & 4.339504e-08                    \\
+ Taylor                & (0.4, 1.0e-6) & 1.666666e+00 & 4.708513e-08                   \\
+Cons FDS            & (0.2, 1.0e-6) & 1.666666e+00 & 6.643357e-08                  \\
+ Taylor                & (0.2, 1.0e-6) & 1.666666e+00 & 2.260040e-08                     \\
 	   		\hline
 			\hline
-Cons FDS           &  (0.8, 6.25e-5) & 1.666667e+00 & 8.198307e-07 & 0.000000e+00                    \\
-Taylor                &  (0.8, 6.25e-5) & 1.666666e+00 &  3.720412e-08 & 0.000000e+00                      \\
-Cons FDS           &  (0.4, 6.25e-5) & 1.666667e+00 &  2.714807e-06 & -5.367586e-09                     \\
-Taylor                &  (0.4, 6.25e-5) & 1.666666e+00 &  3.002585e-08 & -2.842618e-09                      \\
+Cons FDS           &  (0.8, 6.25e-5) & 1.666667e+00 & 8.198307e-07                    \\
+Taylor                &  (0.8, 6.25e-5) & 1.666666e+00 &  3.720412e-08                      \\
+Cons FDS           &  (0.4, 6.25e-5) & 1.666667e+00 &  2.714807e-06                     \\
+Taylor                &  (0.4, 6.25e-5) & 1.666666e+00 &  3.002585e-08                      \\
 			\hline 
 			\hline
 		\end{tabular}
@@ -355,7 +361,7 @@ T = 35
 \small
 		\resizebox{\textwidth}{!}{\begin{tabular}{|c|l|l|l|l|l|l|}
 			\hline
-Method                    & $(h, \tau)$   &    $|u_{ex}-u_{h}|_{L2}$  &    $|u_{ex}-u_{h}|_{\infty}$  &   $|E_{h}-E_0|_{\infty}$ &   $|M_{h}-M_0|_{\infty}$       \\
+Method                    & $(h, \tau)$   &    $|u_{ex}-u_{h}|_{L2}$  &    $|u_{ex}-u_{h}|_{\infty}$  &   $max \vert E(y^0) - E(y^k) \vert$ &   $max \vert M(y^0) - M(y^k) \vert$       \\
 			\hline
            Cons FDS          &  $(0.4,0.05)$  &  $1.207e-03$       &     $6.4e-04$               &     $1.4076e-04$           &               $2.3608e-04$     \\
 			\hline
@@ -402,6 +408,11 @@ Method                    & $(h, \tau)$   &    $|u_{ex}-u_{h}|_{L2}$  &    $|u_{
 %------------------------------------------------------------------
 
 
+\begin{frame}
+\frametitle{Conclusion}
 
+Thank you for your attention!
+
+\end{frame}
 \end{document}
 
