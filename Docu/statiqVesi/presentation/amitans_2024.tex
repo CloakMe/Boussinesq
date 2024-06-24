@@ -118,7 +118,7 @@ of the continuous problem.
 \frametitle{Conservative FDS}
 The space grid is defined on the interval $[L_1, L_2]$:
 \begin{equation}
- \{x_i =L_2 +  i h : i = 0,..,(N_x-1) \}, \; h = (L_2-L_1)/(N_x-1)
+ \{x_i =L_1 +  i h : i = 0,..,(N_x-1) \}, \; h = (L_2-L_1)/(N_x-1)
 \end{equation}
 The time grid is defined on the interval $[0, T]$:
 \begin{equation}
@@ -158,10 +158,9 @@ Thus \rf{scheme1} is implicit with respect to the upper time layer $y_i^{k+1}$ a
 
 \begin{frame}
 \frametitle{TS Approach with Method of Lines}
-
-Let $u_{i, \widehat{xx}, p}$ be the approximation of $\frac{\partial^2 }{\partial x^2} u$ with $O(|h|^p)$, $p=2,4$.
-\\
 Let $u_{i}(t)$ be the approximation of $u(x_i, t)$ at grid point $(x_i)$.
+\\
+Let $u_{i, \widehat{xx}, p}$ be the approximation of $\frac{\partial^2 }{\partial x^2} u$ with $O(|h|^p)$, $p=2,4$.
 \\
 Then, inserting the above approximations into the good BE, one obtains a system of ODEs:
 \be \label{DiscreteEq}
@@ -247,12 +246,17 @@ Numerical methods applied for the tests:
   \item TS method with $O(|h|^p + \tau^p)$ and $p = 2, 4$
 \end{enumerate}
 
-Numerical tests use zero boundary condition, i.e. values of the finite difference stencil outside the space domain $[L_1,L_2]$ are zeros.
+Numerical tests use zero boundary condition, i.e. values of the finite difference stencil on the $L_1$ and $L_2$ boundaries are zeros. Also, points of the finite difference stencil, outside the space domain $[L_1,L_2]$ are zeros.
 \end{frame}
 
 \begin{frame}
 %C
 \frametitle{Convergence for Conservative FDS}
+Runge's rule
+\begin{equation}\label{Runge}
+\xi = ln  \frac{\Vert u_{h} - (u_{ex})_{h} \Vert_\kappa } {\Vert  u_{h/2} - (u_{ex})_{h/2} \Vert_\kappa  } | / ln(2).
+\end{equation}
+
 $T = 10$
 \begin{table}[ht]
 \centering
@@ -260,7 +264,7 @@ $T = 10$
 		\resizebox{\textwidth}{!}{\begin{tabular}{||c|l|ll|ll|l||}
 			\hline
 			\hline
-      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv. & \multirow{2  }{*}{ $max|E(y^{0}) - E(y^k)|$}  \\
+      \multirow{2  }{*}{FDS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{$\Vert u_{h} - (u_{ex})_{h} \Vert_{L_2}$}  &Conv.& \multirow{2  }{*}{$\Vert u_{h} - (u_{ex})_{h} \Vert_\infty$}  &Conv. & \multirow{2  }{*}{ $max|E(y^{0}) - E(y^k)|$}  \\
 	                                        &                                                     &                                                                 &  Rate &                                                                       & Rate &  \\
    			\hline 
 					\hline 
@@ -270,7 +274,7 @@ $T = 10$
 	   \hline
 			\hline 
 		\end{tabular}}
-		\caption{Space convergence speed for the solution obtained by the Conservative FDS with zero boundary conditions and approximation errors $O(h^{2})$. Errors $E_i$ are measured in $L_2$ and $L_\infty$ norms}
+		\caption{Space convergence speed for the solution obtained by the Conservative FDS with zero boundary conditions and approximation errors $O(h^{2})$. Errors $\Vert u_{h} - (u_{ex})_{h} \Vert$ are measured in $L_2$ and $L_\infty$ norms}
 \label{tableC}
 \end{table}
 
@@ -289,7 +293,7 @@ $T = 10$
 		\begin{tabular}{||c|l|ll|ll||}
 			\hline
 			\hline
-      \multirow{2  }{*}{TS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{errors $E_i$in$L_2$}  &Conv.& \multirow{2  }{*}{errors $E_i$in$L_\infty$}  &Conv.  \\
+      \multirow{2  }{*}{TS}        & \multirow{2  }{*}{$h$, $\tau$}  & \multirow{2  }{*}{$\Vert u_{h} - (u_{ex})_{h} \Vert_{L_2}$}  &Conv.& \multirow{2  }{*}{$\Vert u_{h} - (u_{ex})_{h} \Vert_{\infty}$ }  &Conv.  \\
 	         &                    &                               & Rate   &                                        & Rate \\
    			\hline 
 					\hline 
@@ -307,7 +311,7 @@ $T = 10$
     \hline
 			\hline 
 		\end{tabular}
-		\caption{Space convergence rate for the solution obtained by the Taylor method with zero boundary conditions and approximation errors $E_i$ of second and fourth order - $O(h^{2})$ and $O(h^{4})$ - measured in $L_2$ and $L_\infty$ norms.}
+		\caption{Space convergence rate for the solution obtained by the Taylor method with zero boundary conditions and approximation errors $\Vert u_{h} - (u_{ex})_{h} \Vert$ of second and fourth order - $O(h^{2})$ and $O(h^{4})$ - measured in $L_2$ and $L_\infty$ norms.}
 \label{tableA}
 \end{table}
 
@@ -326,21 +330,21 @@ $T = 10$
 method        & ($h,\tau$)& $M(y^0)$ &   $max \vert M(y^0) - M(y^k) \vert$   \\
    			\hline 
 Cons FDS            &  (0.4, 2.5e-4) & 1.666666e+00 &  1.959443e-07                \\
- Taylor               &  (0.4, 2.5e-4) & 1.666666e+00 &  4.659617e-08                 \\
+Taylor, $p=2$     &  (0.4, 2.5e-4) & 1.666666e+00 &  4.659617e-08                 \\
 Cons FDS            &  (0.2, 2.5e-4) & 1.666666e+00 & 3.424187e-07               \\
- Taylor               &  (0.2, 2.5e-4) & 1.666666e+00 & 3.499779e-08                \\
-	   		\hline
-			\hline
-Cons FDS             & (0.4, 1.0e-6) & 1.666666e+00 & 4.339504e-08                    \\
- Taylor                & (0.4, 1.0e-6) & 1.666666e+00 & 4.708513e-08                   \\
-Cons FDS            & (0.2, 1.0e-6) & 1.666666e+00 & 6.643357e-08                  \\
- Taylor                & (0.2, 1.0e-6) & 1.666666e+00 & 2.260040e-08                     \\
+Taylor, $p=2$     &  (0.2, 2.5e-4) & 1.666666e+00 & 3.499779e-08                \\
+%	   		\hline
+%			\hline
+%Cons FDS             & (0.4, 1.0e-6) & 1.666666e+00 & 4.339504e-08                    \\
+% Taylor                & (0.4, 1.0e-6) & 1.666666e+00 & 4.708513e-08                   \\
+%Cons FDS            & (0.2, 1.0e-6) & 1.666666e+00 & 6.643357e-08                  \\
+% Taylor                & (0.2, 1.0e-6) & 1.666666e+00 & 2.260040e-08                     \\
 	   		\hline
 			\hline
 Cons FDS           &  (0.8, 6.25e-5) & 1.666667e+00 & 8.198307e-07                    \\
-Taylor                &  (0.8, 6.25e-5) & 1.666666e+00 &  3.720412e-08                      \\
+Taylor, $p=4$     &  (0.8, 6.25e-5) & 1.666666e+00 &  3.720412e-08                      \\
 Cons FDS           &  (0.4, 6.25e-5) & 1.666667e+00 &  2.714807e-06                     \\
-Taylor                &  (0.4, 6.25e-5) & 1.666666e+00 &  3.002585e-08                      \\
+Taylor, $p=4$    &  (0.4, 6.25e-5) & 1.666666e+00 &  3.002585e-08                      \\
 			\hline 
 			\hline
 		\end{tabular}
