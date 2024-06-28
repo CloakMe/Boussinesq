@@ -210,7 +210,7 @@ The exact solution, with the above parameters (see Figure \rf{ex_sol}), is teste
 \label{ex_sol}
 \end{figure}
 
-The numerical tests for both, the Conservative FDS and Taylor method ($p=2$), show that the time step needs to be smaller than the space step squared $\tau < h^2 < 1$. For the Taylor method with $p=4$, the restriction is even stronger. Otherwise, the solution diverges and becomes non-smooth (e.g. the graph is jagged) and there is no convergence (see Figure \ref{figConvSeq}b)). The last explains the choice of $h, \tau$ when measuring the convergence speed in Table \rf{tableC}, Table \rf{tableD} and Table \rf{tableA}. A short numerical analysis on the this statement could be found in Subsection 3.2 and Figure \rf{figConvSeq}, where we measure the effect of decreasing the time step on the convergence speed. It is also inapplicable to measure the time convergence as the space errors are much higher ( $\tau < h^2 < 1$ ). Thus the time step $\tau$ is kept constant when measuring convergence speed with Runge's rule \rf{Runge}.
+The numerical tests for both, the Conservative FDS and Taylor method ($p=2$), show that the time step needs to be smaller than the space step squared $\tau < h^2 < 1$. For the Taylor method with $p=4$, the restriction is even stronger. Otherwise, the solution diverges and becomes non-smooth (e.g. the graph is jagged) and there is no convergence (see Figure \rf{figConvSeq}b)). The last explains the choice of $h, \tau$ when measuring the convergence speed in Table \rf{tableC}, Table \rf{tableD} and Table \rf{tableA}. A short numerical analysis on the this statement could be found in Subsection 3.2 and Figure \rf{figConvSeq}, where we measure the effect of decreasing the time step on the convergence speed. It is also inapplicable to measure the time convergence as the space errors are much higher ( $\tau < h^2 < 1$ ). Thus the time step $\tau$ is kept constant when measuring convergence speed with Runge's rule \rf{Runge}.
 
 %0
 \begin{table}[ht]
@@ -249,7 +249,7 @@ this approximation does not affect the convergence speed caclulated with Runge's
 
 \subsection{Convergence Rate for the Conservative FDS}
 
-Table \ref{tableC} measures the convergence speed based on the results of the numerical solution $u_h$. The $\sigma$ parameter in \rf{mainConsScheme} is set to $\sigma = 0.75$. 
+Table \rf{tableC} measures the convergence speed based on the results of the numerical solution $u_h$. The $\sigma$ parameter in \rf{mainConsScheme} is set to $\sigma = 0.75$. 
 %C
 \begin{table}[ht]
 \centering
@@ -293,12 +293,12 @@ Table \ref{tableC} measures the convergence speed based on the results of the nu
 \end{table}
 The Conservative FDS applies only second approximation order, thus $p=2$ for all completed tests in this subsection. Three nested meshes are used with different step sizes which are present in the second column. The next two columns show the errors $\Vert u_{h} - (u_{ex})_{h} \Vert_\kappa$, $\Vert  u_{(h/2)} - (u_{ex})_{h/2} \Vert_\kappa$ and convergence speed $\xi$ from \rf{Runge}, which are measured in $L_2$ and infinity norms. The time step $\tau = 0.001$ is kept constant.
 
-Table \ref{tableD} is analogous to Table \ref{tableC} and measures the convergence speed based on the results of the discrete energy \rf{energy1}. The only difference is that in the last Table \ref{tableD}, the energy is calculated over four nested meshes and no exact formula is used in the Runge's rule. The convergence rate of both solution and energy is found to be in correspondence with the second spatial order approximation that is used.
+Table \rf{tableD} is analogous to Table \rf{tableC} and measures the convergence speed based on the results of the discrete energy \rf{energy1}. The only difference is that in the last Table \rf{tableD}, the energy is calculated over four nested meshes and no exact formula is used in the Runge's rule. The convergence rate of both solution and energy is found to be in correspondence with the second spatial order approximation that is used.
 The last column in table measures the deviations of the energy with respect to its initial value (equal to $0.0889$) and is computed using formula \rf{energy1}. There, the measured differences are lower than the  errors $|E_i|_{L_2}$ and $|E_i|_{L_\infty}$ of the numerical solution, measured in Table \rf{tableC}. In conclusion, we see that the energy is preserved with even higher accuracy than the numerical solution and both of those are calculated with a convergence rate of about $1.86$ or higher. Decreasing the step size $h$ decreases the errors of the numerical solution.
 
 \subsection{Convergence Rate for the TS Approach with Method of Lines}
 
-Table \ref{tableA} measures the convergence rate based on the results of the numerical solution $u_h$. The Taylor method applies second and fourth approximation order, i.e. $p=2$ on Grid 1 and $p=4$ on Grid 2 and Grid 3 which is defined in the first column. 
+Table \rf{tableA} measures the convergence rate based on the results of the numerical solution $u_h$. The Taylor method applies second and fourth approximation order, i.e. $p=2$ on Grid 1 and Grid 2 and $p=4$ on Grid 2 and Grid 3, which is defined in the first column. 
  Three nested meshes are used with different step sizes which are present in the second column. The next two columns show the errors $\Vert u_{h} - (u_{ex})_{h} \Vert_\kappa$, $\Vert  u_{h/2} - (u_{ex})_{h/2} \Vert_\kappa$ and convergence speed $\xi$ from \rf{Runge}, which are measured in $L_2$ and infinity norms. The convergence results for the Taylor solution correspond to the second and fourth approximation order of the space derivatives that are used. 
 %A
 \begin{table}[ht]
@@ -394,12 +394,11 @@ $O(h^4 + \tau^ 4)$    &0.4, 1e-03          &0.221571623 &            & 0.084116 
 %\caption{On the left panel we see the effect of decreasing the time step $\tau$. Errors $E_i$ are measured in $L_\infty$ norms and fourth approximation order ($p=4$). The green values mark the convergence speed, measured with Runge's rule \rf{Runge}, based on the measured errors $E_i$. On the right panel the solution diverges as the time step is bigger than $h$ squared $\tau > h^2$.}
 %\label{figConvSeq}
 %\end{figure}
-Figure \ref{figConvSeq} shows the effect of modifing the time step $\tau$ on the solution convergence. The nested space grids obtain the following step sizes: $h=0.8, 0.4$, with end time $T=10$. For $\tau>1e-4$, the stability of the Taylor Series method breaks as the $L_2$ and $L_\infty$ errors become much higher compared to the maximum of the solution wave $|u_h|_\infty$. The solution diverges and becomes non-smooth (e.g. the graph is jagged) and there is no convergence. On the other hand, if the step decreases and $\tau<1e-5$, convergence speed is near 4 which reflects the fourth approximation order that is used. The respective convergence speeds and results when using the $L_2$ error norms are similar and are omitted.
+Figure \rf{figConvSeq} shows the effect of modifing the time step $\tau$ on the solution convergence. The nested space grids obtain the following step sizes: $h=0.8, 0.4$, with end time $T=10$. For $\tau>1e-4$, the stability of the Taylor Series method breaks as the $L_2$ and $L_\infty$ errors become much higher compared to the maximum of the solution wave $|u_h|_\infty$. The solution diverges and becomes non-smooth (e.g. the graph is jagged) and there is no convergence. On the other hand, if the step decreases and $\tau<1e-5$, convergence speed is near 4 which reflects the fourth approximation order that is used. The respective convergence speeds and results when using the $L_2$ error norms are similar and are omitted.
 In conclusion, we see that the numerical solution is calculated with a convergence rate of about $2.01$ or higher when $p=2$ and $3.96$ or higher when $p=4$. Decreasing the step sizes $h$ or $\tau$, or increasing the approximation order $p$, decreases the errors of the numerical solution.
 
 \subsection{Numerical Results for the Mass}
-The mass is compared on four different grids with space and time steps defined in Table \rf{tableMass} - second column. The first column shows the method which is used - Conservative FDS or Taylor method. For the cases with 
-$p=2$, we use Trapezoidal rule for integration. In case of $p=4$ and Taylor method, we use Simpson (1/3) rule. The results, with the initial mass and its maximum deviation, are displayed in Table \rf{tableMass}, in the third and fourth columns respectively.  
+The mass is compared on Grid 1 and Grid 3 from Table \rf{gridsT} and the results are shown in Table \rf{tableMass}. Similar results are obtained for Grid 2, when using the Conservative FDS or Taylor method with $p=2$ and $p=4$, and thus are omitted. The first column in Table \rf{tableMass} shows the method which is used - Conservative FDS or Taylor method. The space and time steps are present in the second column. For the cases with $p=2$, we use Trapezoidal rule for integration. In case of $p=4$ and Taylor method, we use Simpson (1/3) rule. The results, with the initial mass and its maximum deviation, are displayed in the third and fourth columns respectively.  
 %D
 \begin{table}[ht]
 \centering
