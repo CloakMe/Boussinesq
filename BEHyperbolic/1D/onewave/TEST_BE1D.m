@@ -10,8 +10,8 @@ h = 0.4;  tau = 0.01;
 %h = 0.4;  tau = 0.0005;  
 x = start_x:h:end_x;
 t_start = 0;
-t_interval=7.0;
-t_end = 7.0;
+t_interval=10.0;
+t_end = 10.0;
 
 beta1=1;   beta2=1;  alpha=-3; beta=beta1/beta2;
 sgm = 0.75;
@@ -218,10 +218,10 @@ end
       axis('tight')
       view(0,82);
       
-      xcon = [ 1e-07,1e-06,1e-05,1e-04,1e-03];
-      ycon = [ 3.97, 3.98, 4.16, 3.28,     0.1];
-      yerr1 = [0.0001119103,     0.0001118226,    0.0001109456, 0.0001021745, 0.084116];
-      yerr2 = [0.0000071520,     0.0000070642,    0.000006186, 0.0000105484, 0.000104696];
+      xcon = [ 1e-07,1e-06,1e-05,1e-04,1e-03, 1e-02];
+      ycon = [ 3.97, 3.98, 4.16, 3.28, 0.011 0.011];
+      yerr1 = [0.0001119103,     0.0001118226,    0.0001109456, 0.0001021745, 0.0001555689, 0.0010459783];
+      yerr2 = [0.0000071520,     0.0000070642,    0.000006186, 0.0000105484, 0.000104696, 55];
       
       figure(20)
 %       subplot(2,1,1);
@@ -234,13 +234,15 @@ end
       hold on;
       loglog(xcon,yerr2,'kd','MarkerFaceColor','k');
       hold off;
-      legend('|u_{0.8} - u^*_{0.4}|_\infty', '|u_{0.4} - u^*_{0.2}|_\infty');
-      text(1e-07, yerr1(1) + 4e-4, '3.97', 'Color', 'green','FontSize',14);
-      text(1e-06, yerr1(2) + 4e-4, '3.98', 'Color', 'green','FontSize',14);
-      text(1e-05, yerr1(3) + 4e-4, '4.16', 'Color', 'green','FontSize',14);
-      text(1e-04, yerr1(4) + 4e-4, '3.28', 'Color', 'green','FontSize',14);
-      text(5e-04, yerr1(5) - 4e-2, 'none', 'Color', 'green','FontSize',14);
+      legend('|u_{0.8} - u^*_{ex}|_\infty', '|u_{0.4} - u^*_{ex}|_\infty');
+      text(7e-08, yerr1(1) + 4e-4, '3.97', 'Color', 'green','FontSize',14);
+      text(7e-07, yerr1(2) + 4e-4, '3.98', 'Color', 'green','FontSize',14);
+      text(7e-06, yerr1(3) + 4e-4, '4.16', 'Color', 'green','FontSize',14);
+      text(7e-05, yerr1(4) + 4e-4, '3.28', 'Color', 'green','FontSize',14);
+      text(7e-04, yerr1(5) + 4e-4, '0.01', 'Color', 'green','FontSize',14);
+      text(3e-03, yerr1(6) + 4e-4, 'none', 'Color', 'green','FontSize',14);
         xlabel('\tau','FontSize',14);
         ylabel('Errors in L_\infty norms','FontSize',14);
         set(gca,'FontSize',14);
-        
+        %|u_{ex}-u_h|_L2 = 0.0002339650
+%|u_{ex}-u_h|_Inf = 0.0001055689

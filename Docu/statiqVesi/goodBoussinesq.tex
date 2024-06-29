@@ -239,13 +239,13 @@ The numerical tests for both, the Conservative FDS and Taylor method ($p=2$), sh
 	\label{gridsT}
 \end{table}
 
-The numerical methods described in the article are tested (at least) on six different grids defined in Table \rf{gridsT}. The Conservative FDS uses second approximation order on all grids while the Taylor method uses second approximation order on Grid 1 and fourth on Grid 2 and Grid 3. Later, other combinations of $h$ and $\tau$ are also used and are explicitly defined.
+The numerical methods described in the article are tested (at least) on six different grids defined in Table \rf{gridsT}. The Conservative FDS uses second approximation order on all grids while the Taylor method uses second (on Grid 1 and Grid 2) and fourth approximation order (on Grid 2 and Grid 3). Later, other combinations of $h$ and $\tau$ are also used and are explicitly defined.
 
-The discrete time interval for the numerical simulations is $[0, 10]$ unless stated otherwise. For that time, the two waves move against each other and at the moment $T=10$ are seen just before their collision. There is one additional experiment, with a time interval [0, 35], where the waves pass through each other (i.e. collide) and the distance between them at the final moment $T$ is approximately the same as at the initial moment $T_0$. 
+The discrete time interval for the numerical simulations is $[0, 10]$ unless stated otherwise. For that time, the two waves move against each other and at the moment $T=10$ are seen just before their collision. There is one additional experiment, with a time interval $[0, 35]$, where the waves pass through each other (i.e. collide) and the distance between them at the final moment $T=35$ is approximately the same as at the initial moment $T_0$. 
 
 All computations are done with $-L_1 = L_2 = 60$.
 Zero boundary condition is used on the computational edges of the space domain $[L_1, L_2]$. In case of the second derivative, with fourth approximation order, used inside the Taylor method, the finite difference stencil extends an extra point outside the $L_1$ and $L_2$ boundaries and the numerical solution is approximated again with $0$. The same is also valid for the fourth spatial derivative, with second approximation order, used in the Conservative FDS. This decision is taken because, the unknown function near the computational boundaries is calculated to be lower than $1e-10$ (using \rf{orgBsqSol}). Furthermore, it is confirmed that
-this approximation does not affect the convergence speed caclulated with Runge's rule (see Table \rf{tableA}).
+this approximation does not affect the convergence speed caclulated with Runge's rule (see Table \rf{tableA} and \rf{tableC}).
 
 \subsection{Convergence Rate for the Conservative FDS}
 
@@ -394,7 +394,8 @@ $O(h^4 + \tau^ 4)$    &0.4, 1e-03          &0.221571623 &            & 0.084116 
 %\caption{On the left panel we see the effect of decreasing the time step $\tau$. Errors $E_i$ are measured in $L_\infty$ norms and fourth approximation order ($p=4$). The green values mark the convergence speed, measured with Runge's rule \rf{Runge}, based on the measured errors $E_i$. On the right panel the solution diverges as the time step is bigger than $h$ squared $\tau > h^2$.}
 %\label{figConvSeq}
 %\end{figure}
-Figure \rf{figConvSeq} shows the effect of modifing the time step $\tau$ on the solution convergence. The nested space grids obtain the following step sizes: $h=0.8, 0.4$, with end time $T=10$. For $\tau>1e-4$, the stability of the Taylor Series method breaks as the $L_2$ and $L_\infty$ errors become much higher compared to the maximum of the solution wave $|u_h|_\infty$. The solution diverges and becomes non-smooth (e.g. the graph is jagged) and there is no convergence. On the other hand, if the step decreases and $\tau<1e-5$, convergence speed is near 4 which reflects the fourth approximation order that is used. The respective convergence speeds and results when using the $L_2$ error norms are similar and are omitted.
+Figure \rf{figConvSeq} shows the effect of modifing the time step $\tau$ on the solution convergence. The nested space grids obtain the following step sizes: $h=0.8, 0.4$, with end time $T=10$ and fourth approximation order $p=4$. For $\tau>1e-4$, the stability of the Taylor method breaks as the $L_2$ and $L_\infty$ errors become much higher compared to the maximum of the solution wave $|u_h|_\infty$. The solution diverges and becomes non-smooth (e.g. the graph is jagged) and there is no convergence. On the other hand, if the time step decreases and $\tau \le 1e-4$, convergence speed is near 4, which reflects the fourth approximation order that is used. The respective convergence speeds and results when using the $L_2$ error norms are similar and are omitted. From this analysis, we could see that $\tau < h^4$ (see Figure (\ref{figConvSeq}b)) is a necessary condition for the stability of the Taylor method with $p=4$.
+
 In conclusion, we see that the numerical solution is calculated with a convergence rate of about $2.01$ or higher when $p=2$ and $3.96$ or higher when $p=4$. Decreasing the step sizes $h$ or $\tau$, or increasing the approximation order $p$, decreases the errors of the numerical solution.
 
 \subsection{Numerical Results for the Mass}
@@ -429,7 +430,7 @@ Taylor, $p=4$    &  (0.4, 6.25e-5) & 1.666666e+00 &  3.002585e-08               
 		\caption{ The mass and its deviations from initial value measured on different grids. }
 \label{tableMass}
 \end{table}
-One could see that all deviations are lower (at least 10 times) than the errors measured when comparing the numerical solution with the exact one (see Table \rf{tableC} and Table \rf{tableA}). On Figure \rf{massFig} one could see the mass plotted for Grid 1. The values of the mass for Grid 2 and 3 are similar and thus are omitted. Table \rf{tableMass} and Figure \rf{massFig} confirm that the mass is constant over a fixed interval time ([0, 10]).
+One could see that all deviations are lower (at least 10 times) than the errors measured when comparing the numerical solution with the exact one (see Table \rf{tableC} and Table \rf{tableA}). On Figure \rf{massFig} one could see the mass plotted for Grid 1. The values of the mass for Grid 2 and 3 are similar and thus are omitted. Table \rf{tableMass} and Figure \rf{massFig} confirm that the mass is preserved with better accuracy than the numerical solution, over a fixed time interval $[0, 10]$.
 
 \begin{figure}[ht]\vspace{0.2cm}
   \centering
