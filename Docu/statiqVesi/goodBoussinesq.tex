@@ -430,7 +430,7 @@ Taylor, $p=4$    &  (0.4, 6.25e-5) & 1.666666e+00 &  3.002585e-08               
 		\caption{ The mass and its deviations from initial value measured on different grids. }
 \label{tableMass}
 \end{table}
-One could see that all deviations are lower (at least 10 times) than the errors measured when comparing the numerical solution with the exact one (see Table \rf{tableC} and Table \rf{tableA}). On Figure \rf{massFig} one could see the mass plotted for Grid 1. The values of the mass for Grid 2 and 3 are similar and thus are omitted. Table \rf{tableMass} and Figure \rf{massFig} confirm that the mass is preserved with better accuracy than the numerical solution, over a fixed time interval $[0, 10]$.
+One could see that all deviations are lower (at least 10 times) than the errors measured when comparing the numerical solution with the exact one (see Table \rf{tableC} and Table \rf{tableA}). On Figure \rf{massFig} one could see the mass plotted for Grid 1. The values of the mass over the other grids are similar and thus are omitted. Table \rf{tableMass} and Figure \rf{massFig} confirm that the mass is preserved with better accuracy than the numerical solution, over a fixed time interval $[0, 10]$.
 
 \begin{figure}[ht]\vspace{0.2cm}
   \centering
@@ -484,7 +484,7 @@ Here, we present results for a longer time interval $[0, 35]$, obtained using th
 \caption{Evolution of the shape over a larger time interval $[0, 35]$. The soluiton is produced using the Conservative FDS.}
 \label{sol35}
 \end{figure}
-The errors measured in $L_2$ and $L_\infty$ norms for the Conservative FDS are $0.001257$ and $0.000640$. The space and time steps are as follow: $h = 0.4$ and  $\tau = 0.05$, with $\sigma = 0.75$. The initial energy equals $0.89$ and its maximum deviation from the initial value equals $1.4076e-04$. The initial mass equals $1.66$ and its maximum deviation from the initial value equals $2.3608e-04$.
+The errors measured in $L_2$ and $L_\infty$ norms for the Conservative FDS are $0.001257$ and $0.000640$. The space and time steps are as follow: $h = 0.4$ and  $\tau = 0.05$, with $\sigma = 0.75$. The initial energy equals $0.0889$ and its maximum deviation from the initial value equals $1.4076e-04$. The initial mass equals $1.66$ and its maximum deviation from the initial value equals $2.3608e-04$.
 
 The errors measured in $L_2$ and $L_\infty$ norms for the Taylor method are $0.000629$ and $0.000385$. The space and time steps are as follow: $h = 0.4$ and  $\tau = 0.001$. The initial mass equals $1.66$ and its maximum deviation from the initial value equals $1.1196e-05$.
 
@@ -495,7 +495,7 @@ The errors measured in $L_2$ and $L_\infty$ norms for the Taylor method are $0.0
 \small
 		\begin{tabular}{|c|l|l|l|l|l|l|}
 			\hline
-Method                    & $(h, \tau)$   &    $|u_{ex}-u_{h}|_{L2}$  &    $|u_{ex}-u_{h}|_{\infty}$  &   $|E_{h}-E_0|_{\infty}$ &   $|M_{h}-M_0|_{\infty}$       \\
+Method                    & $(h, \tau)$   &    $||u_{h}-(u_{ex})_h||_{L_2}$  &    $||u_{h}-(u_{ex})_h||_{\infty}$  &   $max_k|E_{h}-E_0|_{\infty}$ &   $max_k|M_{h}-M_0|_{\infty}$       \\
 			\hline
            Cons FDS          &  $(0.4,0.05)$  &  $ 0.001207$       &     $0.000640$               &     $1.4076e-04$           &               $2.3608e-04$     \\
 			\hline
@@ -506,9 +506,11 @@ Method                    & $(h, \tau)$   &    $|u_{ex}-u_{h}|_{L2}$  &    $|u_{
 	\label{final35}
 \end{table}
 
-At the final moment, the difference between the exact and numerical solutions, measured in $L_2$ and $L_\infty$ norms, is at least 100 times less than the maximum of the wave $|u_h|_\infty = 0.1248$. For that longer time period, the energy and mass norms are also preserved with high accuracy.
+At the final moment, the difference between the exact and numerical solutions, measured in $L_2$ and $L_\infty$ norms, is at least 100 times less than the absolute value of the maximum of the wave $|u_h|_\infty = 0.1248$. For that longer time period, the energy and mass norms are also preserved with high accuracy.
 
 \section{Conclusion}
+
+The good BE is solved using the Conservative FDS and TS approach with method of lines. The first utilizes second order approximations and preserves the discrete energy with accuracy higher than the numerical solution itself. The second exploits TS expansions around the time variable $t$, with up to the fourth time derivative and fourth order finite difference approximation over the space derivative $\Delta u$. The numerical solution is compared with the exact one, using $L_2$ and $L_\infty$ norms. From the numerical tests conducted, we observe that decreasing the space step $h$ twice, results in four times lower errors norms $\Vert u_{h} - (u_{ex})_{h} \Vert_\kappa$, in case of second approximation order, and sixteen times lower, in case of fourth approximation order. Increasing the approximation order (from second to fourth) and keeping $h, \tau$ fixed, when using the Taylor method, leads to (accuracy boost with) 85 times or much lower error norms (see Table \rf{tableA}). The deviations of the discrete mass are lower than the error norms of the numerical solution. In a conducted numerical example for a larger time interval $T=35$, we observe that the error norms are at least 100 times smaller than the absolute value of the solution maximum, at the final time. In this example, the two waves collide with each other and interchange positions on the x-axis. The collision of the two waves is elastic. For that longer time period, the discrete energy and mass norms are also preserved with high accuracy.
 
 \begin{thebibliography}{99} \normalsize
 
