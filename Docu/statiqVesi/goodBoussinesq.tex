@@ -1,9 +1,4 @@
-\documentclass[%
- aip,
-cp,  
- amsmath,amssymb,
- reprint,
-]{iopconfser}
+\documentclass{iopconfser}
 
 \usepackage{graphicx}% Include figure files
 \usepackage{dcolumn}% Align table columns on decimal point
@@ -32,7 +27,7 @@ cp,
 
 \begin{document}
 
-\title{Numerical Study of the good Boussinesq Equation}
+\title{Numerical Study of the Good Boussinesq Equation}
 
 \author{Krassimir Angelow$^{1}$ and Veselina Vucheva$^{2}$}
 
@@ -185,7 +180,7 @@ where $N_x$ is the number of points in $\Omega_h$ and $N_t = T/\tau$. Current ch
 
 The convergence rates for the Conservative FDS and Taylor method are calculated. At the end, the properties of the solution that are obtained numerically by the two different mechanisms are compared. The mass is a vector of size $N_t$ and is calculated for each iteration step. The tool for testing the convergence rate $\xi$ of all examined finite difference schemes and TS expansions is the Runge's method
 \begin{equation}\label{Runge}
-\xi = ln  \frac{\Vert u_{h} - (u_{ex})_{h} \Vert_\kappa } {\Vert  u_{h/2} - (u_{ex})_{h/2} \Vert_\kappa  } | / ln(2),
+\xi = ln  \frac{\Vert u_{h} - (u_{ex})_{h} \Vert_\kappa } {\Vert  u_{h/2} - (u_{ex})_{h/2} \Vert_\kappa  } | / \text{ln}(2),
 \end{equation}
 where $u_{ex}$ is the exact solution \rf{orgBsqSol}, which is defined below, over the corresponding grid with step size $h$ or $h/2$. Here, $\kappa$ denotes the used norm, which is either $L_2$ or $L_\infty$. The time step $\tau$ is kept constant.
 \begin{align}\label{orgBsqSol}
