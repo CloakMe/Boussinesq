@@ -4,7 +4,7 @@
 \LoadClass[a4paper]{article}
 
 
-% Margin settings from jpconf11.clo
+% Margin settings
 \setlength{\hoffset}{0mm}
 \setlength{\marginparsep}{0mm}
 \setlength{\marginparwidth}{0mm}
@@ -18,7 +18,7 @@
 \setlength{\textheight}{230mm}
 \setlength{\topmargin}{1.6mm}
 
-% More length definitions from jpconf11.clo
+% More length definitions
 \setlength\maxdepth{.5\topskip}
 \setlength\@maxdepth\maxdepth
 \setlength\footnotesep{8.4\p@}
@@ -36,25 +36,32 @@
 \setlength\@dblfpbot{0\p@}
 \setlength\partopsep{3\p@ \@plus 2\p@ \@minus 2\p@}
 
+% Set indent for front matter
+\renewenvironment{quote}%
+  {\list{}{\leftmargin=25mm}\item\relax}%
+  {\endlist}
+
 % Clear the header and footer
 
 \pagestyle{empty}
 
+% Styles for front matter
+
 \renewcommand{\title}[1]{\vspace*{25mm}{\exhyphenpenalty=10000\hyphenpenalty=10000 
- \fontsize{18bp}{24bp}\selectfont\bf\noindent\raggedright
+ \fontsize{18}{24}\selectfont\bf\noindent\raggedright
         \textsf{#1}\par}}
 
 		
 \renewcommand{\author}[1]{\vspace*{1.5pc}%
-   \fontsize{14bp}{16bp}\raggedright
-       \begin{quote}\textbf{\textsf{#1}}\end{quote}}
+   \fontsize{11}{13}
+       \begin{quote}\raggedright \textbf{#1}\end{quote}}
 
-\newcommand{\affil}[1]{\fontsize{10bp}{11bp}\selectfont\raggedright
-       \begin{quote}#1\end{quote}
+\newcommand{\affil}[1]{\fontsize{10}{11}\selectfont
+       \begin{quote}\raggedright #1\end{quote}
 	   \vspace*{-22pt}}
 
-\newcommand{\email}[1]{\vspace*{12pt}\fontsize{10bp}{11bp}\selectfont\raggedright
-       \begin{quote}E-mail: #1\end{quote}
+\newcommand{\email}[1]{\vspace*{12pt}\fontsize{10}{11}\selectfont
+       \begin{quote}\raggedright E-mail: #1\end{quote}
 	   \vspace*{-22pt}}
 
 \renewenvironment{abstract}{%
